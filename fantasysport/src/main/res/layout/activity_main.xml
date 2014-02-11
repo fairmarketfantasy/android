@@ -1,18 +1,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/container"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.fantasysport.activities.MainActivity"
-    tools:ignore="MergeRootFrame"
-    android:orientation="vertical">
-    <TextView
-            android:text="@string/hello_world"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/welcome"/>
-    <com.facebook.widget.LoginButton android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="facebook"
-            android:id="@+id/facebookBtn"/>
+              xmlns:tools="http://schemas.android.com/tools"
+              android:id="@+id/container"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              tools:context="com.fantasysport.activities.SignInActivity"
+              tools:ignore="MergeRootFrame"
+              android:orientation="vertical">
+
 </LinearLayout>

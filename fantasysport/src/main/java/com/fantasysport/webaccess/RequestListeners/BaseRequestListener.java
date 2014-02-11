@@ -8,6 +8,7 @@ import com.octo.android.robospice.exception.NoNetworkException;
 import com.octo.android.robospice.exception.RequestCancelledException;
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
+import org.springframework.http.client.ClientHttpRequest;
 import org.springframework.web.client.HttpClientErrorException;
 
 /**

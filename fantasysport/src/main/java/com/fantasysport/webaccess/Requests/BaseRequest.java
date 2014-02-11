@@ -12,6 +12,8 @@ public abstract class BaseRequest<T> extends SpringAndroidSpiceRequest<T> {
     }
 
     protected String getUrl(){
-        return "http://192.168.88.43:3000/";
+//        https://fairmarketfantasy.com/
+//        http://192.168.88.78:3000/
+        return "http://192.168.88.78:3000/";
     }
 }
