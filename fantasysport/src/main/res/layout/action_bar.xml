@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:orientation="vertical"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:background="@color/action_bar_background"
+             android:paddingLeft="@dimen/action_bar_marging"
+             android:paddingRight="@dimen/action_bar_marging"
+             android:id="@+id/action_bar_layout">
+
+    <FrameLayout android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:paddingTop="10dip"
+            android:paddingBottom="10dip">
+    <LinearLayout android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:orientation="horizontal"
+            android:layout_gravity="center_vertical">
+
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="FAIR MARKET"
+                android:textColor="#FFFFFF"
+                android:id="@+id/fair_martet_txt"
+                android:textSize="17dp"/>
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text=" FANTASY"
+                  android:textColor="#FFFFFF"
+                  android:textStyle="italic"
+                  android:textSize="17dp"
+                  android:id="@+id/fantasy_txt"/>
+    </LinearLayout>
+
+    <Button android:layout_width="wrap_content" android:layout_height="30dp"
+            android:layout_gravity="right|center_vertical"
+            android:text="@string/sign_up"
+            android:paddingLeft="15dip"
+            android:paddingRight="15dip"
+            android:background="@drawable/action_bar_button"
+            android:textSize="14dip"
+            android:textColor="#FFFFFF"
+            android:id="@+id/action_bar_btn"/>
+    </FrameLayout>
+
+</FrameLayout>

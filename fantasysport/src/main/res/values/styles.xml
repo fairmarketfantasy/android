@@ -2,7 +2,36 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+
+        <item name="android:windowNoTitle">true</item>
+
     </style>
+
+    <style name="green_auth_button" parent="@android:style/Widget.Button">
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:layout_height">@dimen/auth_button_height</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:textSize">@dimen/auth_button_text_size</item>
+        <item name="android:layout_marginTop">@dimen/auth_element_top_margin</item>
+        <item name="android:background">@drawable/grean_button</item>
+    </style>
+
+    <style name="blue_auth_button" parent="green_auth_button">
+        <item name="android:background">@drawable/blue_button</item>
+    </style>
+
+    <style name="auth_edit_text" parent="@android:style/Widget.EditText">
+        <item name="android:background">@drawable/white_edit_text</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:layout_marginTop">@dimen/auth_element_top_margin</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/auth_edit_text_height</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textSize">@dimen/auth_edit_text_text_size</item>
+
+    </style>
+
+
 
 </resources>

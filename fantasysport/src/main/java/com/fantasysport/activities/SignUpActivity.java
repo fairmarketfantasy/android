@@ -1,25 +1,28 @@
 package com.fantasysport.activities;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import com.fantasysport.R;
 import com.fantasysport.models.User;
+import com.fantasysport.models.UserData;
 import com.fantasysport.webaccess.RequestListeners.RequestError;
-import com.fantasysport.webaccess.RequestListeners.SignUpRequestListener;
-import com.fantasysport.webaccess.Responses.SignUpResponse;
+import com.fantasysport.webaccess.RequestListeners.UserDataResponseListener;
 import com.fantasysport.webaccess.WebProxy;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+public class SignUpActivity extends AuthActivity {
 
-public class SignUpActivity extends FacebookAuthActivity {
+    private final String STATE_EMAIL = "state_email";
+    private final String STATE_PASSWORD = "state_password";
+    private final String STATE_NAME = "state_name";
 
     private EditText _emailTxt;
     private EditText _nameTxt;
@@ -30,20 +33,32 @@ public class SignUpActivity extends FacebookAuthActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_sign_up);
-
-        Button toSignUpBtn = getViewById(R.id.to_sign_in_btn);
+        setActionBarButtonText(getString(R.string.sign_in));
+        Button toSignUpBtn = getViewById(R.id.action_bar_btn);
         toSignUpBtn.setOnClickListener(_toSignInBtnClickListener);
+
+        Typeface tf = Typeface.createFromAsset(getAssets(), "fonts/ProhibitionRound.ttf");
 
         Button facebookBtn = getViewById(R.id.facebook_btn);
         initFacebookAuth(facebookBtn);
+        facebookBtn.setTypeface(tf);
 
         Button signUpBtn = getViewById(R.id.sign_up_btn);
         signUpBtn.setOnClickListener(_signUpBtnClickListener);
+        signUpBtn.setTypeface(tf);
 
         _emailTxt = getViewById(R.id.email_txt);
         _nameTxt = getViewById(R.id.name_txt);
         _passwordTxt = getViewById(R.id.password_txt);
         _passwordTxt.setOnEditorActionListener(_passwordTxtEditorActionListener);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+        setBackground();
+
+        if (savedInstanceState != null) {
+            _emailTxt.setText(savedInstanceState.getString(STATE_EMAIL));
+            _passwordTxt.setText(savedInstanceState.getString(STATE_PASSWORD));
+            _nameTxt.setText(savedInstanceState.getString(STATE_NAME));
+        }
     }
 
     private User getUser() {
@@ -58,8 +73,8 @@ public class SignUpActivity extends FacebookAuthActivity {
 
     private void attemptSignUp() {
         String email = _emailTxt.getText().toString();
-        String password = _passwordTxt.toString();
-        String name = _nameTxt.toString();
+        String password = _passwordTxt.getText().toString();
+        String name = _nameTxt.getText().toString();
 
         if (TextUtils.isEmpty(name)) {
             showErrorAlert(null, getString(R.string.please_provide_name), null);
@@ -83,21 +98,8 @@ public class SignUpActivity extends FacebookAuthActivity {
             return;
         }
 
-        WebProxy.signUp(getUser(), _spiceManager, _signUpRequestListener);
-    }
-
-    public boolean isEmailValid(String email) {
-        String regExp = "^(([\\w-]+\\.)+[\\w-]+|([a-zA-Z]{1}|[\\w-]{2,}))@"
-                        + "((([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\.([0-1]?"
-                        + "[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\."
-                        + "([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\.([0-1]?"
-                        + "[0-9]{1,2}|25[0-5]|2[0-4][0-9])){1}|"
-                        + "([a-zA-Z]+[\\w-]+\\.)+[a-zA-Z]{2,4})$";
-
-        CharSequence inputStr = email;
-        Pattern pattern = Pattern.compile(regExp, Pattern.CASE_INSENSITIVE);
-        Matcher matcher = pattern.matcher(inputStr);
-        return matcher.matches();
+        showProgress();
+        WebProxy.signUp(getUser(), _spiceManager, _userDataResponseListener);
     }
 
     TextView.OnEditorActionListener _passwordTxtEditorActionListener = new TextView.OnEditorActionListener() {
@@ -126,17 +128,26 @@ public class SignUpActivity extends FacebookAuthActivity {
         }
     };
 
-    SignUpRequestListener _signUpRequestListener = new SignUpRequestListener() {
+    UserDataResponseListener _userDataResponseListener = new UserDataResponseListener() {
 
         @Override
-        public void onRequestSuccess(SignUpResponse signUpResponse) {
-            startActivity(new Intent(SignUpActivity.this, MainActivity.class));
-            overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
+        public void onRequestSuccess(UserData userData) {
+            dismissProgress();
+            navigateToMainActivity();
         }
 
         @Override
         public void onRequestError(RequestError error) {
+            dismissProgress();
             showErrorAlert(getString(R.string.error), error.getMessage());
         }
     };
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putString(STATE_EMAIL, _emailTxt.getText().toString());
+        outState.putString(STATE_PASSWORD, _passwordTxt.getText().toString());
+        outState.putString(STATE_NAME, _nameTxt.getText().toString());
+        super.onSaveInstanceState(outState);
+    }
 }

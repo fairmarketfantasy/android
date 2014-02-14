@@ -11,6 +11,11 @@
     <string name="sign_in">SIGN IN</string>
     <string name="close">Close</string>
     <string name="sign_up_with_facebook">SIGN UP WITH FACEBOOK</string>
+    <string name="sign_in_with_facebook">SIGN IN WITH FACEBOOK</string>
+    <string name="need_an_account">Need an Account?</string>
+    <string name="forgot_your_password">Forgot Your Password?</string>
+    <string name="loading">Loading</string>
+    <string name="wait_while_loading">Wait while loading...</string>
 
     <!-- errors -->
     <string name="error">Error</string>

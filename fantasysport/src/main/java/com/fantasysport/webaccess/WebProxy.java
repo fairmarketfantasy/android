@@ -1,12 +1,14 @@
 package com.fantasysport.webaccess;
 
 import com.fantasysport.models.User;
-import com.fantasysport.webaccess.RequestListeners.SignUpRequestListener;
+import com.fantasysport.webaccess.RequestListeners.AccessTokenResponseListener;
+import com.fantasysport.webaccess.RequestListeners.UserDataResponseListener;
+import com.fantasysport.webaccess.Requests.AccessTokenRequest;
 import com.fantasysport.webaccess.Requests.FacebookSignInRequest;
+import com.fantasysport.webaccess.Requests.SignInRequest;
 import com.fantasysport.webaccess.Requests.SignUpRequest;
 import com.octo.android.robospice.SpiceManager;
 import com.octo.android.robospice.persistence.exception.SpiceException;
-import com.octo.android.robospice.retry.DefaultRetryPolicy;
 import com.octo.android.robospice.retry.RetryPolicy;
 
 /**
@@ -17,12 +19,23 @@ public final class WebProxy {
     private WebProxy(){
     }
 
-    public static void facebookLogin(String accessToken, SpiceManager spiceManager){
-        FacebookSignInRequest request = new FacebookSignInRequest(accessToken);
-        spiceManager.execute(request, null);
+    public static void signIn(String accessToken, SpiceManager spiceManager, UserDataResponseListener listener){
+        SignInRequest request = new SignInRequest(accessToken);
+        spiceManager.execute(request, listener);
     }
 
-    public static void signUp(User user, SpiceManager spiceManager, SignUpRequestListener listener){
+    public static void getAccessToken(String email, String password, SpiceManager spiceManager, AccessTokenResponseListener listener){
+        AccessTokenRequest request = new AccessTokenRequest(email, password);
+        spiceManager.execute(request, listener);
+    }
+
+    public static void facebookLogin(String accessToken, SpiceManager spiceManager, UserDataResponseListener listener){
+        FacebookSignInRequest request = new FacebookSignInRequest(accessToken);
+        spiceManager.execute(request, listener);
+    }
+
+
+    public static void signUp(User user, SpiceManager spiceManager, UserDataResponseListener listener){
         SignUpRequest request = new SignUpRequest(user);
         request.setRetryPolicy(getRetryPolicy());
         spiceManager.execute(request, listener);
@@ -48,23 +61,3 @@ public final class WebProxy {
     }
 
 }
-
-
-
-//    public static void signUp(User user){
-//        final String json = new Gson().toJson(new SignUpRequestBody(user));
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                try{
-//
-//                    String response = RequestSender.makeRequest("http://192.168.88.78:3000/users", json, RequestSender.METHOD_POST, null);
-//                    Log.i("---------response---------", response);
-//                }catch (Exception e){
-//                    Object o = e.toString();
-//                }
-//
-//            }
-//        }).start();
-//
-//    }

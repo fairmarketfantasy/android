@@ -1,88 +1,82 @@
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView android:layout_weight="1" xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent" android:layout_height="match_parent"
+            android:fillViewport="true">
+    <FrameLayout android:layout_width="match_parent" android:layout_height="match_parent"
+                 android:layout_weight="1">
 
-    tools:context=".........src.main.java.com.fantasysport.activities.SignUpActivity">
-
-    <!-- Login progress -->
-    <LinearLayout android:id="@+id/login_status"
-        android:visibility="gone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center_horizontal"
-        android:orientation="vertical">
-        <ProgressBar style="?android:attr/progressBarStyleLarge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"/>
-        <TextView
-            android:id="@+id/login_status_message"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:fontFamily="sans-serif-light"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:text="login_progress_signing_in" />
-    </LinearLayout>
-
-    <!-- Login form -->
-    <ScrollView
-        android:id="@+id/login_form"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <LinearLayout android:layout_height="match_parent"
-                      android:layout_width="match_parent"
-                      android:orientation="vertical">
-
-            <Button android:layout_width="wrap_content" android:layout_height="wrap_content"
-                    android:text="@string/sign_in" android:layout_gravity="right"
-                    android:id="@+id/to_sign_in_btn" />
-
-            <EditText
-                    android:id="@+id/name_txt"
-                    android:singleLine="true"
-                    android:maxLines="1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text"
-                    android:hint="@string/name" />
-
-            <EditText
-                android:id="@+id/email_txt"
-                android:singleLine="true"
-                android:maxLines="1"
+        <LinearLayout
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/container"
+                android:layout_weight="1"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textEmailAddress"
-                android:hint="@string/email" />
+                android:layout_height="match_parent"
+                tools:context="com.fantasysport.activities.SignInActivity"
+                tools:ignore="MergeRootFrame"
+                android:orientation="vertical"
+                >
 
-            <EditText
-                android:id="@+id/password_txt"
-                android:singleLine="true"
-                android:maxLines="1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/password"
-                android:inputType="textPassword"
-                android:imeActionLabel="action_sign_in_short"
-                android:imeActionId="@+id/login"
-                android:imeOptions="actionUnspecified" />
+            <include layout="@layout/action_bar"
+                     android:id="@+id/includedLayout"/>
 
-            <Button android:id="@+id/sign_up_btn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="@string/sign_up"
-                android:paddingLeft="32dp"
-                android:paddingRight="32dp"
-                android:layout_gravity="right" />
+            <FrameLayout android:layout_weight="1"
+                         android:layout_width="match_parent"
+                         android:layout_height="match_parent">
+                <ImageView android:layout_width="match_parent" android:layout_height="match_parent"
+                           android:src="@drawable/basket"
+                           android:adjustViewBounds="false"
+                           android:scaleType="centerCrop"
+                           android:id="@+id/background_img"/>
 
-            <Button android:layout_width="match_parent" android:layout_height="wrap_content"
-                    android:text="@string/sign_up_with_facebook"
-                    android:id="@+id/facebook_btn"/>
+                <LinearLayout android:layout_width="match_parent"
+                              android:layout_height="wrap_content"
+                              android:orientation="vertical"
+                              android:paddingLeft="20dip"
+                              android:paddingRight="20dip"
+                              android:layout_gravity="center_vertical">
 
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                              android:textColor="#FFFFFF"
+                              android:text="Sign Up"
+                              android:textSize="27dip"/>
+
+                    <EditText android:id="@+id/name_txt"
+                              android:inputType="text"
+                              android:hint="@string/name"
+                              android:layout_marginTop="30dp"
+                              style="@style/auth_edit_text"/>
+
+                    <EditText android:id="@+id/email_txt"
+                              android:inputType="textEmailAddress"
+                              android:hint="@string/email"
+                              style="@style/auth_edit_text"/>
+
+                    <EditText
+                            android:id="@+id/password_txt"
+                            android:hint="@string/password"
+                            android:inputType="textPassword"
+                            android:imeActionLabel="action_sign_in_short"
+                            android:imeActionId="@+id/login"
+                            android:imeOptions="actionUnspecified"
+                            style="@style/auth_edit_text"/>
+
+                    <Button android:id="@+id/sign_up_btn"
+                            android:text="@string/sign_up"
+                            style="@style/green_auth_button"/>
+
+                    <Button android:text="@string/sign_up_with_facebook"
+                            android:id="@+id/facebook_btn"
+                            style="@style/blue_auth_button"/>
+                    <View android:layout_width="match_parent" android:layout_height="65dip"/>
+
+                </LinearLayout>
+
+            </FrameLayout>
         </LinearLayout>
 
-    </ScrollView>
-</merge>
+        <FrameLayout android:layout_width="match_parent" android:layout_height="65dip"
+                     android:background="@color/bottom_bar_background"
+                     android:layout_gravity="bottom">
+        </FrameLayout>
+    </FrameLayout>
+</ScrollView>
+

@@ -1,17 +1,13 @@
-package com.fantasysport.webaccess.Responses;
+package com.fantasysport.models;
 
-import com.fantasysport.models.CustomerObject;
-import com.fantasysport.models.League;
-import com.fantasysport.models.Roster;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.Date;
 import java.util.List;
 
 /**
- * Created by bylynka on 2/4/14.
+ * Created by bylynka on 2/13/14.
  */
-public class SignUpResponse extends BaseResponse {
+public class UserData {
 
     @SerializedName("id")
     private int _id;
@@ -59,9 +55,7 @@ public class SignUpResponse extends BaseResponse {
 //////    bonuses:     {
 //////    },
 
-
-
-   @SerializedName("winnings")
+    @SerializedName("winnings")
     private Integer _winnings;
 
     @SerializedName("total_wins")
@@ -97,3 +91,4 @@ public class SignUpResponse extends BaseResponse {
     }
 
 }
+

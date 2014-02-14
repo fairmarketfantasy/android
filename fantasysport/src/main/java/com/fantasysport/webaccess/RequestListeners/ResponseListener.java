@@ -14,7 +14,7 @@ import org.springframework.web.client.HttpClientErrorException;
 /**
  * Created by bylynka on 2/4/14.
  */
-public abstract class BaseRequestListener<T> implements RequestListener<T> {
+public abstract class ResponseListener<T> implements RequestListener<T> {
 
     @Override
     public void onRequestFailure(SpiceException e) {
