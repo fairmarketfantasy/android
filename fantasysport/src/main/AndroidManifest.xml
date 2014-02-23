@@ -50,9 +50,9 @@
 
         <activity
             android:name=".activities.SignInActivity"
-            android:label="@string/app_name"
-            android:noHistory="true"
+            android:label=""
             android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
                 >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -62,14 +62,15 @@
 
 
         <activity android:name=".activities.SignUpActivity"
-                  android:label="@string/app_name"
-                  android:noHistory="true"
+                  android:label=""
                   android:screenOrientation="portrait"
                   />
 
         <activity android:name=".activities.MainActivity"
-                  android:label="@string/app_name"
+                  android:label=""
+                  android:icon="@drawable/menu"
                   android:screenOrientation="portrait"
+                  android:theme="@style/AppIconTheme"
                   />
 
         <activity android:name="com.facebook.LoginActivity"
@@ -80,8 +81,15 @@
         <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/app_id"/>
 
 
-        <service android:name=".webaccess.WLGsonSpringAndroidSpiceService"
-                 android:exported="false" />
+        <!--<service-->
+                <!--android:name="com.octo.android.robospice.GsonGoogleHttpClientSpiceService"-->
+                <!--android:exported="false"/>-->
+
+        <service
+                android:name=".webaccess.GsonGoogleHttpClientSpiceService"
+                android:exported="false"/>
+
+
     </application>
 
 </manifest>

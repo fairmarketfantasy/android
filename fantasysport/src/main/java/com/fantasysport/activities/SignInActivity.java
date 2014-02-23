@@ -1,12 +1,12 @@
 package com.fantasysport.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
 import android.text.TextUtils;
-import android.view.KeyEvent;
-import android.view.View;
-import android.view.WindowManager;
+import android.view.*;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,10 +14,14 @@ import android.widget.TextView;
 import com.fantasysport.R;
 import com.fantasysport.models.UserData;
 import com.fantasysport.webaccess.RequestListeners.AccessTokenResponseListener;
+import com.fantasysport.webaccess.RequestListeners.MarketsResponseListener;
 import com.fantasysport.webaccess.RequestListeners.RequestError;
 import com.fantasysport.webaccess.RequestListeners.UserDataResponseListener;
+import com.fantasysport.webaccess.Requests.GamesRequest;
 import com.fantasysport.webaccess.Responses.AccessTokenResponse;
 import com.fantasysport.webaccess.WebProxy;
+
+import java.util.List;
 
 public class SignInActivity extends AuthActivity {
 
@@ -31,17 +35,18 @@ public class SignInActivity extends AuthActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
-        setActionBarButtonText(getString(R.string.sign_up));
-        Button toSignUpBtn = getViewById(R.id.action_bar_btn);
-        toSignUpBtn.setOnClickListener(_toSignUpBtnClickListener);
-        Typeface tf = Typeface.createFromAsset(getAssets(), "fonts/ProhibitionRound.ttf");
+
         Button facebookBtn = getViewById(R.id.facebook_btn);
         initFacebookAuth(facebookBtn);
-        facebookBtn.setTypeface(tf);
+        facebookBtn.setTypeface(getProhibitionRound());
         Button signInBtn = getViewById(R.id.sign_in_btn);
-        signInBtn.setTypeface(tf);
+        signInBtn.setTypeface(getProhibitionRound());
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         signInBtn.setOnClickListener(_signInBtnClickListener);
+
+        TextView toSignUpLbl = getViewById(R.id.to_sign_up_lbl);
+        toSignUpLbl.setOnClickListener(_toSignUpListener);
+
         setBackground();
         _emailTxt = getViewById(R.id.email_txt);
         _passwordTxt = getViewById(R.id.password_txt);
@@ -59,6 +64,23 @@ public class SignInActivity extends AuthActivity {
             showProgress();
         }
         WebProxy.signIn(accessToken, _spiceManager, _userUserDataResponseListener);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.auth, menu);
+        MenuItem item = menu.findItem(R.id.action);
+        new TextView(this);
+        LayoutInflater inflator = (LayoutInflater) this
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View titleView = inflator.inflate(R.layout.auth_menu_item, null);
+        titleView.setOnClickListener(_toSignUpListener);
+
+        TextView txt = (TextView)titleView.findViewById(R.id.item_txt);
+        txt.setText(getString(R.string.sign_up));
+        txt.setTypeface(getProhibitionRound());
+        MenuItemCompat.setActionView(item, titleView);
+        return super.onCreateOptionsMenu(menu);
     }
 
     private void attemptGetAccessToken(){
@@ -79,6 +101,20 @@ public class SignInActivity extends AuthActivity {
         }
         showProgress();
         WebProxy.getAccessToken(email, password, _spiceManager, _accessTokenRequestListener);
+    }
+
+    private void loadGames(String accessToken){
+        WebProxy.getGames(GamesRequest.REGULAR_SEASON, accessToken, _spiceManager, new MarketsResponseListener() {
+            @Override
+            public void onRequestError(RequestError message) {
+
+            }
+
+            @Override
+            public void onRequestSuccess(List list) {
+
+            }
+        });
     }
 
     TextView.OnEditorActionListener _passwordTxtEditorActionListener = new TextView.OnEditorActionListener() {
@@ -102,6 +138,7 @@ public class SignInActivity extends AuthActivity {
         @Override
         public void onRequestSuccess(UserData userData) {
             dismissProgress();
+            _storage.setUserData(userData);
             navigateToMainActivity();
         }
     };
@@ -115,6 +152,7 @@ public class SignInActivity extends AuthActivity {
 
         @Override
         public void onRequestSuccess(AccessTokenResponse accessTokenResponse) {
+//            loadGames(accessTokenResponse.getAccessToken());
             attemptSignIn(accessTokenResponse.getAccessToken());
         }
     };
@@ -126,10 +164,14 @@ public class SignInActivity extends AuthActivity {
         }
     };
 
-    View.OnClickListener _toSignUpBtnClickListener = new View.OnClickListener() {
+    View.OnClickListener _toSignUpListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            startActivity(new Intent(SignInActivity.this, SignUpActivity.class));
+            Intent intent = new Intent(SignInActivity.this, SignUpActivity.class);
+//            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+//            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+            startActivity(intent);
             overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
         }
     };

@@ -1,8 +1,6 @@
 <ScrollView android:layout_weight="1" xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent" android:layout_height="match_parent"
             android:fillViewport="true">
-    <FrameLayout android:layout_width="match_parent" android:layout_height="match_parent"
-                 android:layout_weight="1">
 
         <LinearLayout
                 xmlns:tools="http://schemas.android.com/tools"
@@ -15,34 +13,32 @@
                 android:orientation="vertical"
                 >
 
-            <include layout="@layout/action_bar"
-                     android:id="@+id/includedLayout"/>
-
             <FrameLayout android:layout_weight="1"
                          android:layout_width="match_parent"
                          android:layout_height="match_parent">
-                <ImageView android:layout_width="match_parent" android:layout_height="match_parent"
-                           android:src="@drawable/basket"
-                           android:adjustViewBounds="false"
+                <ImageView android:layout_width="match_parent"
+                           android:layout_height="match_parent"
+                           android:background="@color/abc_search_url_text_pressed"
                            android:scaleType="centerCrop"
                            android:id="@+id/background_img"/>
 
                 <LinearLayout android:layout_width="match_parent"
                               android:layout_height="wrap_content"
                               android:orientation="vertical"
-                              android:paddingLeft="20dip"
-                              android:paddingRight="20dip"
+                              android:paddingLeft="@dimen/side_marging"
+                              android:paddingRight="@dimen/side_marging"
                               android:layout_gravity="center_vertical">
 
                     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
                               android:textColor="#FFFFFF"
                               android:text="Sign Up"
-                              android:textSize="27dip"/>
+                              android:textSize="27dip"
+                              android:layout_marginTop="15dip"/>
 
                     <EditText android:id="@+id/name_txt"
                               android:inputType="text"
                               android:hint="@string/name"
-                              android:layout_marginTop="30dp"
+                              android:layout_marginTop="20dp"
                               style="@style/auth_edit_text"/>
 
                     <EditText android:id="@+id/email_txt"
@@ -65,18 +61,18 @@
 
                     <Button android:text="@string/sign_up_with_facebook"
                             android:id="@+id/facebook_btn"
-                            style="@style/blue_auth_button"/>
-                    <View android:layout_width="match_parent" android:layout_height="65dip"/>
-
+                            style="@style/blue_auth_button"
+                            android:layout_marginBottom="15dip"/>
                 </LinearLayout>
 
             </FrameLayout>
+
+            <FrameLayout android:layout_width="match_parent"
+                         android:layout_height="@dimen/bottom_bar_height"
+                         android:background="@color/bottom_bar_background"
+                         android:layout_gravity="bottom">
+            </FrameLayout>
         </LinearLayout>
 
-        <FrameLayout android:layout_width="match_parent" android:layout_height="65dip"
-                     android:background="@color/bottom_bar_background"
-                     android:layout_gravity="bottom">
-        </FrameLayout>
-    </FrameLayout>
 </ScrollView>
 

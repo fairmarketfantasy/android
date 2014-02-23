@@ -2,18 +2,17 @@ package com.fantasysport.activities;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
-import android.view.Display;
+import android.os.Bundle;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ImageView;
 import com.facebook.Session;
+import com.facebook.SessionLoginBehavior;
 import com.facebook.SessionState;
 import com.fantasysport.R;
-import com.fantasysport.Utility.UIConverter;
 import com.fantasysport.models.UserData;
 import com.fantasysport.webaccess.RequestListeners.RequestError;
 import com.fantasysport.webaccess.RequestListeners.UserDataResponseListener;
@@ -27,7 +26,7 @@ import java.util.regex.Pattern;
  */
 public class AuthActivity extends BaseActivity {
 
-    protected void initFacebookAuth(Button facebookBtn){
+    protected void initFacebookAuth(Button facebookBtn) {
         facebookBtn.setOnClickListener(_facebookClickBntListener);
     }
 
@@ -37,60 +36,100 @@ public class AuthActivity extends BaseActivity {
         Session.getActiveSession().onActivityResult(this, requestCode, resultCode, data);
     }
 
-    private void authByFacebook(){
-        Session session = new Session(this);
-        final Session.OpenRequest request = new Session.OpenRequest(AuthActivity.this).setPermissions("basic_info", "email");
-        request.setCallback(new Session.StatusCallback() {
-            @Override
-            public void call(Session session, SessionState state, Exception exception) {
-
-                        if (session.isOpened()) {
-                            request.setCallback(null);
-                            String accessToken = session.getAccessToken();
-                            showProgress();
-                            WebProxy.facebookLogin(accessToken, _spiceManager, _userUserDataResponseListener);
-                        }else if(SessionState.CLOSED_LOGIN_FAILED == state || SessionState.CLOSED == state){
-                            request.setCallback(null);
-                            showErrorAlert("Error", "Facebook error", null);
-                        }
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Session session = Session.getActiveSession();
+        if (session == null) {
+            if (savedInstanceState != null) {
+                session = Session.restoreSession(this, null, _fbSessionCallback, savedInstanceState);
             }
-        });
-        Session.setActiveSession(session);
-        session.openForRead(request);
+            if (session == null) {
+                session = new Session(this);
+            }
+            Session.setActiveSession(session);
+        }
     }
 
-    protected void setBackground(){
-        final View barView = getActionBarView();
-        ViewTreeObserver vto = barView.getViewTreeObserver();
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Session.getActiveSession().addCallback(_fbSessionCallback);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Session.getActiveSession().removeCallback(_fbSessionCallback);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Session session = Session.getActiveSession();
+        Session.saveSession(session, outState);
+    }
+
+    private void authByFacebook2() {
+        final Session.OpenRequest request = new Session.OpenRequest(AuthActivity.this).setPermissions("basic_info", "email").setLoginBehavior(SessionLoginBehavior.SSO_WITH_FALLBACK);
+        request.setCallback(_fbSessionCallback);
+        Session session = Session.getActiveSession();
+        if (!session.isOpened()) {
+            session.openForRead(request);
+        } else {
+            Session.openActiveSession(this, true, _fbSessionCallback);
+        }
+    }
+
+    Session.StatusCallback _fbSessionCallback = new Session.StatusCallback() {
+        @Override
+        public void call(Session session, SessionState state, Exception exception) {
+            if (session.isOpened()) {
+                authByFacebook(session);
+            } else if (SessionState.CLOSED_LOGIN_FAILED == state || SessionState.CLOSED == state) {
+                showErrorAlert("Error", "Facebook error", null);
+            }
+        }
+    };
+
+    private void authByFacebook(Session session) {
+        String accessToken = session.getAccessToken();
+        showProgress();
+        WebProxy.facebookLogin(accessToken, _spiceManager, _userUserDataResponseListener);
+    }
+
+    protected void setBackground() {
+        final ImageView imgView = getViewById(R.id.background_img);
+        ViewTreeObserver vto = imgView.getViewTreeObserver();
 
         vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
                 if (Build.VERSION.SDK_INT < 16) {
-                    barView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                    imgView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
                 } else {
-                    barView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    imgView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 }
-                int barViewHeight = barView.getHeight();
-                ImageView img = getViewById(R.id.background_img);
-                BitmapDrawable bitmapDrawable = ((BitmapDrawable) img.getDrawable());
-                Bitmap bitmap = bitmapDrawable .getBitmap();
-                Display display = getWindowManager().getDefaultDisplay();
-                Point size = new Point();
-//                display.getSize(size);
-                int height = display.getHeight();
-//                int width = size.x;
-//                int height = size.y;
-//                Bitmap newBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight() - (UIConverter.dpiToPixel(65, SignInActivity.this)+barViewHeight), null, false);
-                height = height <= 480? bitmap.getHeight():height;
-                Bitmap newBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(),height - (UIConverter.dpiToPixel(65, AuthActivity.this)+barViewHeight), null, false);
-                img.setImageBitmap(newBitmap);
+                BitmapDrawable bitmapDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.basket);
+                Bitmap bitmap = bitmapDrawable.getBitmap();
+                Bitmap newBitmap = null;
+                int diffHeight = bitmap.getHeight() - imgView.getHeight();
+                if (diffHeight > 0 && imgView.getHeight() != 0) {
+                    newBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight() - diffHeight, null, false);
+                } else {
+                    newBitmap = bitmap;
+                }
+                imgView.setImageBitmap(newBitmap);
             }
         });
     }
 
-    protected void navigateToMainActivity(){
-        startActivity(new Intent(this, MainActivity.class));
+    protected void navigateToMainActivity() {
+        Intent intent = new Intent(this, MainActivity.class);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        startActivity(intent);
         overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
     }
 
@@ -118,6 +157,7 @@ public class AuthActivity extends BaseActivity {
         @Override
         public void onRequestSuccess(UserData userData) {
             dismissProgress();
+            _storage.setUserData(userData);
             navigateToMainActivity();
         }
     };
@@ -126,7 +166,7 @@ public class AuthActivity extends BaseActivity {
 
         @Override
         public void onClick(View v) {
-            authByFacebook();
+            authByFacebook2();
         }
     };
 }

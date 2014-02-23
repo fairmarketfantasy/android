@@ -1,5 +1,6 @@
 package com.fantasysport.webaccess.RequestListeners;
 
+import com.google.api.client.repackaged.org.apache.commons.codec.binary.StringUtils;
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -10,6 +11,9 @@ public class RequestError {
     @SerializedName("error")
     private String _message;
 
+    @SerializedName("error_sbdescription")
+    private String _description;
+
     public RequestError(){
     }
 
@@ -18,7 +22,10 @@ public class RequestError {
     }
 
     public String getMessage(){
-        return _message;
+        if(_description == null || _description.length() == 0){
+            return _message;
+        }
+        return _description;
     }
 
 }

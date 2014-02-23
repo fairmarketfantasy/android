@@ -1,4 +1,4 @@
-package com.fantasysport.Utility;
+package com.fantasysport.utility;
 
 import android.content.Context;
 import android.util.DisplayMetrics;

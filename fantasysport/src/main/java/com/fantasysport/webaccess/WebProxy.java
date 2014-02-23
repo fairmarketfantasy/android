@@ -2,11 +2,9 @@ package com.fantasysport.webaccess;
 
 import com.fantasysport.models.User;
 import com.fantasysport.webaccess.RequestListeners.AccessTokenResponseListener;
+import com.fantasysport.webaccess.RequestListeners.MarketsResponseListener;
 import com.fantasysport.webaccess.RequestListeners.UserDataResponseListener;
-import com.fantasysport.webaccess.Requests.AccessTokenRequest;
-import com.fantasysport.webaccess.Requests.FacebookSignInRequest;
-import com.fantasysport.webaccess.Requests.SignInRequest;
-import com.fantasysport.webaccess.Requests.SignUpRequest;
+import com.fantasysport.webaccess.Requests.*;
 import com.octo.android.robospice.SpiceManager;
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.retry.RetryPolicy;
@@ -17,6 +15,11 @@ import com.octo.android.robospice.retry.RetryPolicy;
 public final class WebProxy {
 
     private WebProxy(){
+    }
+
+    public static void getGames(String gameType,String accessToken, SpiceManager spiceManager, MarketsResponseListener listener){
+        GamesRequest request = new GamesRequest(gameType, accessToken);
+        spiceManager.execute(request, listener);
     }
 
     public static void signIn(String accessToken, SpiceManager spiceManager, UserDataResponseListener listener){

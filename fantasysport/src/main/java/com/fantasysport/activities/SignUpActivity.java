@@ -1,12 +1,12 @@
 package com.fantasysport.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
 import android.text.TextUtils;
-import android.view.KeyEvent;
-import android.view.View;
-import android.view.WindowManager;
+import android.view.*;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
@@ -33,19 +33,14 @@ public class SignUpActivity extends AuthActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_sign_up);
-        setActionBarButtonText(getString(R.string.sign_in));
-        Button toSignUpBtn = getViewById(R.id.action_bar_btn);
-        toSignUpBtn.setOnClickListener(_toSignInBtnClickListener);
-
-        Typeface tf = Typeface.createFromAsset(getAssets(), "fonts/ProhibitionRound.ttf");
 
         Button facebookBtn = getViewById(R.id.facebook_btn);
         initFacebookAuth(facebookBtn);
-        facebookBtn.setTypeface(tf);
+        facebookBtn.setTypeface(getProhibitionRound());
 
         Button signUpBtn = getViewById(R.id.sign_up_btn);
         signUpBtn.setOnClickListener(_signUpBtnClickListener);
-        signUpBtn.setTypeface(tf);
+        signUpBtn.setTypeface(getProhibitionRound());
 
         _emailTxt = getViewById(R.id.email_txt);
         _nameTxt = getViewById(R.id.name_txt);
@@ -102,6 +97,23 @@ public class SignUpActivity extends AuthActivity {
         WebProxy.signUp(getUser(), _spiceManager, _userDataResponseListener);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.auth, menu);
+        MenuItem item = menu.findItem(R.id.action);
+        new TextView(this);
+        LayoutInflater inflator = (LayoutInflater) this
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View titleView = inflator.inflate(R.layout.auth_menu_item, null);
+        titleView.setOnClickListener(_toSingnInListener);
+        TextView txt = (TextView)titleView.findViewById(R.id.item_txt);
+        txt.setText(getString(R.string.sign_in));
+        txt.setTypeface(getProhibitionRound());
+        MenuItemCompat.setActionView(item, titleView);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+
     TextView.OnEditorActionListener _passwordTxtEditorActionListener = new TextView.OnEditorActionListener() {
         @Override
         public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -120,10 +132,14 @@ public class SignUpActivity extends AuthActivity {
         }
     };
 
-    View.OnClickListener _toSignInBtnClickListener = new View.OnClickListener() {
+    View.OnClickListener _toSingnInListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            startActivity(new Intent(SignUpActivity.this, SignInActivity.class));
+            Intent intent = new Intent(SignUpActivity.this, SignInActivity.class);
+//            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+//            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+            startActivity(intent);
             overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
         }
     };
@@ -133,6 +149,7 @@ public class SignUpActivity extends AuthActivity {
         @Override
         public void onRequestSuccess(UserData userData) {
             dismissProgress();
+            _storage.setUserData(userData);
             navigateToMainActivity();
         }
 

@@ -1,7 +1,14 @@
 package com.fantasysport.models;
 
+import android.net.Uri;
+import android.support.v7.appcompat.R;
+import com.fantasysport.Config;
+import com.fantasysport.utility.Converter;
 import com.google.gson.annotations.SerializedName;
+import org.apache.commons.lang3.StringUtils;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -31,13 +38,13 @@ public class UserData {
     private String _imageUrl;
 
     @SerializedName("win_percentile")
-    private Float _winPercentile;
+    private float _winPercentile;
 
     @SerializedName("total_points")
-    private Float _totalPoints;
+    private int _totalPoints;
 
-//    @SerializedName("joined_at")
-//    private Date _joinedAt;
+    @SerializedName("joined_at")
+    private String _joinedAt;
 
     @SerializedName("token_balance")
     private int _tokenBalance;
@@ -59,7 +66,7 @@ public class UserData {
     private Integer _winnings;
 
     @SerializedName("total_wins")
-    private Integer _totalWins;
+    private int _totalWins;
 
     @SerializedName("total_losses")
     private Integer _totalLosses;
@@ -86,8 +93,40 @@ public class UserData {
     @SerializedName("customer_object")
     private CustomerObject _customerObject;
 
-    public String getCurrentSport(){
+    public String getCurrentSport() {
         return _currentSport;
+    }
+
+    public String getUserImageUrl() {
+        if (_imageUrl != null && !_imageUrl.toLowerCase().contains("http")) {
+            String imgUrl = Config.SERVER + (_imageUrl.charAt(0) == '/' ? _imageUrl.substring(1) : _imageUrl);
+            return imgUrl;
+        }
+        return _imageUrl;
+    }
+
+    public Date getRegistrationdDate() {
+        return Converter.toDate(_joinedAt);
+    }
+
+    public int getTotalPoints() {
+        return _totalPoints;
+    }
+
+    public int getTotalWins() {
+        return _totalWins;
+    }
+
+    public float getWinPercentile() {
+        return _winPercentile;
+    }
+
+    public String getRealName() {
+        return _realName;
+    }
+
+    public int getBalance() {
+        return _balance;
     }
 
 }

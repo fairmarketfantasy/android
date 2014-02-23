@@ -1,35 +1,40 @@
 package com.fantasysport.activities;
 
 import android.app.AlertDialog;
-import android.app.Fragment;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
-import android.content.pm.ActivityInfo;
 import android.graphics.Typeface;
-import android.support.v4.app.FragmentActivity;
+import android.os.Handler;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.util.DisplayMetrics;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import com.fantasysport.webaccess.WLGsonSpringAndroidSpiceService;
-import com.octo.android.robospice.SpiceManager;
 import com.fantasysport.R;
+import com.fantasysport.repo.Storage;
+import com.fantasysport.webaccess.GsonGoogleHttpClientSpiceService;
+import com.octo.android.robospice.SpiceManager;
 
 /**
  * Created by bylynka on 2/3/14.
  */
-public class BaseActivity extends FragmentActivity {
+public class BaseActivity extends ActionBarActivity{
 
-    protected SpiceManager _spiceManager = new SpiceManager(WLGsonSpringAndroidSpiceService.class);
+    protected SpiceManager _spiceManager = new SpiceManager(GsonGoogleHttpClientSpiceService.class);
     protected ProgressDialog _progress;
+
+    protected Handler _handler = new Handler();
+    protected Storage _storage;
+    protected Typeface _prohibitionRoundTypeFace;
 
     @Override
     public void setContentView(int layoutResID) {
+        _storage = Storage.instance();
         super.setContentView(layoutResID);
-//        setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        setActionBarFonts();
-        DisplayMetrics dm = new DisplayMetrics();
+        initActionBar(getSupportActionBar());
+
     }
 
 
@@ -82,26 +87,30 @@ public class BaseActivity extends FragmentActivity {
                 .show();
     }
 
+
     protected void showErrorAlert(String title, String message){
         showErrorAlert(title, message, null);
     }
 
-    protected View getActionBarView(){
-        return  getViewById(R.id.includedLayout);
+    public Typeface getProhibitionRound(){
+        if(_prohibitionRoundTypeFace == null){
+            _prohibitionRoundTypeFace  = Typeface.createFromAsset(getAssets(), "fonts/ProhibitionRound.ttf");
+        }
+        return _prohibitionRoundTypeFace;
     }
 
-    protected void setActionBarButtonText(String text){
-        Button btn = getViewById(R.id.action_bar_btn);
-        btn.setText(text);
-    }
-
-    protected void setActionBarFonts(){
-        Typeface tf = Typeface.createFromAsset(getAssets(), "fonts/ProhibitionRound.ttf");
-        TextView textView = getViewById(R.id.fair_martet_txt);
-        textView.setTypeface(tf);
-        textView = getViewById(R.id.fantasy_txt);
-        textView.setTypeface(tf);
-        Button btn = getViewById(R.id.action_bar_btn);
-        btn.setTypeface(tf);
+    private void initActionBar(ActionBar bar){
+        bar.setDisplayShowCustomEnabled(true);
+        bar.setDisplayShowTitleEnabled(false);
+        bar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME
+                | ActionBar.DISPLAY_SHOW_TITLE | ActionBar.DISPLAY_SHOW_CUSTOM);
+        LayoutInflater inflator = (LayoutInflater) this
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View customBar = inflator.inflate(R.layout.action_bar_title, null);
+        TextView textView = (TextView)customBar.findViewById(R.id.fair_martet_txt);
+        textView.setTypeface(getProhibitionRound());
+        textView = (TextView)customBar.findViewById(R.id.fantasy_txt);
+        textView.setTypeface(getProhibitionRound());
+        getSupportActionBar().setCustomView(customBar);
     }
 }

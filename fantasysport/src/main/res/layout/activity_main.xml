@@ -2,23 +2,179 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
+        android:layout_height="match_parent"
+        android:layout_weight="1">
     <FrameLayout
             android:id="@+id/content_frame"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        <include layout="@layout/action_bar"
-                 android:id="@+id/includedLayout"/>
+            android:layout_height="match_parent"
+            android:background="#ffffff">
+        <LinearLayout android:layout_width="match_parent"
+                      android:layout_height="match_parent"
+                      android:orientation="vertical">
+            <ScrollView android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:fillViewport="true">
+                <LinearLayout android:layout_width="match_parent"
+                              android:layout_height="match_parent"
+                              android:orientation="vertical"
+                        >
+                    <LinearLayout android:layout_width="match_parent"
+                                  android:layout_height="wrap_content"
+                                  android:orientation="horizontal"
+                                  android:layout_marginLeft="@dimen/side_marging"
+                                  android:layout_marginRight="@dimen/side_marging"
+                                  android:layout_marginTop="@dimen/side_hor_marging">
+                        <LinearLayout android:layout_width="wrap_content"
+                                      android:layout_height="wrap_content"
+                                      android:orientation="vertical"
+                                      android:layout_weight="1">
+                            <TextView android:layout_width="wrap_content"
+                                      android:layout_height="wrap_content"
+                                      android:textSize="@dimen/lage_font"
+                                      android:textColor="#404040"
+                                      android:id="@+id/user_name_txt"/>
+                            <TextView android:layout_width="wrap_content"
+                                      android:layout_height="wrap_content"
+                                      android:textSize="@dimen/low_font"
+                                      android:textColor="#999999"
+                                      android:id="@+id/user_reg_txt"/>
+                            <TextView android:layout_width="wrap_content"
+                                      android:layout_height="wrap_content"
+                                      android:textSize="@dimen/low_font"
+                                      android:textColor="#999999"
+                                      android:id="@+id/user_points_txt"/>
+                            <TextView android:layout_width="wrap_content"
+                                      android:layout_height="wrap_content"
+                                      android:textSize="@dimen/low_font"
+                                      android:textColor="#999999"
+                                      android:id="@+id/user_wins_txt"/>
+                        </LinearLayout>
+                        <FrameLayout android:layout_width="wrap_content"
+                                     android:layout_height="wrap_content"
+                                     android:layout_gravity="center_vertical"
+                                >
+                            <ImageView android:layout_width="70dp"
+                                       android:layout_height="70dp"
+                                       android:layout_gravity="center"
+                                       android:id="@+id/user_img"
+                                       android:src="@drawable/default_user"
+                                    />
+
+                            <ImageView android:layout_width="70dp"
+                                       android:layout_height="70dp"
+                                       android:src="@drawable/circle"
+                                    />
+                        </FrameLayout>
+
+                    </LinearLayout>
+                    <View android:layout_width="match_parent"
+                          android:layout_height="1dip"
+                          android:layout_marginTop="20dp"
+                          android:background="#E5E5E5"/>
+                    <FrameLayout android:layout_width="match_parent" android:layout_height="70dip"
+                                 android:background="#F5F5F5">
+
+                    </FrameLayout>
+
+                    <LinearLayout android:layout_width="match_parent"
+                                 android:layout_height="wrap_content"
+                                 android:paddingLeft="@dimen/side_marging"
+                                 android:paddingRight="@dimen/side_marging"
+                                 android:paddingBottom="@dimen/side_hor_marging"
+                                 android:paddingTop="@dimen/side_hor_marging"
+                            android:orientation="horizontal">
+                        <Button android:layout_width="wrap_content"
+                                android:layout_height="@dimen/btn_height"
+                                android:background="@drawable/autofill_button"
+                                android:text="@string/auto_fill"
+                                android:textSize="@dimen/x_medium_font"
+                                android:paddingRight="@dimen/btn_padding"
+                                android:paddingLeft="@dimen/btn_padding"
+                                android:textColor="#ffffff"
+                                android:id="@+id/autofill_btn"/>
+                        <FrameLayout android:layout_width="match_parent"
+                                     android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_weight="1">
+                            <LinearLayout android:layout_width="wrap_content"
+                                          android:layout_height="wrap_content"
+                                          android:layout_gravity="right|center_vertical"
+                                          android:gravity="center_vertical">
+                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                          android:textSize="@dimen/low_font"
+                                          android:textColor="#999999"
+                                          android:lineSpacingExtra="2dp"
+                                        android:text="@string/auto_removed"
+                                        android:gravity="right"
+                                        android:paddingRight="2dp"/>
+                                <com.fantasysport.views.Switcher android:layout_width="@dimen/switcher_width"
+                                                                 android:layout_height="@dimen/switcher_height"
+                                        />
+                                          </LinearLayout>
+
+                                     </FrameLayout>
+
+
+
+                    </LinearLayout>
+
+                    <View android:layout_width="match_parent"
+                          android:layout_height="1dip"
+                          android:background="#E5E5E5"/>
+                    <FrameLayout android:layout_width="match_parent"
+                                 android:layout_height="match_parent"
+                                 android:layout_weight="1">
+
+                    </FrameLayout>
+                </LinearLayout>
+            </ScrollView>
+            <FrameLayout android:layout_width="match_parent"
+                         android:layout_height="wrap_content"
+                         android:id="@+id/bottom_bar"
+                         android:background="#464646"
+                         android:layout_gravity="bottom">
+
+                <LinearLayout android:layout_width="match_parent"
+                              android:layout_height="wrap_content"
+                              android:padding="@dimen/side_marging">
+                    <Button android:layout_width="match_parent"
+                            android:layout_height="@dimen/submit_btn_height"
+                            android:layout_weight="1"
+                            android:background="@drawable/left_submit_button"
+                            android:text="@string/create_games"
+                            android:textColor="#ffffff"
+                            android:id="@+id/create_games_btn"
+                            android:textSize="@dimen/x_medium_font"
+                            />
+                    <Button android:layout_width="match_parent"
+                            android:layout_height="@dimen/submit_btn_height"
+                            android:layout_weight="1"
+                            android:textColor="#ffffff"
+                            android:background="@drawable/right_submit_button"
+                            android:text="@string/my_games"
+                            android:id="@+id/my_games_btn"
+                            android:textSize="@dimen/x_medium_font"
+                            />
+                </LinearLayout>
+
+                <View android:layout_width="1dp"
+                      android:layout_height="@dimen/submit_btn_devider_height"
+                      android:layout_gravity="center"
+                      android:background="#81F97E"/>
+            </FrameLayout>
+        </LinearLayout>
+
     </FrameLayout>
     <!-- The navigation drawer -->
     <ListView android:id="@+id/left_drawer"
-              android:layout_width="240dp"
+              android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:layout_gravity="start"
               android:choiceMode="singleChoice"
-              android:divider="@android:color/transparent"
-              android:dividerHeight="0dp"
-              android:background="#111"/>
+              android:divider="#CC757575"
+              android:dividerHeight="1dp"
+              android:background="#90000000"/>
 
 </android.support.v4.widget.DrawerLayout>
