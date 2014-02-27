@@ -50,6 +50,10 @@ public class User {
         _password = password;
     }
 
+    public String getPassword(){
+        return _password;
+    }
+
     public void setPasswordConfirmation(String passwordConfirmation){
         _passwordConfirmation = passwordConfirmation;
     }

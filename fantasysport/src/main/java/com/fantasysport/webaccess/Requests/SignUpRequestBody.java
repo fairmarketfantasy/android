@@ -15,4 +15,8 @@ public class SignUpRequestBody {
         _user = user;
     }
 
+    public User getUser(){
+        return _user;
+    }
+
 }

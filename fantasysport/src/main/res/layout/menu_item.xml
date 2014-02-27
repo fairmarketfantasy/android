@@ -9,16 +9,13 @@
           android:layout_weight="1"
           android:textSize="20sp"
           android:textColor="#ffffff"
-          android:paddingTop="10dp"
-          android:paddingBottom="10dp"
-          android:paddingLeft="5dp"
-          android:id="@+id/item"
-        />
+          android:paddingTop="@dimen/side_hor_marging"
+          android:paddingBottom="@dimen/side_hor_marging"
+          android:paddingLeft="@dimen/side_marging"
+          android:id="@+id/item" />
     <ImageView android:layout_width="25dp"
                android:layout_height="25dp"
-               android:paddingRight="10dp"
+               android:paddingRight="@dimen/side_marging"
                android:layout_gravity="center_vertical"
-               android:src="@drawable/ic_action_next_item"
-            />
-
+               android:src="@drawable/ic_action_next_item" />
 </LinearLayout>

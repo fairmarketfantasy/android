@@ -9,15 +9,21 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ImageView;
-import com.facebook.Session;
-import com.facebook.SessionLoginBehavior;
-import com.facebook.SessionState;
+import com.facebook.*;
+import com.facebook.model.GraphObject;
+import com.fantasysport.Const;
 import com.fantasysport.R;
+import com.fantasysport.models.Market;
 import com.fantasysport.models.UserData;
+import com.fantasysport.webaccess.RequestListeners.FaceBookAuthListener;
+import com.fantasysport.webaccess.RequestListeners.MarketsResponseListener;
 import com.fantasysport.webaccess.RequestListeners.RequestError;
-import com.fantasysport.webaccess.RequestListeners.UserDataResponseListener;
+import com.fantasysport.webaccess.RequestListeners.SignInResponseListener;
 import com.fantasysport.webaccess.WebProxy;
+import com.fantasysport.webaccess.responses.AuthResponse;
+import com.fantasysport.webaccess.responses.MarketResponse;
 
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -34,6 +40,9 @@ public class AuthActivity extends BaseActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Session.getActiveSession().onActivityResult(this, requestCode, resultCode, data);
+        if(resultCode == Const.FINISH_ACTIVITY){
+            finish();
+        }
     }
 
     @Override
@@ -93,9 +102,21 @@ public class AuthActivity extends BaseActivity {
     };
 
     private void authByFacebook(Session session) {
-        String accessToken = session.getAccessToken();
+        final String accessToken = session.getAccessToken();
         showProgress();
-        WebProxy.facebookLogin(accessToken, _spiceManager, _userUserDataResponseListener);
+        Request request = Request.newGraphPathRequest(session, "me", new Request.Callback() {
+            @Override
+            public void onCompleted(Response response) {
+                if(response.getError() != null){
+                    dismissProgress();
+                    return;
+                }
+                GraphObject user = response.getGraphObject();
+                String id = (String)user.getProperty("id");
+                WebProxy.facebookLogin(accessToken, id, _spiceManager, _userSignInResponseListener);
+            }
+        });
+        request.executeAsync();
     }
 
     protected void setBackground() {
@@ -124,12 +145,16 @@ public class AuthActivity extends BaseActivity {
         });
     }
 
+    protected void loadMarkets(String accessToken){
+        WebProxy.getGames(accessToken, _spiceManager, _marketsResponseListener);
+    }
+
     protected void navigateToMainActivity() {
         Intent intent = new Intent(this, MainActivity.class);
 //        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
 //        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 //        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-        startActivity(intent);
+        startActivityForResult(intent, Const.MAIN_ACTIVITY);
         overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
     }
 
@@ -147,7 +172,7 @@ public class AuthActivity extends BaseActivity {
         return matcher.matches();
     }
 
-    UserDataResponseListener _userUserDataResponseListener = new UserDataResponseListener() {
+    MarketsResponseListener _marketsResponseListener = new MarketsResponseListener() {
         @Override
         public void onRequestError(RequestError error) {
             dismissProgress();
@@ -155,10 +180,26 @@ public class AuthActivity extends BaseActivity {
         }
 
         @Override
-        public void onRequestSuccess(UserData userData) {
+        public void onRequestSuccess(MarketResponse response) {
             dismissProgress();
-            _storage.setUserData(userData);
+            _storage.setDefaultRosterData(response.getDefaultRosterData());
+            _storage.setMarkets(response.getMarkets());
             navigateToMainActivity();
+        }
+    };
+
+    FaceBookAuthListener _userSignInResponseListener = new FaceBookAuthListener() {
+        @Override
+        public void onRequestError(RequestError error) {
+            dismissProgress();
+            showErrorAlert(getString(R.string.error), error.getMessage());
+        }
+
+        @Override
+        public void onRequestSuccess(AuthResponse response) {
+            _storage.setUserData(response.getUserData());
+            _storage.setAccessTokenData(response.getAccessTokenData());
+            loadMarkets(_storage.getAccessTokenData().getAccessToken());
         }
     };
 

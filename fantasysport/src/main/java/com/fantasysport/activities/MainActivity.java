@@ -1,23 +1,35 @@
 package com.fantasysport.activities;
 
-import android.content.res.Configuration;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Typeface;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.text.method.CharacterPickerDialog;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.*;
+import com.fantasysport.Const;
 import com.fantasysport.R;
+import com.fantasysport.adapters.GameAdapter;
 import com.fantasysport.adapters.MenuListAdapter;
+import com.fantasysport.adapters.PlayerItem;
+import com.fantasysport.adapters.RosterPlayersAdapter;
+import com.fantasysport.models.DefaultRosterData;
+import com.fantasysport.models.Market;
+import com.fantasysport.models.Roster;
 import com.fantasysport.models.UserData;
+import com.fantasysport.views.Drawable.BitmapButtonDrawable;
 import com.fantasysport.views.MenuItem;
+import com.fantasysport.webaccess.RequestListeners.CreateRosterResponseListener;
+import com.fantasysport.webaccess.RequestListeners.RequestError;
 import com.fantasysport.webaccess.WebProxy;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -33,12 +45,16 @@ import java.util.List;
 /**
  * Created by bylynka on 2/11/14.
  */
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements AdapterView.OnItemClickListener {
 
     private DrawerLayout _drawerLayout;
     private ListView _menuList;
     private MenuListAdapter _menuAdapter;
     private boolean _isDrawerLayoutOpened;
+    private GameAdapter _pagerAdapter;
+    private RosterPlayersAdapter _playerAdapter;
+    private Market _currentMarket;
+    private Roster _currentRoster;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,33 +74,103 @@ public class MainActivity extends BaseActivity {
 
         _drawerLayout = getViewById(R.id.drawer_layout);
         _drawerLayout.setDrawerListener(_drawerListener);
-//        _drawerToogle = new ActionBarDrawerToggle(
-//                this,                  /* host Activity */
-//                _drawerLayout,         /* DrawerLayout object */
-//                R.drawable.invisible_menu,  /* nav drawer icon to replace 'Up' caret */
-//                R.string.drawer_open,  /* "open drawer" description */
-//                R.string.drawer_close  /* "close drawer" description */
-//        );
-//        _drawerLayout.setDrawerListener(_drawerToogle);
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
-
         _menuList = getViewById(R.id.left_drawer);
         setUserData();
         setMenu();
+        setRoster();
+        setPager();
     }
 
-//    @Override
-//    protected void onPostCreate(Bundle savedInstanceState) {
-//        super.onPostCreate(savedInstanceState);
-//        _drawerToogle.syncState();
-//    }
+    private void setRoster(){
+        TextView moneyTxt = getViewById(R.id.money_lbl);
+        moneyTxt.setTypeface(getProhibitionRound());
+        ListView rosterList = getViewById(R.id.roster_list);
+        rosterList.setOnItemClickListener(this);
+        List<PlayerItem> items = new ArrayList<PlayerItem>();
+        _playerAdapter = new RosterPlayersAdapter(items, this);
+        rosterList.setAdapter(_playerAdapter);
+    }
 
-//    @Override
-//    public void onConfigurationChanged(Configuration newConfig) {
-//        super.onConfigurationChanged(newConfig);
-//        _drawerToogle.onConfigurationChanged(newConfig);
-//    }
+    private void setRoster(Market market){
+        _currentMarket = market;
+        setEmptyRoster();
+    }
+
+    private void setEmptyRoster(){
+        DefaultRosterData rosterData = _storage.getDefaultRosterData();
+        TextView moneyTxt = getViewById(R.id.money_lbl);
+        moneyTxt.setText("$" + rosterData.getRemainingSalary());
+        List<PlayerItem> items =  _playerAdapter.getItems();
+        items.clear();
+        List<String> positions = rosterData.getPositions();
+        for (int i = 0; i < positions.size(); i++){
+            items.add(new PlayerItem(positions.get(i)));
+        }
+        _playerAdapter.notifyDataSetChanged();
+    }
+
+    private void setPager(){
+        final ViewPager pager = getViewById(R.id.pager);
+        List<Market> markets = _storage.getMarkets();
+        _pagerAdapter = new GameAdapter(getSupportFragmentManager(), markets);
+        pager.setOnPageChangeListener(_pageChangeListener);
+        pager.setAdapter(_pagerAdapter);
+        Button prevBtn = getViewById(R.id.previous_pager_button);
+        setPagerNavigateButton(prevBtn, R.drawable.ic_action_previous_item);
+        Button nextBtn = getViewById(R.id.next_pager_button);
+        setPagerNavigateButton(nextBtn, R.drawable.ic_action_next_item);
+
+        prevBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               int curItem =  pager.getCurrentItem();
+                if(curItem > 0){
+                    pager.setCurrentItem(curItem - 1, true);
+                }
+            }
+        });
+
+        nextBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int curItem =  pager.getCurrentItem();
+                int lastItem = _pagerAdapter.getCount() - 1;
+                if(curItem < lastItem){
+                    pager.setCurrentItem(curItem + 1, true);
+                }
+            }
+        });
+        if(markets != null && markets.size() > 0){
+            setRoster(markets.get(0));
+        }
+    }
+
+    ViewPager.OnPageChangeListener _pageChangeListener = new ViewPager.OnPageChangeListener() {
+        @Override
+        public void onPageScrolled(int i, float v, int i2) {
+        }
+
+        @Override
+        public void onPageSelected(int position) {
+            List<Market> markets = _pagerAdapter.getMarkets();
+            if(position < 0 || markets == null){
+                return;
+            }
+            setRoster(markets.get(position));
+        }
+
+        @Override
+        public void onPageScrollStateChanged(int i) {
+
+        }
+    };
+
+    private void setPagerNavigateButton(Button button, int drawableId){
+        BitmapDrawable drawable =  (BitmapDrawable)getResources().getDrawable(drawableId);
+        BitmapButtonDrawable btnDrawable = new BitmapButtonDrawable(drawable.getBitmap(), Color.rgb(137, 137, 137), Color.rgb(117, 117, 117));
+        button.setBackgroundDrawable(btnDrawable);
+    }
 
     private void setMenu(){
        String[] menuTitles = getResources().getStringArray(R.array.nav_drawer_items);
@@ -118,6 +204,12 @@ public class MainActivity extends BaseActivity {
         pointsTxt.setText(String.format(getString(R.string.points_f, userData.getTotalPoints())));
         TextView winsTxt = getViewById(R.id.user_wins_txt);
         winsTxt.setText(String.format(getString(R.string.wins_f,userData.getTotalWins(), userData.getWinPercentile())));
+    }
+
+    @Override
+    public void onBackPressed() {
+        setResult(Const.FINISH_ACTIVITY);
+        super.onBackPressed();
     }
 
     private Bitmap downloadBitmap(String url) {
@@ -206,4 +298,19 @@ public class MainActivity extends BaseActivity {
 
         }
     };
+
+    private void navigateToPlayersActivity(String playerPosition){
+        Intent intent = new Intent(this, PlayersActivity.class);
+        intent.putExtra(Const.PLAYER_POSITION, playerPosition);
+        intent.putExtra(Const.ROSTER_ID,(_currentRoster == null? -1:_currentRoster.getId()));
+        intent.putExtra(Const.MARKET_ID, _currentMarket.getId());
+        startActivity(intent);
+        overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        PlayerItem item = (PlayerItem)_playerAdapter.getItem(position);
+        navigateToPlayersActivity(item.getPosition());
+    }
 }

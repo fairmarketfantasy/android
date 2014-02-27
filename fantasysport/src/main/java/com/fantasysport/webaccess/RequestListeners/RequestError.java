@@ -22,9 +22,9 @@ public class RequestError {
     }
 
     public String getMessage(){
-        if(_description == null || _description.length() == 0){
-            return _message;
-        }
+//        if(_description == null || _description.length() == 0){
+//            return _message;
+//        }
         return _description;
     }
 

@@ -90,7 +90,7 @@ public class Game {
         _homeTeam = homeTeam;
     }
 
-    public String get_awayTeam() {
+    public String getAwayTeam() {
         return _awayTeam;
     }
 

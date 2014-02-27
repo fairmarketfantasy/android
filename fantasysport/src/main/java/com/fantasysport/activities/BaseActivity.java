@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.Resources;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Handler;
 import android.support.v7.app.ActionBar;
@@ -33,6 +35,9 @@ public class BaseActivity extends ActionBarActivity{
     public void setContentView(int layoutResID) {
         _storage = Storage.instance();
         super.setContentView(layoutResID);
+//        int titleId = Resources.getSystem().getIdentifier("action_bar_title", "id", "android");
+//        TextView yourTextView = (TextView)findViewById(titleId);
+//        yourTextView.setTextColor(Color.TRANSPARENT);
         initActionBar(getSupportActionBar());
 
     }
@@ -102,8 +107,7 @@ public class BaseActivity extends ActionBarActivity{
     private void initActionBar(ActionBar bar){
         bar.setDisplayShowCustomEnabled(true);
         bar.setDisplayShowTitleEnabled(false);
-        bar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME
-                | ActionBar.DISPLAY_SHOW_TITLE | ActionBar.DISPLAY_SHOW_CUSTOM);
+        bar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_CUSTOM);
         LayoutInflater inflator = (LayoutInflater) this
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View customBar = inflator.inflate(R.layout.action_bar_title, null);

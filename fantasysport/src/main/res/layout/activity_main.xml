@@ -33,7 +33,6 @@
                             <TextView android:layout_width="wrap_content"
                                       android:layout_height="wrap_content"
                                       android:textSize="@dimen/lage_font"
-                                      android:textColor="#404040"
                                       android:id="@+id/user_name_txt"/>
                             <TextView android:layout_width="wrap_content"
                                       android:layout_height="wrap_content"
@@ -72,11 +71,28 @@
                     <View android:layout_width="match_parent"
                           android:layout_height="1dip"
                           android:layout_marginTop="20dp"
-                          android:background="#E5E5E5"/>
-                    <FrameLayout android:layout_width="match_parent" android:layout_height="70dip"
-                                 android:background="#F5F5F5">
+                          android:background="#CCCCCC"/>
+                    <FrameLayout android:layout_width="match_parent" android:layout_height="56dp">
+                        <android.support.v4.view.ViewPager
+                                xmlns:android="http://schemas.android.com/apk/res/android"
+                                android:id="@+id/pager"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent" />
+                        <Button android:layout_width="35dp" android:layout_height="35dp"
+                                android:layout_gravity="center_vertical|left"
+                                android:id="@+id/previous_pager_button"
+                                android:layout_marginLeft="@dimen/side_marging"/>
+
+                        <Button android:layout_width="35dp" android:layout_height="35dp"
+                                android:layout_gravity="center_vertical|right"
+                                android:id="@+id/next_pager_button"
+                                android:layout_marginRight="@dimen/side_marging"
+                                />
 
                     </FrameLayout>
+                    <View android:layout_width="match_parent"
+                          android:layout_height="1dip"
+                          android:background="#CCCCCC" />
 
                     <LinearLayout android:layout_width="match_parent"
                                  android:layout_height="wrap_content"
@@ -115,19 +131,46 @@
                                           </LinearLayout>
 
                                      </FrameLayout>
-
-
-
                     </LinearLayout>
 
                     <View android:layout_width="match_parent"
                           android:layout_height="1dip"
-                          android:background="#E5E5E5"/>
-                    <FrameLayout android:layout_width="match_parent"
-                                 android:layout_height="match_parent"
-                                 android:layout_weight="1">
+                          android:background="#CCCCCC"/>
+
+                    <FrameLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                                 android:paddingRight="@dimen/side_marging"
+                                 android:paddingLeft="@dimen/side_marging"
+                                 android:paddingBottom="@dimen/side_hor_marging"
+                                 android:paddingTop="@dimen/side_hor_marging"
+                                 android:background="#E6E6E6">
+                        <TextView android:layout_width="wrap_content"
+                                  android:layout_height="wrap_content"
+                                  android:layout_gravity="center_vertical"
+                                  android:textSize="@dimen/s_lage_font"
+                                  android:textColor="#595959"
+                                  android:text="@string/your_team"
+                                />
+
+                        <TextView android:layout_width="wrap_content"
+                                  android:layout_height="wrap_content"
+                                  android:layout_gravity="right|center_vertical"
+                                  android:textSize="@dimen/lage_font"
+                                  android:textColor="#E84C3D"
+                                  android:id="@+id/money_lbl"
+                                />
 
                     </FrameLayout>
+                    <View android:layout_width="match_parent"
+                          android:layout_height="1dip"
+                          android:background="#CCCCCC" />
+                    <ListView android:layout_width="match_parent"
+                              android:layout_height="match_parent"
+                              android:layout_weight="1"
+                              android:id="@+id/roster_list"
+                              android:dividerHeight="2dp"
+                              android:divider="@drawable/player_devider"
+                            />
+
                 </LinearLayout>
             </ScrollView>
             <FrameLayout android:layout_width="match_parent"
@@ -135,7 +178,6 @@
                          android:id="@+id/bottom_bar"
                          android:background="#464646"
                          android:layout_gravity="bottom">
-
                 <LinearLayout android:layout_width="match_parent"
                               android:layout_height="wrap_content"
                               android:padding="@dimen/side_marging">
@@ -165,7 +207,6 @@
                       android:background="#81F97E"/>
             </FrameLayout>
         </LinearLayout>
-
     </FrameLayout>
     <!-- The navigation drawer -->
     <ListView android:id="@+id/left_drawer"
@@ -176,5 +217,4 @@
               android:divider="#CC757575"
               android:dividerHeight="1dp"
               android:background="#90000000"/>
-
 </android.support.v4.widget.DrawerLayout>

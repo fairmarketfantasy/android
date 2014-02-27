@@ -18,7 +18,7 @@ android {
 
     defaultConfig {
         versionCode 1
-        versionName "1.0"
+        versionName "1.1"
     }
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES'
@@ -38,4 +38,5 @@ dependencies {
     compile 'com.google.http-client:google-http-client-gson:1.17.0-rc'
     compile 'com.android.support:support-v4:18.0.0'
     compile project(':facebook')
+    compile files('libs/ubertesters.sdk.android.jar')
 }

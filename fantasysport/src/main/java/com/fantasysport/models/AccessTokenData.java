@@ -1,11 +1,11 @@
-package com.fantasysport.webaccess.Responses;
+package com.fantasysport.models;
 
 import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by bylynka on 2/13/14.
  */
-public class AccessTokenResponse{
+public class AccessTokenData {
 
     @SerializedName("access_token")
     private String _accessToken;

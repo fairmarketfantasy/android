@@ -7,6 +7,9 @@ import com.google.gson.annotations.SerializedName;
  */
 public class AccessTokenRequestBody {
 
+    public final static String PASSWORD = "password";
+    public final static String FACEBOOK = "facebook";
+
     @SerializedName("client_id")
     private String _clientId = "fairmarketfantasy";
 
@@ -22,9 +25,24 @@ public class AccessTokenRequestBody {
     @SerializedName("password")
     private String _password;
 
+    @SerializedName("token")
+    private String _accessToken;
+
+    @SerializedName("uid")
+    private String _uid;
 
     public AccessTokenRequestBody(String email, String password){
         _email = email;
         _password = password;
+        _grantType = PASSWORD;
+    }
+
+    public AccessTokenRequestBody(){
+    }
+
+    public void setFacebookAuth(String accessToken, String uid){
+        _grantType = FACEBOOK;
+        _uid = uid;
+        _accessToken = accessToken;
     }
 }

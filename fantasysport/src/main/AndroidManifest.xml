@@ -7,16 +7,25 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
-    <supports-screens
-            android:smallScreens="true"
-            android:normalScreens="true"
-            android:largeScreens="true"
-            android:xlargeScreens="true"
-            android:resizeable="true"
-            android:anyDensity="true" />
 
-    <compatible-screens>
-        <!-- all small size screens -->
+    <!-- Ubertesters library user-permisions -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <!-- Ubertesters library user-permisions -->
+
+
+      <supports-screens
+              android:smallScreens="true"
+              android:normalScreens="true"
+              android:largeScreens="true"
+              android:xlargeScreens="true"
+              android:resizeable="true"
+              android:anyDensity="true" />
+
+      <compatible-screens>
+          <!-- all small size screens -->
         <screen android:screenSize="small" android:screenDensity="ldpi" />
         <screen android:screenSize="small" android:screenDensity="mdpi" />
         <screen android:screenSize="small" android:screenDensity="hdpi" />
@@ -50,7 +59,7 @@
 
         <activity
             android:name=".activities.SignInActivity"
-            android:label=""
+            android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
                 >
@@ -62,13 +71,19 @@
 
 
         <activity android:name=".activities.SignUpActivity"
-                  android:label=""
+                  android:label="@string/app_name"
                   android:screenOrientation="portrait"
                   />
 
         <activity android:name=".activities.MainActivity"
                   android:label=""
                   android:icon="@drawable/menu"
+                  android:screenOrientation="portrait"
+                  android:theme="@style/AppIconTheme"
+                  />
+        <activity android:name=".activities.PlayersActivity"
+                  android:label=""
+                  android:icon="@drawable/ic_action_previous_item"
                   android:screenOrientation="portrait"
                   android:theme="@style/AppIconTheme"
                   />
@@ -80,10 +95,16 @@
 
         <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/app_id"/>
 
+        <!-- Ubertesters library activity -->
+        <activity
+                android:name="com.ubertesters.sdk.UbertestersScreen"
+                android:configChanges="orientation"
+                android:windowSoftInputMode="adjustResize"/>
 
-        <!--<service-->
-                <!--android:name="com.octo.android.robospice.GsonGoogleHttpClientSpiceService"-->
-                <!--android:exported="false"/>-->
+        <meta-data android:name="ubertesters_project_id" android:value="281b0570-8e6f-11e3-a759-123141017889"/>
+        <!-- Ubertesters library activity -->
+
+
 
         <service
                 android:name=".webaccess.GsonGoogleHttpClientSpiceService"

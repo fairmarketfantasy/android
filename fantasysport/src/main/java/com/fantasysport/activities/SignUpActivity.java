@@ -2,7 +2,6 @@ package com.fantasysport.activities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.text.TextUtils;
@@ -15,8 +14,9 @@ import com.fantasysport.R;
 import com.fantasysport.models.User;
 import com.fantasysport.models.UserData;
 import com.fantasysport.webaccess.RequestListeners.RequestError;
-import com.fantasysport.webaccess.RequestListeners.UserDataResponseListener;
+import com.fantasysport.webaccess.RequestListeners.SignUpResponseListener;
 import com.fantasysport.webaccess.WebProxy;
+import com.fantasysport.webaccess.responses.AuthResponse;
 
 public class SignUpActivity extends AuthActivity {
 
@@ -94,7 +94,7 @@ public class SignUpActivity extends AuthActivity {
         }
 
         showProgress();
-        WebProxy.signUp(getUser(), _spiceManager, _userDataResponseListener);
+        WebProxy.signUp(getUser(), _spiceManager, _signUpResponseListener);
     }
 
     @Override
@@ -144,13 +144,13 @@ public class SignUpActivity extends AuthActivity {
         }
     };
 
-    UserDataResponseListener _userDataResponseListener = new UserDataResponseListener() {
+    SignUpResponseListener _signUpResponseListener = new SignUpResponseListener() {
 
         @Override
-        public void onRequestSuccess(UserData userData) {
-            dismissProgress();
-            _storage.setUserData(userData);
-            navigateToMainActivity();
+        public void onRequestSuccess(AuthResponse response) {
+            _storage.setUserData(response.getUserData());
+            _storage.setAccessTokenData(response.getAccessTokenData());
+            loadMarkets(_storage.getAccessTokenData().getAccessToken());
         }
 
         @Override

@@ -2,7 +2,6 @@ package com.fantasysport.activities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.text.TextUtils;
@@ -12,14 +11,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import com.fantasysport.R;
-import com.fantasysport.models.UserData;
-import com.fantasysport.webaccess.RequestListeners.AccessTokenResponseListener;
+import com.fantasysport.models.Market;
 import com.fantasysport.webaccess.RequestListeners.MarketsResponseListener;
 import com.fantasysport.webaccess.RequestListeners.RequestError;
-import com.fantasysport.webaccess.RequestListeners.UserDataResponseListener;
-import com.fantasysport.webaccess.Requests.GamesRequest;
-import com.fantasysport.webaccess.Responses.AccessTokenResponse;
+import com.fantasysport.webaccess.RequestListeners.SignInResponseListener;
 import com.fantasysport.webaccess.WebProxy;
+import com.fantasysport.webaccess.responses.AuthResponse;
 
 import java.util.List;
 
@@ -56,14 +53,6 @@ public class SignInActivity extends AuthActivity {
             _emailTxt.setText(savedInstanceState.getString(STATE_EMAIL));
             _passwordTxt.setText(savedInstanceState.getString(STATE_PASSWORD));
         }
-
-    }
-
-    private void attemptSignIn(String accessToken) {
-        if(!isProgressShowing()){
-            showProgress();
-        }
-        WebProxy.signIn(accessToken, _spiceManager, _userUserDataResponseListener);
     }
 
     @Override
@@ -100,21 +89,7 @@ public class SignInActivity extends AuthActivity {
             return;
         }
         showProgress();
-        WebProxy.getAccessToken(email, password, _spiceManager, _accessTokenRequestListener);
-    }
-
-    private void loadGames(String accessToken){
-        WebProxy.getGames(GamesRequest.REGULAR_SEASON, accessToken, _spiceManager, new MarketsResponseListener() {
-            @Override
-            public void onRequestError(RequestError message) {
-
-            }
-
-            @Override
-            public void onRequestSuccess(List list) {
-
-            }
-        });
+        WebProxy.signIn(email, password, _spiceManager, _userSignInResponseListener);
     }
 
     TextView.OnEditorActionListener _passwordTxtEditorActionListener = new TextView.OnEditorActionListener() {
@@ -128,7 +103,7 @@ public class SignInActivity extends AuthActivity {
         }
     };
 
-    UserDataResponseListener _userUserDataResponseListener = new UserDataResponseListener() {
+    SignInResponseListener _userSignInResponseListener = new SignInResponseListener() {
         @Override
         public void onRequestError(RequestError error) {
             dismissProgress();
@@ -136,24 +111,10 @@ public class SignInActivity extends AuthActivity {
         }
 
         @Override
-        public void onRequestSuccess(UserData userData) {
-            dismissProgress();
-            _storage.setUserData(userData);
-            navigateToMainActivity();
-        }
-    };
-
-    AccessTokenResponseListener _accessTokenRequestListener = new AccessTokenResponseListener() {
-        @Override
-        public void onRequestError(RequestError error) {
-            dismissProgress();
-            showErrorAlert(getString(R.string.error), error.getMessage());
-        }
-
-        @Override
-        public void onRequestSuccess(AccessTokenResponse accessTokenResponse) {
-//            loadGames(accessTokenResponse.getAccessToken());
-            attemptSignIn(accessTokenResponse.getAccessToken());
+        public void onRequestSuccess(AuthResponse response) {
+            _storage.setUserData(response.getUserData());
+            _storage.setAccessTokenData(response.getAccessTokenData());
+            loadMarkets(_storage.getAccessTokenData().getAccessToken());
         }
     };
 

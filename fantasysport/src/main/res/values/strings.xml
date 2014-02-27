@@ -4,7 +4,7 @@
     <string name="name">Name</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
-    <string name="app_name">fairmarketfantasy</string>
+    <string name="app_name">FMF</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="sign_up">SIGN UP</string>
@@ -25,6 +25,8 @@
     <string name="drawer_close">Menu</string>
     <string name="auto_fill">AUTO FILL</string>
     <string name="auto_removed">Auto-removed\nbenched players</string>
+    <string name="your_team">Your Team</string>
+    <string name="trade">TRADE</string>
 
 
     <!--<string name="wins_f">%$d wins%$d win </string>-->
@@ -41,6 +43,16 @@
     <string name="balance">Balance</string>
 
     <!-- facebook app id -->
+
+    <!--<string name="app_id">436114143174192</string>-->
+
+    <!--stage-->
+    <!--FACEBOOK_APP_ID = "436114143174192"-->
+    <!--FACEBOOK_APP_SECRET = "0f99d3d28ef7d84d6b55cdb78c238b61"-->
+
+    <!--production-->
+
+    <!---->
     <string name="app_id">1455342834679971</string>
 
     <!-- Nav Drawer Menu Items -->

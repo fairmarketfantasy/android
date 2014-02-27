@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Created by bylynka on 2/19/14.
  */
-public class MarketParser {
+public class MarketParser extends BaseParser {
 
     private final String ID = "id";
     private final String NAME = "name";
@@ -30,8 +30,6 @@ public class MarketParser {
     private final String GAME_TYPE = "game_type";
     private final String GAMES = "games";
 
-    private HashMap<String, Integer> _keyMap;
-    private int _fieldsNumber;
     private List<Object> _marketObjects;
     private List<Market> _markets;
 
@@ -161,21 +159,6 @@ public class MarketParser {
                 continue;
             }
         }
-    }
-
-    private boolean atemptPutKey(String fieldName, String comparedField, int index){
-        if(fieldName.equalsIgnoreCase(comparedField)){
-            _keyMap.put(fieldName, index);
-            return true;
-        }
-        return false;
-    }
-
-    private Double getDouble(Object value){
-        if(value instanceof Double){
-            return (Double)value;
-        }
-        return Double.parseDouble((String)value);
     }
 
 }

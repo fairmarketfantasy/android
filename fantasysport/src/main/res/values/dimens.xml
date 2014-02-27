@@ -22,6 +22,7 @@
 
     <!-- fonts -->
     <dimen name="lage_font">26sp</dimen>
+    <dimen name="s_lage_font">20sp</dimen>
     <dimen name="x_medium_font">17sp</dimen>
     <dimen name="medium_font">15sp</dimen>
     <dimen name="low_font">13sp</dimen>
