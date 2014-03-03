@@ -1,6 +1,7 @@
 package com.fantasysport.webaccess;
 
 import com.fantasysport.models.Market;
+import com.fantasysport.models.Player;
 import com.fantasysport.models.User;
 import com.fantasysport.webaccess.RequestListeners.*;
 import com.fantasysport.webaccess.Requests.*;
@@ -14,6 +15,11 @@ import com.octo.android.robospice.retry.RetryPolicy;
 public final class WebProxy {
 
     private WebProxy(){
+    }
+
+    public static void addPlayer(int rosterId, Player player, String accessToken, SpiceManager spiceManager, AddPlayerResponseListener listener){
+        AddPlayerRequest request = new AddPlayerRequest(rosterId, player, accessToken);
+        spiceManager.execute(request, listener);
     }
 
     public static void getPlayers(String accessToken, String position, boolean removedBencedPlayers, int rosterId, SpiceManager spiceManager, PlayersResponseListener listener){

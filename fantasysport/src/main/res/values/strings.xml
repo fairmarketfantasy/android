@@ -25,8 +25,13 @@
     <string name="drawer_close">Menu</string>
     <string name="auto_fill">AUTO FILL</string>
     <string name="auto_removed">Auto-removed\nbenched players</string>
+    <string name="auto_removed_one_line">Auto-removed benched players</string>
     <string name="your_team">Your Team</string>
     <string name="trade">TRADE</string>
+    <string name="add">ADD</string>
+    <string name="pt25">PT25</string>
+    <string name="submit_100fb">100FB</string>
+    <string name="submit_hth_27fb">HTH 27FB</string>
 
 
     <!--<string name="wins_f">%$d wins%$d win </string>-->

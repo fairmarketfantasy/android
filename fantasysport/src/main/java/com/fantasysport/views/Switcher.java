@@ -15,6 +15,7 @@ import com.fantasysport.R;
 public class Switcher extends FrameLayout implements View.OnClickListener {
 
     private TextView _lbl;
+    private ISelectedListener _selectedListener;
 
     public Switcher(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
@@ -30,6 +31,11 @@ public class Switcher extends FrameLayout implements View.OnClickListener {
         super(context);
         init();
     }
+
+    public void setSelectedListener(ISelectedListener listener){
+        _selectedListener = listener;
+    }
+
 
     private void addButton(){
         _lbl = new TextView(getContext());
@@ -61,13 +67,18 @@ public class Switcher extends FrameLayout implements View.OnClickListener {
         params.gravity = gravity;
         _lbl.setLayoutParams(params);
         _lbl.setText(text);
-//        ((LayoutParams)_lbl.getLayoutParams()).gravity = gravity;
-//        _lbl.setGravity(gravity);
         super.setSelected(selected);
+        if(_selectedListener != null){
+            _selectedListener.onStateChanged(selected);
+        }
     }
 
     @Override
     public void onClick(View v) {
         setSelected(!isSelected());
+    }
+
+    public interface ISelectedListener{
+        public void onStateChanged(boolean isSelected);
     }
 }

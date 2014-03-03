@@ -19,6 +19,9 @@ public class BaseParser {
     }
 
     protected Double getDouble(Object value){
+        if(value == null){
+            return  0d;
+        }
         if(value instanceof Double){
             return (Double)value;
         }

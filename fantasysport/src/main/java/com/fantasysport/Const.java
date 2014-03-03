@@ -9,7 +9,9 @@ public class Const {
     public final static int MAIN_ACTIVITY = 1001;
 
     public final static String PLAYER_POSITION = "player_position";
-    public final static String ROSTER_ID = "roster_id";
+    public final static String ROSTER = "roster";
     public final static String MARKET_ID = "market_id";
+    public final static String REMOVE_BENCHED_PLAYERS = "remove_benched_players";
+    public final static String MONEY_FOR_ROSTER = "money_for_roster";
 
 }

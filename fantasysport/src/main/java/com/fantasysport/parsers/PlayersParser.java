@@ -23,6 +23,8 @@ public class PlayersParser extends BaseParser {
     private final String SELL_PRICE = "sell_price";
     private final String SCORE = "score";
     private final String HEADSHOT_URL = "headshot_url";
+    private final String PURCHASE_PRICE = "purchase_price";
+
     private List<Object> _playerObjects;
 
     public List<Player> parse(String json){
@@ -64,6 +66,8 @@ public class PlayersParser extends BaseParser {
         player.setBuyPrice(buyPrice);
         double sellPrice = getDouble(_playerObjects.get(firstField + _keyMap.get(SELL_PRICE)));
         player.setSellPrice(sellPrice);
+        double purchasePrice = getDouble(_playerObjects.get(firstField + _keyMap.get(PURCHASE_PRICE)));
+        player.setPurchasePrice(purchasePrice);
         double score = getDouble(_playerObjects.get(firstField + _keyMap.get(SCORE)));
         player.setScore(score);
         String imgUrl = (String)_playerObjects.get(firstField + _keyMap.get(HEADSHOT_URL));
@@ -94,6 +98,8 @@ public class PlayersParser extends BaseParser {
             }else if(atemptPutKey(SCORE, field, i)){
                 continue;
             }else if(atemptPutKey(HEADSHOT_URL, field, i)){
+                continue;
+            }else if(atemptPutKey(PURCHASE_PRICE, field, i)){
                 continue;
             }
         }

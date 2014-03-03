@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:paddingRight="@dimen/side_marging"
               android:paddingLeft="@dimen/side_marging"
-              android:background="@drawable/player_item"
+              android:background="#F0F0F0"
         >
     <LinearLayout android:orientation="horizontal"
                   android:layout_width="match_parent"
@@ -15,7 +14,9 @@
                   android:paddingBottom="@dimen/side_hor_marging"
                   android:paddingTop="@dimen/side_hor_marging">
         <FrameLayout android:layout_width="58dp" android:layout_height="58dp"
-                     android:layout_marginRight="10dp">
+                     android:layout_marginRight="10dp"
+                     android:layout_gravity="center"
+                >
 
             <ImageView android:layout_width="56dp"
                        android:layout_height="56dp"
@@ -30,10 +31,11 @@
                        android:id="@+id/circle_img"
                     />
         </FrameLayout>
+
         <LinearLayout android:layout_width="match_parent"
                       android:layout_height="wrap_content"
-                      android:orientation="vertical"
-                      android:layout_weight="1">
+                      android:layout_weight="1"
+                      android:orientation="vertical">
 
             <TextView android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
@@ -47,33 +49,35 @@
                       android:textColor="#999999"
                       android:textSize="@dimen/medium_font"
                     />
-            <LinearLayout android:layout_width="wrap_content"
-                          android:layout_height="wrap_content"
-                          android:orientation="horizontal">
-                <TextView android:layout_width="wrap_content"
-                          android:layout_height="wrap_content"
-                          android:id="@+id/buy_price_lbl"
-                          android:textColor="#000000"
-                          android:textSize="@dimen/medium_font"
-                          android:textStyle="bold"
-                        />
-                <com.fantasysport.views.PlayerProgressTextView android:layout_width="wrap_content"
-                                                               android:layout_height="wrap_content"
-                                                               android:textSize="@dimen/medium_font"
-                                                               android:id="@+id/progress_lbl"
-                        />
 
-            </LinearLayout>
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:id="@+id/buy_price_lbl"
+                      android:textColor="#000000"
+                      android:textSize="@dimen/medium_font"
+                      android:textStyle="bold"
+                    />
 
         </LinearLayout>
 
-        <Button android:layout_width="wrap_content"
+        <Button android:layout_width="50dp"
                 android:layout_height="@dimen/btn_height"
-                android:id="@+id/trade_btn"
-                android:background="@drawable/trade_button"
+                android:layout_marginRight="5dp"
+                android:id="@+id/pt25_btn"
+                android:background="@drawable/pt25_button"
                 android:textSize="@dimen/x_medium_font"
-                android:paddingRight="@dimen/btn_padding"
-                android:paddingLeft="@dimen/btn_padding"
-                android:text="@string/trade"/>
+                android:paddingRight="0dp"
+                android:paddingLeft="0dp"
+                android:textColor="#E84C3D"
+                android:text="@string/pt25" />
+
+        <Button android:layout_width="50dp"
+                android:layout_height="@dimen/btn_height"
+                android:id="@+id/add_btn"
+                android:background="@drawable/add_button"
+                android:textSize="@dimen/x_medium_font"
+                android:paddingRight="0dp"
+                android:paddingLeft="0dp"
+                android:text="@string/add" />
     </LinearLayout>
 </LinearLayout>

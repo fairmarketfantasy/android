@@ -1,11 +1,15 @@
 package com.fantasysport.models;
 
+import android.graphics.Bitmap;
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import java.io.Serializable;
 
 /**
  * Created by bylynka on 2/26/14.
  */
-public class Player {
+public class Player implements Serializable, IPlayer {
 
     @SerializedName("id")
     private int _id;
@@ -36,6 +40,17 @@ public class Player {
 
     @SerializedName("headshot_url")
     private String _imageUrl;
+
+    @SerializedName("purchase_price")
+    private double _purchasePrice;
+
+    public double getPurchasePrice() {
+        return _purchasePrice;
+    }
+
+    public void setPurchasePrice(double purchasePrice) {
+        _purchasePrice = purchasePrice;
+    }
 
     public String getImageUrl() {
         return _imageUrl;
@@ -85,6 +100,7 @@ public class Player {
         _status = status;
     }
 
+    @Override
     public String getPosition() {
         return _position;
     }
@@ -116,4 +132,5 @@ public class Player {
     public void setTeam(String team) {
         _team = team;
     }
+
 }

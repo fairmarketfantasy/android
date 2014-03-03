@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import com.fantasysport.R;
 import com.fantasysport.models.Market;
+import com.fantasysport.views.Switcher;
 import com.fantasysport.webaccess.RequestListeners.MarketsResponseListener;
 import com.fantasysport.webaccess.RequestListeners.RequestError;
 import com.fantasysport.webaccess.RequestListeners.SignInResponseListener;
@@ -27,6 +28,7 @@ public class SignInActivity extends AuthActivity {
 
     private EditText _emailTxt;
     private EditText _passwordTxt;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -4,5 +4,60 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:paddingLeft="@dimen/side_marging"
+                  android:paddingRight="@dimen/side_marging"
+                  android:paddingBottom="@dimen/side_hor_marging"
+                  android:paddingTop="@dimen/side_hor_marging"
+                  android:orientation="horizontal">
 
+
+                <TextView android:layout_width="wrap_content" android:layout_height="@dimen/btn_height"
+                          android:layout_weight="1"
+                          android:textSize="@dimen/low_font"
+                          android:textColor="#999999"
+                          android:text="@string/auto_removed_one_line"
+                          android:gravity="left|center_vertical" />
+                <com.fantasysport.views.Switcher android:layout_width="@dimen/switcher_width"
+                                                 android:layout_height="@dimen/switcher_height"
+                                                 android:id="@+id/switcher"
+                        />
+
+    </LinearLayout>
+
+    <View android:layout_width="match_parent"
+          android:layout_height="1dip"
+          android:background="#CCCCCC"/>
+
+    <FrameLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                 android:paddingRight="@dimen/side_marging"
+                 android:paddingLeft="@dimen/side_marging"
+                 android:paddingBottom="@dimen/side_hor_marging"
+                 android:paddingTop="@dimen/side_hor_marging"
+                 android:background="#E6E6E6">
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_gravity="center_vertical"
+                  android:textSize="@dimen/s_lage_font"
+                  android:textColor="#595959"
+                  android:text="@string/your_team"
+                />
+
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_gravity="right|center_vertical"
+                  android:textSize="@dimen/lage_font"
+                  android:textColor="#E84C3D"
+                  android:id="@+id/money_lbl"/>
+    </FrameLayout>
+    <View android:layout_width="match_parent"
+          android:layout_height="1dip"
+          android:background="#CCCCCC" />
+    <ListView android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:layout_weight="1"
+              android:id="@+id/players_list"
+              android:dividerHeight="2dp"
+              android:divider="@drawable/player_devider" />
 </LinearLayout>
