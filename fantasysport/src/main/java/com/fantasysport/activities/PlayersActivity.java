@@ -11,10 +11,10 @@ import com.fantasysport.adapters.CandidatePlayersAdapter;
 import com.fantasysport.models.Player;
 import com.fantasysport.models.Roster;
 import com.fantasysport.views.Switcher;
-import com.fantasysport.webaccess.RequestListeners.AddPlayerResponseListener;
-import com.fantasysport.webaccess.RequestListeners.CreateRosterResponseListener;
-import com.fantasysport.webaccess.RequestListeners.PlayersResponseListener;
-import com.fantasysport.webaccess.RequestListeners.RequestError;
+import com.fantasysport.webaccess.requestListeners.AddPlayerResponseListener;
+import com.fantasysport.webaccess.requestListeners.CreateRosterResponseListener;
+import com.fantasysport.webaccess.requestListeners.PlayersResponseListener;
+import com.fantasysport.webaccess.requestListeners.RequestError;
 import com.fantasysport.webaccess.WebProxy;
 import com.fantasysport.webaccess.responses.PlayersRequestResponse;
 
@@ -33,6 +33,7 @@ public class PlayersActivity extends BaseActivity implements CandidatePlayersAda
     private Switcher _switcher;
     private Roster _roster;
     private double _moneyForRoster;
+    private int _marketId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +50,7 @@ public class PlayersActivity extends BaseActivity implements CandidatePlayersAda
         TextView moneyView = getViewById(R.id.money_lbl);
         moneyView.setTypeface(getProhibitionRound());
         moneyView.setText(String.format("$%.0f",_moneyForRoster));
+        _marketId = intent.getIntExtra(Const.MARKET_ID, - 1);
         if (savedInstanceState != null) {
             List<Player> players = (List<Player>) savedInstanceState.getSerializable(PLAYERS);
             _playersAdapter.setItems(players);
@@ -66,12 +68,11 @@ public class PlayersActivity extends BaseActivity implements CandidatePlayersAda
 
         if (_roster == null) {
             showProgress();
-            int marketId = getIntent().getIntExtra(Const.MARKET_ID, - 1);
-            WebProxy.createRoster(_storage.getAccessTokenData().getAccessToken(), marketId, _spiceManager, new CreateRosterResponseListener() {
+            WebProxy.createRoster(_storage.getAccessTokenData().getAccessToken(), _marketId, _spiceManager, new CreateRosterResponseListener() {
                 @Override
                 public void onRequestError(RequestError message) {
                     dismissProgress();
-                    showErrorAlert("", getString(R.string.error));
+                    showAlert("", getString(R.string.error));
                 }
                 @Override
                 public void onRequestSuccess(Roster roster) {
@@ -120,7 +121,7 @@ public class PlayersActivity extends BaseActivity implements CandidatePlayersAda
         @Override
         public void onRequestError(RequestError message) {
             dismissProgress();
-            showErrorAlert("", getString(R.string.error));
+            showAlert("", getString(R.string.error));
         }
 
         @Override
@@ -146,14 +147,19 @@ public class PlayersActivity extends BaseActivity implements CandidatePlayersAda
 
     @Override
     public void onPT25Player(Player player) {
-
+        Intent intent = new Intent(this, IndividuaPredictionsActivity.class);
+        intent.putExtra(Const.PLAYER, player);
+        intent.putExtra(Const.ROSTER_ID, _roster.getId());
+        intent.putExtra(Const.MARKET_ID, _marketId);
+        startActivity(intent);
+        overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
     }
 
     AddPlayerResponseListener _addPlayerListener = new AddPlayerResponseListener() {
         @Override
         public void onRequestError(RequestError error) {
             dismissProgress();
-            showErrorAlert("", error.getMessage());
+            showAlert("", error.getMessage());
         }
 
         @Override

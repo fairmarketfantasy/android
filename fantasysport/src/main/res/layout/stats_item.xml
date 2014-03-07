@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@drawable/player_item"
+        >
+    <TextView android:layout_width="wrap_content"
+              android:layout_height="45dp"
+              android:layout_gravity="center_horizontal"
+              android:gravity="center"
+              android:textColor="#404040"
+              android:textSize="@dimen/s_lage_font"
+              android:id="@+id/header_lbl"
+            />
+    <FrameLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+        <LinearLayout android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_gravity="center_horizontal">
+            <Button android:layout_width="75dp"
+                    android:layout_height="@dimen/submit_btn_height"
+                    android:text="@string/less"
+                    android:id="@+id/less_btn"
+                    android:textColor="#FFFFFF"
+                    android:background="@drawable/less_button"
+                    android:textSize="@dimen/x_medium_font"/>
+            <Button android:layout_width="75dp"
+                    android:layout_height="@dimen/submit_btn_height"
+                    android:text="@string/more"
+                    android:textColor="#FFFFFF"
+                    android:background="@drawable/more_button"
+                    android:id="@+id/more_btn"
+                    android:textSize="@dimen/x_medium_font"/>
+
+        </LinearLayout>
+        <View android:layout_width="1dp"
+              android:layout_height="@dimen/submit_btn_devider_height"
+              android:layout_gravity="center"
+              android:background="#6061BE"/>
+    </FrameLayout>
+    <FrameLayout android:layout_width="match_parent"
+                 android:layout_height="45dp"
+
+            >
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="vertical"
+                  android:layout_gravity="center"
+                  android:id="@+id/prediction_block"
+                  android:gravity="center_horizontal"
+            >
+        <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
+                      android:paddingRight="@dimen/side_hor_marging"
+                      android:paddingLeft="@dimen/side_hor_marging"
+                >
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:textSize="@dimen/medium_font"
+                      android:text="@string/you_predict"
+                    />
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:textSize="@dimen/medium_font"
+                      android:textStyle="bold"
+                      android:id="@+id/prediction_lbl"
+                    />
+        </LinearLayout>
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="@string/cancel"
+                  android:id="@+id/cancel_btn"
+                  android:textColor="#E84C3D"
+                  android:textSize="@dimen/medium_font"
+                />
+    </LinearLayout>
+    </FrameLayout>
+
+
+</LinearLayout>

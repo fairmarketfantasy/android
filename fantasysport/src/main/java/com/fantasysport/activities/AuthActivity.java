@@ -13,17 +13,13 @@ import com.facebook.*;
 import com.facebook.model.GraphObject;
 import com.fantasysport.Const;
 import com.fantasysport.R;
-import com.fantasysport.models.Market;
-import com.fantasysport.models.UserData;
-import com.fantasysport.webaccess.RequestListeners.FaceBookAuthListener;
-import com.fantasysport.webaccess.RequestListeners.MarketsResponseListener;
-import com.fantasysport.webaccess.RequestListeners.RequestError;
-import com.fantasysport.webaccess.RequestListeners.SignInResponseListener;
+import com.fantasysport.webaccess.requestListeners.FaceBookAuthListener;
+import com.fantasysport.webaccess.requestListeners.MarketsResponseListener;
+import com.fantasysport.webaccess.requestListeners.RequestError;
 import com.fantasysport.webaccess.WebProxy;
 import com.fantasysport.webaccess.responses.AuthResponse;
 import com.fantasysport.webaccess.responses.MarketResponse;
 
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -96,7 +92,7 @@ public class AuthActivity extends BaseActivity {
             if (session.isOpened()) {
                 authByFacebook(session);
             } else if (SessionState.CLOSED_LOGIN_FAILED == state || SessionState.CLOSED == state) {
-                showErrorAlert("Error", "Facebook error", null);
+                showAlert("Error", "Facebook error", null);
             }
         }
     };
@@ -176,7 +172,7 @@ public class AuthActivity extends BaseActivity {
         @Override
         public void onRequestError(RequestError error) {
             dismissProgress();
-            showErrorAlert(getString(R.string.error), error.getMessage());
+            showAlert(getString(R.string.error), error.getMessage());
         }
 
         @Override
@@ -192,7 +188,7 @@ public class AuthActivity extends BaseActivity {
         @Override
         public void onRequestError(RequestError error) {
             dismissProgress();
-            showErrorAlert(getString(R.string.error), error.getMessage());
+            showAlert(getString(R.string.error), error.getMessage());
         }
 
         @Override

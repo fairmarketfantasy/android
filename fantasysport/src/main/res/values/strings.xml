@@ -32,6 +32,13 @@
     <string name="pt25">PT25</string>
     <string name="submit_100fb">100FB</string>
     <string name="submit_hth_27fb">HTH 27FB</string>
+    <string name="predict_that">PREDICT <i>THAT </i></string>
+    <string name="submit">SUBMIT</string>
+    <string name="less">LESS</string>
+    <string name="more">MORE</string>
+    <string name="you_predict">You predict&#160;</string>
+    <string name="cancel">Cancel</string>
+    <string name="yes">Yes</string>
 
 
     <!--<string name="wins_f">%$d wins%$d win </string>-->
@@ -46,6 +53,7 @@
     <string name="please_provide_valid_email">Please provide valid name</string>
     <string name="please_provide_valid_password">Please provide password at least 6 characters long</string>
     <string name="balance">Balance</string>
+    <string name="fill_roster">Fill roster at first!</string>
 
     <!-- facebook app id -->
 

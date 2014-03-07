@@ -12,9 +12,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import com.fantasysport.R;
 import com.fantasysport.models.User;
-import com.fantasysport.models.UserData;
-import com.fantasysport.webaccess.RequestListeners.RequestError;
-import com.fantasysport.webaccess.RequestListeners.SignUpResponseListener;
+import com.fantasysport.webaccess.requestListeners.RequestError;
+import com.fantasysport.webaccess.requestListeners.SignUpResponseListener;
 import com.fantasysport.webaccess.WebProxy;
 import com.fantasysport.webaccess.responses.AuthResponse;
 
@@ -72,19 +71,19 @@ public class SignUpActivity extends AuthActivity {
         String name = _nameTxt.getText().toString();
 
         if (TextUtils.isEmpty(name)) {
-            showErrorAlert(null, getString(R.string.please_provide_name), null);
+            showAlert(null, getString(R.string.please_provide_name), null);
             return;
         }
         if (TextUtils.isEmpty(email)) {
-            showErrorAlert(null, getString(R.string.please_provide_email), null);
+            showAlert(null, getString(R.string.please_provide_email), null);
             return;
         }
         if (!isEmailValid(email)) {
-            showErrorAlert(null, getString(R.string.please_provide_valid_email), null);
+            showAlert(null, getString(R.string.please_provide_valid_email), null);
             return;
         }
         if (TextUtils.isEmpty(password)) {
-            showErrorAlert(null, getString(R.string.please_provide_password), null);
+            showAlert(null, getString(R.string.please_provide_password), null);
             return;
         }
 
@@ -156,7 +155,7 @@ public class SignUpActivity extends AuthActivity {
         @Override
         public void onRequestError(RequestError error) {
             dismissProgress();
-            showErrorAlert(getString(R.string.error), error.getMessage());
+            showAlert(getString(R.string.error), error.getMessage());
         }
     };
 

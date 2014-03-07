@@ -2,16 +2,12 @@ package com.fantasysport.activities;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.view.Gravity;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.*;
 import com.fantasysport.Const;
@@ -21,18 +17,21 @@ import com.fantasysport.adapters.MenuListAdapter;
 import com.fantasysport.adapters.PlayerItem;
 import com.fantasysport.adapters.RosterPlayersAdapter;
 import com.fantasysport.models.*;
-import com.fantasysport.views.Drawable.BitmapButtonDrawable;
+import com.fantasysport.utility.image.ImageLoader;
+import com.fantasysport.views.drawable.BitmapButtonDrawable;
 import com.fantasysport.views.MenuItem;
 import com.fantasysport.views.ScrollDisabledListView;
 import com.fantasysport.views.Switcher;
 import com.fantasysport.views.listeners.*;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
+import com.fantasysport.webaccess.requestListeners.AutofillResponseListener;
+import com.fantasysport.webaccess.requestListeners.RequestError;
+import com.fantasysport.webaccess.requestListeners.SubmitRosterResponseListener;
+import com.fantasysport.webaccess.requestListeners.TradePlayerResponseListener;
+import com.fantasysport.webaccess.WebProxy;
+import com.fantasysport.webaccess.requests.SubmitRosterRequest;
+import com.fantasysport.webaccess.responses.AutofillResponse;
+import com.fantasysport.webaccess.responses.TradePlayerResponse;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -49,10 +48,10 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
     private boolean _isDrawerLayoutOpened;
     private GameAdapter _pagerAdapter;
     private RosterPlayersAdapter _playerAdapter;
-    private Market _currentMarket;
-    private Roster _currentRoster;
+    private Market _market;
+    private Roster _roster;
     private Switcher _switcher;
-    TextView _moneyTxt;
+    private TextView _moneyTxt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,14 +60,17 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
         _isDrawerLayoutOpened = false;
         setContentView(R.layout.activity_main);
 
-        Button myGamesBtn = getViewById(R.id.my_games_btn);
-        myGamesBtn.setTypeface(getProhibitionRound());
+        Button submit100fbBtn = getViewById(R.id.submit_100fb_btn);
+        submit100fbBtn.setTypeface(getProhibitionRound());
+        submit100fbBtn.setOnClickListener(_submitClickListenere);
 
-        Button createGameBtn = getViewById(R.id.create_games_btn);
-        createGameBtn.setTypeface(getProhibitionRound());
+        Button submitHth27fb = getViewById(R.id.submit_hth_btn);
+        submitHth27fb.setTypeface(getProhibitionRound());
+        submitHth27fb.setOnClickListener(_submitClickListenere);
 
         Button autofillBtn = getViewById(R.id.autofill_btn);
         autofillBtn.setTypeface(getProhibitionRound());
+        autofillBtn.setOnClickListener(_autofillClickListener);
 
         _switcher = getViewById(R.id.switcher);
         _switcher.setSelected(true);
@@ -85,6 +87,18 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
         setPager();
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if(_market == null){
+            return;
+        }
+        outState.putSerializable(Const.MARKET, _market);
+        if(_roster != null){
+            outState.putSerializable(Const.ROSTER, _roster);
+        }
+    }
+
     private void setRoster(){
         _moneyTxt.setTypeface(getProhibitionRound());
         ScrollDisabledListView rosterList = getViewById(R.id.roster_list);
@@ -92,10 +106,35 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
         List<IPlayer> items = new ArrayList<IPlayer>();
         _playerAdapter = new RosterPlayersAdapter(items, this);
         rosterList.setAdapter(_playerAdapter);
+        _playerAdapter.setListener(_playerAdapterListener);
     }
 
+    RosterPlayersAdapter.IListener _playerAdapterListener = new RosterPlayersAdapter.IListener() {
+        @Override
+        public void onTrade(final Player player) {
+            showProgress();
+            WebProxy.tradePlayer(_roster.getId(), player, _storage.getAccessTokenData().getAccessToken(), _spiceManager, new TradePlayerResponseListener() {
+                @Override
+                public void onRequestError(RequestError error) {
+                    dismissProgress();
+                    showAlert(getString(R.string.error), error.getMessage());
+                }
+
+                @Override
+                public void onRequestSuccess(TradePlayerResponse response) {
+                    double salary = _roster.getRemainingSalary();
+                    _roster.getPlayers().remove(player);
+                    salary += response.getPrice();
+                    _roster.setRemainingSalary(salary);
+                    updatePlayersList();
+                    dismissProgress();
+                }
+            });
+        }
+    };
+
     private void setRoster(Market market){
-        _currentMarket = market;
+        _market = market;
         setEmptyRoster();
     }
 
@@ -203,61 +242,14 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
         super.onBackPressed();
     }
 
-    private Bitmap downloadBitmap(String url) {
-        final DefaultHttpClient client = new DefaultHttpClient();
-        Bitmap image = null;
-        final HttpGet getRequest = new HttpGet(url);
-        try {
-            HttpResponse response = client.execute(getRequest);
-            final int statusCode = response.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK) {
-                Log.w("ImageDownloader", "Error " + statusCode +
-                        " while retrieving bitmap from " + url);
-                return null;
-
-            }
-            final HttpEntity entity = response.getEntity();
-            if (entity != null) {
-                InputStream inputStream = null;
-                try {
-                inputStream = entity.getContent();
-                image = BitmapFactory.decodeStream(inputStream);
-                } finally {
-                    if (inputStream != null) {
-                        inputStream.close();
-                    }
-                    entity.consumeContent();
-                }
-            }
-        } catch (Exception e) {
-            getRequest.abort();
-            Log.e("ImageDownloader", "Something went wrong while" +
-                    " retrieving bitmap from " + url + e.toString());
-        }
-        return image;
-    }
-
     private void setUserImage(){
         final String userImgUrl = _storage.getUserData().getUserImageUrl();
         final ImageView view = getViewById(R.id.user_img);
         if(userImgUrl == null){
             return;
         }
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                  final Bitmap btm =  downloadBitmap(userImgUrl);
-                _handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        if(btm == null){
-                            return;
-                        }
-                        view.setImageBitmap(btm);
-                    }
-                });
-            }
-        }).start();
+        ImageLoader loader = new ImageLoader(this);
+        loader.displayImage(userImgUrl, view);
     }
 
     private void toggleDrawerState(){
@@ -276,10 +268,11 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
     };
 
     private void updatePlayersList(){
-        if(_currentRoster == null){
+        if(_roster == null){
             return;
         }
-        List<Player> players = _currentRoster.getPlayers();
+        setMoneyTxt(_roster.getRemainingSalary());
+        List<Player> players = _roster.getPlayers();
         List<IPlayer> playerItems = _playerAdapter.getItems();
         for (int i = 0; i < playerItems.size(); i++){
             boolean updated = false;
@@ -305,10 +298,9 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == PLAYER_CANDIDATE && resultCode == Activity.RESULT_OK){
-            _currentRoster = (Roster)data.getSerializableExtra(Const.ROSTER);
-            setMoneyTxt(_currentRoster.getRemainingSalary());
+            _roster = (Roster)data.getSerializableExtra(Const.ROSTER);
+            setMoneyTxt(_roster.getRemainingSalary());
             updatePlayersList();
-
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
@@ -316,11 +308,11 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
     private void navigateToPlayersActivity(String playerPosition){
         Intent intent = new Intent(this, PlayersActivity.class);
         intent.putExtra(Const.PLAYER_POSITION, playerPosition);
-        intent.putExtra(Const.ROSTER,_currentRoster);
-        intent.putExtra(Const.MARKET_ID, _currentMarket.getId());
+        intent.putExtra(Const.ROSTER, _roster);
+        intent.putExtra(Const.MARKET_ID, _market.getId());
         intent.putExtra(Const.REMOVE_BENCHED_PLAYERS, _switcher.isSelected());
         DefaultRosterData rosterData = _storage.getDefaultRosterData();
-        double moneyFoster = _currentRoster != null? _currentRoster.getRemainingSalary(): rosterData.getRemainingSalary();
+        double moneyFoster = _roster != null? _roster.getRemainingSalary(): rosterData.getRemainingSalary();
         intent.putExtra(Const.MONEY_FOR_ROSTER, moneyFoster);
         startActivityForResult(intent, PLAYER_CANDIDATE);
         overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
@@ -334,4 +326,52 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
         }
         navigateToPlayersActivity(item.getPosition());
     }
+
+    View.OnClickListener _autofillClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            int rosterId = _roster == null? -1: _roster.getId();
+            showProgress();
+            WebProxy.autofillRoster(_market.getId(), rosterId, _storage.getAccessTokenData().getAccessToken(), _spiceManager, new AutofillResponseListener() {
+                @Override
+                public void onRequestError(RequestError error) {
+                    dismissProgress();
+                    showAlert(getString(R.string.error), error.getMessage());
+                }
+                @Override
+                public void onRequestSuccess(AutofillResponse response) {
+                    _roster = response.getRoster();
+                    updatePlayersList();
+                    dismissProgress();
+                }
+            });
+        }
+    };
+
+    View.OnClickListener _submitClickListenere = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if(_roster == null){
+                showAlert("",getString(R.string.fill_roster));
+                return;
+            }
+            showProgress();
+            String contestType = v.getId() == R.id.submit_100fb_btn? SubmitRosterRequest.TOP6: SubmitRosterRequest.H2H;
+            WebProxy.submitRoster(_roster.getId(), contestType, _storage.getAccessTokenData().getAccessToken(), _spiceManager, new SubmitRosterResponseListener() {
+                @Override
+                public void onRequestError(RequestError error) {
+                    dismissProgress();
+                    showAlert(getString(R.string.error), error.getMessage());
+                }
+
+                @Override
+                public void onRequestSuccess(Object o) {
+                    _roster = null;
+                    setEmptyRoster();
+                    dismissProgress();
+                }
+            });
+
+        }
+    };
 }

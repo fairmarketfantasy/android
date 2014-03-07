@@ -18,7 +18,7 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         _current = this;
-        Ubertesters.initialize(this);
+//        Ubertesters.initialize(this);
     }
 
 }

@@ -2,12 +2,13 @@ package com.fantasysport.models;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by bylynka on 2/20/14.
  */
-public class Game {
+public class Game  implements Serializable {
 
     @SerializedName("id")
     private String _id;

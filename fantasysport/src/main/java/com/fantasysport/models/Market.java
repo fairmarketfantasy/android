@@ -3,13 +3,14 @@ package com.fantasysport.models;
 import android.support.v7.appcompat.R;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
 /**
  * Created by bylynka on 2/20/14.
  */
-public class Market {
+public class Market  implements Serializable {
 
     @SerializedName("id")
     private int _id;

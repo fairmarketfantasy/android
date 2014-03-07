@@ -1,0 +1,142 @@
+package com.fantasysport.adapters;
+
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.graphics.Color;
+import android.graphics.Typeface;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.TextView;
+import com.fantasysport.R;
+import com.fantasysport.models.Player;
+import com.fantasysport.models.StatsItem;
+import com.fantasysport.utility.StringHelper;
+
+import java.util.List;
+
+/**
+ * Created by bylynka on 3/5/14.
+ */
+public class StatsAdapter extends BaseAdapter {
+
+    private List<StatsItem> _items;
+    private Context _context;
+    private Player _player;
+    private Typeface _prohibitionRoundTypeFace;
+
+    public StatsAdapter(Context context, Player player) {
+        _context = context;
+        _player = player;
+        _prohibitionRoundTypeFace  = Typeface.createFromAsset(_context.getAssets(), "fonts/ProhibitionRound.ttf");
+    }
+
+    public void setItems(List<StatsItem> items) {
+        _items = items;
+    }
+
+    public List<StatsItem> getItems() {
+        return _items;
+    }
+
+    @Override
+    public int getCount() {
+        return _items != null ? _items.size() : 0;
+    }
+
+    @Override
+    public Object getItem(int position) {
+        return _items.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        if (convertView == null) {
+            LayoutInflater mInflater = (LayoutInflater)
+                    _context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
+            convertView = mInflater.inflate(R.layout.stats_item, null);
+            Button moreBtn = (Button) convertView.findViewById(R.id.more_btn);
+            moreBtn.setTypeface(_prohibitionRoundTypeFace);
+            Button lessBtn = (Button) convertView.findViewById(R.id.less_btn);
+            lessBtn.setTypeface(_prohibitionRoundTypeFace);
+        }
+        StatsItem item = _items.get(position);
+        setPredictionView(convertView, item);
+        return convertView;
+    }
+
+    private void setPredictionView(View view, StatsItem item) {
+        TextView headerLbl = (TextView) view.findViewById(R.id.header_lbl);
+
+        headerLbl.setText(String.format("%s: %.1f", StringHelper.capitalizeFirstLetter(item.getName()), item.getValue()));
+        View predictionBlock = view.findViewById(R.id.prediction_block);
+
+        View cancelBtn = view.findViewById(R.id.cancel_btn);
+        Button moreBtn = (Button) view.findViewById(R.id.more_btn);
+        Button lessBtn = (Button) view.findViewById(R.id.less_btn);
+
+        if (item.getMode().equalsIgnoreCase(StatsItem.DEFAULT_MODE)) {
+            moreBtn.setOnClickListener(new ModeOnClickListener(StatsItem.MORE_MODE, item, view));
+            moreBtn.setSelected(false);
+            lessBtn.setOnClickListener(new ModeOnClickListener(StatsItem.LESS_MODE, item, view));
+            lessBtn.setSelected(false);
+            predictionBlock.setVisibility(View.INVISIBLE);
+        } else {
+            moreBtn.setOnClickListener(null);
+            lessBtn.setOnClickListener(null);
+            cancelBtn.setOnClickListener(new ModeOnClickListener(StatsItem.DEFAULT_MODE, item, view));
+            predictionBlock.setVisibility(View.VISIBLE);
+            TextView predictionLbl = (TextView) view.findViewById(R.id.prediction_lbl);
+            String msg = String.format("%s than %.1f %s", (item.getMode().equalsIgnoreCase(StatsItem.LESS_MODE) ? "less" : "more"), item.getValue(), item.getName());
+            predictionLbl.setText(msg);
+        }
+    }
+
+    class ModeOnClickListener implements View.OnClickListener {
+
+        private String _mode;
+        private StatsItem _item;
+        private View _itemView;
+
+        public ModeOnClickListener(String mode, StatsItem item, View itemView) {
+            _mode = mode;
+            _item = item;
+            _itemView = itemView;
+        }
+
+        private void updateView(View v) {
+            _item.setMode(_mode);
+            setPredictionView(_itemView, _item);
+            v.setSelected(true);
+        }
+
+        @Override
+        public void onClick(final View v) {
+            if ( _mode.equalsIgnoreCase(StatsItem.DEFAULT_MODE)) {
+                updateView(v);
+                return;
+            }
+            new AlertDialog.Builder(StatsAdapter.this._context)
+                    .setTitle(StatsAdapter.this._player.getName())
+                    .setMessage(String.format("%s than %.1f %s?", (_item.getMode().equalsIgnoreCase(StatsItem.LESS_MODE) ? "Less" : "More"), _item.getValue(), _item.getName()))
+                    .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            updateView(v);
+                        }
+                    })
+                    .setNegativeButton(R.string.cancel, null)
+                    .show();
+        }
+    }
+}

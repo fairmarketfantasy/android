@@ -1,13 +1,15 @@
 package com.fantasysport.webaccess;
 
-import com.fantasysport.models.Market;
 import com.fantasysport.models.Player;
+import com.fantasysport.models.StatsItem;
 import com.fantasysport.models.User;
-import com.fantasysport.webaccess.RequestListeners.*;
-import com.fantasysport.webaccess.Requests.*;
+import com.fantasysport.webaccess.requestListeners.*;
+import com.fantasysport.webaccess.requests.*;
 import com.octo.android.robospice.SpiceManager;
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.retry.RetryPolicy;
+
+import java.util.List;
 
 /**
  * Created by bylynka on 2/6/14.
@@ -17,50 +19,75 @@ public final class WebProxy {
     private WebProxy(){
     }
 
-    public static void addPlayer(int rosterId, Player player, String accessToken, SpiceManager spiceManager, AddPlayerResponseListener listener){
+    public static void submitPrediction(int rosterId, int marketId, String statsId, List<StatsItem> events, String accessToken, SpiceManager manager, SubmitPredictionResponseListener listener){
+        SubmitPredictionRequest request = new SubmitPredictionRequest(rosterId, marketId, statsId, events, accessToken);
+        manager.execute(request, listener);
+    }
+
+    public static void getStatEvens(Player player, String accessToken, SpiceManager manager, StatEventsResponseListener listener){
+        GetStatEventsRequest request = new GetStatEventsRequest(player, accessToken);
+        manager.execute(request, listener);
+    }
+
+    public static void submitRoster(int rosterId, String contestType, String accessToken, SpiceManager manager, SubmitRosterResponseListener listener){
+        SubmitRosterRequest request = new SubmitRosterRequest(rosterId, contestType, accessToken);
+        manager.execute(request, listener);
+    }
+
+    public static void autofillRoster(int marketId, int rosterId, String accessToken, SpiceManager manager, AutofillResponseListener listener){
+        AutofillRequest request = new AutofillRequest(marketId, rosterId, accessToken);
+        manager.execute(request, listener);
+    }
+
+    public static void tradePlayer(int rosterId, Player player, String accessToken, SpiceManager manager, TradePlayerResponseListener listener){
+        TradePlayerRequest request = new TradePlayerRequest(rosterId, player, accessToken);
+        manager.execute(request, listener);
+    }
+
+    public static void addPlayer(int rosterId, Player player, String accessToken, SpiceManager manager, AddPlayerResponseListener listener){
         AddPlayerRequest request = new AddPlayerRequest(rosterId, player, accessToken);
-        spiceManager.execute(request, listener);
+        manager.execute(request, listener);
     }
 
-    public static void getPlayers(String accessToken, String position, boolean removedBencedPlayers, int rosterId, SpiceManager spiceManager, PlayersResponseListener listener){
+    public static void getPlayers(String accessToken, String position, boolean removedBencedPlayers, int rosterId, SpiceManager manager, PlayersResponseListener listener){
         GetPlayersRequest request = new GetPlayersRequest(accessToken, position, removedBencedPlayers, rosterId);
-        spiceManager.execute(request, listener);
+        manager.execute(request, listener);
     }
 
-    public static void createRoster(String accessToken, int marketId, SpiceManager spiceManager, CreateRosterResponseListener listener){
+    public static void createRoster(String accessToken, int marketId, SpiceManager manager, CreateRosterResponseListener listener){
         CreateRosterRequest request = new CreateRosterRequest(accessToken, marketId);
-        spiceManager.execute(request, listener);
+        manager.execute(request, listener);
     }
 
-    public static void loadPlayersPosition(String accessToken, SpiceManager spiceManager, DefaultRosterResponseListener listener){
+    public static void loadPlayersPosition(String accessToken, SpiceManager manager, DefaultRosterResponseListener listener){
         PlayersPositionRequest request = new PlayersPositionRequest(accessToken);
-        spiceManager.execute(request, listener);
+        manager.execute(request, listener);
     }
 
-    public static void getGames(String accessToken, SpiceManager spiceManager, MarketsResponseListener listener){
+    public static void getGames(String accessToken, SpiceManager manager, MarketsResponseListener listener){
         MarketsRequest request = new MarketsRequest(accessToken);
-        spiceManager.execute(request, listener);
+        manager.execute(request, listener);
     }
 
-    public static void signIn(String email, String password, SpiceManager spiceManager, SignInResponseListener listener){
+    public static void signIn(String email, String password, SpiceManager manager, SignInResponseListener listener){
         SignInRequest request = new SignInRequest(email, password);
-        spiceManager.execute(request, listener);
+        manager.execute(request, listener);
     }
 
-    public static void getAccessToken(String email, String password, SpiceManager spiceManager, AccessTokenResponseListener listener){
+    public static void getAccessToken(String email, String password, SpiceManager manager, AccessTokenResponseListener listener){
         AccessTokenRequest request = new AccessTokenRequest(email, password);
-        spiceManager.execute(request, listener);
+        manager.execute(request, listener);
     }
 
-    public static void facebookLogin(String accessToken,String uid, SpiceManager spiceManager, FaceBookAuthListener listener){
+    public static void facebookLogin(String accessToken,String uid, SpiceManager manager, FaceBookAuthListener listener){
         FacebookSignInRequest request = new FacebookSignInRequest(accessToken, uid);
-        spiceManager.execute(request, listener);
+        manager.execute(request, listener);
     }
 
-    public static void signUp(User user, SpiceManager spiceManager, SignUpResponseListener listener){
+    public static void signUp(User user, SpiceManager manager, SignUpResponseListener listener){
         SignUpRequest request = new SignUpRequest(user);
         request.setRetryPolicy(getRetryPolicy());
-        spiceManager.execute(request, listener);
+        manager.execute(request, listener);
     }
 
     private static RetryPolicy getRetryPolicy(){

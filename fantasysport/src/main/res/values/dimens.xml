@@ -20,6 +20,7 @@
     <dimen name="switcher_height">34dp</dimen>
     <dimen name="switcher_width">88dp</dimen>
     <dimen name="player_candidate_btn_padding">9dp</dimen>
+    <dimen name="text_ver_padding">5dp</dimen>
 
     <!-- fonts -->
     <dimen name="lage_font">26sp</dimen>

@@ -1,25 +1,20 @@
 package com.fantasysport.activities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.view.MenuItemCompat;
 import android.text.TextUtils;
-import android.view.*;
+import android.view.KeyEvent;
+import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import com.fantasysport.R;
-import com.fantasysport.models.Market;
-import com.fantasysport.views.Switcher;
-import com.fantasysport.webaccess.RequestListeners.MarketsResponseListener;
-import com.fantasysport.webaccess.RequestListeners.RequestError;
-import com.fantasysport.webaccess.RequestListeners.SignInResponseListener;
 import com.fantasysport.webaccess.WebProxy;
+import com.fantasysport.webaccess.requestListeners.RequestError;
+import com.fantasysport.webaccess.requestListeners.SignInResponseListener;
 import com.fantasysport.webaccess.responses.AuthResponse;
-
-import java.util.List;
 
 public class SignInActivity extends AuthActivity {
 
@@ -43,9 +38,6 @@ public class SignInActivity extends AuthActivity {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         signInBtn.setOnClickListener(_signInBtnClickListener);
 
-        TextView toSignUpLbl = getViewById(R.id.to_sign_up_lbl);
-        toSignUpLbl.setOnClickListener(_toSignUpListener);
-
         setBackground();
         _emailTxt = getViewById(R.id.email_txt);
         _passwordTxt = getViewById(R.id.password_txt);
@@ -57,37 +49,20 @@ public class SignInActivity extends AuthActivity {
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.auth, menu);
-        MenuItem item = menu.findItem(R.id.action);
-        new TextView(this);
-        LayoutInflater inflator = (LayoutInflater) this
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View titleView = inflator.inflate(R.layout.auth_menu_item, null);
-        titleView.setOnClickListener(_toSignUpListener);
-
-        TextView txt = (TextView)titleView.findViewById(R.id.item_txt);
-        txt.setText(getString(R.string.sign_up));
-        txt.setTypeface(getProhibitionRound());
-        MenuItemCompat.setActionView(item, titleView);
-        return super.onCreateOptionsMenu(menu);
-    }
-
     private void attemptGetAccessToken(){
         String email = _emailTxt.getText().toString();
         String password = _passwordTxt.getText().toString();
 
         if (TextUtils.isEmpty(email)) {
-            showErrorAlert(null, getString(R.string.please_provide_email), null);
+            showAlert(null, getString(R.string.please_provide_email), null);
             return;
         }
         if (!isEmailValid(email)) {
-            showErrorAlert(null, getString(R.string.please_provide_valid_email), null);
+            showAlert(null, getString(R.string.please_provide_valid_email), null);
             return;
         }
         if (TextUtils.isEmpty(password)) {
-            showErrorAlert(null, getString(R.string.please_provide_password), null);
+            showAlert(null, getString(R.string.please_provide_password), null);
             return;
         }
         showProgress();
@@ -109,7 +84,7 @@ public class SignInActivity extends AuthActivity {
         @Override
         public void onRequestError(RequestError error) {
             dismissProgress();
-            showErrorAlert(getString(R.string.error), error.getMessage());
+            showAlert(getString(R.string.error), error.getMessage());
         }
 
         @Override

@@ -4,15 +4,12 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.res.Resources;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Handler;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import com.fantasysport.R;
 import com.fantasysport.repo.Storage;
@@ -35,13 +32,14 @@ public class BaseActivity extends ActionBarActivity{
     public void setContentView(int layoutResID) {
         _storage = Storage.instance();
         super.setContentView(layoutResID);
-//        int titleId = Resources.getSystem().getIdentifier("action_bar_title", "id", "android");
-//        TextView yourTextView = (TextView)findViewById(titleId);
-//        yourTextView.setTextColor(Color.TRANSPARENT);
         initActionBar(getSupportActionBar());
-
     }
 
+    @Override
+    public void finish() {
+        overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
+        super.finish();
+    }
 
     private void createProgressBar(){
         _progress = new ProgressDialog(this);
@@ -84,7 +82,7 @@ public class BaseActivity extends ActionBarActivity{
         return (T)findViewById(viewId);
     }
 
-    protected void showErrorAlert(String title, String message, DialogInterface.OnClickListener onCloseListener){
+    protected void showAlert(String title, String message, DialogInterface.OnClickListener onCloseListener){
         new AlertDialog.Builder(this)
                 .setTitle(title)
                 .setMessage(message)
@@ -93,8 +91,8 @@ public class BaseActivity extends ActionBarActivity{
     }
 
 
-    protected void showErrorAlert(String title, String message){
-        showErrorAlert(title, message, null);
+    protected void showAlert(String title, String message){
+        showAlert(title, message, null);
     }
 
     public Typeface getProhibitionRound(){
@@ -112,8 +110,6 @@ public class BaseActivity extends ActionBarActivity{
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View customBar = inflator.inflate(R.layout.action_bar_title, null);
         TextView textView = (TextView)customBar.findViewById(R.id.fair_martet_txt);
-        textView.setTypeface(getProhibitionRound());
-        textView = (TextView)customBar.findViewById(R.id.fantasy_txt);
         textView.setTypeface(getProhibitionRound());
         getSupportActionBar().setCustomView(customBar);
     }

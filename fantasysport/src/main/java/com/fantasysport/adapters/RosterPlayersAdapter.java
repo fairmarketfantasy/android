@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -17,7 +16,7 @@ import com.fantasysport.R;
 import com.fantasysport.models.IPlayer;
 import com.fantasysport.models.Player;
 import com.fantasysport.utility.image.ImageLoader;
-import com.fantasysport.views.Drawable.ColorViewDrawable;
+import com.fantasysport.views.drawable.ColorViewDrawable;
 import com.fantasysport.views.PlayerProgressTextView;
 
 import java.util.List;
@@ -31,12 +30,17 @@ public class RosterPlayersAdapter extends BaseAdapter {
     private Context _context;
     private Typeface _prohibitionRoundTypeFace;
     public ImageLoader _imageLoader;
+    public IListener _listener;
 
     public RosterPlayersAdapter(List<IPlayer> players, Context context){
         _players = players;
         _context = context;
         _prohibitionRoundTypeFace  = Typeface.createFromAsset(_context.getAssets(), "fonts/ProhibitionRound.ttf");
         _imageLoader = new ImageLoader(_context);
+    }
+
+    public void setListener(IListener listener){
+        _listener = listener;
     }
 
     public List<IPlayer> getItems(){
@@ -97,6 +101,7 @@ public class RosterPlayersAdapter extends BaseAdapter {
             priceLbl.setText(String.format("$%.1f", player.getPurchasePrice()));
             progressLbl.setVisibility(View.VISIBLE);
             progressLbl.setPlayer(player);
+            tradeBtn.setOnClickListener(new TradeBtnClickListener(player));
         }else {
             gamePositionTxt.setText(item.getPosition() + " Not Selected");
             tradeBtn.setVisibility(View.GONE);
@@ -106,6 +111,13 @@ public class RosterPlayersAdapter extends BaseAdapter {
         }
 
         return convertView;
+    }
+
+    private void raiseOnTrade(Player player){
+        if(_listener == null){
+            return;
+        }
+        _listener.onTrade(player);
     }
 
     class ColorViewDrawableListener implements ColorViewDrawable.IStateListener {
@@ -133,4 +145,24 @@ public class RosterPlayersAdapter extends BaseAdapter {
         ImageView img = (ImageView)v.findViewById(R.id.circle_img);
         img.setImageDrawable(drawable);
     }
+
+    public interface IListener{
+        public void onTrade(Player player);
+    }
+
+    public class TradeBtnClickListener implements View.OnClickListener{
+
+        private Player _player;
+
+        public TradeBtnClickListener(Player player){
+            _player = player;
+        }
+
+        @Override
+        public void onClick(View v) {
+            raiseOnTrade(_player);
+        }
+
+    }
+
 }

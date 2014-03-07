@@ -44,6 +44,17 @@ public class Player implements Serializable, IPlayer {
     @SerializedName("purchase_price")
     private double _purchasePrice;
 
+    @SerializedName("stats_id")
+    private String _statsId;
+
+    public String getStatsId(){
+        return _statsId;
+    }
+
+    public void setStatsId(String id){
+        _statsId = id;
+    }
+
     public double getPurchasePrice() {
         return _purchasePrice;
     }
