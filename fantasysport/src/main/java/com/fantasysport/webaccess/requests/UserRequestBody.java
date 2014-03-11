@@ -6,12 +6,12 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Created by bylynka on 2/4/14.
  */
-public class SignUpRequestBody {
+public class UserRequestBody {
 
     @SerializedName("user")
     public User _user;
 
-    public SignUpRequestBody(User user){
+    public UserRequestBody(User user){
         _user = user;
     }
 

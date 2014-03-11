@@ -14,13 +14,11 @@ import com.google.gson.Gson;
  */
 public class AutofillRequest extends BaseRequest<AutofillResponse> {
 
-    private String _accessToken;
     private int _rosterId;
     private int _marketId;
 
-    public AutofillRequest(int marketId, int rosterId, String accessToken) {
+    public AutofillRequest(int marketId, int rosterId) {
         super(AutofillResponse.class);
-        _accessToken = accessToken;
         _rosterId = rosterId;
         _marketId = marketId;
     }
@@ -41,7 +39,7 @@ public class AutofillRequest extends BaseRequest<AutofillResponse> {
         uriBuilder.appendPath("rosters")
                 .appendPath(Integer.toString(_rosterId))
                 .appendPath("autofill")
-                .appendQueryParameter("access_token", _accessToken);
+                .appendQueryParameter("access_token", getAccessToken());
         String url = uriBuilder.build().toString();
         HttpRequest request = getHttpRequestFactory()
                 .buildPostRequest(new GenericUrl(url), null);
@@ -53,7 +51,7 @@ public class AutofillRequest extends BaseRequest<AutofillResponse> {
     private Roster createRoster() throws Exception {
         Uri.Builder uriBuilder = Uri.parse(getUrl()).buildUpon();
         uriBuilder.appendPath("rosters")
-                .appendQueryParameter("access_token", _accessToken);
+                .appendQueryParameter("access_token", getAccessToken());
         String url = uriBuilder.build().toString();
         CreateRosterRequestBody body = new CreateRosterRequestBody(_marketId);
         String js = new Gson().toJson(body);

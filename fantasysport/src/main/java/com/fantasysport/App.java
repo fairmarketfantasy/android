@@ -1,6 +1,8 @@
 package com.fantasysport;
 
 import android.app.Application;
+import com.fantasysport.models.AccessTokenData;
+import com.fantasysport.webaccess.RequestHelper;
 import com.ubertesters.sdk.Ubertesters;
 
 /**
@@ -20,5 +22,17 @@ public class App extends Application {
         _current = this;
 //        Ubertesters.initialize(this);
     }
+
+    private void setRequestHelper(){
+        RequestHelper helper = RequestHelper.instance();
+        helper.setListener(_requestHelperListener);
+    }
+
+    RequestHelper.IListener _requestHelperListener = new RequestHelper.IListener() {
+        @Override
+        public void onAccessTokenDataChanged(AccessTokenData data) {
+
+        }
+    };
 
 }

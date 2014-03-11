@@ -1,19 +1,19 @@
-package com.fantasysport.views;
+package com.fantasysport.adapters;
 
 /**
  * Created by bylynka on 2/18/14.
  */
 public class MenuItem {
 
-    private int _id;
+    private MenuItemEnum _id;
     private String _title;
 
-    public MenuItem(int id, String title){
+    public MenuItem(MenuItemEnum id, String title){
         _id = id;
         _title = title;
     }
 
-    public int getId(){
+    public MenuItemEnum getId(){
         return _id;
     }
 

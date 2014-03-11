@@ -12,22 +12,18 @@ import android.view.View;
 import android.widget.*;
 import com.fantasysport.Const;
 import com.fantasysport.R;
-import com.fantasysport.adapters.GameAdapter;
-import com.fantasysport.adapters.MenuListAdapter;
-import com.fantasysport.adapters.PlayerItem;
-import com.fantasysport.adapters.RosterPlayersAdapter;
+import com.fantasysport.adapters.*;
 import com.fantasysport.models.*;
 import com.fantasysport.utility.image.ImageLoader;
-import com.fantasysport.views.drawable.BitmapButtonDrawable;
-import com.fantasysport.views.MenuItem;
 import com.fantasysport.views.ScrollDisabledListView;
 import com.fantasysport.views.Switcher;
-import com.fantasysport.views.listeners.*;
+import com.fantasysport.views.drawable.BitmapButtonDrawable;
+import com.fantasysport.views.listeners.SimpleDrawerListen;
+import com.fantasysport.views.listeners.ViewPagerOnPageSelectedListener;
 import com.fantasysport.webaccess.requestListeners.AutofillResponseListener;
 import com.fantasysport.webaccess.requestListeners.RequestError;
 import com.fantasysport.webaccess.requestListeners.SubmitRosterResponseListener;
 import com.fantasysport.webaccess.requestListeners.TradePlayerResponseListener;
-import com.fantasysport.webaccess.WebProxy;
 import com.fantasysport.webaccess.requests.SubmitRosterRequest;
 import com.fantasysport.webaccess.responses.AutofillResponse;
 import com.fantasysport.webaccess.responses.TradePlayerResponse;
@@ -90,16 +86,16 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        if(_market == null){
+        if (_market == null) {
             return;
         }
         outState.putSerializable(Const.MARKET, _market);
-        if(_roster != null){
+        if (_roster != null) {
             outState.putSerializable(Const.ROSTER, _roster);
         }
     }
 
-    private void setRoster(){
+    private void setRoster() {
         _moneyTxt.setTypeface(getProhibitionRound());
         ScrollDisabledListView rosterList = getViewById(R.id.roster_list);
         rosterList.setOnItemClickListener(this);
@@ -113,7 +109,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
         @Override
         public void onTrade(final Player player) {
             showProgress();
-            WebProxy.tradePlayer(_roster.getId(), player, _storage.getAccessTokenData().getAccessToken(), _spiceManager, new TradePlayerResponseListener() {
+            _webProxy.tradePlayer(_roster.getId(), player, new TradePlayerResponseListener() {
                 @Override
                 public void onRequestError(RequestError error) {
                     dismissProgress();
@@ -133,24 +129,24 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
         }
     };
 
-    private void setRoster(Market market){
+    private void setRoster(Market market) {
         _market = market;
         setEmptyRoster();
     }
 
-    private void setEmptyRoster(){
+    private void setEmptyRoster() {
         DefaultRosterData rosterData = _storage.getDefaultRosterData();
         setMoneyTxt(rosterData.getRemainingSalary());
-        List<IPlayer> items =  _playerAdapter.getItems();
+        List<IPlayer> items = _playerAdapter.getItems();
         items.clear();
         List<String> positions = rosterData.getPositions();
-        for (int i = 0; i < positions.size(); i++){
+        for (int i = 0; i < positions.size(); i++) {
             items.add(new PlayerItem(positions.get(i)));
         }
         _playerAdapter.notifyDataSetChanged();
     }
 
-    private void setPager(){
+    private void setPager() {
         final ViewPager pager = getViewById(R.id.pager);
         List<Market> markets = _storage.getMarkets();
         _pagerAdapter = new GameAdapter(getSupportFragmentManager(), markets);
@@ -164,8 +160,8 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
         prevBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               int curItem =  pager.getCurrentItem();
-                if(curItem > 0){
+                int curItem = pager.getCurrentItem();
+                if (curItem > 0) {
                     pager.setCurrentItem(curItem - 1, true);
                 }
             }
@@ -174,14 +170,14 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int curItem =  pager.getCurrentItem();
+                int curItem = pager.getCurrentItem();
                 int lastItem = _pagerAdapter.getCount() - 1;
-                if(curItem < lastItem){
+                if (curItem < lastItem) {
                     pager.setCurrentItem(curItem + 1, true);
                 }
             }
         });
-        if(markets != null && markets.size() > 0){
+        if (markets != null && markets.size() > 0) {
             setRoster(markets.get(0));
         }
     }
@@ -190,50 +186,69 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
         @Override
         public void onPageSelected(int position) {
             List<Market> markets = _pagerAdapter.getMarkets();
-            if(position < 0 || markets == null){
+            if (position < 0 || markets == null) {
                 return;
             }
             setRoster(markets.get(position));
         }
     };
 
-    private void setPagerNavigateButton(Button button, int drawableId){
-        BitmapDrawable drawable =  (BitmapDrawable)getResources().getDrawable(drawableId);
+    private void setPagerNavigateButton(Button button, int drawableId) {
+        BitmapDrawable drawable = (BitmapDrawable) getResources().getDrawable(drawableId);
         BitmapButtonDrawable btnDrawable = new BitmapButtonDrawable(drawable.getBitmap(), Color.rgb(137, 137, 137), Color.rgb(117, 117, 117));
         button.setBackgroundDrawable(btnDrawable);
     }
 
-    private void setMenu(){
-       String[] menuTitles = getResources().getStringArray(R.array.nav_drawer_items);
-        List<MenuItem> menuItems = new ArrayList<MenuItem>();
-        for (int i = 0; i < menuTitles.length; i++){
-            menuItems.add(new MenuItem(i, menuTitles[i]));
-        }
-        _menuAdapter = new MenuListAdapter(menuItems, this);
+    private void setMenu() {
+        _menuAdapter = new MenuListAdapter(this);
         _menuList.setAdapter(_menuAdapter);
+        _menuList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                MenuItem item = (MenuItem) _menuAdapter.getItem(position);
+                switch (item.getId()) {
+                    case LegalStuff:
+                        showWebView("pages/mobile/terms");
+                        break;
+                    case Rules:
+                        showWebView("pages/mobile/rules");
+                        break;
+                    case Support:
+                        showWebView("pages/mobile/support");
+                        break;
+                    case Settings:
+                        showSettingsView();
+                        break;
+                    case SignOut:
+                        signOut();
+                        break;
+                }
+                toggleDrawerState();
+            }
+        });
     }
 
     @Override
     public boolean onOptionsItemSelected(android.view.MenuItem item) {
-        if(item.getItemId() == android.R.id.home){
+        if (item.getItemId() == android.R.id.home) {
             toggleDrawerState();
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void setUserData(){
+    private void setUserData() {
         setUserImage();
         UserData userData = _storage.getUserData();
         TextView userNameTxt = getViewById(R.id.user_name_txt);
         userNameTxt.setText(userData.getRealName());
         TextView userRegTxt = getViewById(R.id.user_reg_txt);
         Date regDate = userData.getRegistrationdDate();
-        userRegTxt.setText(String.format(getString(R.string.member_since_f, regDate,regDate,regDate)));
+        userRegTxt.setText(String.format(getString(R.string.member_since_f, regDate, regDate, regDate)));
         TextView pointsTxt = getViewById(R.id.user_points_txt);
         pointsTxt.setText(String.format(getString(R.string.points_f, userData.getTotalPoints())));
         TextView winsTxt = getViewById(R.id.user_wins_txt);
-        winsTxt.setText(String.format(getString(R.string.wins_f,userData.getTotalWins(), userData.getWinPercentile())));
+        winsTxt.setText(String.format(getString(R.string.wins_f, userData.getTotalWins(), userData.getWinPercentile())));
     }
 
     @Override
@@ -242,20 +257,20 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
         super.onBackPressed();
     }
 
-    private void setUserImage(){
+    private void setUserImage() {
         final String userImgUrl = _storage.getUserData().getUserImageUrl();
         final ImageView view = getViewById(R.id.user_img);
-        if(userImgUrl == null){
+        if (userImgUrl == null) {
             return;
         }
         ImageLoader loader = new ImageLoader(this);
         loader.displayImage(userImgUrl, view);
     }
 
-    private void toggleDrawerState(){
-        if(_isDrawerLayoutOpened){
+    private void toggleDrawerState() {
+        if (_isDrawerLayoutOpened) {
             _drawerLayout.closeDrawer(Gravity.LEFT);
-        }else {
+        } else {
             _drawerLayout.openDrawer(Gravity.LEFT);
         }
     }
@@ -267,52 +282,52 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
         }
     };
 
-    private void updatePlayersList(){
-        if(_roster == null){
+    private void updatePlayersList() {
+        if (_roster == null) {
             return;
         }
         setMoneyTxt(_roster.getRemainingSalary());
         List<Player> players = _roster.getPlayers();
         List<IPlayer> playerItems = _playerAdapter.getItems();
-        for (int i = 0; i < playerItems.size(); i++){
+        for (int i = 0; i < playerItems.size(); i++) {
             boolean updated = false;
             IPlayer iPlayer = playerItems.get(i);
-            for (int j = 0; j < players.size(); j++){
+            for (int j = 0; j < players.size(); j++) {
                 Player player = players.get(j);
-                if(iPlayer.getPosition().compareToIgnoreCase(player.getPosition()) == 0){
+                if (iPlayer.getPosition().compareToIgnoreCase(player.getPosition()) == 0) {
                     playerItems.set(i, player);
                     updated = true;
                 }
             }
-            if(!updated && iPlayer instanceof Player){
+            if (!updated && iPlayer instanceof Player) {
                 playerItems.set(i, new PlayerItem(iPlayer.getPosition()));
             }
         }
         _playerAdapter.notifyDataSetChanged();
     }
 
-    public void setMoneyTxt(double price){
-        _moneyTxt.setText(String.format("$%.0f",price));
+    public void setMoneyTxt(double price) {
+        _moneyTxt.setText(String.format("$%.0f", price));
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == PLAYER_CANDIDATE && resultCode == Activity.RESULT_OK){
-            _roster = (Roster)data.getSerializableExtra(Const.ROSTER);
+        if (requestCode == PLAYER_CANDIDATE && resultCode == Activity.RESULT_OK) {
+            _roster = (Roster) data.getSerializableExtra(Const.ROSTER);
             setMoneyTxt(_roster.getRemainingSalary());
             updatePlayersList();
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void navigateToPlayersActivity(String playerPosition){
+    private void navigateToPlayersActivity(String playerPosition) {
         Intent intent = new Intent(this, PlayersActivity.class);
         intent.putExtra(Const.PLAYER_POSITION, playerPosition);
         intent.putExtra(Const.ROSTER, _roster);
         intent.putExtra(Const.MARKET_ID, _market.getId());
         intent.putExtra(Const.REMOVE_BENCHED_PLAYERS, _switcher.isSelected());
         DefaultRosterData rosterData = _storage.getDefaultRosterData();
-        double moneyFoster = _roster != null? _roster.getRemainingSalary(): rosterData.getRemainingSalary();
+        double moneyFoster = _roster != null ? _roster.getRemainingSalary() : rosterData.getRemainingSalary();
         intent.putExtra(Const.MONEY_FOR_ROSTER, moneyFoster);
         startActivityForResult(intent, PLAYER_CANDIDATE);
         overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
@@ -320,8 +335,8 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        IPlayer item = (IPlayer)_playerAdapter.getItem(position);
-        if(item instanceof Player){
+        IPlayer item = (IPlayer) _playerAdapter.getItem(position);
+        if (item instanceof Player) {
             return;
         }
         navigateToPlayersActivity(item.getPosition());
@@ -330,14 +345,15 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
     View.OnClickListener _autofillClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            int rosterId = _roster == null? -1: _roster.getId();
+            int rosterId = _roster == null ? -1 : _roster.getId();
             showProgress();
-            WebProxy.autofillRoster(_market.getId(), rosterId, _storage.getAccessTokenData().getAccessToken(), _spiceManager, new AutofillResponseListener() {
+            _webProxy.autofillRoster(_market.getId(), rosterId, new AutofillResponseListener() {
                 @Override
                 public void onRequestError(RequestError error) {
                     dismissProgress();
                     showAlert(getString(R.string.error), error.getMessage());
                 }
+
                 @Override
                 public void onRequestSuccess(AutofillResponse response) {
                     _roster = response.getRoster();
@@ -351,13 +367,13 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
     View.OnClickListener _submitClickListenere = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if(_roster == null){
-                showAlert("",getString(R.string.fill_roster));
+            if (_roster == null) {
+                showAlert("", getString(R.string.fill_roster));
                 return;
             }
             showProgress();
-            String contestType = v.getId() == R.id.submit_100fb_btn? SubmitRosterRequest.TOP6: SubmitRosterRequest.H2H;
-            WebProxy.submitRoster(_roster.getId(), contestType, _storage.getAccessTokenData().getAccessToken(), _spiceManager, new SubmitRosterResponseListener() {
+            String contestType = v.getId() == R.id.submit_100fb_btn ? SubmitRosterRequest.TOP6 : SubmitRosterRequest.H2H;
+            _webProxy.submitRoster(_roster.getId(), contestType, new SubmitRosterResponseListener() {
                 @Override
                 public void onRequestError(RequestError error) {
                     dismissProgress();

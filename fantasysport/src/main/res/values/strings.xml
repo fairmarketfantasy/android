@@ -20,7 +20,6 @@
     <string name="points_f" formatted="false">%d points</string>
     <string name="wins_f" formatted="false">%d wins(%.2f win) </string>
     <string name="create_games">CREATE GAMES</string>
-    <string name="my_games">MY GAMES</string>
     <string name="drawer_open">Menu</string>
     <string name="drawer_close">Menu</string>
     <string name="auto_fill">AUTO FILL</string>
@@ -39,7 +38,15 @@
     <string name="you_predict">You predict&#160;</string>
     <string name="cancel">Cancel</string>
     <string name="yes">Yes</string>
-
+    <string name="avatar">Avatar</string>
+    <string name="change_password">Change Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="change_name">Change Name</string>
+    <string name="new_name">New Name</string>
+    <string name="change_email">Change Email</string>
+    <string name="new_email">New Email</string>
+    <string name="new_pwd">New Password</string>
+    <string name="current_pwd">Current Password</string>
 
     <!--<string name="wins_f">%$d wins%$d win </string>-->
 
@@ -54,6 +61,8 @@
     <string name="please_provide_valid_password">Please provide password at least 6 characters long</string>
     <string name="balance">Balance</string>
     <string name="fill_roster">Fill roster at first!</string>
+    <string name="please_provide_valid_current_password">Current password must be at least 6 characters long</string>
+    <string name="please_provide_valid_confirm_password">Confirmation password does not match</string>
 
     <!-- facebook app id -->
 
@@ -69,14 +78,13 @@
     <string name="app_id">1455342834679971</string>
 
     <!-- Nav Drawer Menu Items -->
-    <string-array name="nav_drawer_items">
-        <item>My Games</item><!--1-->
-        <item>Create Game</item><!--2-->
-        <item>Rules</item><!--3-->
-        <item>Legal Stuff</item><!--4-->
-        <item>Support</item><!--5-->
-        <item>Settings</item><!--6-->
-        <item>Sign Out</item><!--7-->
-    </string-array>
+
+        <string name="my_games">My Games</string><!--1-->
+        <string name="create_game">Create Game</string><!--2-->
+        <string name="rules">Rules</string><!--3-->
+        <string name="legal_stuff">Legal Stuff</string><!--4-->
+        <string name="support">Support</string><!--5-->
+        <string name="settings">Settings</string><!--6-->
+        <string name="sign_out">Sign Out</string><!--7-->
 
 </resources>

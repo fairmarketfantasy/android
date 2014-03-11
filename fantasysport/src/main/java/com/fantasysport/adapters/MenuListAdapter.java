@@ -8,8 +8,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 import com.fantasysport.R;
-import com.fantasysport.views.MenuItem;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,9 +20,15 @@ public class MenuListAdapter extends BaseAdapter {
     private List<MenuItem> _items;
     private Context _context;
 
-    public MenuListAdapter(List<MenuItem> items, Context context){
-        _items = items;
+    public MenuListAdapter(Context context){
         _context = context;
+
+        _items = new ArrayList<MenuItem>();
+        _items.add(new MenuItem(MenuItemEnum.Rules, _context.getString(R.string.rules)));
+        _items.add(new MenuItem(MenuItemEnum.LegalStuff, _context.getString(R.string.legal_stuff)));
+        _items.add(new MenuItem(MenuItemEnum.Support, _context.getString(R.string.support)));
+        _items.add(new MenuItem(MenuItemEnum.Settings, _context.getString(R.string.settings)));
+        _items.add(new MenuItem(MenuItemEnum.SignOut, _context.getString(R.string.sign_out)));
     }
 
     @Override

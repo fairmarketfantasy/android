@@ -61,6 +61,18 @@
         <item name="android:textSize">@dimen/auth_edit_text_text_size</item>
     </style>
 
+    <style name="update_user_edit_text" parent="@android:style/Widget.EditText">
+        <item name="android:background">@drawable/white_edit_text</item>
+        <item name="android:textColor">#000000</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/auth_edit_text_height</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textSize">@dimen/auth_edit_text_text_size</item>
+        <item name="android:paddingLeft">@dimen/side_marging</item>
+        <item name="android:paddingRight">@dimen/side_marging</item>
+    </style>
+
 
 
 </resources>

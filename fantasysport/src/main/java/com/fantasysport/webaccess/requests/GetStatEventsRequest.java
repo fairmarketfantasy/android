@@ -17,12 +17,10 @@ import java.util.List;
  */
 public class GetStatEventsRequest extends BaseRequest<StatEventsResponse> {
 
-    private String _accessToken;
     private Player _player;
 
-    public GetStatEventsRequest(Player player, String accessToken) {
+    public GetStatEventsRequest(Player player) {
         super(StatEventsResponse.class);
-        _accessToken = accessToken;
         _player = player;
     }
 
@@ -31,7 +29,7 @@ public class GetStatEventsRequest extends BaseRequest<StatEventsResponse> {
         Uri.Builder uriBuilder = Uri.parse(getUrl()).buildUpon()
                 .appendPath("events")
                 .appendPath("for_players")
-                .appendQueryParameter("access_token", _accessToken)
+                .appendQueryParameter("access_token", getAccessToken())
                 .appendQueryParameter("player_ids", _player.getStatsId())
                 .appendQueryParameter("average", "true");
         String url = uriBuilder.build().toString();

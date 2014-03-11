@@ -14,14 +14,12 @@ import java.util.List;
  */
 public class GetPlayersRequest extends BaseRequest<PlayersRequestResponse> {
 
-    private String _accessToken;
     private String _position;
     private Boolean _removeBenchedPlayers;
     private int _rosterId;
 
-    public GetPlayersRequest(String accessToken, String position, boolean removeBenchedPlayers, int rosterId) {
+    public GetPlayersRequest(String position, boolean removeBenchedPlayers, int rosterId) {
         super(PlayersRequestResponse.class);
-        _accessToken = accessToken;
         _position = position;
         _removeBenchedPlayers = removeBenchedPlayers;
         _rosterId = rosterId;
@@ -31,7 +29,7 @@ public class GetPlayersRequest extends BaseRequest<PlayersRequestResponse> {
     public PlayersRequestResponse loadDataFromNetwork() throws Exception {
         Uri.Builder uriBuilder = Uri.parse(getUrl()).buildUpon();
         uriBuilder.appendPath("players")
-                .appendQueryParameter("access_token", _accessToken)
+                .appendQueryParameter("access_token", getAccessToken())
                 .appendQueryParameter("dir", "desc")
                 .appendQueryParameter("position", _position)
                 .appendQueryParameter("sort","buy_price")

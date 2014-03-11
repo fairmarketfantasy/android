@@ -22,6 +22,12 @@ public class User {
     @SerializedName("password_confirmation")
     private String _passwordConfirmation;
 
+    @SerializedName("current_password")
+    private String _currentPassword;
+
+    @SerializedName("id")
+    private int _id;
+
     public String getLogin(){
         return  _login;
     }
@@ -56,6 +62,14 @@ public class User {
 
     public void setPasswordConfirmation(String passwordConfirmation){
         _passwordConfirmation = passwordConfirmation;
+    }
+
+    public void setCurrentPassword(String currentPassword){
+        _currentPassword = currentPassword;
+    }
+
+    public void setId(int id){
+        _id = id;
     }
 
 }

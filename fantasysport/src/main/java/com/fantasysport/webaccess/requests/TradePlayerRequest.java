@@ -17,15 +17,13 @@ public class TradePlayerRequest extends BaseRequest<TradePlayerResponse> {
     private int _rosterId;
     private int _playerId;
     private TradePlayerRequestBody _body;
-    private String _accessToken;
 
 
-    public TradePlayerRequest(int rosterId, Player player, String accessToken) {
+    public TradePlayerRequest(int rosterId, Player player) {
         super(TradePlayerResponse.class);
         _rosterId = rosterId;
         _playerId = player.getId();
         _body = new TradePlayerRequestBody(player.getPurchasePrice());
-        _accessToken = accessToken;
     }
 
     @Override
@@ -35,7 +33,7 @@ public class TradePlayerRequest extends BaseRequest<TradePlayerResponse> {
                 .appendPath(Integer.toString(_rosterId))
                 .appendPath("remove_player")
                 .appendPath(Integer.toString(_playerId))
-                .appendQueryParameter("access_token", _accessToken);
+                .appendQueryParameter("access_token", getAccessToken());
         String url = uriBuilder.build().toString();
         String js = new Gson().toJson(_body);
         HttpContent content = ByteArrayContent.fromString("application/json", js);

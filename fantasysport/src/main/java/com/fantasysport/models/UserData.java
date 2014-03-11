@@ -57,10 +57,6 @@ public class UserData {
 
     @SerializedName("bets")
     private Float _bets;
-//
-////
-//////    bonuses:     {
-//////    },
 
     @SerializedName("winnings")
     private Integer _winnings;
@@ -84,14 +80,14 @@ public class UserData {
     @SerializedName("confirmed")
     private boolean _confirmed;
 
-    @SerializedName("in_progress_roster")
-    private Roster _inProgressRoster;
+//    @SerializedName("in_progress_roster")
+//    private Roster _inProgressRoster;
 
-    @SerializedName("leagues")
-    private List<League> _leagues;
+//    @SerializedName("leagues")
+//    private List<League> _leagues;
 
-    @SerializedName("customer_object")
-    private CustomerObject _customerObject;
+//    @SerializedName("customer_object")
+//    private CustomerObject _customerObject;
 
     public String getCurrentSport() {
         return _currentSport;
@@ -127,6 +123,14 @@ public class UserData {
 
     public int getBalance() {
         return _balance;
+    }
+
+    public String getEmail(){
+        return _email;
+    }
+
+    public int getId(){
+        return _id;
     }
 
 }

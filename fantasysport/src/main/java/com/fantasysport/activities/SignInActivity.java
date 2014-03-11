@@ -37,6 +37,8 @@ public class SignInActivity extends AuthActivity {
         signInBtn.setTypeface(getProhibitionRound());
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         signInBtn.setOnClickListener(_signInBtnClickListener);
+        TextView forgotPwdLbl = getViewById(R.id.forgot_pwd_lbl);
+        forgotPwdLbl.setOnClickListener(_forgotPwdClickListener);
 
         setBackground();
         _emailTxt = getViewById(R.id.email_txt);
@@ -66,7 +68,7 @@ public class SignInActivity extends AuthActivity {
             return;
         }
         showProgress();
-        WebProxy.signIn(email, password, _spiceManager, _userSignInResponseListener);
+        _webProxy.signIn(email, password, _userSignInResponseListener);
     }
 
     TextView.OnEditorActionListener _passwordTxtEditorActionListener = new TextView.OnEditorActionListener() {
@@ -90,8 +92,7 @@ public class SignInActivity extends AuthActivity {
         @Override
         public void onRequestSuccess(AuthResponse response) {
             _storage.setUserData(response.getUserData());
-            _storage.setAccessTokenData(response.getAccessTokenData());
-            loadMarkets(_storage.getAccessTokenData().getAccessToken());
+            loadMarkets();
         }
     };
 
@@ -111,6 +112,13 @@ public class SignInActivity extends AuthActivity {
 //            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             startActivity(intent);
             overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
+        }
+    };
+
+    View.OnClickListener _forgotPwdClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            showWebView("pages/mobile/forgot_password");
         }
     };
 

@@ -85,7 +85,7 @@ public class IndividuaPredictionsActivity extends BaseActivity {
 
     private void loadStatEvents(Player player) {
         showProgress();
-        WebProxy.getStatEvens(player, _storage.getAccessTokenData().getAccessToken(), _spiceManager, new StatEventsResponseListener() {
+        _webProxy.getStatEvens(player, new StatEventsResponseListener() {
             @Override
             public void onRequestError(RequestError error) {
                 dismissProgress();
@@ -121,8 +121,7 @@ public class IndividuaPredictionsActivity extends BaseActivity {
                 }
             }
             showProgress();
-            String accessToken = _storage.getAccessTokenData().getAccessToken();
-            WebProxy.submitPrediction(_rosterId, _marketId, _player.getStatsId(), resultItems, accessToken, _spiceManager, new SubmitPredictionResponseListener() {
+            _webProxy.submitPrediction(_rosterId, _marketId, _player.getStatsId(), resultItems, new SubmitPredictionResponseListener() {
                 @Override
                 public void onRequestError(RequestError error) {
                     dismissProgress();

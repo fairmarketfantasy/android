@@ -14,11 +14,11 @@ import com.google.gson.Gson;
 
 public class SignUpRequest extends BaseRequest<AuthResponse> {
 
-    private SignUpRequestBody _requestBody;
+    private UserRequestBody _requestBody;
 
     public SignUpRequest(User user) {
         super(AuthResponse.class);
-        _requestBody = new SignUpRequestBody(user);
+        _requestBody = new UserRequestBody(user);
     }
 
     @Override

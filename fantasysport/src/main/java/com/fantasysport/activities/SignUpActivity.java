@@ -93,7 +93,7 @@ public class SignUpActivity extends AuthActivity {
         }
 
         showProgress();
-        WebProxy.signUp(getUser(), _spiceManager, _signUpResponseListener);
+        _webProxy.signUp(getUser(), _signUpResponseListener);
     }
 
     @Override
@@ -148,8 +148,7 @@ public class SignUpActivity extends AuthActivity {
         @Override
         public void onRequestSuccess(AuthResponse response) {
             _storage.setUserData(response.getUserData());
-            _storage.setAccessTokenData(response.getAccessTokenData());
-            loadMarkets(_storage.getAccessTokenData().getAccessToken());
+            loadMarkets();
         }
 
         @Override

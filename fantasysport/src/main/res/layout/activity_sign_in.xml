@@ -77,6 +77,7 @@
                               android:layout_gravity="center_horizontal"
                               android:textColor="#ffffff"
                               android:layout_marginBottom="15dip"
+                              android:id="@+id/forgot_pwd_lbl"
                             />
 
                 </LinearLayout>

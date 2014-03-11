@@ -9,6 +9,7 @@ public class AccessTokenRequestBody {
 
     public final static String PASSWORD = "password";
     public final static String FACEBOOK = "facebook";
+    public final static String REFRESH_TOKEN = "refresh_token";
 
     @SerializedName("client_id")
     private String _clientId = "fairmarketfantasy";
@@ -31,6 +32,9 @@ public class AccessTokenRequestBody {
     @SerializedName("uid")
     private String _uid;
 
+    @SerializedName("refresh_token")
+    private String _refreshToken;
+
     public AccessTokenRequestBody(String email, String password){
         _email = email;
         _password = password;
@@ -44,5 +48,10 @@ public class AccessTokenRequestBody {
         _grantType = FACEBOOK;
         _uid = uid;
         _accessToken = accessToken;
+    }
+
+    public void setRefreshToken(String refreshToken){
+        _grantType = REFRESH_TOKEN;
+        _refreshToken = refreshToken;
     }
 }

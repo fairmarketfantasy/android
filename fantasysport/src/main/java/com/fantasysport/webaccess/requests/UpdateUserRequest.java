@@ -1,7 +1,8 @@
 package com.fantasysport.webaccess.requests;
 
 import android.net.Uri;
-import com.fantasysport.models.Roster;
+import com.fantasysport.models.User;
+import com.fantasysport.models.UserData;
 import com.google.api.client.http.ByteArrayContent;
 import com.google.api.client.http.GenericUrl;
 import com.google.api.client.http.HttpContent;
@@ -9,28 +10,29 @@ import com.google.api.client.http.HttpRequest;
 import com.google.gson.Gson;
 
 /**
- * Created by bylynka on 2/26/14.
+ * Created by bylynka on 3/11/14.
  */
-public class CreateRosterRequest extends BaseRequest<Roster> {
-    private CreateRosterRequestBody _requestBody;
+public class UpdateUserRequest extends BaseRequest<UserData> {
 
-    public CreateRosterRequest(int marketId) {
-        super(Roster.class);
-        _requestBody = new CreateRosterRequestBody(marketId);
+    private UserRequestBody _body;
+
+    public UpdateUserRequest(User user) {
+        super(UserData.class);
+        _body = new UserRequestBody(user);
     }
 
     @Override
-    public Roster loadDataFromNetwork() throws Exception {
-        Uri.Builder uriBuilder = Uri.parse(getUrl()).buildUpon();
-        uriBuilder.appendPath("rosters")
+    public UserData loadDataFromNetwork() throws Exception {
+        Uri.Builder uriBuilder = Uri.parse(getUrl()).buildUpon()
+                .appendPath("users")
                 .appendQueryParameter("access_token", getAccessToken());
         String url = uriBuilder.build().toString();
-        String js = new Gson().toJson(_requestBody);
+        String js = new Gson().toJson(_body);
         HttpContent content = ByteArrayContent.fromString("application/json", js);
         HttpRequest request = getHttpRequestFactory()
-                .buildPostRequest(new GenericUrl(url), content);
+                .buildPutRequest(new GenericUrl(url), content);
         request.getHeaders().setAccept("application/json");
         String result = request.execute().parseAsString();
-        return new Gson().fromJson(result, getResultType());
+        return new Gson().fromJson(result, UserData.class);
     }
 }

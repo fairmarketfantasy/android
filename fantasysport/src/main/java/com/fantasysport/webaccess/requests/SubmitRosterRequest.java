@@ -16,15 +16,13 @@ public class SubmitRosterRequest extends BaseRequest<Object> {
     public static final String TOP6 = "100/30/30";
     public static final String H2H = "27 h2h";
 
-    private String _accessToken;
     private int _rosterId;
     private SubmitRequestBody _body;
 
-    public SubmitRosterRequest(int rosterId, String contestType, String accessToken) {
+    public SubmitRosterRequest(int rosterId, String contestType) {
         super(Object.class);
         _body = new SubmitRequestBody(contestType);
         _rosterId = rosterId;
-        _accessToken = accessToken;
     }
 
     @Override
@@ -33,7 +31,7 @@ public class SubmitRosterRequest extends BaseRequest<Object> {
         uriBuilder.appendPath("rosters")
                 .appendPath(Integer.toString(_rosterId))
                 .appendPath("submit")
-                .appendQueryParameter("access_token", _accessToken);
+                .appendQueryParameter("access_token", getAccessToken());
         String url = uriBuilder.build().toString();
         String js = new Gson().toJson(_body);
         HttpContent content = ByteArrayContent.fromString("application/json", js);

@@ -16,12 +16,8 @@ import com.fantasysport.R;
 import com.fantasysport.webaccess.requestListeners.FaceBookAuthListener;
 import com.fantasysport.webaccess.requestListeners.MarketsResponseListener;
 import com.fantasysport.webaccess.requestListeners.RequestError;
-import com.fantasysport.webaccess.WebProxy;
 import com.fantasysport.webaccess.responses.AuthResponse;
 import com.fantasysport.webaccess.responses.MarketResponse;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Created by bylynka on 2/10/14.
@@ -109,7 +105,7 @@ public class AuthActivity extends BaseActivity {
                 }
                 GraphObject user = response.getGraphObject();
                 String id = (String)user.getProperty("id");
-                WebProxy.facebookLogin(accessToken, id, _spiceManager, _userSignInResponseListener);
+                _webProxy.facebookLogin(accessToken, id, _userSignInResponseListener);
             }
         });
         request.executeAsync();
@@ -141,8 +137,8 @@ public class AuthActivity extends BaseActivity {
         });
     }
 
-    protected void loadMarkets(String accessToken){
-        WebProxy.getGames(accessToken, _spiceManager, _marketsResponseListener);
+    protected void loadMarkets(){
+        _webProxy.getGames(_marketsResponseListener);
     }
 
     protected void navigateToMainActivity() {
@@ -154,20 +150,6 @@ public class AuthActivity extends BaseActivity {
         overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
     }
 
-    public boolean isEmailValid(String email) {
-        String regExp = "^(([\\w-]+\\.)+[\\w-]+|([a-zA-Z]{1}|[\\w-]{2,}))@"
-                + "((([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\.([0-1]?"
-                + "[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\."
-                + "([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\.([0-1]?"
-                + "[0-9]{1,2}|25[0-5]|2[0-4][0-9])){1}|"
-                + "([a-zA-Z]+[\\w-]+\\.)+[a-zA-Z]{2,4})$";
-
-        CharSequence inputStr = email;
-        Pattern pattern = Pattern.compile(regExp, Pattern.CASE_INSENSITIVE);
-        Matcher matcher = pattern.matcher(inputStr);
-        return matcher.matches();
-    }
-
     MarketsResponseListener _marketsResponseListener = new MarketsResponseListener() {
         @Override
         public void onRequestError(RequestError error) {
@@ -177,10 +159,10 @@ public class AuthActivity extends BaseActivity {
 
         @Override
         public void onRequestSuccess(MarketResponse response) {
-            dismissProgress();
             _storage.setDefaultRosterData(response.getDefaultRosterData());
             _storage.setMarkets(response.getMarkets());
             navigateToMainActivity();
+            dismissProgress();
         }
     };
 
@@ -194,8 +176,7 @@ public class AuthActivity extends BaseActivity {
         @Override
         public void onRequestSuccess(AuthResponse response) {
             _storage.setUserData(response.getUserData());
-            _storage.setAccessTokenData(response.getAccessTokenData());
-            loadMarkets(_storage.getAccessTokenData().getAccessToken());
+            loadMarkets();
         }
     };
 

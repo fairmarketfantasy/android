@@ -14,14 +14,12 @@ import com.google.gson.Gson;
  */
 public class AddPlayerRequest extends BaseRequest<Player> {
 
-    private String _accessToken;
     private int _rosterId;
     private AddPlayerRequestBody _body;
     private Player _player;
 
-    public AddPlayerRequest(int rosterId, Player player, String accessToken) {
+    public AddPlayerRequest(int rosterId, Player player) {
         super(Player.class);
-        _accessToken = accessToken;
         _rosterId = rosterId;
         _player = player;
         _body = new AddPlayerRequestBody(player.getBuyPrice());
@@ -35,7 +33,7 @@ public class AddPlayerRequest extends BaseRequest<Player> {
                 .appendPath("add_player")
                 .appendPath(Integer.toString(_player.getId()))
                 .appendPath(_player.getPosition())
-                .appendQueryParameter("access_token", _accessToken);
+                .appendQueryParameter("access_token", getAccessToken());
         String url = uriBuilder.build().toString();
         String js = new Gson().toJson(_body);
         HttpContent content = ByteArrayContent.fromString("application/json", js);

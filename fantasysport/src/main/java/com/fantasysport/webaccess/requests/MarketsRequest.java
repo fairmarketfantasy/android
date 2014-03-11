@@ -20,11 +20,8 @@ public class MarketsRequest extends BaseRequest<MarketResponse>  {
     public static final String REGULAR_SEASON = "regular_season";
     public static final String SINGLE_ELIMINATION = "single_elimination";
 
-    private String _accessToken;
-
-    public MarketsRequest(String accessToken) {
+    public MarketsRequest() {
         super(MarketResponse.class);
-        _accessToken = accessToken;
     }
 
     @Override
@@ -48,7 +45,7 @@ public class MarketsRequest extends BaseRequest<MarketResponse>  {
         uriBuilder.appendPath("markets")
                 .appendQueryParameter("sport","NBA")
                 .appendQueryParameter("type", gameType)
-                .appendQueryParameter("access_token", _accessToken);
+                .appendQueryParameter("access_token", getAccessToken());
         String url = uriBuilder.build().toString();
         HttpRequest request = getHttpRequestFactory().buildGetRequest(new GenericUrl(url));
         request.getHeaders().setAccept("application/json");
@@ -61,7 +58,7 @@ public class MarketsRequest extends BaseRequest<MarketResponse>  {
         uriBuilder.appendPath("rosters")
                 .appendPath("new")
                 .appendQueryParameter("sport", "NBA")
-                .appendQueryParameter("access_token", _accessToken);
+                .appendQueryParameter("access_token", getAccessToken());
         String url = uriBuilder.build().toString();
         HttpRequest request = getHttpRequestFactory().buildGetRequest(new GenericUrl(url));
         request.getHeaders().setAccept("application/json");

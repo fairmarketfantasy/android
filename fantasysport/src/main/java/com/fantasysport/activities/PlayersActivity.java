@@ -68,7 +68,7 @@ public class PlayersActivity extends BaseActivity implements CandidatePlayersAda
 
         if (_roster == null) {
             showProgress();
-            WebProxy.createRoster(_storage.getAccessTokenData().getAccessToken(), _marketId, _spiceManager, new CreateRosterResponseListener() {
+            _webProxy.createRoster(_marketId, new CreateRosterResponseListener() {
                 @Override
                 public void onRequestError(RequestError message) {
                     dismissProgress();
@@ -89,7 +89,7 @@ public class PlayersActivity extends BaseActivity implements CandidatePlayersAda
         showProgress();
         Intent intent = getIntent();
         final String position = intent.getStringExtra(Const.PLAYER_POSITION);
-        WebProxy.getPlayers(_storage.getAccessTokenData().getAccessToken(), position, _switcher.isSelected(), _roster.getId(), _spiceManager, _playersListener);
+        _webProxy.getPlayers(position, _switcher.isSelected(), _roster.getId(), _playersListener);
     }
 
     private void setPlayersListView() {
@@ -142,7 +142,7 @@ public class PlayersActivity extends BaseActivity implements CandidatePlayersAda
     @Override
     public void onAddPlayer(Player player) {
         showProgress();
-        WebProxy.addPlayer(_roster.getId(), player, _storage.getAccessTokenData().getAccessToken(), _spiceManager, _addPlayerListener);
+        _webProxy.addPlayer(_roster.getId(), player, _addPlayerListener);
     }
 
     @Override

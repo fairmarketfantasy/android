@@ -97,8 +97,11 @@ public class StatsAdapter extends BaseAdapter {
             cancelBtn.setOnClickListener(new ModeOnClickListener(StatsItem.DEFAULT_MODE, item, view));
             predictionBlock.setVisibility(View.VISIBLE);
             TextView predictionLbl = (TextView) view.findViewById(R.id.prediction_lbl);
-            String msg = String.format("%s than %.1f %s", (item.getMode().equalsIgnoreCase(StatsItem.LESS_MODE) ? "less" : "more"), item.getValue(), item.getName());
+            boolean isLessSelected = item.getMode().equalsIgnoreCase(StatsItem.LESS_MODE);
+            String msg = String.format("%s than %.1f %s", (isLessSelected ? "less" : "more"), item.getValue(), item.getName());
             predictionLbl.setText(msg);
+            moreBtn.setSelected(!isLessSelected);
+            lessBtn.setSelected(isLessSelected);
         }
     }
 

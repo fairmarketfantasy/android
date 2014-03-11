@@ -28,7 +28,9 @@ public class FacebookSignInRequest extends BaseRequest<AuthResponse> {
     @Override
     public AuthResponse loadDataFromNetwork() throws Exception {
         UserData userData = facebookAuth();
-        AccessTokenData accessTokenData = getAccessTokenData(_body.getAccessToken());
+        AccessTokenRequestBody body = new AccessTokenRequestBody();
+        body.setFacebookAuth(_body.getAccessToken(), _uid);
+        AccessTokenData accessTokenData = getAccessTokenData(body);
         return new AuthResponse(userData, accessTokenData);
     }
 
@@ -44,21 +46,6 @@ public class FacebookSignInRequest extends BaseRequest<AuthResponse> {
                 .buildGetRequest(new GenericUrl(url));
         String result = request.execute().parseAsString();
         return new Gson().fromJson(result, UserData.class);
-    }
 
-    private AccessTokenData getAccessTokenData(String accessToken) throws Exception{
-        AccessTokenRequestBody body = new AccessTokenRequestBody();
-        body.setFacebookAuth(accessToken, _uid);
-        Uri.Builder uriBuilder = Uri.parse(getUrl()).buildUpon();
-        uriBuilder.appendPath("oauth2");
-        uriBuilder.appendPath("token");
-        String url = uriBuilder.build().toString();
-        String js = new Gson().toJson(body);
-        HttpContent content = ByteArrayContent.fromString("application/json", js);
-        HttpRequest request = getHttpRequestFactory()
-                .buildPostRequest(new GenericUrl(url), content);
-        request.getHeaders().setAccept("application/json");
-        String result = request.execute().parseAsString();
-        return new Gson().fromJson(result, AccessTokenData.class);
     }
 }
