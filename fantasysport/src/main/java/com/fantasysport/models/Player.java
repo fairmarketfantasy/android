@@ -47,6 +47,17 @@ public class Player implements Serializable, IPlayer {
     @SerializedName("stats_id")
     private String _statsId;
 
+    @SerializedName("benched")
+    private boolean _isBenched;
+
+    public boolean getIsBenched(){
+        return _isBenched;
+    }
+
+    public void setIsBenched(boolean isBenched){
+        _isBenched = isBenched;
+    }
+
     public String getStatsId(){
         return _statsId;
     }

@@ -90,10 +90,12 @@ public class RosterPlayersAdapter extends BaseAdapter {
         TextView nameLbl = (TextView)convertView.findViewById(R.id.name_lbl);
         TextView priceLbl = (TextView)convertView.findViewById(R.id.buy_price_lbl);
         PlayerProgressTextView progressLbl = (PlayerProgressTextView)convertView.findViewById(R.id.progress_lbl);
+        ImageView benchedImg = (ImageView)convertView.findViewById(R.id.benched_img);
+        ImageView imageView = (ImageView)convertView.findViewById(R.id.player_img);
+        imageView.setImageBitmap(null);
         if(isSelected){
             gamePositionTxt.setText(String.format("%s %s PPG %.1f", player.getPosition(), player.getTeam(), player.getPPG()));
             tradeBtn.setVisibility(View.VISIBLE);
-            ImageView imageView = (ImageView)convertView.findViewById(R.id.player_img);
             _imageLoader.displayImage(player.getImageUrl(), imageView);
             nameLbl.setVisibility(View.VISIBLE);
             nameLbl.setText(player.getName());
@@ -102,12 +104,14 @@ public class RosterPlayersAdapter extends BaseAdapter {
             progressLbl.setVisibility(View.VISIBLE);
             progressLbl.setPlayer(player);
             tradeBtn.setOnClickListener(new TradeBtnClickListener(player));
+            benchedImg.setVisibility(player.getIsBenched()? View.VISIBLE : View.INVISIBLE);
         }else {
             gamePositionTxt.setText(item.getPosition() + " Not Selected");
             tradeBtn.setVisibility(View.GONE);
             nameLbl.setVisibility(View.INVISIBLE);
             priceLbl.setVisibility(View.INVISIBLE);
             progressLbl.setVisibility(View.INVISIBLE);
+            benchedImg.setVisibility(View.INVISIBLE);
         }
 
         return convertView;

@@ -41,7 +41,6 @@ public class GetPlayersRequest extends BaseRequest<PlayersRequestResponse> {
         String result = request.execute().parseAsString();
         PlayersParser parser = new PlayersParser();
         List<Player> players = parser.parse(result);
-        PlayersRequestResponse response = new PlayersRequestResponse(players);
-        return response;
+        return new PlayersRequestResponse(players);
     }
 }

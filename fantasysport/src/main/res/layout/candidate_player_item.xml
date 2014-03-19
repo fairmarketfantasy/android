@@ -22,6 +22,10 @@
                        android:layout_height="56dp"
                        android:layout_gravity="center"
                        android:src="@drawable/tshirt"
+                    />
+            <ImageView android:layout_width="56dp"
+                       android:layout_height="56dp"
+                       android:layout_gravity="center"
                        android:id="@+id/player_img"
                        android:scaleType="centerCrop"
                     />
@@ -29,6 +33,11 @@
                        android:layout_height="match_parent"
                        android:src="@drawable/circle_2"
                        android:id="@+id/circle_img"
+                    />
+            <ImageView android:layout_width="match_parent"
+                       android:layout_height="match_parent"
+                       android:src="@drawable/benched"
+                       android:id="@+id/benched_img"
                     />
         </FrameLayout>
 
@@ -57,10 +66,9 @@
                       android:textSize="@dimen/medium_font"
                       android:textStyle="bold"
                     />
-
         </LinearLayout>
 
-        <Button android:layout_width="50dp"
+        <Button android:layout_width="38dp"
                 android:layout_height="@dimen/btn_height"
                 android:layout_marginRight="5dp"
                 android:id="@+id/pt25_btn"
@@ -68,10 +76,10 @@
                 android:textSize="@dimen/x_medium_font"
                 android:paddingRight="0dp"
                 android:paddingLeft="0dp"
-                android:textColor="#E84C3D"
-                android:text="@string/pt25" />
+                android:textColor="@color/app_blue"
+                android:text="PT" />
 
-        <Button android:layout_width="50dp"
+        <Button android:layout_width="48dp"
                 android:layout_height="@dimen/btn_height"
                 android:id="@+id/add_btn"
                 android:background="@drawable/add_button"

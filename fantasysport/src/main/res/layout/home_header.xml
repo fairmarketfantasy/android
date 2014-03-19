@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="horizontal"
+                  android:paddingLeft="@dimen/side_marging"
+                  android:paddingRight="@dimen/side_marging"
+                  android:paddingTop="@dimen/side_hor_marging"
+                  android:paddingBottom="@dimen/side_hor_marging"
+                  android:background="#474747">
+        <LinearLayout android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:orientation="vertical"
+                      android:layout_weight="1">
+            <LinearLayout android:layout_width="wrap_content"
+                          android:orientation="horizontal"
+                          android:layout_height="wrap_content">
+                <TextView android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:textSize="@dimen/lage_font"
+                          android:text="John Doe"
+                          android:textColor="#FFFFFF"
+                          android:id="@+id/user_name_txt"/>
+                <ImageView android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:layout_gravity="center_vertical"
+                           android:src="@drawable/wallet"
+                           android:layout_marginLeft="@dimen/side_hor_marging"
+                           android:layout_marginRight="@dimen/side_hor_marging"
+                        />
+                <TextView android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:textSize="@dimen/lage_font"
+                          android:text="10000"
+                          android:textColor="#2DCC70"
+                          android:id="@+id/ballance_txt"/>
+            </LinearLayout>
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:textSize="@dimen/medium_font"
+                      android:textColor="#939393"
+                      android:text="Member Since Oct 18, 2013"
+                      android:id="@+id/user_reg_txt"/>
+
+            <LinearLayout android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:orientation="horizontal"
+                          android:paddingTop="@dimen/side_hor_marging"
+                    >
+                <TextView android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:textSize="@dimen/medium_font"
+                          android:textColor="#2DCC70"
+                          android:text="0 points"
+                          android:id="@+id/user_points_txt"/>
+                <TextView android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:textSize="@dimen/medium_font"
+                          android:textColor="#2DCC70"
+                          android:text="0 wins(0.00 win %)"
+                          android:paddingLeft="@dimen/side_hor_marging"
+                          android:id="@+id/user_wins_txt"/>
+            </LinearLayout>
+        </LinearLayout>
+        <FrameLayout android:layout_width="70dp"
+                     android:layout_height="70dp"
+                     android:layout_gravity="center_vertical"
+                >
+            <ImageView android:layout_width="68dp"
+                       android:layout_height="68dp"
+                       android:layout_gravity="center"
+                       android:id="@+id/user_img"
+                       android:src="@drawable/default_user"
+                       android:scaleType="centerCrop"
+                    />
+
+            <ImageView android:layout_width="70dp"
+                       android:layout_height="70dp"
+                       android:src="@drawable/circle"
+                       android:layout_gravity="center"
+                    />
+        </FrameLayout>
+
+    </LinearLayout>
+    <FrameLayout android:layout_width="match_parent" android:layout_height="56dp">
+        <android.support.v4.view.ViewPager
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/pager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        <Button android:layout_width="35dp" android:layout_height="35dp"
+                android:layout_gravity="center_vertical|left"
+                android:id="@+id/previous_pager_button"
+                android:layout_marginLeft="@dimen/side_marging"/>
+
+        <Button android:layout_width="35dp" android:layout_height="35dp"
+                android:layout_gravity="center_vertical|right"
+                android:id="@+id/next_pager_button"
+                android:layout_marginRight="@dimen/side_marging"
+                />
+
+    </FrameLayout>
+    <View android:layout_width="match_parent"
+          android:layout_height="1dip"
+          android:background="#CCCCCC" />
+</LinearLayout>

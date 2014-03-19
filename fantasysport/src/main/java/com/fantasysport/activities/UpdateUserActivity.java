@@ -27,8 +27,9 @@ public class UpdateUserActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().setHomeButtonEnabled(true);
         setContentView(R.layout.activity_update_user);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setInitParams(savedInstanceState);
         Button submitBtn = getViewById(R.id.submit_btn);
         submitBtn.setOnClickListener(_submitClickListener);

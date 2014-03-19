@@ -56,14 +56,14 @@ public class BaseActivity extends ActionBarActivity{
         _progress.setCancelable(false);
     }
 
-    protected void showProgress(){
+    public void showProgress(){
         if(_progress == null){
             createProgressBar();
         }
         _progress.show();
     }
 
-    protected void dismissProgress(){
+    public void dismissProgress(){
         if(_progress == null){
             return;
         }
@@ -80,7 +80,6 @@ public class BaseActivity extends ActionBarActivity{
     protected void onStart() {
         super.onStart();
         _spiceManager.start(this);
-
     }
 
     @Override
@@ -102,7 +101,7 @@ public class BaseActivity extends ActionBarActivity{
     }
 
 
-    protected void showAlert(String title, String message){
+    public void showAlert(String title, String message){
         showAlert(title, message, null);
     }
 

@@ -25,6 +25,7 @@ public class PlayersParser extends BaseParser {
     private final String HEADSHOT_URL = "headshot_url";
     private final String PURCHASE_PRICE = "purchase_price";
     private final String STATS_ID = "stats_id";
+    private final String BENCHED = "benched";
 
     private List<Object> _playerObjects;
 
@@ -75,6 +76,8 @@ public class PlayersParser extends BaseParser {
         player.setImageUrl(imgUrl);
         String playerIds = (String)_playerObjects.get(firstField + _keyMap.get(STATS_ID));
         player.setStatsId(playerIds);
+        Boolean isBenched = (Boolean)_playerObjects.get(firstField + _keyMap.get(BENCHED));
+        player.setIsBenched(isBenched);
         return player;
     }
 
@@ -105,6 +108,8 @@ public class PlayersParser extends BaseParser {
             }else if(atemptPutKey(PURCHASE_PRICE, field, i)){
                 continue;
             }else if(atemptPutKey(STATS_ID, field, i)){
+                continue;
+            }else if(atemptPutKey(BENCHED, field, i)){
                 continue;
             }
         }

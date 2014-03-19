@@ -1,91 +1,166 @@
 package com.fantasysport.activities;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
+import android.content.res.Configuration;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
+import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
-import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
-import android.widget.*;
+import android.widget.AdapterView;
+import android.widget.ImageView;
+import android.widget.ListView;
 import com.fantasysport.Const;
 import com.fantasysport.R;
-import com.fantasysport.adapters.*;
-import com.fantasysport.models.*;
-import com.fantasysport.utility.image.ImageLoader;
-import com.fantasysport.views.ScrollDisabledListView;
-import com.fantasysport.views.Switcher;
-import com.fantasysport.views.drawable.BitmapButtonDrawable;
-import com.fantasysport.views.listeners.SimpleDrawerListen;
-import com.fantasysport.views.listeners.ViewPagerOnPageSelectedListener;
-import com.fantasysport.webaccess.requestListeners.AutofillResponseListener;
-import com.fantasysport.webaccess.requestListeners.RequestError;
-import com.fantasysport.webaccess.requestListeners.SubmitRosterResponseListener;
-import com.fantasysport.webaccess.requestListeners.TradePlayerResponseListener;
-import com.fantasysport.webaccess.requests.SubmitRosterRequest;
-import com.fantasysport.webaccess.responses.AutofillResponse;
-import com.fantasysport.webaccess.responses.TradePlayerResponse;
+import com.fantasysport.adapters.MainActivityPagerAdapter;
+import com.fantasysport.adapters.MenuItem;
+import com.fantasysport.adapters.MenuListAdapter;
+import com.fantasysport.models.Market;
+import com.fantasysport.models.Roster;
+import com.fantasysport.views.AnimatedViewPager;
+import com.fantasysport.views.animations.ZoomOutPageTransformer;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
  * Created by bylynka on 2/11/14.
  */
-public class MainActivity extends BaseActivity implements AdapterView.OnItemClickListener {
+public class MainActivity extends BaseActivity{
 
     private final int PLAYER_CANDIDATE = 123;
     private DrawerLayout _drawerLayout;
+    private ActionBarDrawerToggle _drawerToggle;
     private ListView _menuList;
     private MenuListAdapter _menuAdapter;
-    private boolean _isDrawerLayoutOpened;
-    private GameAdapter _pagerAdapter;
-    private RosterPlayersAdapter _playerAdapter;
+    private Menu _menu;
+    private MainActivityPagerAdapter _mainActivityPagerAdapter;
     private Market _market;
     private Roster _roster;
-    private Switcher _switcher;
-    private TextView _moneyTxt;
+    private List<IListener> _listeners = new ArrayList<IListener>();
+    private boolean _removeBenchedPlayers = true;
+    private ImageView _leftSwipeImg;
+    private ImageView _rightSwipeImg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        _isDrawerLayoutOpened = false;
         setContentView(R.layout.activity_main);
-
-        Button submit100fbBtn = getViewById(R.id.submit_100fb_btn);
-        submit100fbBtn.setTypeface(getProhibitionRound());
-        submit100fbBtn.setOnClickListener(_submitClickListenere);
-
-        Button submitHth27fb = getViewById(R.id.submit_hth_btn);
-        submitHth27fb.setTypeface(getProhibitionRound());
-        submitHth27fb.setOnClickListener(_submitClickListenere);
-
-        Button autofillBtn = getViewById(R.id.autofill_btn);
-        autofillBtn.setTypeface(getProhibitionRound());
-        autofillBtn.setOnClickListener(_autofillClickListener);
-
-        _switcher = getViewById(R.id.switcher);
-        _switcher.setSelected(true);
-
-        _moneyTxt = getViewById(R.id.money_lbl);
-
+        initStartParams(savedInstanceState);
         _drawerLayout = getViewById(R.id.drawer_layout);
-        _drawerLayout.setDrawerListener(_drawerListener);
+        _drawerToggle = new ActionBarDrawerToggle(
+                this,                  /* host Activity */
+                _drawerLayout,         /* DrawerLayout object */
+                R.drawable.ic_drawer,  /* nav drawer icon to replace 'Up' caret */
+                R.string.drawer_open,  /* "open drawer" description */
+                R.string.drawer_close  /* "close drawer" description */
+        );
+
+        _drawerLayout.setDrawerListener(_drawerToggle);
         getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         _menuList = getViewById(R.id.left_drawer);
-        setUserData();
+        _leftSwipeImg = getViewById(R.id.left_point_img);
+        _rightSwipeImg = getViewById(R.id.right_point_img);
         setMenu();
-        setRoster();
         setPager();
+
+    }
+
+    private void initStartParams(Bundle savedInstanceState){
+        if(savedInstanceState == null){
+            return;
+        }
+        _removeBenchedPlayers = savedInstanceState.getBoolean(Const.REMOVE_BENCHED_PLAYERS, true);
+        _market = (Market)savedInstanceState.getSerializable(Const.MARKET);
+        _roster = (Roster)savedInstanceState.getSerializable(Const.ROSTER);
+    }
+
+    public boolean canRemoveBenchedPlayers(){
+        return _removeBenchedPlayers;
+    }
+
+    public void setCanBenchedPlayers(boolean canBenched){
+        _removeBenchedPlayers = canBenched;
+    }
+
+    public void addListener(IListener listener){
+        _listeners.add(listener);
+    }
+
+    private void raiseOnToggleHeader(){
+        for (int i = 0; i < _listeners.size(); i++){
+            _listeners.get(i).onHeaderToggle();
+        }
+    }
+
+    private void raiseOnPageChanged(int page){
+        for (int i = 0; i < _listeners.size(); i++){
+            _listeners.get(i).onPageChanged(page);
+        }
+    }
+
+    public Market getMarket(){
+        return _market;
+    }
+
+    public void setMarket(Market market){
+        _market = market;
+    }
+
+    public Roster getRoster(){
+        return _roster;
+    }
+
+    public void setRoster(Roster roster){
+        _roster = roster;
+    }
+
+    private void setPager(){
+        _mainActivityPagerAdapter = new MainActivityPagerAdapter(getSupportFragmentManager());
+        AnimatedViewPager pager = getViewById(R.id.root_pager);
+        pager.setPageTransformer(true, new ZoomOutPageTransformer());
+        pager.setAdapter(_mainActivityPagerAdapter);
+        pager.setOnPageChangeListener(new AnimatedViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                Drawable drawable = position == 0? getResources().getDrawable(R.drawable.swipe_active):getResources().getDrawable(R.drawable.swipe_passive);
+                _leftSwipeImg.setBackgroundDrawable(drawable);
+                drawable = position != 0? getResources().getDrawable(R.drawable.swipe_active):getResources().getDrawable(R.drawable.swipe_passive);
+                _rightSwipeImg.setBackgroundDrawable(drawable);
+                raiseOnPageChanged(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        _drawerToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        _drawerToggle.onConfigurationChanged(newConfig);
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        outState.putBoolean(Const.REMOVE_BENCHED_PLAYERS, _removeBenchedPlayers);
         if (_market == null) {
             return;
         }
@@ -93,110 +168,6 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
         if (_roster != null) {
             outState.putSerializable(Const.ROSTER, _roster);
         }
-    }
-
-    private void setRoster() {
-        _moneyTxt.setTypeface(getProhibitionRound());
-        ScrollDisabledListView rosterList = getViewById(R.id.roster_list);
-        rosterList.setOnItemClickListener(this);
-        List<IPlayer> items = new ArrayList<IPlayer>();
-        _playerAdapter = new RosterPlayersAdapter(items, this);
-        rosterList.setAdapter(_playerAdapter);
-        _playerAdapter.setListener(_playerAdapterListener);
-    }
-
-    RosterPlayersAdapter.IListener _playerAdapterListener = new RosterPlayersAdapter.IListener() {
-        @Override
-        public void onTrade(final Player player) {
-            showProgress();
-            _webProxy.tradePlayer(_roster.getId(), player, new TradePlayerResponseListener() {
-                @Override
-                public void onRequestError(RequestError error) {
-                    dismissProgress();
-                    showAlert(getString(R.string.error), error.getMessage());
-                }
-
-                @Override
-                public void onRequestSuccess(TradePlayerResponse response) {
-                    double salary = _roster.getRemainingSalary();
-                    _roster.getPlayers().remove(player);
-                    salary += response.getPrice();
-                    _roster.setRemainingSalary(salary);
-                    updatePlayersList();
-                    dismissProgress();
-                }
-            });
-        }
-    };
-
-    private void setRoster(Market market) {
-        _market = market;
-        setEmptyRoster();
-    }
-
-    private void setEmptyRoster() {
-        DefaultRosterData rosterData = _storage.getDefaultRosterData();
-        setMoneyTxt(rosterData.getRemainingSalary());
-        List<IPlayer> items = _playerAdapter.getItems();
-        items.clear();
-        List<String> positions = rosterData.getPositions();
-        for (int i = 0; i < positions.size(); i++) {
-            items.add(new PlayerItem(positions.get(i)));
-        }
-        _playerAdapter.notifyDataSetChanged();
-    }
-
-    private void setPager() {
-        final ViewPager pager = getViewById(R.id.pager);
-        List<Market> markets = _storage.getMarkets();
-        _pagerAdapter = new GameAdapter(getSupportFragmentManager(), markets);
-        pager.setOnPageChangeListener(_pageChangeListener);
-        pager.setAdapter(_pagerAdapter);
-        Button prevBtn = getViewById(R.id.previous_pager_button);
-        setPagerNavigateButton(prevBtn, R.drawable.ic_action_previous_item);
-        Button nextBtn = getViewById(R.id.next_pager_button);
-        setPagerNavigateButton(nextBtn, R.drawable.ic_action_next_item);
-
-        prevBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int curItem = pager.getCurrentItem();
-                if (curItem > 0) {
-                    pager.setCurrentItem(curItem - 1, true);
-                }
-            }
-        });
-
-        nextBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int curItem = pager.getCurrentItem();
-                int lastItem = _pagerAdapter.getCount() - 1;
-                if (curItem < lastItem) {
-                    pager.setCurrentItem(curItem + 1, true);
-                }
-            }
-        });
-        if (markets != null && markets.size() > 0) {
-            setRoster(markets.get(0));
-        }
-    }
-
-    ViewPager.OnPageChangeListener _pageChangeListener = new ViewPagerOnPageSelectedListener() {
-        @Override
-        public void onPageSelected(int position) {
-            List<Market> markets = _pagerAdapter.getMarkets();
-            if (position < 0 || markets == null) {
-                return;
-            }
-            setRoster(markets.get(position));
-        }
-    };
-
-    private void setPagerNavigateButton(Button button, int drawableId) {
-        BitmapDrawable drawable = (BitmapDrawable) getResources().getDrawable(drawableId);
-        BitmapButtonDrawable btnDrawable = new BitmapButtonDrawable(drawable.getBitmap(), Color.rgb(137, 137, 137), Color.rgb(117, 117, 117));
-        button.setBackgroundDrawable(btnDrawable);
     }
 
     private void setMenu() {
@@ -223,32 +194,36 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
                         signOut();
                         break;
                 }
-                toggleDrawerState();
             }
         });
     }
 
     @Override
-    public boolean onOptionsItemSelected(android.view.MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            toggleDrawerState();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main, menu);
+        _menu = menu;
+        return super.onCreateOptionsMenu(menu);
     }
 
-    private void setUserData() {
-        setUserImage();
-        UserData userData = _storage.getUserData();
-        TextView userNameTxt = getViewById(R.id.user_name_txt);
-        userNameTxt.setText(userData.getRealName());
-        TextView userRegTxt = getViewById(R.id.user_reg_txt);
-        Date regDate = userData.getRegistrationdDate();
-        userRegTxt.setText(String.format(getString(R.string.member_since_f, regDate, regDate, regDate)));
-        TextView pointsTxt = getViewById(R.id.user_points_txt);
-        pointsTxt.setText(String.format(getString(R.string.points_f, userData.getTotalPoints())));
-        TextView winsTxt = getViewById(R.id.user_wins_txt);
-        winsTxt.setText(String.format(getString(R.string.wins_f, userData.getTotalWins(), userData.getWinPercentile())));
+    @Override
+    public boolean onOptionsItemSelected(android.view.MenuItem item) {
+        if (_drawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+        switch (item.getItemId()) {
+            case R.id.arrow_close:
+                item.setVisible(false);
+                _menu.findItem(R.id.arrow_open).setVisible(true);
+                raiseOnToggleHeader();
+                return true;
+            case R.id.arrow_open:
+                item.setVisible(false);
+                _menu.findItem(R.id.arrow_close).setVisible(true);
+                raiseOnToggleHeader();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -257,137 +232,18 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
         super.onBackPressed();
     }
 
-    private void setUserImage() {
-        final String userImgUrl = _storage.getUserData().getUserImageUrl();
-        final ImageView view = getViewById(R.id.user_img);
-        if (userImgUrl == null) {
-            return;
-        }
-        ImageLoader loader = new ImageLoader(this);
-        loader.displayImage(userImgUrl, view);
-    }
-
-    private void toggleDrawerState() {
-        if (_isDrawerLayoutOpened) {
-            _drawerLayout.closeDrawer(Gravity.LEFT);
-        } else {
-            _drawerLayout.openDrawer(Gravity.LEFT);
-        }
-    }
-
-    SimpleDrawerListen _drawerListener = new SimpleDrawerListen() {
-        @Override
-        public void onStateChanged(boolean isOpened) {
-            _isDrawerLayoutOpened = isOpened;
-        }
-    };
-
-    private void updatePlayersList() {
-        if (_roster == null) {
-            return;
-        }
-        setMoneyTxt(_roster.getRemainingSalary());
-        List<Player> players = _roster.getPlayers();
-        List<IPlayer> playerItems = _playerAdapter.getItems();
-        for (int i = 0; i < playerItems.size(); i++) {
-            boolean updated = false;
-            IPlayer iPlayer = playerItems.get(i);
-            for (int j = 0; j < players.size(); j++) {
-                Player player = players.get(j);
-                if (iPlayer.getPosition().compareToIgnoreCase(player.getPosition()) == 0) {
-                    playerItems.set(i, player);
-                    updated = true;
-                }
-            }
-            if (!updated && iPlayer instanceof Player) {
-                playerItems.set(i, new PlayerItem(iPlayer.getPosition()));
-            }
-        }
-        _playerAdapter.notifyDataSetChanged();
-    }
-
-    public void setMoneyTxt(double price) {
-        _moneyTxt.setText(String.format("$%.0f", price));
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == PLAYER_CANDIDATE && resultCode == Activity.RESULT_OK) {
-            _roster = (Roster) data.getSerializableExtra(Const.ROSTER);
-            setMoneyTxt(_roster.getRemainingSalary());
-            updatePlayersList();
-        }
+//        if (requestCode == PLAYER_CANDIDATE && resultCode == Activity.RESULT_OK) {
+//            _roster = (Roster) data.getSerializableExtra(Const.ROSTER);
+//            setMoneyTxt(_roster.getRemainingSalary());
+//            updatePlayersList();
+//        }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void navigateToPlayersActivity(String playerPosition) {
-        Intent intent = new Intent(this, PlayersActivity.class);
-        intent.putExtra(Const.PLAYER_POSITION, playerPosition);
-        intent.putExtra(Const.ROSTER, _roster);
-        intent.putExtra(Const.MARKET_ID, _market.getId());
-        intent.putExtra(Const.REMOVE_BENCHED_PLAYERS, _switcher.isSelected());
-        DefaultRosterData rosterData = _storage.getDefaultRosterData();
-        double moneyFoster = _roster != null ? _roster.getRemainingSalary() : rosterData.getRemainingSalary();
-        intent.putExtra(Const.MONEY_FOR_ROSTER, moneyFoster);
-        startActivityForResult(intent, PLAYER_CANDIDATE);
-        overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
+    public interface IListener{
+        public void onHeaderToggle();
+        public void onPageChanged(int page);
     }
-
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        IPlayer item = (IPlayer) _playerAdapter.getItem(position);
-        if (item instanceof Player) {
-            return;
-        }
-        navigateToPlayersActivity(item.getPosition());
-    }
-
-    View.OnClickListener _autofillClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            int rosterId = _roster == null ? -1 : _roster.getId();
-            showProgress();
-            _webProxy.autofillRoster(_market.getId(), rosterId, new AutofillResponseListener() {
-                @Override
-                public void onRequestError(RequestError error) {
-                    dismissProgress();
-                    showAlert(getString(R.string.error), error.getMessage());
-                }
-
-                @Override
-                public void onRequestSuccess(AutofillResponse response) {
-                    _roster = response.getRoster();
-                    updatePlayersList();
-                    dismissProgress();
-                }
-            });
-        }
-    };
-
-    View.OnClickListener _submitClickListenere = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            if (_roster == null) {
-                showAlert("", getString(R.string.fill_roster));
-                return;
-            }
-            showProgress();
-            String contestType = v.getId() == R.id.submit_100fb_btn ? SubmitRosterRequest.TOP6 : SubmitRosterRequest.H2H;
-            _webProxy.submitRoster(_roster.getId(), contestType, new SubmitRosterResponseListener() {
-                @Override
-                public void onRequestError(RequestError error) {
-                    dismissProgress();
-                    showAlert(getString(R.string.error), error.getMessage());
-                }
-
-                @Override
-                public void onRequestSuccess(Object o) {
-                    _roster = null;
-                    setEmptyRoster();
-                    dismissProgress();
-                }
-            });
-
-        }
-    };
 }

@@ -32,12 +32,11 @@
                     android:background="@drawable/more_button"
                     android:id="@+id/more_btn"
                     android:textSize="@dimen/x_medium_font"/>
-
         </LinearLayout>
         <View android:layout_width="1dp"
               android:layout_height="@dimen/submit_btn_devider_height"
               android:layout_gravity="center"
-              android:background="#6061BE"/>
+              android:background="#748DAC"/>
     </FrameLayout>
     <FrameLayout android:layout_width="match_parent"
                  android:layout_height="45dp"

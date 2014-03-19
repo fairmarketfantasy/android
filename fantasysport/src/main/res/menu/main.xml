@@ -3,7 +3,15 @@
       xmlns:tools="http://schemas.android.com/tools"
       tools:context="com.ab.actionbar.MainActivity" >
 
-
-
+    <item android:id="@+id/arrow_open"
+          android:icon="@drawable/open"
+          android:title="Expand"
+          app:showAsAction="ifRoom" />
+    <item android:id="@+id/arrow_close"
+          android:icon="@drawable/close"
+          android:visible="false"
+          android:title="Hide"
+          app:showAsAction="ifRoom"
+            />
 
 </menu>

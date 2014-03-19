@@ -22,6 +22,7 @@ public class WebActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web);
         getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         initStartParams(savedInstanceState);
         _webView = getViewById(R.id.web_view);
         showProgress();

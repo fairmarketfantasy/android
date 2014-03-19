@@ -50,7 +50,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@drawable/icon"
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
         android:name=".App"
@@ -61,7 +61,7 @@
             android:name=".activities.SignInActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"
+            android:theme="@style/AppIconTheme"
                 >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -76,38 +76,26 @@
                   />
 
         <activity android:name=".activities.MainActivity"
-                  android:label=""
-                  android:icon="@drawable/menu"
                   android:screenOrientation="portrait"
                   android:theme="@style/AppIconTheme"
                   />
         <activity android:name=".activities.PlayersActivity"
-                  android:label=""
-                  android:icon="@drawable/previous"
                   android:screenOrientation="portrait"
                   android:theme="@style/AppIconTheme"
                   />
         <activity android:name=".activities.IndividuaPredictionsActivity"
-                  android:label=""
-                  android:icon="@drawable/previous"
                   android:screenOrientation="portrait"
                   android:theme="@style/AppIconTheme"
                 />
         <activity android:name=".activities.WebActivity"
-                  android:label=""
-                  android:icon="@drawable/previous"
                   android:screenOrientation="portrait"
                   android:theme="@style/AppIconTheme"
                 />
         <activity android:name=".activities.SettingsActivity"
-                  android:label=""
-                  android:icon="@drawable/previous"
                   android:screenOrientation="portrait"
                   android:theme="@style/AppIconTheme"
                 />
         <activity android:name=".activities.UpdateUserActivity"
-                  android:label=""
-                  android:icon="@drawable/previous"
                   android:screenOrientation="portrait"
                   android:theme="@style/AppIconTheme"
                   android:windowSoftInputMode="stateVisible|adjustResize"

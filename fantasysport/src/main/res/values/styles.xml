@@ -22,7 +22,6 @@
         <item name="android:actionBarStyle">@style/app_icon_action_bar</item>
         <!-- Support library compatibility -->
         <item name="actionBarStyle">@style/app_icon_action_bar</item>
-
     </style>
     <style name="title_style" parent="@android:style/Widget.TextView">
         <item name="android:text"></item>
@@ -33,7 +32,10 @@
 
     <style name="app_icon_action_bar" parent="@style/Widget.AppCompat.ActionBar">
         <item name="background">@color/action_bar_background</item>
+        <item name="titleTextStyle">@style/title_style</item>
         <item name="android:background">@color/action_bar_background</item>
+        <item name="android:titleTextStyle">@style/title_style</item>
+        <!--<item name="android:homeAsUpIndicator">@drawable/action_arrow</item>-->
 
     </style>
 

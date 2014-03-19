@@ -27,7 +27,7 @@
                   android:layout_height="wrap_content"
                   android:layout_gravity="center_vertical"
                   android:textSize="@dimen/s_lage_font"
-                  android:textColor="#E84C3D"
+                  android:textColor="@color/app_blue"
                   android:text="@string/pt25"
                   android:id="@+id/pt25_lbl"
                 />

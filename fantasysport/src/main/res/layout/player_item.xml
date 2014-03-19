@@ -21,6 +21,10 @@
                        android:layout_height="56dp"
                        android:layout_gravity="center"
                        android:src="@drawable/tshirt"
+                    />
+            <ImageView android:layout_width="56dp"
+                       android:layout_height="56dp"
+                       android:layout_gravity="center"
                        android:id="@+id/player_img"
                        android:scaleType="centerCrop"
                     />
@@ -28,6 +32,11 @@
                        android:layout_height="match_parent"
                        android:src="@drawable/circle_2"
                        android:id="@+id/circle_img"
+                    />
+            <ImageView android:layout_width="match_parent"
+                       android:layout_height="match_parent"
+                       android:src="@drawable/benched"
+                       android:id="@+id/benched_img"
                     />
         </FrameLayout>
         <LinearLayout android:layout_width="match_parent"

@@ -80,6 +80,9 @@ public class CandidatePlayersAdapter extends BaseAdapter{
 
         Player player = _players.get(position);
 
+        ImageView benchedImg = (ImageView)convertView.findViewById(R.id.benched_img);
+        benchedImg.setVisibility(player.getIsBenched()? View.VISIBLE : View.INVISIBLE);
+
         pt25Btn = (Button)convertView.findViewById(R.id.pt25_btn);
         pt25Btn.setOnClickListener(new PT25BtnClickListener(player));
         addBtn = (Button)convertView.findViewById(R.id.add_btn);
@@ -92,6 +95,7 @@ public class CandidatePlayersAdapter extends BaseAdapter{
         TextView buyPriceLbl =  (TextView)convertView.findViewById(R.id.buy_price_lbl);
         buyPriceLbl.setText(String.format("$%.0f", player.getBuyPrice()));
         ImageView imageView = (ImageView)convertView.findViewById(R.id.player_img);
+        imageView.setImageBitmap(null);
         _imageLoader.displayImage(player.getImageUrl(), imageView);
         return convertView;
     }

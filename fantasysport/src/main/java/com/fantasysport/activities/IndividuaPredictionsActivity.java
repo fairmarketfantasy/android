@@ -37,6 +37,7 @@ public class IndividuaPredictionsActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_individual_predictions);
         getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         setStartParameters(savedInstanceState);
 

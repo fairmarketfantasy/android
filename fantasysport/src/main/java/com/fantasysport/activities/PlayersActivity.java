@@ -40,6 +40,7 @@ public class PlayersActivity extends BaseActivity implements CandidatePlayersAda
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_players);
         getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         Intent intent = getIntent();
 
         _roster = (Roster)intent.getSerializableExtra(Const.ROSTER);
@@ -72,7 +73,7 @@ public class PlayersActivity extends BaseActivity implements CandidatePlayersAda
                 @Override
                 public void onRequestError(RequestError message) {
                     dismissProgress();
-                    showAlert("", getString(R.string.error));
+                    showAlert(getString(R.string.error), getString(R.string.unknown_error));
                 }
                 @Override
                 public void onRequestSuccess(Roster roster) {

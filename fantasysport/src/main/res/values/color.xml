@@ -2,4 +2,7 @@
 <resources>
     <color name="action_bar_background">#42703F</color>
     <color name="bottom_bar_background">#42703F</color>
+    <color name="app_green">#6FA648</color>
+    <color name="app_blue">#375C89</color>
+    <color name="selected_position_btn">#4C4D4F</color>
 </resources>

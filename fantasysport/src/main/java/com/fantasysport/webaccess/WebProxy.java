@@ -1,5 +1,7 @@
 package com.fantasysport.webaccess;
 
+import android.graphics.Bitmap;
+import android.net.Uri;
 import com.fantasysport.models.Player;
 import com.fantasysport.models.StatsItem;
 import com.fantasysport.models.User;
@@ -40,6 +42,11 @@ public final class WebProxy {
     public void signOut(){
         SignOutRequest request = new SignOutRequest();
         _spiceManager.execute(request, null);
+    }
+
+    public void uploadAva(Bitmap bitmap, UpdateUserResponseListener listener){
+        UploadAvaRequest request = new UploadAvaRequest(bitmap);
+        _spiceManager.execute(request, listener);
     }
 
     public void updateUser(User user, UpdateUserResponseListener listener){
