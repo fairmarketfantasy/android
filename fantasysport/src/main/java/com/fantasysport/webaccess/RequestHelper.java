@@ -1,6 +1,7 @@
 package com.fantasysport.webaccess;
 
 import com.fantasysport.models.AccessTokenData;
+import com.fantasysport.utility.DateUtils;
 
 /**
  * Created by bylynka on 3/10/14.
@@ -23,17 +24,24 @@ public class RequestHelper {
         return _instance;
     }
 
+    public boolean needRefresh(){
+        long now = DateUtils.getCurrentDate().getTime();
+        long aTokenTime = _atData.getCreateTime();
+        long expireIn = _atData.getExpiresIn();
+        return (now - aTokenTime >= (expireIn * 1000) - 15000);
+    }
+
     public AccessTokenData getAccessTokenData(){
         return _atData;
     }
 
     public void setAccessTokenData(AccessTokenData data){
         _atData = data;
+        raiseOnAccessTokenDataChanged();
     }
 
     public void setListener(IListener listener){
         _listener = listener;
-        raiseOnAccessTokenDataChanged();
     }
 
     private void raiseOnAccessTokenDataChanged(){

@@ -81,7 +81,8 @@ public class PlayersParser extends BaseParser {
         return player;
     }
 
-    private void fillKeyMap(){
+    @Override
+    protected void fillKeyMap(){
         _keyMap = new HashMap<String, Integer>();
         for (int i = 1; i <= _fieldsNumber; i++){
             String field = (String)_playerObjects.get(i);

@@ -3,6 +3,7 @@ package com.fantasysport.webaccess.requests;
 import android.net.Uri;
 import com.fantasysport.Config;
 import com.fantasysport.models.AccessTokenData;
+import com.fantasysport.utility.DateUtils;
 import com.fantasysport.webaccess.RequestHelper;
 import com.google.api.client.http.ByteArrayContent;
 import com.google.api.client.http.GenericUrl;
@@ -20,16 +21,25 @@ public abstract class BaseRequest<T> extends GoogleHttpClientSpiceRequest<T> {
         _rHelper = RequestHelper.instance();
     }
 
-    protected String getUrl(){
+    protected String getUrl() {
         return Config.SERVER;
     }
 
 
-    protected String getAccessToken(){
+    protected String getAccessToken() throws Exception {
+        if(_rHelper.needRefresh()){
+            refreshToken();
+        }
         return _rHelper.getAccessTokenData().getAccessToken();
     }
 
-    public AccessTokenData getAccessTokenData(AccessTokenRequestBody body)throws Exception{
+    private void refreshToken() throws Exception {
+        AccessTokenRequestBody body = new AccessTokenRequestBody();
+        body.setRefreshToken(_rHelper.getAccessTokenData().getRefreshToken());
+        getAccessTokenData(body);
+    }
+
+    public AccessTokenData getAccessTokenData(AccessTokenRequestBody body) throws Exception {
         Uri.Builder uriBuilder = Uri.parse(getUrl()).buildUpon();
         uriBuilder.appendPath("oauth2");
         uriBuilder.appendPath("token");
@@ -41,6 +51,7 @@ public abstract class BaseRequest<T> extends GoogleHttpClientSpiceRequest<T> {
         request.getHeaders().setAccept("application/json");
         String result = request.execute().parseAsString();
         AccessTokenData atData = new Gson().fromJson(result, AccessTokenData.class);
+        atData.setCreateTime(DateUtils.getCurrentDate().getTime());
         RequestHelper.instance().setAccessTokenData(atData);
         return atData;
     }

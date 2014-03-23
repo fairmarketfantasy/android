@@ -24,20 +24,8 @@ public class Market  implements Serializable {
     @SerializedName("shadow_bet_rate")
     private double _shadowBetRate;
 
-    @SerializedName("started_at")
-    private Date _startedAt;
-
-    @SerializedName("opened_at")
-    private Date _openedAt;
-
-    @SerializedName("closed_at")
-    private Date _closedAt;
-
     @SerializedName("sport_id")
     private int _sportId;
-
-    @SerializedName("total_bets")
-    private double _totalBets;
 
     @SerializedName("state")
     private String _state;
@@ -83,28 +71,8 @@ public class Market  implements Serializable {
         return _shadowBetRate;
     }
 
-    public void setStartedAt(Date date){
-        _startedAt = date;
-    }
-
     public Date getStartedAt(){
-        return  _startedAt;
-    }
-
-    public void setOpenedAt(Date date){
-        _openedAt = date;
-    }
-
-    public Date getOpenedAt(){
-        return _openedAt;
-    }
-
-    public void setClosedAt(Date date){
-        _closedAt = date;
-    }
-
-    public Date getClosedAt(){
-        return _closedAt;
+        return  _games.get(0).getGameTime();
     }
 
     public void setSportId(int sportId){
@@ -113,14 +81,6 @@ public class Market  implements Serializable {
 
     public int getSportId(){
         return _sportId;
-    }
-
-    public void  setTotalBets(double totalBets){
-        _totalBets = totalBets;
-    }
-
-    public double getTotalBets(){
-        return _totalBets;
     }
 
     public void setState(String state){

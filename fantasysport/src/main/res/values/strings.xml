@@ -47,6 +47,9 @@
     <string name="new_email">New Email</string>
     <string name="new_pwd">New Password</string>
     <string name="current_pwd">Current Password</string>
+    <string name="roster_predictions">Roster <i>Predictions </i></string>
+    <string name="individual_predictions">Individual <i>Predictions </i></string>
+    <string name="pt25_italic"><i>PT25 </i></string>
 
     <!--<string name="wins_f">%$d wins%$d win </string>-->
 
@@ -75,7 +78,7 @@
     <!--production-->
 
     <!---->
-    <string name="app_id">1455342834679971</string>
+    <string name="app_id">380919122046469</string>
 
     <!-- Nav Drawer Menu Items -->
 
@@ -86,5 +89,11 @@
         <string name="support">Support</string><!--5-->
         <string name="settings">Settings</string><!--6-->
         <string name="sign_out">Sign Out</string><!--7-->
+        <string name="predictions">Predictions</string>
+
+    <string-array name="prediction_menu_list">
+        <item>Roster</item>
+        <item>Individual</item>
+    </string-array>
 
 </resources>

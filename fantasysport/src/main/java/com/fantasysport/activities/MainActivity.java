@@ -43,6 +43,7 @@ public class MainActivity extends BaseActivity{
     private boolean _removeBenchedPlayers = true;
     private ImageView _leftSwipeImg;
     private ImageView _rightSwipeImg;
+    private AnimatedViewPager _pager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +67,7 @@ public class MainActivity extends BaseActivity{
         _rightSwipeImg = getViewById(R.id.right_point_img);
         setMenu();
         setPager();
+        setPageIndicator(0);
 
     }
 
@@ -119,11 +121,11 @@ public class MainActivity extends BaseActivity{
     }
 
     private void setPager(){
-        _mainActivityPagerAdapter = new MainActivityPagerAdapter(getSupportFragmentManager());
-        AnimatedViewPager pager = getViewById(R.id.root_pager);
-        pager.setPageTransformer(true, new ZoomOutPageTransformer());
-        pager.setAdapter(_mainActivityPagerAdapter);
-        pager.setOnPageChangeListener(new AnimatedViewPager.OnPageChangeListener() {
+        _mainActivityPagerAdapter = new MainActivityPagerAdapter(getSupportFragmentManager(), _webProxy);
+        _pager = getViewById(R.id.root_pager);
+        _pager.setPageTransformer(true, new ZoomOutPageTransformer());
+        _pager.setAdapter(_mainActivityPagerAdapter);
+        _pager.setOnPageChangeListener(new AnimatedViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
@@ -131,11 +133,7 @@ public class MainActivity extends BaseActivity{
 
             @Override
             public void onPageSelected(int position) {
-                Drawable drawable = position == 0? getResources().getDrawable(R.drawable.swipe_active):getResources().getDrawable(R.drawable.swipe_passive);
-                _leftSwipeImg.setBackgroundDrawable(drawable);
-                drawable = position != 0? getResources().getDrawable(R.drawable.swipe_active):getResources().getDrawable(R.drawable.swipe_passive);
-                _rightSwipeImg.setBackgroundDrawable(drawable);
-                raiseOnPageChanged(position);
+                setPageIndicator(position);
             }
 
             @Override
@@ -143,6 +141,14 @@ public class MainActivity extends BaseActivity{
 
             }
         });
+    }
+
+    private void setPageIndicator(int position){
+        Drawable drawable = position == 0? getResources().getDrawable(R.drawable.swipe_active):getResources().getDrawable(R.drawable.swipe_passive);
+        _leftSwipeImg.setBackgroundDrawable(drawable);
+        drawable = position != 0? getResources().getDrawable(R.drawable.swipe_active):getResources().getDrawable(R.drawable.swipe_passive);
+        _rightSwipeImg.setBackgroundDrawable(drawable);
+        raiseOnPageChanged(position);
     }
 
     @Override
@@ -179,19 +185,22 @@ public class MainActivity extends BaseActivity{
                 MenuItem item = (MenuItem) _menuAdapter.getItem(position);
                 switch (item.getId()) {
                     case LegalStuff:
-                        showWebView("pages/mobile/terms");
+                        showWebView("pages/mobile/terms", "TERMS");
                         break;
                     case Rules:
-                        showWebView("pages/mobile/rules");
+                        showWebView("pages/mobile/rules", "RULES");
                         break;
                     case Support:
-                        showWebView("pages/mobile/support");
+                        showWebView("pages/mobile/support", "SUPPORT");
                         break;
                     case Settings:
                         showSettingsView();
                         break;
                     case SignOut:
                         signOut();
+                        break;
+                    case Predictions:
+                        showPredictions();
                         break;
                 }
             }
@@ -240,6 +249,10 @@ public class MainActivity extends BaseActivity{
 //            updatePlayersList();
 //        }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    public void navigateToPlayers(){
+        _pager.setCurrentItem(1, false);
     }
 
     public interface IListener{

@@ -23,6 +23,11 @@
         <!-- Support library compatibility -->
         <item name="actionBarStyle">@style/app_icon_action_bar</item>
     </style>
+
+    <style name="Spinner" parent="@style/Widget.AppCompat.Spinner.DropDown.ActionBar">
+        <item name="android:background">@color/action_bar_background</item>
+    </style>
+
     <style name="title_style" parent="@android:style/Widget.TextView">
         <item name="android:text"></item>
         <item name="android:visibility">gone</item>

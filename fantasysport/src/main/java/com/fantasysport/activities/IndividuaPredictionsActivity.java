@@ -2,7 +2,6 @@ package com.fantasysport.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
@@ -12,11 +11,9 @@ import com.fantasysport.R;
 import com.fantasysport.adapters.StatsAdapter;
 import com.fantasysport.models.Player;
 import com.fantasysport.models.StatsItem;
-import com.fantasysport.webaccess.WebProxy;
 import com.fantasysport.webaccess.requestListeners.RequestError;
 import com.fantasysport.webaccess.requestListeners.StatEventsResponseListener;
 import com.fantasysport.webaccess.requestListeners.SubmitPredictionResponseListener;
-import com.fantasysport.webaccess.requests.SubmitPredictionRequest;
 import com.fantasysport.webaccess.responses.StatEventsResponse;
 
 import java.util.ArrayList;
@@ -25,7 +22,7 @@ import java.util.List;
 /**
  * Created by bylynka on 3/5/14.
  */
-public class IndividuaPredictionsActivity extends BaseActivity {
+public class IndividuaPredictionsActivity extends BaseActivity implements StatsAdapter.ISubmitListener {
 
     private StatsAdapter _statsAdapter;
     private int _rosterId;
@@ -35,7 +32,7 @@ public class IndividuaPredictionsActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_individual_predictions);
+        setContentView(R.layout.activity_do_individual_predictions);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -46,10 +43,18 @@ public class IndividuaPredictionsActivity extends BaseActivity {
         sbmBtn.setOnClickListener(_submitBtnClickListener);
 
         _statsAdapter = new StatsAdapter(this, _player);
+        _statsAdapter.setSubmitListener(this);
         ListView listView = getViewById(R.id.stats_list);
         listView.setAdapter(_statsAdapter);
         TextView nameLbl = getViewById(R.id.name_lbl);
         nameLbl.setText(_player.getName());
+
+        View customBar = getLayoutInflater().inflate(R.layout.action_bar_title, null);
+        TextView textView = (TextView)customBar.findViewById(R.id.fair_martet_txt);
+        textView.setTypeface(getProhibitionRound());
+        textView.setText(_player.getName() + " PT25");
+        getSupportActionBar().setCustomView(customBar);
+
         if (savedInstanceState == null) {
             loadStatEvents(_player);
             return;
@@ -86,7 +91,7 @@ public class IndividuaPredictionsActivity extends BaseActivity {
 
     private void loadStatEvents(Player player) {
         showProgress();
-        _webProxy.getStatEvens(player, new StatEventsResponseListener() {
+        _webProxy.getStatEvens(player, _marketId, new StatEventsResponseListener() {
             @Override
             public void onRequestError(RequestError error) {
                 dismissProgress();
@@ -111,30 +116,38 @@ public class IndividuaPredictionsActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    private void submit(){
+        List<StatsItem> items = _statsAdapter.getItems();
+        List<StatsItem> resultItems = new ArrayList<StatsItem>();
+        for (int i = 0; i < items.size(); i++) {
+            if (!items.get(i).getMode().equalsIgnoreCase(StatsItem.DEFAULT_MODE)) {
+                resultItems.add(items.get(i));
+            }
+        }
+        showProgress();
+        _webProxy.submitPrediction(_rosterId, _marketId, _player.getStatsId(), resultItems, new SubmitPredictionResponseListener() {
+            @Override
+            public void onRequestError(RequestError error) {
+                dismissProgress();
+                showAlert(getString(R.string.error), error.getMessage());
+            }
+
+            @Override
+            public void onRequestSuccess(Object o) {
+                dismissProgress();
+            }
+        });
+    }
+
     View.OnClickListener _submitBtnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            List<StatsItem> items = _statsAdapter.getItems();
-            List<StatsItem> resultItems = new ArrayList<StatsItem>();
-            for (int i = 0; i < items.size(); i++) {
-                if (!items.get(i).getMode().equalsIgnoreCase(StatsItem.DEFAULT_MODE)) {
-                    resultItems.add(items.get(i));
-                }
-            }
-            showProgress();
-            _webProxy.submitPrediction(_rosterId, _marketId, _player.getStatsId(), resultItems, new SubmitPredictionResponseListener() {
-                @Override
-                public void onRequestError(RequestError error) {
-                    dismissProgress();
-                    showAlert(getString(R.string.error), error.getMessage());
-                }
-
-                @Override
-                public void onRequestSuccess(Object o) {
-                    dismissProgress();
-                    finish();
-                }
-            });
+           submit();
         }
     };
+
+    @Override
+    public void onSubmit() {
+        submit();
+    }
 }

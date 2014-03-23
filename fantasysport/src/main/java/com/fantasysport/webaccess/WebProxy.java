@@ -21,22 +21,31 @@ public final class WebProxy {
     private SpiceManager _spiceManager;
     private static WebProxy _instance;
 
-    private WebProxy(){
-    }
-
-    public static WebProxy instance() {
-        if (_instance == null) {
-            synchronized (WebProxy.class) {
-                if (_instance == null) {
-                    _instance = new WebProxy();
-                }
-            }
-        }
-        return _instance;
+    public WebProxy(){
     }
 
     public void setSpiceManager(SpiceManager manager){
         _spiceManager = manager;
+    }
+
+    public void getIndividualPredictions(IndividualPredictionsResponseListener listener){
+        IndividualPredictionRequest request = new IndividualPredictionRequest();
+        _spiceManager.execute(request, listener);
+    }
+
+    public void getIndividualPredictions(IndividualPredictionsResponseListener listener, int page){
+        IndividualPredictionRequest request = new IndividualPredictionRequest(page);
+        _spiceManager.execute(request, listener);
+    }
+
+    public void getPredictions(PredictionsResponseListener listener){
+        PredictionRequest request = new PredictionRequest();
+        _spiceManager.execute(request, listener);
+    }
+
+    public void getPredictions(PredictionsResponseListener listener, int page){
+        PredictionRequest request = new PredictionRequest(page);
+        _spiceManager.execute(request, listener);
     }
 
     public void signOut(){
@@ -64,8 +73,8 @@ public final class WebProxy {
         _spiceManager.execute(request, listener);
     }
 
-    public void getStatEvens(Player player, StatEventsResponseListener listener){
-        GetStatEventsRequest request = new GetStatEventsRequest(player);
+    public void getStatEvens(Player player,int marketId, StatEventsResponseListener listener){
+        GetStatEventsRequest request = new GetStatEventsRequest(player, marketId);
         _spiceManager.execute(request, listener);
     }
 

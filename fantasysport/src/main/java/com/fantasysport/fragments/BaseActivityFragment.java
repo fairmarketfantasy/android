@@ -17,9 +17,9 @@ public class BaseActivityFragment extends Fragment {
     protected WebProxy _webProxy;
     protected View _rootView;
 
-    public BaseActivityFragment(){
+    public BaseActivityFragment(WebProxy proxy){
         _storage = Storage.instance();
-        _webProxy = WebProxy.instance();
+        _webProxy = proxy;
     }
 
 

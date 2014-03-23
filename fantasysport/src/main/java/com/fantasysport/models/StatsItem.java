@@ -19,10 +19,24 @@ public class StatsItem implements Serializable {
     @SerializedName("value")
     private double _value;
 
+    @SerializedName("bid_less")
+    private boolean _bidLess;
+
+    @SerializedName("bid_more")
+    private boolean _bidMore;
+
     @SerializedName("diff")
     private String _mode = DEFAULT_MODE;
 
     public StatsItem(){
+    }
+
+    public boolean getBidMore(){
+        return _bidMore;
+    }
+
+    public boolean getBidLess(){
+        return _bidLess;
     }
 
     public StatsItem(String name, int value){
@@ -34,8 +48,16 @@ public class StatsItem implements Serializable {
         return _name;
     }
 
+    public void setName(String name){
+        _name = name;
+    }
+
     public double getValue(){
         return _value;
+    }
+
+    public void setValue(double value){
+        _value = value;
     }
 
     public void setMode(String mode){
@@ -46,4 +68,11 @@ public class StatsItem implements Serializable {
         return _mode;
     }
 
+    public void setBidLess(boolean bidLess) {
+        _bidLess = bidLess;
+    }
+
+    public void setBidMore(boolean bidMore) {
+        _bidMore = bidMore;
+    }
 }

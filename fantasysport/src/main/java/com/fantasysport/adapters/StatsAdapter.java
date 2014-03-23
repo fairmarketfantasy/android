@@ -28,11 +28,16 @@ public class StatsAdapter extends BaseAdapter {
     private Context _context;
     private Player _player;
     private Typeface _prohibitionRoundTypeFace;
+    private ISubmitListener _submitListener;
 
     public StatsAdapter(Context context, Player player) {
         _context = context;
         _player = player;
-        _prohibitionRoundTypeFace  = Typeface.createFromAsset(_context.getAssets(), "fonts/ProhibitionRound.ttf");
+        _prohibitionRoundTypeFace = Typeface.createFromAsset(_context.getAssets(), "fonts/ProhibitionRound.ttf");
+    }
+
+    public void setSubmitListener(ISubmitListener listener){
+        _submitListener = listener;
     }
 
     public void setItems(List<StatsItem> items) {
@@ -75,34 +80,39 @@ public class StatsAdapter extends BaseAdapter {
         return convertView;
     }
 
+    private void raiseSubmitListener(){
+        if(_submitListener == null){
+            return;
+        }
+        _submitListener.onSubmit();
+    }
+
     private void setPredictionView(View view, StatsItem item) {
         TextView headerLbl = (TextView) view.findViewById(R.id.header_lbl);
 
         headerLbl.setText(String.format("%s: %.1f", StringHelper.capitalizeFirstLetter(item.getName()), item.getValue()));
         View predictionBlock = view.findViewById(R.id.prediction_block);
-
+        predictionBlock.setVisibility(View.INVISIBLE);
         View cancelBtn = view.findViewById(R.id.cancel_btn);
         Button moreBtn = (Button) view.findViewById(R.id.more_btn);
         Button lessBtn = (Button) view.findViewById(R.id.less_btn);
 
-        if (item.getMode().equalsIgnoreCase(StatsItem.DEFAULT_MODE)) {
-            moreBtn.setOnClickListener(new ModeOnClickListener(StatsItem.MORE_MODE, item, view));
-            moreBtn.setSelected(false);
-            lessBtn.setOnClickListener(new ModeOnClickListener(StatsItem.LESS_MODE, item, view));
-            lessBtn.setSelected(false);
-            predictionBlock.setVisibility(View.INVISIBLE);
+        if (item.getBidLess()) {
+            setBtn(lessBtn, null, true, false);
+            setBtn(moreBtn, new ModeOnClickListener(StatsItem.MORE_MODE, item, view), false, true);
+        } else if (item.getBidMore()) {
+            setBtn(lessBtn, new ModeOnClickListener(StatsItem.LESS_MODE, item, view), false, true);
+            setBtn(moreBtn, null, true, false);
         } else {
-            moreBtn.setOnClickListener(null);
-            lessBtn.setOnClickListener(null);
-            cancelBtn.setOnClickListener(new ModeOnClickListener(StatsItem.DEFAULT_MODE, item, view));
-            predictionBlock.setVisibility(View.VISIBLE);
-            TextView predictionLbl = (TextView) view.findViewById(R.id.prediction_lbl);
-            boolean isLessSelected = item.getMode().equalsIgnoreCase(StatsItem.LESS_MODE);
-            String msg = String.format("%s than %.1f %s", (isLessSelected ? "less" : "more"), item.getValue(), item.getName());
-            predictionLbl.setText(msg);
-            moreBtn.setSelected(!isLessSelected);
-            lessBtn.setSelected(isLessSelected);
+            setBtn(lessBtn, new ModeOnClickListener(StatsItem.LESS_MODE, item, view), false, true);
+            setBtn(moreBtn, new ModeOnClickListener(StatsItem.MORE_MODE, item, view), false, true);
         }
+    }
+
+    private void setBtn(Button btn, View.OnClickListener listener, boolean isSelected, boolean isEnabled) {
+        btn.setOnClickListener(listener);
+        btn.setSelected(isSelected);
+        btn.setEnabled(isEnabled);
     }
 
     class ModeOnClickListener implements View.OnClickListener {
@@ -125,7 +135,7 @@ public class StatsAdapter extends BaseAdapter {
 
         @Override
         public void onClick(final View v) {
-            if ( _mode.equalsIgnoreCase(StatsItem.DEFAULT_MODE)) {
+            if (_mode.equalsIgnoreCase(StatsItem.DEFAULT_MODE)) {
                 updateView(v);
                 return;
             }
@@ -135,11 +145,24 @@ public class StatsAdapter extends BaseAdapter {
                     .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
+                            if (_mode.equalsIgnoreCase(StatsItem.LESS_MODE)) {
+                                _item.setBidLess(true);
+                                _item.setBidMore(false);
+                            } else {
+                                _item.setBidMore(true);
+                                _item.setBidLess(false);
+                            }
                             updateView(v);
+                            raiseSubmitListener();
+
                         }
                     })
                     .setNegativeButton(R.string.cancel, null)
                     .show();
         }
+    }
+
+    public interface ISubmitListener{
+        public void onSubmit();
     }
 }

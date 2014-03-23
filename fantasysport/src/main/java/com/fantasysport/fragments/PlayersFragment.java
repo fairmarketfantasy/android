@@ -15,24 +15,30 @@ import com.fantasysport.models.Market;
 import com.fantasysport.models.Player;
 import com.fantasysport.models.Roster;
 import com.fantasysport.views.PositionView;
+import com.fantasysport.webaccess.WebProxy;
 import com.fantasysport.webaccess.requestListeners.AddPlayerResponseListener;
 import com.fantasysport.webaccess.requestListeners.CreateRosterResponseListener;
 import com.fantasysport.webaccess.requestListeners.PlayersResponseListener;
 import com.fantasysport.webaccess.requestListeners.RequestError;
 import com.fantasysport.webaccess.responses.PlayersRequestResponse;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Created by bylynka on 3/14/14.
  */
-public class PlayersFragment extends MainActivityFragment implements PositionView.OnPositionSelecteListener, CandidatePlayersAdapter.IListener {
+public class PlayersFragment extends MainActivityFragment implements PositionView.OnPositionSelecteListener, CandidatePlayersAdapter.IListener,
+                                    MainFragmentMediator.IPlayerPositionListener, MainFragmentMediator.IOnBenchedStateChangedListener{
 
     private PositionView _positionView;
     private CandidatePlayersAdapter _playersAdapter;
     private Market _lastMarket;
     private String _lastPosition;
+    private boolean _lastBenchedState;
+
+    public PlayersFragment(WebProxy proxy){
+        super(proxy);
+        _fragmentMediator.addPlayerPositionListener(this);
+        _fragmentMediator.addOnBenchedStateChangedListener(this);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -69,6 +75,7 @@ public class PlayersFragment extends MainActivityFragment implements PositionVie
 
     @Override
     public void onMarketChanged(Object sender, Market market) {
+        setRoster(null);
         loadPlayers(_positionView.getPosition(), true);
         int position = _pagerAdapter.getMarketPosition(market);
         int curPossition = _pager.getCurrentItem();
@@ -92,7 +99,8 @@ public class PlayersFragment extends MainActivityFragment implements PositionVie
 
     private void loadPlayers(final String position, boolean showProgress){
         Market market = getMarket();
-        if((market == _lastMarket) && (_lastPosition == position) ){
+        if(market == _lastMarket && _lastPosition == position
+                && _lastBenchedState == canBenched()){
             return;
         }
         if(showProgress){
@@ -100,6 +108,7 @@ public class PlayersFragment extends MainActivityFragment implements PositionVie
         }
         _lastMarket = market;
         _lastPosition = position;
+        _lastBenchedState = canBenched();
         if (getRoster() == null) {
             _webProxy.createRoster(market.getId(), new CreateRosterResponseListener() {
                 @Override
@@ -178,5 +187,15 @@ public class PlayersFragment extends MainActivityFragment implements PositionVie
             return;
         }
 //        loadPlayers(_positionView.getPosition(), true);
+    }
+
+    @Override
+    public void onPlayerPositionChanged(Object sender, String position) {
+       _positionView.setPosition(position);
+    }
+
+    @Override
+    public void onBenchedStateChanged(Object sender, boolean state) {
+        loadPlayers(_positionView.getPosition(), true);
     }
 }

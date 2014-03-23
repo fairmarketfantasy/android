@@ -23,13 +23,12 @@
                 >
             <ImageView android:layout_width="wrap_content"
                        android:layout_height="wrap_content"
-                       android:src="@drawable/swipe_active"
                        android:id="@+id/left_point_img"
                        android:paddingRight="1dp"
                     />
             <ImageView android:layout_width="wrap_content"
                        android:layout_height="wrap_content"
-                       android:src="@drawable/swipe_passive"
+
                        android:id="@+id/right_point_img"
                        android:paddingLeft="1dp"
                     />

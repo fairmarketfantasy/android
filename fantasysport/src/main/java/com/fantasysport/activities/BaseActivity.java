@@ -7,10 +7,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Handler;
+import android.preference.PreferenceActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.widget.TextView;
 import com.fantasysport.Const;
 import com.fantasysport.R;
@@ -29,7 +31,7 @@ public class BaseActivity extends ActionBarActivity{
 
     protected SpiceManager _spiceManager = new SpiceManager(GsonGoogleHttpClientSpiceService.class);
     protected ProgressDialog _progress;
-    protected WebProxy _webProxy = WebProxy.instance();
+    protected WebProxy _webProxy;
 
     protected Handler _handler = new Handler();
     protected Storage _storage;
@@ -38,9 +40,14 @@ public class BaseActivity extends ActionBarActivity{
     @Override
     public void setContentView(int layoutResID) {
         _storage = Storage.instance();
+        _webProxy = new WebProxy();
         _webProxy.setSpiceManager(_spiceManager);
         super.setContentView(layoutResID);
         initActionBar(getSupportActionBar());
+    }
+
+    public WebProxy getWebProxy(){
+        return _webProxy;
     }
 
     @Override
@@ -80,6 +87,7 @@ public class BaseActivity extends ActionBarActivity{
     protected void onStart() {
         super.onStart();
         _spiceManager.start(this);
+
     }
 
     @Override
@@ -99,7 +107,6 @@ public class BaseActivity extends ActionBarActivity{
                 .setNeutralButton(R.string.close, onCloseListener)
                 .show();
     }
-
 
     public void showAlert(String title, String message){
         showAlert(title, message, null);
@@ -124,12 +131,25 @@ public class BaseActivity extends ActionBarActivity{
         getSupportActionBar().setCustomView(customBar);
     }
 
-    protected void showWebView(String link){
+    protected void setHeaderText(String text){
+        TextView textView = (TextView)getSupportActionBar().getCustomView().findViewById(R.id.fair_martet_txt);
+        textView.setText(text);
+    }
+
+    protected void showWebView(String link, String header){
         Intent intent = new Intent(this, WebActivity.class);
         intent.putExtra(Const.WEB_LINK, link);
+        intent.putExtra(Const.WEB_ACTIVITY_HEADER, header);
         startActivity(intent);
         overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
     }
+
+    protected void showPredictions(){
+        Intent intent = new Intent(this, PredictionActivity.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
+    }
+
 
     protected void showSettingsView(){
         Intent intent = new Intent(this, SettingsActivity.class);

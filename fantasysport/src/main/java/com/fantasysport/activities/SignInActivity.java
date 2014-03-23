@@ -11,7 +11,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import com.fantasysport.R;
-import com.fantasysport.webaccess.WebProxy;
 import com.fantasysport.webaccess.requestListeners.RequestError;
 import com.fantasysport.webaccess.requestListeners.SignInResponseListener;
 import com.fantasysport.webaccess.responses.AuthResponse;
@@ -24,12 +23,10 @@ public class SignInActivity extends AuthActivity {
     private EditText _emailTxt;
     private EditText _passwordTxt;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
-
         Button facebookBtn = getViewById(R.id.facebook_btn);
         initFacebookAuth(facebookBtn);
         facebookBtn.setTypeface(getProhibitionRound());
@@ -118,7 +115,7 @@ public class SignInActivity extends AuthActivity {
     View.OnClickListener _forgotPwdClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            showWebView("pages/mobile/forgot_password");
+            showWebView("pages/mobile/forgot_password", "FORGOT PASSWORD");
         }
     };
 

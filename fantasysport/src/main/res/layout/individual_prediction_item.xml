@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="#F0F0F0"
+              android:paddingBottom="@dimen/side_marging"
+              android:paddingTop="@dimen/side_hor_marging"
+              android:paddingLeft="@dimen/side_marging"
+              android:paddingRight="@dimen/side_marging"
+              android:id="@+id/root">
+
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="horizontal"
+                  android:paddingBottom="@dimen/side_marging"
+            >
+
+        <LinearLayout android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:orientation="vertical"
+                >
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:id="@+id/name_lbl"
+                      android:textColor="#000000"
+                      android:text="Cavaliers@Bobcats"
+                      android:textSize="@dimen/x_medium_font"
+                    />
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:id="@+id/player_name_lbl"
+                      android:textColor="#000000"
+                      android:textSize="@dimen/x_medium_font"
+                      android:text="27 H2H"
+                    />
+
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <TableLayout android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:stretchColumns="2,5"
+            >
+
+        <TableRow>
+            <View android:layout_height="5dp" android:layout_width="5dp"
+                  android:background="@drawable/circle_bg"
+                  android:layout_gravity="center_vertical"/>
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="Day"
+                      android:textColor="#9F9F9F"
+                      android:textSize="@dimen/low_font"
+
+                      android:paddingLeft="5dp"
+                      android:paddingRight="5dp"
+                    />
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="Fri Mar 07"
+                      android:textColor="#000000"
+                      android:textSize="@dimen/low_font"
+                      android:paddingRight="5dp"
+                      android:id="@+id/day_lbl"
+                    />
+            <View android:layout_height="5dp" android:layout_width="5dp"
+                  android:background="@drawable/circle_bg"
+                  android:layout_gravity="center_vertical"/>
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="Game Time"
+                      android:textColor="#9F9F9F"
+                      android:textSize="@dimen/low_font"
+                      android:paddingLeft="5dp"
+                      android:paddingRight="5dp"
+                    />
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="01:00am"
+                      android:textColor="#000000"
+                      android:textSize="@dimen/low_font"
+                      android:id="@+id/game_time_lbl"
+                    />
+        </TableRow>
+
+        <TableRow>
+            <View android:layout_height="5dp" android:layout_width="5dp"
+                  android:background="@drawable/circle_bg"
+                  android:layout_gravity="center_vertical"/>
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="PT"
+                      android:textColor="#9F9F9F"
+                      android:textSize="@dimen/low_font"
+                      android:paddingLeft="5dp"
+                      android:paddingRight="5dp"
+                    />
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="25.0"
+                      android:textColor="#000000"
+                      android:textSize="@dimen/low_font"
+                      android:paddingRight="5dp"
+                      android:id="@+id/pt_lbl"
+                    />
+            <View android:layout_height="5dp" android:layout_width="5dp"
+                  android:background="@drawable/circle_bg"
+                  android:layout_gravity="center_vertical"/>
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="Award"
+                      android:textColor="#9F9F9F"
+                      android:textSize="@dimen/low_font"
+                      android:paddingLeft="5dp"
+                      android:paddingRight="5dp"
+                    />
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="0.0"
+                      android:textColor="#000000"
+                      android:textSize="@dimen/low_font"
+                      android:id="@+id/award_lbl"
+                    />
+        </TableRow>
+
+        <TableRow>
+            <View android:layout_height="5dp" android:layout_width="5dp"
+                  android:background="@drawable/circle_bg"
+                  android:layout_gravity="center_vertical"/>
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="Prediction"
+                      android:textColor="#9F9F9F"
+                      android:textSize="@dimen/low_font"
+                      android:paddingLeft="5dp"
+                      android:paddingRight="5dp"
+                    />
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="Over: 1.4  rebounds"
+                      android:textColor="#000000"
+                      android:textSize="@dimen/low_font"
+                      android:id="@+id/prediction_lbl"
+                      android:layout_span="4" />
+
+        </TableRow>
+    </TableLayout>
+</LinearLayout>

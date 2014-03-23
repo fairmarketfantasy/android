@@ -61,6 +61,7 @@ public class PositionView extends LinearLayout {
         btn.setText(position.toUpperCase());
         btn.setTag(position);
         btn.setOnClickListener(_clickBtnListener);
+        btn.setPadding(0,0,0,0);
         Drawable drawable = getResources().getDrawable(R.drawable.middle_position_btn);
         switch (gravity){
             case Left:
@@ -72,7 +73,7 @@ public class PositionView extends LinearLayout {
             default:
         }
         btn.setTextColor(Color.WHITE);
-        btn.setTextSize(12);
+        btn.setTextSize(10);
         btn.setBackgroundDrawable(drawable);
         addView(btn);
     }
@@ -88,7 +89,7 @@ public class PositionView extends LinearLayout {
         setOrientation(HORIZONTAL);
         setBackgroundColor(Color.parseColor("#FFFFFF"));
         int paddingVer = getResources().getDimensionPixelOffset(R.dimen.side_hor_marging);
-        int paddingHor = getResources().getDimensionPixelOffset(R.dimen.side_marging);
+        int paddingHor = getResources().getDimensionPixelOffset(R.dimen.side_marging)/2;
         setPadding(paddingHor, paddingVer, paddingHor, paddingVer);
     }
 
@@ -106,6 +107,15 @@ public class PositionView extends LinearLayout {
 
     public String getPosition() {
         return _position;
+    }
+
+    public void setPosition(String position) {
+        for (int i = 0; i < getChildCount(); i++){
+           View v = getChildAt(i);
+            if(((String)v.getTag()).equalsIgnoreCase(position)){
+                _clickBtnListener.onClick(v);
+            }
+        }
     }
 
     public interface OnPositionSelecteListener{

@@ -20,6 +20,7 @@ import com.fantasysport.utility.image.ImageLoader;
 import com.fantasysport.views.LockableScrollView;
 import com.fantasysport.views.drawable.BitmapButtonDrawable;
 import com.fantasysport.views.listeners.ViewPagerOnPageSelectedListener;
+import com.fantasysport.webaccess.WebProxy;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -43,7 +44,8 @@ public abstract class MainActivityFragment extends BaseActivityFragment implemen
     protected ViewPager _pager;
 
 
-    public MainActivityFragment(){
+    public MainActivityFragment(WebProxy proxy){
+        super(proxy);
         _fragmentMediator.addMarketListener(this);
         _fragmentMediator.addRemainingSalaryListener(this);
         _fragmentMediator.addPlayerAdListener(this);
@@ -137,7 +139,7 @@ public abstract class MainActivityFragment extends BaseActivityFragment implemen
 
                         toggleHeaderView();
                     }
-                }, 1500);
+                }, 1300);
             }
         });
     }

@@ -6,7 +6,7 @@
               android:layout_height="wrap_content"
               android:paddingRight="@dimen/side_marging"
               android:paddingLeft="@dimen/side_marging"
-              android:background="@drawable/player_item"
+              android:background="#F0F0F0"
         >
     <LinearLayout android:orientation="horizontal"
                   android:layout_width="match_parent"

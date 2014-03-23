@@ -18,10 +18,12 @@ import java.util.List;
 public class GetStatEventsRequest extends BaseRequest<StatEventsResponse> {
 
     private Player _player;
+    private int _marketId;
 
-    public GetStatEventsRequest(Player player) {
+    public GetStatEventsRequest(Player player, int market_id) {
         super(StatEventsResponse.class);
         _player = player;
+        _marketId = market_id;
     }
 
     @Override
@@ -31,7 +33,9 @@ public class GetStatEventsRequest extends BaseRequest<StatEventsResponse> {
                 .appendPath("for_players")
                 .appendQueryParameter("access_token", getAccessToken())
                 .appendQueryParameter("player_ids", _player.getStatsId())
-                .appendQueryParameter("average", "true");
+                .appendQueryParameter("average", "true")
+                .appendQueryParameter("market_id", Integer.toString(_marketId));
+
         String url = uriBuilder.build().toString();
         HttpRequest request = getHttpRequestFactory().buildGetRequest(new GenericUrl(url));
         request.getHeaders().setAccept("application/json");

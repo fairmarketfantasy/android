@@ -41,6 +41,7 @@ public class SettingsActivity extends BaseActivity {
         setContentView(R.layout.activity_settings);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setHeaderText("SETTING");
         setSettingsList();
     }
 

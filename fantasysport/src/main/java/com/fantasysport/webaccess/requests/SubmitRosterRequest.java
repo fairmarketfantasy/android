@@ -14,7 +14,7 @@ import com.google.gson.Gson;
 public class SubmitRosterRequest extends BaseRequest<Object> {
 
     public static final String TOP6 = "100/30/30";
-    public static final String H2H = "27 h2h";
+    public static final String H2H = "27 H2H";
 
     private int _rosterId;
     private SubmitRequestBody _body;

@@ -14,6 +14,8 @@ public class MainFragmentMediator {
     private List<IMarketListener> _marketListeners = new ArrayList<IMarketListener>();
     private List<IRemainingSalaryListener> _remainingSalaryListeners = new ArrayList<IRemainingSalaryListener>();
     private List<IPlayerAddListener> _playerAddListeners = new ArrayList<IPlayerAddListener>();
+    private List<IPlayerPositionListener> _playerPositionListeners = new ArrayList<IPlayerPositionListener>();
+    private List<IOnBenchedStateChangedListener> _onBenchedStateChangedListeners = new ArrayList<IOnBenchedStateChangedListener>();
     private static MainFragmentMediator _instance;
 
     private MainFragmentMediator(){}
@@ -28,6 +30,14 @@ public class MainFragmentMediator {
             }
         }
         return _instance;
+    }
+
+    public void addOnBenchedStateChangedListener(IOnBenchedStateChangedListener listener){
+        _onBenchedStateChangedListeners.add(listener);
+    }
+
+    public void addPlayerPositionListener(IPlayerPositionListener listener){
+        _playerPositionListeners.add(listener);
     }
 
     public void addPlayerAdListener(IPlayerAddListener listener){
@@ -52,6 +62,26 @@ public class MainFragmentMediator {
 
     public void addPlayer(Object sender, Player player){
         raiseOnPlayerAdded(sender, player);
+    }
+
+    public void changePlayerPosition(Object sender, String position){
+        raiseOnPlayerPosition(sender, position);
+    }
+
+    public void changeBenchedState(Object sender, boolean state){
+        raiseOnBenchedStateChanged(sender, state);
+    }
+
+    private void raiseOnBenchedStateChanged(Object sender, boolean state){
+        for (IOnBenchedStateChangedListener listener : _onBenchedStateChangedListeners){
+            listener.onBenchedStateChanged(sender, state);
+        }
+    }
+
+    private void raiseOnPlayerPosition(Object sender, String position){
+        for (IPlayerPositionListener listener: _playerPositionListeners){
+            listener.onPlayerPositionChanged(sender, position);
+        }
     }
 
     private void raiseOnPlayerAdded(Object sender, Player player){
@@ -82,5 +112,13 @@ public class MainFragmentMediator {
 
     public interface IPlayerAddListener{
         public void onPlayerAdded(Object sender, Player player);
+    }
+
+    public interface IPlayerPositionListener{
+        public void onPlayerPositionChanged(Object sender, String position);
+    }
+
+    public interface IOnBenchedStateChangedListener {
+        public void onBenchedStateChanged(Object sender, boolean state);
     }
 }

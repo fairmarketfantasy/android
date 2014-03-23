@@ -19,4 +19,5 @@ public class Const {
     public final static String STATS_LIST = "stats_list";
     public final static String WEB_LINK = "web_link";
     public final static String SETTINGS_ITEM_ENUM = "settings_item_enum";
+    public final static String WEB_ACTIVITY_HEADER = "web_activity_header";
 }

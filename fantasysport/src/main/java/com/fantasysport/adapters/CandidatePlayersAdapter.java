@@ -18,11 +18,10 @@ import com.fantasysport.utility.image.ImageLoader;
 import java.util.List;
 
 
-
 /**
  * Created by bylynka on 2/27/14.
  */
-public class CandidatePlayersAdapter extends BaseAdapter{
+public class CandidatePlayersAdapter extends BaseAdapter {
 
     private Context _context;
     private List<Player> _players;
@@ -31,21 +30,21 @@ public class CandidatePlayersAdapter extends BaseAdapter{
     private Handler _handler = new Handler();
     public ImageLoader _imageLoader;
 
-    public CandidatePlayersAdapter(Context context){
+    public CandidatePlayersAdapter(Context context) {
         _context = context;
-        _prohibitionRoundTypeFace  = Typeface.createFromAsset(_context.getAssets(), "fonts/ProhibitionRound.ttf");
+        _prohibitionRoundTypeFace = Typeface.createFromAsset(_context.getAssets(), "fonts/ProhibitionRound.ttf");
         _imageLoader = new ImageLoader(_context);
     }
 
-    public void setListener(IListener listener){
+    public void setListener(IListener listener) {
         _listener = listener;
     }
 
-    public void setItems(List<Player> players){
+    public void setItems(List<Player> players) {
         _players = players;
     }
 
-    public List<Player> getPlayers(){
+    public List<Player> getPlayers() {
         return _players;
     }
 
@@ -68,61 +67,68 @@ public class CandidatePlayersAdapter extends BaseAdapter{
     public View getView(int position, View convertView, ViewGroup parent) {
         Button pt25Btn = null;
         Button addBtn = null;
-        if(convertView == null){
+        if (convertView == null) {
             LayoutInflater mInflater = (LayoutInflater)
                     _context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
             convertView = mInflater.inflate(R.layout.candidate_player_item, null);
-            pt25Btn = (Button)convertView.findViewById(R.id.pt25_btn);
-            addBtn = (Button)convertView.findViewById(R.id.add_btn);
+            pt25Btn = (Button) convertView.findViewById(R.id.pt25_btn);
+            addBtn = (Button) convertView.findViewById(R.id.add_btn);
             pt25Btn.setTypeface(_prohibitionRoundTypeFace);
             addBtn.setTypeface(_prohibitionRoundTypeFace);
         }
 
         Player player = _players.get(position);
 
-        ImageView benchedImg = (ImageView)convertView.findViewById(R.id.benched_img);
-        benchedImg.setVisibility(player.getIsBenched()? View.VISIBLE : View.INVISIBLE);
+        ImageView benchedImg = (ImageView) convertView.findViewById(R.id.benched_img);
+        benchedImg.setVisibility(player.getIsBenched() ? View.VISIBLE : View.INVISIBLE);
 
-        pt25Btn = (Button)convertView.findViewById(R.id.pt25_btn);
-        pt25Btn.setOnClickListener(new PT25BtnClickListener(player));
-        addBtn = (Button)convertView.findViewById(R.id.add_btn);
+        pt25Btn = (Button) convertView.findViewById(R.id.pt25_btn);
+        if (player.getIsBenched()) {
+            pt25Btn.setVisibility(View.INVISIBLE);
+        } else {
+            pt25Btn.setVisibility(View.VISIBLE);
+            pt25Btn.setOnClickListener(new PT25BtnClickListener(player));
+        }
+
+        addBtn = (Button) convertView.findViewById(R.id.add_btn);
         addBtn.setOnClickListener(new AddBtnClickListener(player));
 
-        TextView namelbl = (TextView)convertView.findViewById(R.id.name_lbl);
+        TextView namelbl = (TextView) convertView.findViewById(R.id.name_lbl);
         namelbl.setText(player.getName());
-        TextView positionLbl = (TextView)convertView.findViewById(R.id.position_lbl);
+        TextView positionLbl = (TextView) convertView.findViewById(R.id.position_lbl);
         positionLbl.setText(String.format("%s PPG %.1f", player.getTeam(), player.getPPG()));
-        TextView buyPriceLbl =  (TextView)convertView.findViewById(R.id.buy_price_lbl);
+        TextView buyPriceLbl = (TextView) convertView.findViewById(R.id.buy_price_lbl);
         buyPriceLbl.setText(String.format("$%.0f", player.getBuyPrice()));
-        ImageView imageView = (ImageView)convertView.findViewById(R.id.player_img);
+        ImageView imageView = (ImageView) convertView.findViewById(R.id.player_img);
         imageView.setImageBitmap(null);
         _imageLoader.displayImage(player.getImageUrl(), imageView);
         return convertView;
     }
 
-    private void raiseAddPlayerEvent(Player player){
-        if(_listener != null){
+    private void raiseAddPlayerEvent(Player player) {
+        if (_listener != null) {
             _listener.onAddPlayer(player);
         }
     }
 
-    private void raisePT25PlayerEvent(Player player){
-        if(_listener != null){
+    private void raisePT25PlayerEvent(Player player) {
+        if (_listener != null) {
             _listener.onPT25Player(player);
         }
     }
 
-    public interface IListener{
+    public interface IListener {
         public void onAddPlayer(Player player);
+
         public void onPT25Player(Player player);
     }
 
 
-    class AddBtnClickListener implements View.OnClickListener{
+    class AddBtnClickListener implements View.OnClickListener {
 
         private Player _player;
 
-        public AddBtnClickListener(Player player){
+        public AddBtnClickListener(Player player) {
             _player = player;
         }
 
@@ -132,11 +138,11 @@ public class CandidatePlayersAdapter extends BaseAdapter{
         }
     }
 
-    class PT25BtnClickListener implements View.OnClickListener{
+    class PT25BtnClickListener implements View.OnClickListener {
 
         private Player _player;
 
-        public PT25BtnClickListener(Player player){
+        public PT25BtnClickListener(Player player) {
             _player = player;
         }
 

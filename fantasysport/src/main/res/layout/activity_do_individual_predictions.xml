@@ -13,7 +13,9 @@
                  android:paddingBottom="@dimen/side_hor_marging"
                  android:paddingTop="@dimen/side_hor_marging"
                  android:orientation="horizontal"
-                 android:background="#E6E6E6">
+                 android:background="#E6E6E6"
+                 android:visibility="gone"
+            >
         <TextView android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
                   android:layout_gravity="center_vertical"
@@ -36,7 +38,9 @@
 
     <View android:layout_width="match_parent"
           android:layout_height="1dip"
-          android:background="#CCCCCC" />
+          android:background="#CCCCCC"
+            android:visibility="gone"/>
+
     <ListView android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:layout_weight="1"
@@ -50,7 +54,9 @@
                  android:layout_height="wrap_content"
                  android:id="@+id/bottom_bar"
                  android:background="#464646"
-                 android:padding="@dimen/side_marging">
+                 android:padding="@dimen/side_marging"
+                 android:visibility="gone"
+            >
             <Button android:layout_width="wrap_content"
                     android:layout_height="@dimen/submit_btn_height"
                     android:layout_gravity="center"

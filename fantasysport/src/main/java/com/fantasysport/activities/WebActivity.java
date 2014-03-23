@@ -16,6 +16,7 @@ public class WebActivity extends BaseActivity {
 
     private WebControlView _webView;
     private String _webLink;
+    private String _header;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +25,7 @@ public class WebActivity extends BaseActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         initStartParams(savedInstanceState);
+        setHeaderText(_header);
         _webView = getViewById(R.id.web_view);
         showProgress();
         _webProxy.getHTMLContent(_webLink, new StringResponseListener() {
@@ -44,8 +46,10 @@ public class WebActivity extends BaseActivity {
         if(savedInstanceState == null){
             Intent intent = getIntent();
             _webLink = intent.getStringExtra(Const.WEB_LINK);
+            _header = intent.getStringExtra(Const.WEB_ACTIVITY_HEADER);
         }else {
             _webLink = savedInstanceState.getString(Const.WEB_LINK);
+            _header = savedInstanceState.getString(Const.WEB_ACTIVITY_HEADER);
         }
     }
 
@@ -53,6 +57,7 @@ public class WebActivity extends BaseActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString(Const.WEB_LINK, _webLink);
+        outState.putString(Const.WEB_ACTIVITY_HEADER, _header);
     }
 
 

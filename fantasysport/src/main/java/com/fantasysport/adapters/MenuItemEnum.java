@@ -6,6 +6,7 @@ package com.fantasysport.adapters;
 public enum MenuItemEnum {
     Rules,
     LegalStuff,
+    Predictions,
     Support,
     Settings,
     SignOut

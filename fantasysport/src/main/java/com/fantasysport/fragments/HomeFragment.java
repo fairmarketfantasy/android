@@ -19,6 +19,7 @@ import com.fantasysport.models.*;
 import com.fantasysport.views.Switcher;
 import com.fantasysport.views.drawable.BitmapButtonDrawable;
 import com.fantasysport.views.listeners.ViewPagerOnPageSelectedListener;
+import com.fantasysport.webaccess.WebProxy;
 import com.fantasysport.webaccess.requestListeners.AutofillResponseListener;
 import com.fantasysport.webaccess.requestListeners.RequestError;
 import com.fantasysport.webaccess.requestListeners.SubmitRosterResponseListener;
@@ -36,6 +37,10 @@ import java.util.List;
 public class HomeFragment extends MainActivityFragment  implements AdapterView.OnItemClickListener, Switcher.ISelectedListener {
 
     private Switcher _switcher;
+
+    public HomeFragment(WebProxy proxy) {
+        super(proxy);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -219,15 +224,17 @@ public class HomeFragment extends MainActivityFragment  implements AdapterView.O
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         IPlayer item = (IPlayer) _playerAdapter.getItem(position);
-        if (item instanceof Player) {
-            return;
-        }
-//        navigateToPlayersActivity(item.getPosition());
+//        if (item instanceof Player) {
+//            return;
+//        }
+        _fragmentMediator.changePlayerPosition(this, item.getPosition());
+        getMainActivity().navigateToPlayers();
     }
 
     @Override
     public void onStateChanged(boolean isSelected) {
         setCanBenched(isSelected);
+        _fragmentMediator.changeBenchedState(this, isSelected);
     }
 
     @Override
