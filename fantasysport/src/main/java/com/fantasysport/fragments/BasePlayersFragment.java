@@ -122,8 +122,8 @@ public abstract class BasePlayersFragment extends MainActivityFragment implement
 
     @Override
     public void onPlayerAdded(Object sender, Player player) {
-        _playersAdapter.getPlayers().remove(player);
-        _playersAdapter.notifyDataSetChanged();
+//        _playersAdapter.getPlayers().remove(player);
+//        _playersAdapter.notifyDataSetChanged();
     }
 
     @Override

@@ -84,4 +84,5 @@ public class HomeFragment extends BaseHomeFragment  implements AdapterView.OnIte
             });
         }
     };
+
 }

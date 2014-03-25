@@ -140,6 +140,8 @@ public abstract class BaseHomeFragment extends MainActivityFragment  implements 
                     roster.setRemainingSalary(salary);
                     updatePlayersList();
                     dismissProgress();
+                    _fragmentMediator.changePlayerPosition(this, player.getPosition());
+                    getMainActivity().navigateToPlayers();
                 }
             });
         }
