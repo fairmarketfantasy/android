@@ -1,7 +1,6 @@
 package com.fantasysport.webaccess;
 
 import android.graphics.Bitmap;
-import android.net.Uri;
 import com.fantasysport.models.Player;
 import com.fantasysport.models.StatsItem;
 import com.fantasysport.models.User;
@@ -53,8 +52,8 @@ public final class WebProxy {
         _spiceManager.execute(request, null);
     }
 
-    public void uploadAva(Bitmap bitmap, UpdateUserResponseListener listener){
-        UploadAvaRequest request = new UploadAvaRequest(bitmap);
+    public void uploadAva(Bitmap bitmap, User currentUser, UpdateUserResponseListener listener){
+        UploadAvaRequest request = new UploadAvaRequest(bitmap, currentUser);
         _spiceManager.execute(request, listener);
     }
 
@@ -103,8 +102,13 @@ public final class WebProxy {
         _spiceManager.execute(request, listener);
     }
 
-    public void createRoster(int marketId, CreateRosterResponseListener listener){
+    public void createRoster(int marketId, RosterResponseListener listener){
         CreateRosterRequest request = new CreateRosterRequest(marketId);
+        _spiceManager.execute(request, listener);
+    }
+
+    public void getRoster(int rosterId, RosterResponseListener listener){
+        GetRosterRequest request = new GetRosterRequest(rosterId);
         _spiceManager.execute(request, listener);
     }
 

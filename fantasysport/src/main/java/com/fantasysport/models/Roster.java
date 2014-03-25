@@ -19,6 +19,20 @@ public class Roster  implements Serializable {
     @SerializedName("players")
     private List<Player> _players;
 
+    @SerializedName("contest_rank")
+    private int _contestRank;
+
+    @SerializedName("amount_paid")
+    private double _amountPaid;
+
+    public int getContestRank(){
+        return _contestRank;
+    }
+
+    public double getAmountPaid(){
+        return _amountPaid;
+    }
+
     public List<Player> getPlayers(){
         return _players;
     }

@@ -21,7 +21,8 @@ import java.util.List;
 /**
  * Created by bylynka on 3/21/14.
  */
-public abstract class BasePredictionFragment extends BaseActivityFragment implements PredictionActivity.ILoadContentListener {
+public abstract class BasePredictionFragment extends BaseActivityFragment implements PredictionActivity.ILoadContentListener,
+        PredictionAdapter.IOnShowRosterListener {
 
     protected ListView _predictionListView;
 

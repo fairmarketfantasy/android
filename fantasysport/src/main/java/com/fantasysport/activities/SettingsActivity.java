@@ -17,6 +17,7 @@ import com.fantasysport.Const;
 import com.fantasysport.R;
 import com.fantasysport.adapters.SettingsItemEnum;
 import com.fantasysport.adapters.SettinsAdapter;
+import com.fantasysport.models.User;
 import com.fantasysport.models.UserData;
 import com.fantasysport.webaccess.requestListeners.RequestError;
 import com.fantasysport.webaccess.requestListeners.UpdateUserResponseListener;
@@ -84,7 +85,7 @@ public class SettingsActivity extends BaseActivity {
 
     private void uploadAvatar(Bitmap bitmap){
         showProgress();
-        _webProxy.uploadAva(bitmap,new UpdateUserResponseListener() {
+        _webProxy.uploadAva(bitmap,SettingsActivity.this.getCurrentUser(), new UpdateUserResponseListener() {
             @Override
             public void onRequestError(RequestError message) {
                 dismissProgress();
@@ -95,6 +96,15 @@ public class SettingsActivity extends BaseActivity {
                 dismissProgress();
             }
         });
+    }
+
+    private User getCurrentUser(){
+        User user = new User();
+        UserData data = _storage.getUserData();
+        user.setRealName(data.getRealName());
+        user.setId(data.getId());
+        user.setEmail(data.getEmail());
+        return user;
     }
 
     @Override

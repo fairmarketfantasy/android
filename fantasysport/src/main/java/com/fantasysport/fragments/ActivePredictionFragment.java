@@ -1,10 +1,14 @@
 package com.fantasysport.fragments;
 
+import android.content.Intent;
+import com.fantasysport.Const;
 import com.fantasysport.R;
+import com.fantasysport.activities.MainPredictionActivity;
 import com.fantasysport.activities.PredictionActivity;
 import com.fantasysport.adapters.IndividualPredictionAdapter;
 import com.fantasysport.adapters.PredictionAdapter;
 import com.fantasysport.models.IndividualPrediction;
+import com.fantasysport.models.Market;
 import com.fantasysport.models.Prediction;
 import com.fantasysport.webaccess.WebProxy;
 import com.fantasysport.webaccess.requestListeners.IndividualPredictionsResponseListener;
@@ -48,6 +52,7 @@ public class ActivePredictionFragment extends BasePredictionFragment {
             public void onRequestSuccess(List list) {
                 dismissProgress();
                 PredictionAdapter adapter = new PredictionAdapter(getActivity(), (List<Prediction>)list, getProhibitionRound());
+                adapter.setOnShowRosterListener(ActivePredictionFragment.this);
                 _predictionListView.setAdapter(adapter);
             }
         });
@@ -69,5 +74,14 @@ public class ActivePredictionFragment extends BasePredictionFragment {
                 _predictionListView.setAdapter(adapter);
             }
         });
+    }
+
+    @Override
+    public void onShow(Prediction prediction){
+        Intent intent = new Intent(getActivity(), MainPredictionActivity.class);
+        intent.putExtra(Const.MARKET, prediction.getMarket());
+        intent.putExtra(Const.PREDICTION, PredictionRoster.Active);
+        intent.putExtra(Const.ROSTER_ID, prediction.getId());
+      getPredictionActivity().startActivity(intent);
     }
 }

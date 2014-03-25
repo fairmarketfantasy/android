@@ -12,6 +12,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.fantasysport.R;
+import com.fantasysport.activities.BaseMainActivity;
 import com.fantasysport.activities.MainActivity;
 import com.fantasysport.adapters.GameAdapter;
 import com.fantasysport.adapters.RosterPlayersAdapter;
@@ -32,31 +33,36 @@ import java.util.List;
  */
 public abstract class MainActivityFragment extends BaseActivityFragment implements MainActivity.IListener,
         MainFragmentMediator.IMarketListener, MainFragmentMediator.IRemainingSalaryListener,
-        MainFragmentMediator.IPlayerAddListener{
+        MainFragmentMediator.IPlayerAddListener, BaseMainActivity.IRosterLoadedListener{
 
     protected TextView _moneyTxt;
-    private View _headerView;
-    private FrameLayout _listWrapper;
-    private LockableScrollView _scrollView;
+    protected View _headerView;
+    protected FrameLayout _listWrapper;
+    protected LockableScrollView _scrollView;
     protected GameAdapter _pagerAdapter;
     protected RosterPlayersAdapter _playerAdapter;
-    protected MainFragmentMediator _fragmentMediator = MainFragmentMediator.instance();
+    protected MainFragmentMediator _fragmentMediator;
     protected ViewPager _pager;
 
 
-    public MainActivityFragment(WebProxy proxy){
+    public MainActivityFragment(WebProxy proxy, MainFragmentMediator fragmentMediator){
         super(proxy);
+        _fragmentMediator = fragmentMediator;
         _fragmentMediator.addMarketListener(this);
         _fragmentMediator.addRemainingSalaryListener(this);
         _fragmentMediator.addPlayerAdListener(this);
     }
 
-    protected MainActivity getMainActivity(){
-        return (MainActivity)getActivity();
+    protected BaseMainActivity getMainActivity(){
+        return (BaseMainActivity)getActivity();
     }
 
     protected Roster getRoster(){
         return getMainActivity().getRoster();
+    }
+
+    protected PredictionRoster getPredictionRoster(){
+        return getMainActivity().getPredictionRoster();
     }
 
     protected void setRoster(Roster roster){
@@ -65,6 +71,10 @@ public abstract class MainActivityFragment extends BaseActivityFragment implemen
 
     protected Market getMarket(){
         return getMainActivity().getMarket();
+    }
+
+    protected List<Market> getMarkets(){
+        return getMainActivity().getMarkets();
     }
 
     protected void setMarket(Market market){
@@ -86,6 +96,7 @@ public abstract class MainActivityFragment extends BaseActivityFragment implemen
         _moneyTxt.setTypeface(getProhibitionRound());
         _listWrapper = getViewById(R.id.list_wrapper);
         _scrollView = getViewById(R.id.scroll_view);
+        getMainActivity().addRosterLoadedListener(this);
         setUserData();
     }
 
@@ -200,7 +211,7 @@ public abstract class MainActivityFragment extends BaseActivityFragment implemen
     }
 
     protected void setPager(int id) {
-        List<Market> markets = _storage.getMarkets();
+        List<Market> markets = getMarkets();
         _pager.setId(id);
         _pagerAdapter = new GameAdapter(getActivity().getSupportFragmentManager(), markets);
         _pager.setOnPageChangeListener(_pageChangeListener);

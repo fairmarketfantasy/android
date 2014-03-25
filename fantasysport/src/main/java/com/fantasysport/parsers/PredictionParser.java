@@ -22,6 +22,8 @@ public class PredictionParser extends BaseParser {
     private final String SCORE = "score";
     private final String CONTEST_RANK = "contest_rank";
     private final String CONTEST_TYPE = "contest_type";
+    private final String ID = "id";
+    private final String CONTEST_RANK_PAYOUT = "contest_rank_payout";
 
     public List<Prediction> parse(String json){
         BsonDataWrapper bsonData = getBsonData(json);
@@ -43,12 +45,16 @@ public class PredictionParser extends BaseParser {
 
     private Prediction parseItem(int firstField){
         Prediction prediction  = new Prediction();
+        int id = getDouble(_objects.get(firstField + _keyMap.get(ID))).intValue();
+        prediction.setId(id);
         String state = (String) _objects.get(firstField + _keyMap.get(STATE));
         prediction.setState(state);
         double score = getDouble(_objects.get(firstField + _keyMap.get(SCORE)));
         prediction.setScore(score);
         int rank = getDouble(_objects.get(firstField + _keyMap.get(CONTEST_RANK))).intValue();
         prediction.setRank(rank);
+        int award = getDouble(_objects.get(firstField + _keyMap.get(CONTEST_RANK_PAYOUT))).intValue();
+        prediction.setAward(award);
         Market market = parseMarket((LinkedTreeMap)_objects.get(firstField + _keyMap.get(MARKET)));
         prediction.setMarket(market);
         LinkedTreeMap predictionDetail = (LinkedTreeMap)_objects.get(firstField + _keyMap.get(CONTEST_TYPE));
@@ -91,8 +97,11 @@ public class PredictionParser extends BaseParser {
                 continue;
             }else if(atemptPutKey(CONTEST_TYPE, field, i)){
                 continue;
+            }else if(atemptPutKey(ID, field, i)){
+                continue;
+            }else if(atemptPutKey(CONTEST_RANK_PAYOUT, field, i)){
+                continue;
             }
-
         }
     }
 }

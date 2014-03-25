@@ -50,6 +50,7 @@
     <string name="roster_predictions">Roster <i>Predictions </i></string>
     <string name="individual_predictions">Individual <i>Predictions </i></string>
     <string name="pt25_italic"><i>PT25 </i></string>
+    <string name="back">BACK</string>
 
     <!--<string name="wins_f">%$d wins%$d win </string>-->
 

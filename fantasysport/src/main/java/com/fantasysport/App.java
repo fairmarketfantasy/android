@@ -26,7 +26,7 @@ public class App extends Application {
         _current = this;
         restoreAccessToken();
         setRequestHelper();
-        Ubertesters.initialize(this);
+//        Ubertesters.initialize(this);
     }
 
     private void setRequestHelper(){
@@ -36,7 +36,6 @@ public class App extends Application {
 
     private void restoreAccessToken(){
         String accessTokenStringData = CacheProvider.getString(this, ACCESS_TOKEN);
-        Log.i("accessTokenStringData", accessTokenStringData);
         AccessTokenData data = new Gson().fromJson(accessTokenStringData, AccessTokenData.class);
         RequestHelper helper = RequestHelper.instance();
         helper.setAccessTokenData(data);

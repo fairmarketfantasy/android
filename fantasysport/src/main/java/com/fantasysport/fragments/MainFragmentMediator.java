@@ -18,19 +18,7 @@ public class MainFragmentMediator {
     private List<IOnBenchedStateChangedListener> _onBenchedStateChangedListeners = new ArrayList<IOnBenchedStateChangedListener>();
     private static MainFragmentMediator _instance;
 
-    private MainFragmentMediator(){}
-
-
-    public static MainFragmentMediator instance(){
-        if(_instance == null){
-            synchronized (MainFragmentMediator.class){
-                if(_instance  == null){
-                    _instance = new MainFragmentMediator();
-                }
-            }
-        }
-        return _instance;
-    }
+    public MainFragmentMediator(){}
 
     public void addOnBenchedStateChangedListener(IOnBenchedStateChangedListener listener){
         _onBenchedStateChangedListeners.add(listener);

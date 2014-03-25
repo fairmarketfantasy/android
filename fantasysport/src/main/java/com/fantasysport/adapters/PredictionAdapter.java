@@ -10,7 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 import com.fantasysport.R;
-import com.fantasysport.models.IndividualPrediction;
+import com.fantasysport.fragments.PredictionRoster;
 import com.fantasysport.models.Prediction;
 
 import java.text.SimpleDateFormat;
@@ -25,11 +25,23 @@ public class PredictionAdapter extends BaseAdapter {
     private Context _context;
     private Typeface _typeface;
     private ILoadListener _listener;
+    private IOnShowRosterListener _onShowRosterListener;
 
     public PredictionAdapter(Context context, List<Prediction> items, Typeface typeface){
         _items = items;
         _context = context;
         _typeface = typeface;
+    }
+
+    public void setOnShowRosterListener(IOnShowRosterListener onShowRosterListener){
+        _onShowRosterListener = onShowRosterListener;
+    }
+
+    private void raiseOnShowRoster(Prediction prediction){
+        if(_onShowRosterListener == null){
+            return;
+        }
+        _onShowRosterListener.onShow(prediction);
     }
 
     public void setLoadListener(ILoadListener listener){
@@ -77,12 +89,14 @@ public class PredictionAdapter extends BaseAdapter {
             return convertView;
         }
 
+        Button btn;
         if (convertView == null || convertView.getId() != R.id.root) {
             convertView = getLayoutInflater().inflate(R.layout.prediction_item, null);
-            Button btn = (Button)convertView.findViewById(R.id.roster_btn);
+            btn = (Button)convertView.findViewById(R.id.roster_btn);
             btn.setTypeface(_typeface);
         }
-
+        btn = (Button)convertView.findViewById(R.id.roster_btn);
+        btn.setOnClickListener(new OnRosterBtnClickListener(prediction));
         TextView nameLbl = (TextView)convertView.findViewById(R.id.name_lbl);
         nameLbl.setText(prediction.getMarket().getName());
         TextView contextTypeLbl = (TextView)convertView.findViewById(R.id.contest_type_lbl);
@@ -108,10 +122,30 @@ public class PredictionAdapter extends BaseAdapter {
             rankText = String.format("%d of %d", prediction.getRank(), prediction.getMaxEntries());
         }
         rankLbl.setText(rankText);
+        TextView awardLbl = (TextView)convertView.findViewById(R.id.award_lbl);
+        awardLbl.setText(prediction.getState().compareToIgnoreCase("finished") == 0? String.format("%.1f", prediction.getAward()):"N/A");
         return convertView;
+    }
+
+    public class OnRosterBtnClickListener implements View.OnClickListener{
+
+        private Prediction _prediction;
+
+        public OnRosterBtnClickListener(Prediction prediction){
+            _prediction = prediction;
+        }
+
+        @Override
+        public void onClick(View v) {
+            raiseOnShowRoster(_prediction);
+        }
     }
 
     public interface ILoadListener{
         public void onLoad();
+    }
+
+    public interface IOnShowRosterListener{
+        public void onShow(Prediction prediction);
     }
 }

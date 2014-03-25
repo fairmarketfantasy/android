@@ -12,10 +12,9 @@ import com.fantasysport.models.Player;
 import com.fantasysport.models.Roster;
 import com.fantasysport.views.Switcher;
 import com.fantasysport.webaccess.requestListeners.AddPlayerResponseListener;
-import com.fantasysport.webaccess.requestListeners.CreateRosterResponseListener;
+import com.fantasysport.webaccess.requestListeners.RosterResponseListener;
 import com.fantasysport.webaccess.requestListeners.PlayersResponseListener;
 import com.fantasysport.webaccess.requestListeners.RequestError;
-import com.fantasysport.webaccess.WebProxy;
 import com.fantasysport.webaccess.responses.PlayersRequestResponse;
 
 import java.util.ArrayList;
@@ -69,7 +68,7 @@ public class PlayersActivity extends BaseActivity implements CandidatePlayersAda
 
         if (_roster == null) {
             showProgress();
-            _webProxy.createRoster(_marketId, new CreateRosterResponseListener() {
+            _webProxy.createRoster(_marketId, new RosterResponseListener() {
                 @Override
                 public void onRequestError(RequestError message) {
                     dismissProgress();

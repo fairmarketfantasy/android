@@ -60,7 +60,7 @@
             <Button android:layout_width="wrap_content"
                     android:layout_height="@dimen/submit_btn_height"
                     android:layout_gravity="center"
-                    android:background="@drawable/submit_prediction_button"
+                    android:background="@drawable/green_button"
                     android:text="@string/submit"
                     android:paddingRight="@dimen/btn_padding"
                     android:paddingLeft="@dimen/btn_padding"

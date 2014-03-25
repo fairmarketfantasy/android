@@ -161,6 +161,25 @@
                       android:id="@+id/points_lbl"
                     />
 
+            <View android:layout_height="5dp" android:layout_width="5dp"
+                  android:background="@drawable/circle_bg"
+                  android:layout_gravity="center_vertical"/>
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="Award"
+                      android:textColor="#9F9F9F"
+                      android:textSize="@dimen/low_font"
+                      android:paddingLeft="5dp"
+                      android:paddingRight="5dp"
+                    />
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="N/A"
+                      android:textColor="#000000"
+                      android:textSize="@dimen/low_font"
+                      android:id="@+id/award_lbl"
+                    />
+
         </TableRow>
     </TableLayout>
 </LinearLayout>

@@ -20,4 +20,6 @@ public class Const {
     public final static String WEB_LINK = "web_link";
     public final static String SETTINGS_ITEM_ENUM = "settings_item_enum";
     public final static String WEB_ACTIVITY_HEADER = "web_activity_header";
+    public final static String PREDICTION = "prediction";
+    public static final String MARKETS = "markets";
 }

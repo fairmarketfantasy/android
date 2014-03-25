@@ -13,6 +13,8 @@ public class Prediction {
     private String _state;
     private String _contestType;
     private int _maxEntries;
+    private int _id;
+    private double _award;
 
 
     public boolean isEmpty(){
@@ -71,4 +73,19 @@ public class Prediction {
         return _market.getStartedAt();
     }
 
+    public void setId(int id){
+        _id = id;
+    }
+
+    public int getId() {
+        return _id;
+    }
+
+    public double getAward() {
+        return _award;
+    }
+
+    public void setAward(double award){
+        _award = award;
+    }
 }

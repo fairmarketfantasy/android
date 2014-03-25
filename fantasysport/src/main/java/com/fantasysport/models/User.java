@@ -28,6 +28,13 @@ public class User {
     @SerializedName("id")
     private int _id;
 
+    @SerializedName("avatar")
+    private Avatar _avatar;
+
+    public void setAvatar(Avatar avatar){
+        _avatar = avatar;
+    }
+
     public String getLogin(){
         return  _login;
     }

@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.fantasysport.R;
+import com.fantasysport.fragments.PredictionRoster;
 import com.fantasysport.models.IPlayer;
 import com.fantasysport.models.Player;
 import com.fantasysport.utility.image.ImageLoader;
@@ -29,31 +30,33 @@ public class RosterPlayersAdapter extends BaseAdapter {
     private List<IPlayer> _players;
     private Context _context;
     private Typeface _prohibitionRoundTypeFace;
-    public ImageLoader _imageLoader;
-    public IListener _listener;
+    private ImageLoader _imageLoader;
+    private IListener _listener;
+    private PredictionRoster _predictionRoster;
 
-    public RosterPlayersAdapter(List<IPlayer> players, Context context){
+    public RosterPlayersAdapter(List<IPlayer> players, Context context, PredictionRoster predictionRoster) {
         _players = players;
         _context = context;
-        _prohibitionRoundTypeFace  = Typeface.createFromAsset(_context.getAssets(), "fonts/ProhibitionRound.ttf");
+        _predictionRoster = predictionRoster;
+        _prohibitionRoundTypeFace = Typeface.createFromAsset(_context.getAssets(), "fonts/ProhibitionRound.ttf");
         _imageLoader = new ImageLoader(_context);
     }
 
-    public void setListener(IListener listener){
+    public void setListener(IListener listener) {
         _listener = listener;
     }
 
-    public List<IPlayer> getItems(){
+    public List<IPlayer> getItems() {
         return _players;
     }
 
-    public void setItems(List<IPlayer> items){
+    public void setItems(List<IPlayer> items) {
         _players = items;
     }
 
     @Override
     public int getCount() {
-        return _players != null? _players.size(): 0;
+        return _players != null ? _players.size() : 0;
     }
 
     @Override
@@ -76,24 +79,24 @@ public class RosterPlayersAdapter extends BaseAdapter {
             final ColorViewDrawable viewDrawable = new ColorViewDrawable(Color.parseColor("#F0F0F0"), Color.parseColor("#D6D6D6"));
             viewDrawable.setStateListener(new ColorViewDrawableListener(convertView));
             convertView.setBackgroundDrawable(viewDrawable);
-            tradeBtn = (Button)convertView.findViewById(R.id.trade_btn);
+            tradeBtn = (Button) convertView.findViewById(R.id.trade_btn);
             tradeBtn.setTypeface(_prohibitionRoundTypeFace);
         }
         IPlayer item = _players.get(position);
         boolean isSelected = item instanceof Player;
         Player player = null;
-        if(isSelected){
-            player = (Player)item;
+        if (isSelected) {
+            player = (Player) item;
         }
-        TextView gamePositionTxt = (TextView)convertView.findViewById(R.id.position_lbl);
-        tradeBtn = (Button)convertView.findViewById(R.id.trade_btn);
-        TextView nameLbl = (TextView)convertView.findViewById(R.id.name_lbl);
-        TextView priceLbl = (TextView)convertView.findViewById(R.id.buy_price_lbl);
-        PlayerProgressTextView progressLbl = (PlayerProgressTextView)convertView.findViewById(R.id.progress_lbl);
-        ImageView benchedImg = (ImageView)convertView.findViewById(R.id.benched_img);
-        ImageView imageView = (ImageView)convertView.findViewById(R.id.player_img);
+        TextView gamePositionTxt = (TextView) convertView.findViewById(R.id.position_lbl);
+        tradeBtn = (Button) convertView.findViewById(R.id.trade_btn);
+        TextView nameLbl = (TextView) convertView.findViewById(R.id.name_lbl);
+        TextView priceLbl = (TextView) convertView.findViewById(R.id.buy_price_lbl);
+        PlayerProgressTextView progressLbl = (PlayerProgressTextView) convertView.findViewById(R.id.progress_lbl);
+        ImageView benchedImg = (ImageView) convertView.findViewById(R.id.benched_img);
+        ImageView imageView = (ImageView) convertView.findViewById(R.id.player_img);
         imageView.setImageBitmap(null);
-        if(isSelected){
+        if (isSelected) {
             gamePositionTxt.setText(String.format("%s %s PPG %.1f", player.getPosition(), player.getTeam(), player.getPPG()));
             tradeBtn.setVisibility(View.VISIBLE);
             _imageLoader.displayImage(player.getImageUrl(), imageView);
@@ -103,9 +106,13 @@ public class RosterPlayersAdapter extends BaseAdapter {
             priceLbl.setText(String.format("$%.1f", player.getPurchasePrice()));
             progressLbl.setVisibility(View.VISIBLE);
             progressLbl.setPlayer(player);
-            tradeBtn.setOnClickListener(new TradeBtnClickListener(player));
-            benchedImg.setVisibility(player.getIsBenched()? View.VISIBLE : View.INVISIBLE);
-        }else {
+            if (_predictionRoster != PredictionRoster.History) {
+                tradeBtn.setOnClickListener(new TradeBtnClickListener(player));
+            } else {
+                tradeBtn.setVisibility(View.GONE);
+            }
+            benchedImg.setVisibility(player.getIsBenched() ? View.VISIBLE : View.INVISIBLE);
+        } else {
             gamePositionTxt.setText(item.getPosition() + " Not Selected");
             tradeBtn.setVisibility(View.GONE);
             nameLbl.setVisibility(View.INVISIBLE);
@@ -117,8 +124,8 @@ public class RosterPlayersAdapter extends BaseAdapter {
         return convertView;
     }
 
-    private void raiseOnTrade(Player player){
-        if(_listener == null){
+    private void raiseOnTrade(Player player) {
+        if (_listener == null) {
             return;
         }
         _listener.onTrade(player);
@@ -128,37 +135,39 @@ public class RosterPlayersAdapter extends BaseAdapter {
 
         private View _view;
 
-        public ColorViewDrawableListener(View view){
+        public ColorViewDrawableListener(View view) {
             _view = view;
         }
 
         @Override
         public void stateChanged(int state) {
             Drawable drawable;
-            if(state == android.R.attr.state_pressed){
+            if (state == android.R.attr.state_pressed) {
                 drawable = _context.getResources().getDrawable(R.drawable.circle_2_hover);
-            }else {
+            } else {
                 drawable = _context.getResources().getDrawable(R.drawable.circle_2);
 
             }
             setImage(_view, drawable);
         }
-    };
+    }
 
-    private void setImage(View v, Drawable drawable){
-        ImageView img = (ImageView)v.findViewById(R.id.circle_img);
+    ;
+
+    private void setImage(View v, Drawable drawable) {
+        ImageView img = (ImageView) v.findViewById(R.id.circle_img);
         img.setImageDrawable(drawable);
     }
 
-    public interface IListener{
+    public interface IListener {
         public void onTrade(Player player);
     }
 
-    public class TradeBtnClickListener implements View.OnClickListener{
+    public class TradeBtnClickListener implements View.OnClickListener {
 
         private Player _player;
 
-        public TradeBtnClickListener(Player player){
+        public TradeBtnClickListener(Player player) {
             _player = player;
         }
 
