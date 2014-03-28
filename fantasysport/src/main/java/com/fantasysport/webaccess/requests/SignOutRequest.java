@@ -14,7 +14,7 @@ public class SignOutRequest extends BaseRequest<Object> {
     }
 
     @Override
-    public Object loadDataFromNetwork() throws Exception {
+    public Void loadDataFromNetwork() throws Exception {
         Uri.Builder uriBuilder = Uri.parse(getUrl()).buildUpon()
                 .appendPath("users")
                 .appendPath("sign_out")
@@ -22,7 +22,7 @@ public class SignOutRequest extends BaseRequest<Object> {
         String url = uriBuilder.build().toString();
         HttpRequest request = getHttpRequestFactory().buildGetRequest(new GenericUrl(url));
         request.getHeaders().setAccept("application/json");
-        String result = request.execute().parseAsString();
-        return result;
+        _rHelper.signOut();
+        return null;
     }
 }

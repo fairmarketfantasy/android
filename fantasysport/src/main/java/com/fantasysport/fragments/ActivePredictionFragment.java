@@ -27,11 +27,11 @@ public class ActivePredictionFragment extends BasePredictionFragment {
     }
 
     @Override
-    public void onLoad(PredictionActivity.TimeType timeType, PredictionActivity.PredictionType predictionType) {
+    public void onLoad(PredictionActivity.TimeType timeType, PredictionActivity.PredictionType predictionType, boolean showLoading) {
         if(timeType != PredictionActivity.TimeType.Active){
             return;
         }
-
+        super.onLoad(timeType, predictionType, showLoading);
         if(predictionType == PredictionActivity.PredictionType.Individual){
             loadIndividualPredictions();
         }else {
@@ -46,6 +46,7 @@ public class ActivePredictionFragment extends BasePredictionFragment {
             public void onRequestError(RequestError error) {
                 dismissProgress();
                 showAlert(getString(R.string.error), error.getMessage());
+                setRefreshComplete();
             }
 
             @Override
@@ -54,6 +55,7 @@ public class ActivePredictionFragment extends BasePredictionFragment {
                 PredictionAdapter adapter = new PredictionAdapter(getActivity(), (List<Prediction>)list, getProhibitionRound());
                 adapter.setOnShowRosterListener(ActivePredictionFragment.this);
                 _predictionListView.setAdapter(adapter);
+                setRefreshComplete();
             }
         });
     }
@@ -64,6 +66,7 @@ public class ActivePredictionFragment extends BasePredictionFragment {
             @Override
             public void onRequestError(RequestError error) {
                 dismissProgress();
+                setRefreshComplete();
                 showAlert(getString(R.string.error), error.getMessage());
             }
 
@@ -72,6 +75,7 @@ public class ActivePredictionFragment extends BasePredictionFragment {
                 dismissProgress();
                 IndividualPredictionAdapter adapter = new IndividualPredictionAdapter(getActivity(), (List<IndividualPrediction>)list, getProhibitionRound());
                 _predictionListView.setAdapter(adapter);
+                setRefreshComplete();
             }
         });
     }

@@ -11,7 +11,7 @@ import com.fantasysport.webaccess.WebProxy;
 /**
  * Created by bylynka on 3/14/14.
  */
-public class BaseActivityFragment extends Fragment {
+public abstract class BaseActivityFragment extends Fragment {
 
     protected Storage _storage;
     protected WebProxy _webProxy;

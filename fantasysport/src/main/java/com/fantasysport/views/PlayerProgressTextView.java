@@ -27,12 +27,15 @@ public class PlayerProgressTextView extends TextView {
         double progress = player.getSellPrice() - player.getPurchasePrice();
         int color = Color.parseColor("#51B24B");
         String textValue = null;
+        double progressInPercents = (Math.abs(progress)*100)/player.getPurchasePrice();
+
         if(progress < 0){
             color = Color.parseColor("#E74B3C");
-            textValue = String.format(" %.0f", progress);
+            textValue = String.format(" -%.0f%s", progressInPercents, "%");
         }else {
-            textValue = String.format(" +%.0f", progress);
+            textValue = String.format(" +%.0f%s", progressInPercents, "%");
         }
+
         setTextColor(color);
         setText(textValue);
     }

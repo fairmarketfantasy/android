@@ -46,16 +46,18 @@ public class HistoryPredictionFragment extends BasePredictionFragment {
     }
 
     @Override
-    public void onLoad(PredictionActivity.TimeType timeType, PredictionActivity.PredictionType predictionType) {
+    public void onLoad(PredictionActivity.TimeType timeType, PredictionActivity.PredictionType predictionType, boolean showLoadPopup) {
         if(timeType != PredictionActivity.TimeType.History){
             return;
         }
+        super.onLoad(timeType, predictionType, showLoadPopup);
+        _currentPage = 0;
         _predictions = null;
         _individualPredictions = null;
         if(predictionType == PredictionActivity.PredictionType.Individual){
-            loadIndividualPredictions(true);
+            loadIndividualPredictions(showLoadPopup);
         }else {
-            loadPredictions(true);
+            loadPredictions(showLoadPopup);
         }
     }
 
@@ -75,6 +77,7 @@ public class HistoryPredictionFragment extends BasePredictionFragment {
             @Override
             public void onRequestError(RequestError error) {
                 dismissProgress();
+                setRefreshComplete();
                 showAlert(getString(R.string.error), error.getMessage());
             }
 
@@ -96,6 +99,7 @@ public class HistoryPredictionFragment extends BasePredictionFragment {
                 _predictions.addAll(predictions);
                 _predictionAdapter.setItems(_predictions);
                 _predictionAdapter.notifyDataSetChanged();
+                setRefreshComplete();
             }
         }, _currentPage);
     }
@@ -116,6 +120,7 @@ public class HistoryPredictionFragment extends BasePredictionFragment {
             @Override
             public void onRequestError(RequestError error) {
                 dismissProgress();
+                setRefreshComplete();
                 showAlert(getString(R.string.error), error.getMessage());
             }
 
@@ -137,6 +142,7 @@ public class HistoryPredictionFragment extends BasePredictionFragment {
                 _individualPredictions.addAll(predictions);
                 _individualPredictionAdapter.setItems(_individualPredictions);
                 _individualPredictionAdapter.notifyDataSetChanged();
+                setRefreshComplete();
             }
         }, _currentPage);
     }

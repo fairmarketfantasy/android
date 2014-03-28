@@ -36,7 +36,9 @@ public class MarketsRequest extends BaseRequest<MarketResponse>  {
             _markets.addAll(singleEliminationMarkets);
         }
         DefaultRosterData rosterData = loadDefaultRosterData();
+        _rHelper.loadDefaultRosterData(rosterData);
         MarketResponse marketResponse = new MarketResponse(_markets, rosterData);
+        _rHelper.loadMarkets(_markets);
         return marketResponse;
     }
 

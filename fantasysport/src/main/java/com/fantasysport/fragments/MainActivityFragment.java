@@ -22,6 +22,9 @@ import com.fantasysport.views.LockableScrollView;
 import com.fantasysport.views.drawable.BitmapButtonDrawable;
 import com.fantasysport.views.listeners.ViewPagerOnPageSelectedListener;
 import com.fantasysport.webaccess.WebProxy;
+import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
+import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout;
+import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -33,7 +36,8 @@ import java.util.List;
  */
 public abstract class MainActivityFragment extends BaseActivityFragment implements MainActivity.IListener,
         MainFragmentMediator.IMarketListener, MainFragmentMediator.IRemainingSalaryListener,
-        MainFragmentMediator.IPlayerAddListener, BaseMainActivity.IRosterLoadedListener{
+        MainFragmentMediator.IPlayerAddListener, BaseMainActivity.IRosterLoadedListener,
+        BaseMainActivity.IUpdateListener, OnRefreshListener {
 
     protected TextView _moneyTxt;
     protected View _headerView;
@@ -43,6 +47,7 @@ public abstract class MainActivityFragment extends BaseActivityFragment implemen
     protected RosterPlayersAdapter _playerAdapter;
     protected MainFragmentMediator _fragmentMediator;
     protected ViewPager _pager;
+    protected PullToRefreshLayout _pullToRefreshLayout;
 
 
     public MainActivityFragment(WebProxy proxy, MainFragmentMediator fragmentMediator){
@@ -51,6 +56,7 @@ public abstract class MainActivityFragment extends BaseActivityFragment implemen
         _fragmentMediator.addMarketListener(this);
         _fragmentMediator.addRemainingSalaryListener(this);
         _fragmentMediator.addPlayerAdListener(this);
+
     }
 
     protected BaseMainActivity getMainActivity(){
@@ -91,11 +97,17 @@ public abstract class MainActivityFragment extends BaseActivityFragment implemen
 
     protected void init(){
         getMainActivity().addListener(this);
+        getMainActivity().addUpdateListener(this);
         _pager = getViewById(R.id.pager);
         _moneyTxt = getViewById(R.id.money_lbl);
         _moneyTxt.setTypeface(getProhibitionRound());
         _listWrapper = getViewById(R.id.list_wrapper);
         _scrollView = getViewById(R.id.scroll_view);
+        _pullToRefreshLayout = getViewById(R.id.ptr_layout);
+        ActionBarPullToRefresh.from(getActivity())
+                .allChildrenArePullable()
+                .listener(this)
+                .setup(_pullToRefreshLayout);
         getMainActivity().addRosterLoadedListener(this);
         setUserData();
     }
@@ -150,7 +162,7 @@ public abstract class MainActivityFragment extends BaseActivityFragment implemen
 
                         toggleHeaderView();
                     }
-                }, 1300);
+                }, 1000);
             }
         });
     }

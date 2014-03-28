@@ -20,6 +20,9 @@ import com.fantasysport.webaccess.requestListeners.AddPlayerResponseListener;
 import com.fantasysport.webaccess.requestListeners.PlayersResponseListener;
 import com.fantasysport.webaccess.requestListeners.RequestError;
 import com.fantasysport.webaccess.responses.PlayersRequestResponse;
+import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
+import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout;
+import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 
 /**
  * Created by bylynka on 3/24/14.
@@ -32,6 +35,7 @@ public abstract class BasePlayersFragment extends MainActivityFragment implement
     protected Market _lastMarket;
     protected String _lastPosition;
     protected boolean _lastBenchedState;
+    protected ListView _playersList;
 
     public BasePlayersFragment(WebProxy proxy, MainFragmentMediator fragmentMediator){
         super(proxy, fragmentMediator);
@@ -85,11 +89,12 @@ public abstract class BasePlayersFragment extends MainActivityFragment implement
     }
 
     private void setPlayersListView() {
-        ListView listView = getViewById(R.id.players_list);
+        _playersList = getViewById(R.id.players_list);
         _playersAdapter = new CandidatePlayersAdapter(getActivity());
         _playersAdapter.setListener(this);
-        listView.setAdapter(_playersAdapter);
+        _playersList.setAdapter(_playersAdapter);
     }
+
 
     @Override
     public void positionSelected(String position) {
@@ -142,6 +147,7 @@ public abstract class BasePlayersFragment extends MainActivityFragment implement
         public void onRequestError(RequestError message) {
             dismissProgress();
             showAlert(getString(R.string.error), getString(R.string.error));
+            onUpdated(BasePlayersFragment.this);
         }
 
         @Override
@@ -149,6 +155,7 @@ public abstract class BasePlayersFragment extends MainActivityFragment implement
             _playersAdapter.setItems(response.getPlayers());
             _playersAdapter.notifyDataSetInvalidated();
             dismissProgress();
+            onUpdated(BasePlayersFragment.this);
         }
     };
 
@@ -166,6 +173,18 @@ public abstract class BasePlayersFragment extends MainActivityFragment implement
 
     @Override
     public void onBenchedStateChanged(Object sender, boolean state) {
-        loadPlayers(_positionView.getPosition(), true);
+    }
+
+    @Override
+    public void onRefreshStarted(View view) {
+        loadPlayers(_positionView.getPosition(), false);
+    }
+
+    @Override
+    public void onUpdated(Object initiator) {
+        if(initiator != this || !_pullToRefreshLayout.isRefreshing()){
+            return;
+        }
+        _pullToRefreshLayout.setRefreshComplete();
     }
 }

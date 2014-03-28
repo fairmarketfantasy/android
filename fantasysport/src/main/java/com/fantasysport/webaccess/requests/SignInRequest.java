@@ -25,6 +25,7 @@ public class SignInRequest extends BaseRequest<AuthResponse> {
         AccessTokenRequestBody body = new AccessTokenRequestBody(_email, _password);
         AccessTokenData accessTokenData = getAccessTokenData(body);
         UserData userData = getUserData(accessTokenData.getAccessToken());
+        _rHelper.loadUserData(userData);
         AuthResponse response = new AuthResponse(userData, accessTokenData);
         return response;
     }

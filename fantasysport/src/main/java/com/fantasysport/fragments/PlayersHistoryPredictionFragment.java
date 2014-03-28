@@ -83,4 +83,14 @@ public class PlayersHistoryPredictionFragment extends BasePlayersFragment {
         }
         _msgLbl.setText(msg);
     }
+
+    @Override
+    public void onUpdated(Object initiator) {
+
+    }
+
+    @Override
+    public void onRefreshStarted(View view) {
+
+    }
 }

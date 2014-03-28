@@ -5,12 +5,13 @@ import com.fantasysport.models.Market;
 import com.fantasysport.models.UserData;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by bylynka on 2/14/14.
  */
-public class Storage {
+public class Storage implements Serializable {
 
     private static Storage _instance;
 

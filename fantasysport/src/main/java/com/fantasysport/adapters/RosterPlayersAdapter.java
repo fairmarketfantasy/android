@@ -13,9 +13,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.fantasysport.R;
+import com.fantasysport.activities.BaseActivity;
 import com.fantasysport.fragments.PredictionRoster;
 import com.fantasysport.models.IPlayer;
 import com.fantasysport.models.Player;
+import com.fantasysport.models.Roster;
 import com.fantasysport.utility.image.ImageLoader;
 import com.fantasysport.views.drawable.ColorViewDrawable;
 import com.fantasysport.views.PlayerProgressTextView;
@@ -28,18 +30,22 @@ import java.util.List;
 public class RosterPlayersAdapter extends BaseAdapter {
 
     private List<IPlayer> _players;
-    private Context _context;
-    private Typeface _prohibitionRoundTypeFace;
+    private BaseActivity _context;
     private ImageLoader _imageLoader;
     private IListener _listener;
     private PredictionRoster _predictionRoster;
+    private String _rosterState;
 
-    public RosterPlayersAdapter(List<IPlayer> players, Context context, PredictionRoster predictionRoster) {
+    public RosterPlayersAdapter(List<IPlayer> players, BaseActivity context, PredictionRoster predictionRoster) {
         _players = players;
         _context = context;
         _predictionRoster = predictionRoster;
-        _prohibitionRoundTypeFace = Typeface.createFromAsset(_context.getAssets(), "fonts/ProhibitionRound.ttf");
         _imageLoader = new ImageLoader(_context);
+    }
+
+
+    public void setRosterState(String rosterState){
+        _rosterState = rosterState;
     }
 
     public void setListener(IListener listener) {
@@ -80,7 +86,7 @@ public class RosterPlayersAdapter extends BaseAdapter {
             viewDrawable.setStateListener(new ColorViewDrawableListener(convertView));
             convertView.setBackgroundDrawable(viewDrawable);
             tradeBtn = (Button) convertView.findViewById(R.id.trade_btn);
-            tradeBtn.setTypeface(_prohibitionRoundTypeFace);
+            tradeBtn.setTypeface(_context.getProhibitionRound());
         }
         IPlayer item = _players.get(position);
         boolean isSelected = item instanceof Player;
@@ -89,6 +95,7 @@ public class RosterPlayersAdapter extends BaseAdapter {
             player = (Player) item;
         }
         TextView gamePositionTxt = (TextView) convertView.findViewById(R.id.position_lbl);
+        gamePositionTxt.setTypeface(_context.getRobotoThin());
         tradeBtn = (Button) convertView.findViewById(R.id.trade_btn);
         TextView nameLbl = (TextView) convertView.findViewById(R.id.name_lbl);
         TextView priceLbl = (TextView) convertView.findViewById(R.id.buy_price_lbl);
@@ -104,8 +111,12 @@ public class RosterPlayersAdapter extends BaseAdapter {
             nameLbl.setText(player.getName());
             priceLbl.setVisibility(View.VISIBLE);
             priceLbl.setText(String.format("$%.1f", player.getPurchasePrice()));
-            progressLbl.setVisibility(View.VISIBLE);
-            progressLbl.setPlayer(player);
+            if(_rosterState != null && _rosterState.equalsIgnoreCase(Roster.SUBMITTED)){
+                progressLbl.setVisibility(View.VISIBLE);
+                progressLbl.setPlayer(player);
+            }else {
+                progressLbl.setVisibility(View.INVISIBLE);
+            }
             if (_predictionRoster != PredictionRoster.History) {
                 tradeBtn.setOnClickListener(new TradeBtnClickListener(player));
             } else {

@@ -15,6 +15,8 @@ import com.fantasysport.views.AnimatedViewPager;
 import com.fantasysport.views.animations.ZoomOutPageTransformer;
 import com.fantasysport.webaccess.requestListeners.RequestError;
 import com.fantasysport.webaccess.requestListeners.RosterResponseListener;
+import com.fantasysport.webaccess.requestListeners.UpdateMainDataResponse;
+import com.fantasysport.webaccess.requestListeners.UpdateMainDataResponseListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +38,7 @@ public class BaseMainActivity extends BaseActivity {
     protected AnimatedViewPager _pager;
     protected List<Market> _markets;
     protected List<IRosterLoadedListener> _rosterLoadedListeners = new ArrayList<IRosterLoadedListener>();
+    protected List<IUpdateListener> _updateListener = new ArrayList<IUpdateListener>();
     protected PredictionRoster _predictionRoster = PredictionRoster.None;
 
     @Override
@@ -53,6 +56,10 @@ public class BaseMainActivity extends BaseActivity {
 
     public void addRosterLoadedListener(IRosterLoadedListener listener){
         _rosterLoadedListeners.add(listener);
+    }
+
+    public void addUpdateListener(IUpdateListener listener){
+        _updateListener.add(listener);
     }
 
     public PredictionRoster getPredictionRoster(){
@@ -80,6 +87,12 @@ public class BaseMainActivity extends BaseActivity {
 
     public void addListener(IListener listener) {
         _listeners.add(listener);
+    }
+
+    protected void raiseOnUpdateListener(Object initiator) {
+        for (int i = 0; i < _listeners.size(); i++) {
+            _updateListener.get(i).onUpdated(initiator);
+        }
     }
 
     protected void raiseOnToggleHeader() {
@@ -209,7 +222,33 @@ public class BaseMainActivity extends BaseActivity {
         });
     }
 
+    public void updateUserData(final Object initiator){
+        _webProxy.getMainData(_storage.getUserData().getId(), new UpdateMainDataResponseListener() {
+            @Override
+            public void onRequestError(RequestError error) {
+                raiseOnUpdateListener(initiator);
+                showAlert(getString(R.string.error), error.getMessage());
+            }
+
+            @Override
+            public void onRequestSuccess(UpdateMainDataResponse response) {
+                raiseOnUpdateListener(initiator);
+                Roster updatedRoster = response.getRoster();
+                if (_roster != null && updatedRoster != null && _roster.getId() == updatedRoster.getId()){
+                    _roster = updatedRoster;
+                    raiseOnRosterLoaded(updatedRoster);
+                }
+            }
+        });
+    }
+
     public interface IRosterLoadedListener {
         public void onRosterLoaded(Roster roster);
     }
+
+    public interface IUpdateListener {
+        public void onUpdated(Object initiator);
+    }
+
+
 }

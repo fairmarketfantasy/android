@@ -18,13 +18,24 @@ import java.util.List;
 public final class WebProxy {
 
     private SpiceManager _spiceManager;
-    private static WebProxy _instance;
 
     public WebProxy(){
     }
 
     public void setSpiceManager(SpiceManager manager){
         _spiceManager = manager;
+    }
+
+
+    public void resetPassword(String email, ResetPasswordResponse listener){
+        ResetPasswordRequest request = new ResetPasswordRequest(email);
+        _spiceManager.execute(request, listener);
+    }
+
+
+    public void getMainData(int userId, UpdateMainDataResponseListener listener){
+        UpdateMainDataRequest request = new UpdateMainDataRequest(userId);
+        _spiceManager.execute(request, listener);
     }
 
     public void getIndividualPredictions(IndividualPredictionsResponseListener listener){
@@ -47,9 +58,9 @@ public final class WebProxy {
         _spiceManager.execute(request, listener);
     }
 
-    public void signOut(){
+    public void signOut(SignOutResponseListener listener){
         SignOutRequest request = new SignOutRequest();
-        _spiceManager.execute(request, null);
+        _spiceManager.execute(request, listener);
     }
 
     public void uploadAva(Bitmap bitmap, User currentUser, UpdateUserResponseListener listener){
@@ -84,6 +95,7 @@ public final class WebProxy {
 
     public void autofillRoster(int marketId, int rosterId, AutofillResponseListener listener){
         AutofillRequest request = new AutofillRequest(marketId, rosterId);
+        request.setRetryPolicy(getRetryPolicy());
         _spiceManager.execute(request, listener);
     }
 

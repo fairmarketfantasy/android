@@ -1,5 +1,6 @@
 package com.fantasysport.fragments;
 
+import android.view.View;
 import com.fantasysport.R;
 import com.fantasysport.models.Market;
 import com.fantasysport.models.Roster;
@@ -20,7 +21,7 @@ public class PlayersFragment extends BasePlayersFragment{
     protected void loadPlayers(final String position, boolean showProgress){
         Market market = getMarket();
         if(market == _lastMarket && _lastPosition == position
-                && _lastBenchedState == canBenched()){
+                && _lastBenchedState == canBenched() && !_pullToRefreshLayout.isRefreshing()){
             return;
         }
         if(showProgress){

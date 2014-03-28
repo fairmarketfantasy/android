@@ -17,5 +17,4 @@ public class PlayerItem implements IPlayer {
         return _position;
     }
 
-
 }

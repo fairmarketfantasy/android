@@ -14,7 +14,7 @@ import com.octo.android.robospice.request.googlehttpclient.GoogleHttpClientSpice
 
 public abstract class BaseRequest<T> extends GoogleHttpClientSpiceRequest<T> {
 
-    private RequestHelper _rHelper;
+    protected RequestHelper _rHelper;
 
     public BaseRequest(Class<T> clazz) {
         super(clazz);

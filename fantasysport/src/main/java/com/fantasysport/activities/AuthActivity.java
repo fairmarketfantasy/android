@@ -147,7 +147,6 @@ public class AuthActivity extends BaseActivity {
 //        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 //        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         startActivityForResult(intent, Const.MAIN_ACTIVITY);
-        overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
     }
 
     MarketsResponseListener _marketsResponseListener = new MarketsResponseListener() {

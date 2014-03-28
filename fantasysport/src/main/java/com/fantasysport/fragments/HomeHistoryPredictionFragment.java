@@ -55,5 +55,4 @@ public class HomeHistoryPredictionFragment extends BaseHomeFragment {
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
     }
-
 }

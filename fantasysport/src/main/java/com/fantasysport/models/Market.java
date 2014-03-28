@@ -18,11 +18,11 @@ public class Market  implements Serializable {
     @SerializedName("name")
     private String _name;
 
-    @SerializedName("shadow_bets")
-    private double _shadowBets;
+//    @SerializedName("shadow_bets")
+//    private double _shadowBets;
 
-    @SerializedName("shadow_bet_rate")
-    private double _shadowBetRate;
+//    @SerializedName("shadow_bet_rate")
+//    private double _shadowBetRate;
 
     @SerializedName("sport_id")
     private int _sportId;
@@ -30,8 +30,8 @@ public class Market  implements Serializable {
     @SerializedName("state")
     private String _state;
 
-    @SerializedName("market_duration")
-    private String _marketDuration;
+//    @SerializedName("market_duration")
+//    private String _marketDuration;
 
     @SerializedName("game_type")
     private String _gameType;
@@ -55,21 +55,21 @@ public class Market  implements Serializable {
         return _name;
     }
 
-    public void setShadowBets(double bets){
-        _shadowBets = bets;
-    }
+//    public void setShadowBets(double bets){
+//        _shadowBets = bets;
+//    }
+//
+//    public double getShadowBets(){
+//        return _shadowBets;
+//    }
 
-    public double getShadowBets(){
-        return _shadowBets;
-    }
-
-    public void  setShadowBetRate(double rate){
-        _shadowBetRate = rate;
-    }
-
-    public double getShadowBetRate(){
-        return _shadowBetRate;
-    }
+//    public void  setShadowBetRate(double rate){
+//        _shadowBetRate = rate;
+//    }
+//
+//    public double getShadowBetRate(){
+//        return _shadowBetRate;
+//    }
 
     public Date getStartedAt(){
         return  _games.get(0).getGameTime();
@@ -91,13 +91,13 @@ public class Market  implements Serializable {
         return _state;
     }
 
-    public void setMarketDuration(String duration){
-        _marketDuration = duration;
-    }
-
-    public String getMarketDuration(){
-        return _marketDuration;
-    }
+//    public void setMarketDuration(String duration){
+//        _marketDuration = duration;
+//    }
+//
+//    public String getMarketDuration(){
+//        return _marketDuration;
+//    }
 
     public void setGameType(String type){
         _gameType = type;

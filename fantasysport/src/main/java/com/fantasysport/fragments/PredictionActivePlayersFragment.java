@@ -1,5 +1,6 @@
 package com.fantasysport.fragments;
 
+import android.view.View;
 import com.fantasysport.models.Market;
 import com.fantasysport.models.Roster;
 import com.fantasysport.webaccess.WebProxy;
@@ -32,5 +33,15 @@ public class PredictionActivePlayersFragment extends BasePlayersFragment {
     @Override
     public void onRosterLoaded(Roster roster) {
       loadPlayers(_positionView.getPosition(), true);
+    }
+
+    @Override
+    public void onUpdated(Object initiator) {
+
+    }
+
+    @Override
+    public void onRefreshStarted(View view) {
+
     }
 }

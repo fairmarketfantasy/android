@@ -125,7 +125,7 @@ public class PredictionActivity extends BaseActivity implements ActionBar.OnNavi
 
     private void raiseLoadContentListener(){
         for (ILoadContentListener listener : _loadContentListeners){
-            listener.onLoad(getTimeType(), getPredictionType());
+            listener.onLoad(getTimeType(), getPredictionType(), true);
         }
     }
 
@@ -171,7 +171,7 @@ public class PredictionActivity extends BaseActivity implements ActionBar.OnNavi
     }
 
     public interface ILoadContentListener{
-        public void onLoad(TimeType timeType, PredictionType predictionType);
+        public void onLoad(TimeType timeType, PredictionType predictionType, boolean showLoading);
     }
 
     public enum PredictionType{

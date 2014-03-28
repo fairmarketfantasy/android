@@ -25,6 +25,7 @@ import java.util.List;
 public abstract class BaseHomeFragment extends MainActivityFragment  implements AdapterView.OnItemClickListener, Switcher.ISelectedListener {
 
     private Switcher _switcher;
+    private ListView _playersList;
 
     public BaseHomeFragment(WebProxy proxy, MainFragmentMediator fragmentMediator) {
         super(proxy, fragmentMediator);
@@ -94,6 +95,7 @@ public abstract class BaseHomeFragment extends MainActivityFragment  implements 
         remainingSalaryChanged(roster.getRemainingSalary());
         List<Player> players = roster.getPlayers();
         List<IPlayer> playerItems = _playerAdapter.getItems();
+        _playerAdapter.setRosterState(roster.getState());
         for (int i = 0; i < playerItems.size(); i++) {
             boolean updated = false;
             IPlayer iPlayer = playerItems.get(i);
@@ -112,11 +114,11 @@ public abstract class BaseHomeFragment extends MainActivityFragment  implements 
     }
 
     protected void setRoster() {
-        ListView rosterList = getViewById(R.id.roster_list);
-        rosterList.setOnItemClickListener(this);
+        _playersList = getViewById(R.id.roster_list);
+        _playersList.setOnItemClickListener(this);
         List<IPlayer> items = new ArrayList<IPlayer>();
-        _playerAdapter = new RosterPlayersAdapter(items, getActivity(), getPredictionRoster());
-        rosterList.setAdapter(_playerAdapter);
+        _playerAdapter = new RosterPlayersAdapter(items, getBaseActivity(), getPredictionRoster());
+        _playersList.setAdapter(_playerAdapter);
         _playerAdapter.setListener(_playerAdapterListener);
     }
 
@@ -193,5 +195,18 @@ public abstract class BaseHomeFragment extends MainActivityFragment  implements 
     @Override
     public void onRosterLoaded(Roster roster) {
         updatePlayersList();
+    }
+
+    @Override
+    public void onUpdated(Object initiator) {
+        if(initiator != this){
+            return;
+        }
+        _pullToRefreshLayout.setRefreshComplete();
+    }
+
+    @Override
+    public void onRefreshStarted(View view) {
+        getMainActivity().updateUserData(this);
     }
 }

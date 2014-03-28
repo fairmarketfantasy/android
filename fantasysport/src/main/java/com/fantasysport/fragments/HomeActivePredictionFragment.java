@@ -40,4 +40,5 @@ public class HomeActivePredictionFragment extends BaseHomeFragment  implements A
             getActivity().finish();
         }
     };
+
 }

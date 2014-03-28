@@ -4,6 +4,7 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -101,6 +102,18 @@ public class MainActivity extends BaseMainActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        switch(keyCode)
+        {
+            case KeyEvent.KEYCODE_BACK:
+                moveTaskToBack(true);
+                return true;
+        }
+        return false;
     }
 
 }

@@ -28,8 +28,8 @@ public class UserData {
     @SerializedName("email")
     private String _email;
 
-    @SerializedName("admin")
-    private boolean _admin;
+//    @SerializedName("admin")
+//    private boolean _admin;
 
     @SerializedName("balance")
     private int _balance;
@@ -64,21 +64,24 @@ public class UserData {
     @SerializedName("total_wins")
     private int _totalWins;
 
-    @SerializedName("total_losses")
-    private Integer _totalLosses;
+    @SerializedName("in_progress_roster_id")
+    private int _inProgressRosterId;
+
+//    @SerializedName("total_losses")
+//    private Integer _totalLosses;
 
     @SerializedName("currentSport")
     private String _currentSport;
 
-    @SerializedName("referral_code")
-    private String _referralCode;
-
-    @SerializedName("invited_id")
-    private Integer _invitedId;
-
-
-    @SerializedName("confirmed")
-    private boolean _confirmed;
+//    @SerializedName("referral_code")
+//    private String _referralCode;
+//
+//    @SerializedName("invited_id")
+//    private Integer _invitedId;
+//
+//
+//    @SerializedName("confirmed")
+//    private boolean _confirmed;
 
 //    @SerializedName("in_progress_roster")
 //    private Roster _inProgressRoster;
@@ -105,6 +108,14 @@ public class UserData {
         return Converter.toDate(_joinedAt);
     }
 
+//    public Roster getProgressRoster(){
+//        return _inProgressRoster;
+//    }
+
+    public int getInProgressRosterId(){
+        return _inProgressRosterId;
+    }
+
     public int getTotalPoints() {
         return _totalPoints;
     }
@@ -125,11 +136,11 @@ public class UserData {
         return _balance;
     }
 
-    public String getEmail(){
+    public String getEmail() {
         return _email;
     }
 
-    public int getId(){
+    public int getId() {
         return _id;
     }
 

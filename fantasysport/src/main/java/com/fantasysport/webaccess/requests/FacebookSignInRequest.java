@@ -28,6 +28,7 @@ public class FacebookSignInRequest extends BaseRequest<AuthResponse> {
     @Override
     public AuthResponse loadDataFromNetwork() throws Exception {
         UserData userData = facebookAuth();
+        _rHelper.loadUserData(userData);
         AccessTokenRequestBody body = new AccessTokenRequestBody();
         body.setFacebookAuth(_body.getAccessToken(), _uid);
         AccessTokenData accessTokenData = getAccessTokenData(body);

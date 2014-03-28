@@ -10,6 +10,8 @@ import java.util.List;
  */
 public class Roster  implements Serializable {
 
+    public final static String SUBMITTED = "submitted";
+
     @SerializedName("id")
     private int _id;
 
@@ -24,6 +26,9 @@ public class Roster  implements Serializable {
 
     @SerializedName("amount_paid")
     private double _amountPaid;
+
+    @SerializedName("state")
+    private String _state;
 
     public int getContestRank(){
         return _contestRank;
@@ -51,6 +56,10 @@ public class Roster  implements Serializable {
 
     public int getId(){
         return _id;
+    }
+
+    public String getState(){
+        return _state;
     }
 
 }

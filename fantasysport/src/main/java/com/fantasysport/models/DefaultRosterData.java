@@ -2,12 +2,13 @@ package com.fantasysport.models;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by bylynka on 2/26/14.
  */
-public class DefaultRosterData {
+public class DefaultRosterData implements Serializable {
 
     @SerializedName("remaining_salary")
     private double _remainingSalary;

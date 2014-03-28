@@ -27,6 +27,9 @@ import com.fantasysport.webaccess.requestListeners.TradePlayerResponseListener;
 import com.fantasysport.webaccess.requests.SubmitRosterRequest;
 import com.fantasysport.webaccess.responses.AutofillResponse;
 import com.fantasysport.webaccess.responses.TradePlayerResponse;
+import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
+import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout;
+import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -84,5 +87,4 @@ public class HomeFragment extends BaseHomeFragment  implements AdapterView.OnIte
             });
         }
     };
-
 }

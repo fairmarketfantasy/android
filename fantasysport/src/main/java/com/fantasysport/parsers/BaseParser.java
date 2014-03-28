@@ -71,19 +71,19 @@ public abstract class BaseParser {
     protected Game parseGame(LinkedTreeMap gameObject){
         int gmt = DeviceInfo.getGMTInMinutes();
         Game game = new Game();
-        String id = (String)gameObject.get("id");
-        game.setId(id);
-        String statsId = (String)gameObject.get("stats_id");
-        game.setStatsId(statsId);
-        String status = (String)gameObject.get("status");
-        game.setStatus(status);
+//        String id = (String)gameObject.get("id");
+//        game.setId(id);
+//        String statsId = (String)gameObject.get("stats_id");
+//        game.setStatsId(statsId);
+//        String status = (String)gameObject.get("status");
+//        game.setStatus(status);
         Date gameTime = Converter.toDate((String) gameObject.get("game_time"));
         gameTime = DateUtils.addMinutes(gameTime, gmt);
         game.setGameTime(gameTime);
         String homeTeam = (String)gameObject.get("home_team");
-        game.setHomeTeam(homeTeam);
-        String awayTeam = (String)gameObject.get("away_team");
-        game.setAwayTeam(awayTeam);
+//        game.setHomeTeam(homeTeam);
+//        String awayTeam = (String)gameObject.get("away_team");
+//        game.setAwayTeam(awayTeam);
         return game;
     }
 

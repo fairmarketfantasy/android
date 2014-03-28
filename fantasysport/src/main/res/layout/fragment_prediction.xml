@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+<uk.co.senab.actionbarpulltorefresh.extras.actionbarcompat.PullToRefreshLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/ptr_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
     <ListView android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:layout_weight="1"
               android:id="@+id/prediction_list"
               android:dividerHeight="2dp"
-              android:divider="@drawable/player_devider"
-            />
+              android:divider="@drawable/player_devider" />
 
-</LinearLayout>
+</uk.co.senab.actionbarpulltorefresh.extras.actionbarcompat.PullToRefreshLayout>
