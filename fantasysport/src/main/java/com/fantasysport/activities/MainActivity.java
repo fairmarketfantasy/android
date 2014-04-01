@@ -13,7 +13,6 @@ import com.fantasysport.Const;
 import com.fantasysport.R;
 import com.fantasysport.adapters.MenuItem;
 import com.fantasysport.adapters.MenuListAdapter;
-import com.fantasysport.fragments.MainFragmentMediator;
 import com.fantasysport.models.Market;
 import com.fantasysport.utility.DateUtils;
 import com.fantasysport.webaccess.requestListeners.MarketsResponseListener;
@@ -22,7 +21,6 @@ import com.fantasysport.webaccess.responses.MarketResponse;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by bylynka on 2/11/14.

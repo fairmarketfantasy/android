@@ -39,6 +39,7 @@ public class BaseActivity extends ActionBarActivity{
     protected Storage _storage;
     protected static Typeface _prohibitionRoundTypeFace;
     protected static Typeface _robotoThin;
+    private int _progressCounter;
 
     @Override
     public void setContentView(int layoutResID) {
@@ -72,20 +73,33 @@ public class BaseActivity extends ActionBarActivity{
         _progress.setCancelable(false);
     }
 
-    public void showProgress(){
-        if(_progress == null){
-            createProgressBar();
+    private void updateProgress(){
+        if(_progressCounter < 0){
+            _progressCounter = 0;
         }
-        _progress.show();
+        if(_progressCounter == 0){
+            if(_progress == null){
+                return;
+            }
+            _progress.cancel();
+            _progress.dismiss();
+            _progress = null;
+        }else if(_progressCounter == 1){
+            if(_progress == null){
+                createProgressBar();
+            }
+            _progress.show();
+        }
+    }
+
+    public void showProgress(){
+        _progressCounter++;
+        updateProgress();
     }
 
     public void dismissProgress(){
-        if(_progress == null){
-            return;
-        }
-        _progress.cancel();
-        _progress.dismiss();
-        _progress = null;
+        _progressCounter--;
+        updateProgress();
     }
 
     protected boolean isProgressShowing(){
@@ -101,6 +115,8 @@ public class BaseActivity extends ActionBarActivity{
 
     @Override
     protected void onStop() {
+        _progressCounter = 0;
+        updateProgress();
         _spiceManager.shouldStop();
         super.onStop();
     }
