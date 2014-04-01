@@ -105,7 +105,7 @@ public class PredictionAdapter extends BaseAdapter {
         SimpleDateFormat sdf = new SimpleDateFormat("EE MM d");
         dayLbl.setText(sdf.format(prediction.getStartedAt()));
         TextView gameTimeLbl = (TextView)convertView.findViewById(R.id.game_time_lbl);
-        sdf = new SimpleDateFormat("K:m a");
+        sdf = new SimpleDateFormat("K:mm a");
         gameTimeLbl.setText(sdf.format(prediction.getStartedAt()));
         TextView stateLbl = (TextView)convertView.findViewById(R.id.state_lbl);
         stateLbl.setText(prediction.getState());
