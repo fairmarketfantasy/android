@@ -167,7 +167,7 @@ public class BaseActivity extends ActionBarActivity{
 
     protected void showSettingsView(){
         Intent intent = new Intent(this, SettingsActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent, Const.SETTINGS_ACTIVITY);
     }
 
     protected void signOut(){

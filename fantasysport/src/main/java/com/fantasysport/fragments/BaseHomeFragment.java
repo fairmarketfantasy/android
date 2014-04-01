@@ -48,7 +48,7 @@ public abstract class BaseHomeFragment extends MainActivityFragment  implements 
     @Override
     protected void setPager(int id) {
         super.setPager(id);
-        List<Market> markets = getMarkets();//_storage.getMarkets();
+        List<Market> markets = getMarkets();
         if (markets != null && markets.size() > 0) {
             setNewRoster(markets.get(0));
         }

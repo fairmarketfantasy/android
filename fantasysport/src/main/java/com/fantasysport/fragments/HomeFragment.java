@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import com.fantasysport.R;
+import com.fantasysport.activities.MainActivity;
 import com.fantasysport.adapters.GameAdapter;
 import com.fantasysport.adapters.PlayerItem;
 import com.fantasysport.adapters.RosterPlayersAdapter;
@@ -37,7 +38,8 @@ import java.util.List;
 /**
  * Created by bylynka on 3/14/14.
  */
-public class HomeFragment extends BaseHomeFragment  implements AdapterView.OnItemClickListener, Switcher.ISelectedListener {
+public class HomeFragment extends BaseHomeFragment  implements AdapterView.OnItemClickListener,
+        Switcher.ISelectedListener, MainActivity.IOnMarketsListener{
 
     public HomeFragment(WebProxy proxy, MainFragmentMediator fragmentMediator) {
         super(proxy, fragmentMediator);
@@ -47,6 +49,7 @@ public class HomeFragment extends BaseHomeFragment  implements AdapterView.OnIte
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         _rootView = inflater.inflate(R.layout.fragment_main, container, false);
         init();
+        ((MainActivity)getMainActivity()).addOnMarketsListener(this);
         return _rootView;
     }
 
@@ -87,4 +90,16 @@ public class HomeFragment extends BaseHomeFragment  implements AdapterView.OnIte
             });
         }
     };
+
+    @Override
+    public void onMarkets(List<Market> markets) {
+        updateMarkets();
+        setRoster((Roster) null);
+        if (markets != null && markets.size() > 0) {
+            _pager.setCurrentItem(0);
+            setNewRoster(markets.get(0));
+        }else {
+            setEmptyRoster();
+        }
+    }
 }

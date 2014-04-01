@@ -25,4 +25,15 @@ public class CacheProvider {
         SharedPreferences preferences = context.getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
         return preferences.contains(key) ? preferences.getString(key, null) : null;
     }
+
+    public static boolean putLong(Context context, String key, long value){
+        SharedPreferences.Editor editor = getEditor(context);
+        editor.putLong(key, value);
+        return editor.commit();
+    }
+
+    public static long getLong(Context context, String key){
+        SharedPreferences preferences = context.getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
+        return preferences.contains(key) ? preferences.getLong(key, -1) : -1;
+    }
 }

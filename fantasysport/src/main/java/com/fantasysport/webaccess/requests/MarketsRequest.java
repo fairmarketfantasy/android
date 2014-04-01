@@ -3,7 +3,9 @@ package com.fantasysport.webaccess.requests;
 import android.net.Uri;
 import com.fantasysport.models.DefaultRosterData;
 import com.fantasysport.models.Market;
+import com.fantasysport.models.MarketsContainer;
 import com.fantasysport.parsers.MarketParser;
+import com.fantasysport.utility.DateUtils;
 import com.fantasysport.webaccess.responses.MarketResponse;
 import com.google.api.client.http.GenericUrl;
 import com.google.api.client.http.HttpRequest;
@@ -37,8 +39,11 @@ public class MarketsRequest extends BaseRequest<MarketResponse>  {
         }
         DefaultRosterData rosterData = loadDefaultRosterData();
         _rHelper.loadDefaultRosterData(rosterData);
-        MarketResponse marketResponse = new MarketResponse(_markets, rosterData);
-        _rHelper.loadMarkets(_markets);
+        MarketsContainer container = new MarketsContainer();
+        container.setMarkets(_markets);
+        container.setUpdatedAt(DateUtils.getCurrentDate().getTime());
+        MarketResponse marketResponse = new MarketResponse(container, rosterData);
+        _rHelper.loadMarkets(container);
         return marketResponse;
     }
 

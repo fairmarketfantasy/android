@@ -7,6 +7,8 @@ public class Const {
 
     public final static int FINISH_ACTIVITY = 1000;
     public final static int MAIN_ACTIVITY = 1001;
+    public final static int NEW_AVATAR = 1002;
+    public final static int SETTINGS_ACTIVITY = 1003;
 
     public final static String PLAYER_POSITION = "player_position";
     public final static String ROSTER = "roster";

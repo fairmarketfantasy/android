@@ -47,4 +47,8 @@ public class GameAdapter extends FragmentStatePagerAdapter {
         Log.i("count!!!!!!!!!!!!!", "called");
         return _markets != null?_markets.size(): 0;
     }
+
+    public void setMarkets(List<Market> markets) {
+        _markets = markets;
+    }
 }

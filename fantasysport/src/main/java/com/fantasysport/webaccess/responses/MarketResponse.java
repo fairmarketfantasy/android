@@ -2,6 +2,7 @@ package com.fantasysport.webaccess.responses;
 
 import com.fantasysport.models.DefaultRosterData;
 import com.fantasysport.models.Market;
+import com.fantasysport.models.MarketsContainer;
 
 import java.util.List;
 
@@ -10,16 +11,16 @@ import java.util.List;
  */
 public class MarketResponse {
 
-    private List<Market> _markets;
+    private MarketsContainer _marketsContainer;
     private DefaultRosterData _rosterData;
 
-    public MarketResponse(List<Market> markets, DefaultRosterData defaultRosterData){
-        _markets = markets;
+    public MarketResponse(MarketsContainer container, DefaultRosterData defaultRosterData){
+        _marketsContainer = container;
         _rosterData = defaultRosterData;
     }
 
-    public List<Market> getMarkets(){
-        return _markets;
+    public MarketsContainer getMarketsContainer(){
+        return _marketsContainer;
     }
 
     public DefaultRosterData getDefaultRosterData(){

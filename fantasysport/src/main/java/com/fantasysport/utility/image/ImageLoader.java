@@ -249,6 +249,7 @@ public class ImageLoader {
             // Show bitmap on UI
             if(bitmap!=null){
                 photoToLoad.imageView.setImageBitmap(bitmap);
+                photoToLoad.imageView.invalidate();
             }
 //            else
 //                photoToLoad.imageView.setImageResource(stub_id);

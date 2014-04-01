@@ -1,10 +1,7 @@
 package com.fantasysport;
 
 import android.app.Application;
-import com.fantasysport.models.AccessTokenData;
-import com.fantasysport.models.DefaultRosterData;
-import com.fantasysport.models.Market;
-import com.fantasysport.models.UserData;
+import com.fantasysport.models.*;
 import com.fantasysport.repo.Storage;
 import com.fantasysport.utility.CacheProvider;
 import com.fantasysport.webaccess.RequestHelper;
@@ -36,7 +33,7 @@ public class App extends Application {
         _current = this;
         restoreState();
         setRequestHelper();
-        Ubertesters.initialize(this);
+//        Ubertesters.initialize(this);
     }
 
     private void setRequestHelper(){
@@ -69,8 +66,8 @@ public class App extends Application {
 
         dataInStr = CacheProvider.getString(this, MARKETS);
         if(dataInStr != null){
-            Market[] marketsData  = gson.fromJson(dataInStr, Market[].class);
-            storage.setMarkets(Arrays.asList(marketsData));
+            MarketsContainer marketsData  = gson.fromJson(dataInStr, MarketsContainer.class);
+            storage.setMarketsContainer(marketsData);
         }
     }
 
@@ -91,8 +88,8 @@ public class App extends Application {
         }
 
         @Override
-        public void onMarkets(List<Market> markets) {
-            String marketsStr = markets != null? new Gson().toJson(markets): null;
+        public void onMarkets(MarketsContainer container) {
+            String marketsStr = container != null? new Gson().toJson(container): null;
             CacheProvider.putString(App.this, MARKETS, marketsStr);
         }
 

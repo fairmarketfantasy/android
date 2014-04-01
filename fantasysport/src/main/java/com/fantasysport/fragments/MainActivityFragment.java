@@ -1,5 +1,6 @@
 package com.fantasysport.fragments;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
@@ -11,6 +12,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.fantasysport.Const;
 import com.fantasysport.R;
 import com.fantasysport.activities.BaseMainActivity;
 import com.fantasysport.activities.MainActivity;
@@ -37,7 +39,7 @@ import java.util.List;
 public abstract class MainActivityFragment extends BaseActivityFragment implements MainActivity.IListener,
         MainFragmentMediator.IMarketListener, MainFragmentMediator.IRemainingSalaryListener,
         MainFragmentMediator.IPlayerAddListener, BaseMainActivity.IRosterLoadedListener,
-        BaseMainActivity.IUpdateListener, OnRefreshListener {
+        BaseMainActivity.IUpdateListener, OnRefreshListener, BaseMainActivity.IAvatarListener {
 
     protected TextView _moneyTxt;
     protected View _headerView;
@@ -98,6 +100,7 @@ public abstract class MainActivityFragment extends BaseActivityFragment implemen
     protected void init(){
         getMainActivity().addListener(this);
         getMainActivity().addUpdateListener(this);
+        getMainActivity().addAvatarListener(this);
         _pager = getViewById(R.id.pager);
         _moneyTxt = getViewById(R.id.money_lbl);
         _moneyTxt.setTypeface(getProhibitionRound());
@@ -222,6 +225,12 @@ public abstract class MainActivityFragment extends BaseActivityFragment implemen
         _fragmentMediator.addPlayer(this, player);
     }
 
+    protected void updateMarkets(){
+        List<Market> markets = getMarkets();
+        _pagerAdapter.setMarkets(markets);
+        _pagerAdapter.notifyDataSetChanged();
+    }
+
     protected void setPager(int id) {
         List<Market> markets = getMarkets();
         _pager.setId(id);
@@ -276,6 +285,11 @@ public abstract class MainActivityFragment extends BaseActivityFragment implemen
     @Override
     public void onRemainingSalaryChanged(Object sender, double remainingSalary){
         setMoneyTxt(remainingSalary);
+    }
+
+    @Override
+    public void onAvatarChanged(){
+        setUserImage();
     }
 
     @Override

@@ -42,7 +42,7 @@ public class SettingsActivity extends BaseActivity {
         setContentView(R.layout.activity_settings);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        setHeaderText("SETTING");
+        setHeaderText("SETTINGS");
         setSettingsList();
     }
 
@@ -51,7 +51,7 @@ public class SettingsActivity extends BaseActivity {
         List<SettingsItemEnum> items = new ArrayList<SettingsItemEnum>();
         items.add(SettingsItemEnum.Avatar);
         items.add(SettingsItemEnum.Name);
-//        items.add(SettingsItemEnum.Email);
+        items.add(SettingsItemEnum.Email);
         items.add(SettingsItemEnum.Password);
         _adapter = new SettinsAdapter(this, _storage.getUserData(), items);
         listView.setAdapter(_adapter);
@@ -76,7 +76,13 @@ public class SettingsActivity extends BaseActivity {
         }
         try {
             Uri selectedImageUri = data.getData();
-            Bitmap bm = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImageUri);
+            Bitmap bm;
+            if(selectedImageUri != null){
+                bm = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImageUri);
+            }else {
+                Bundle extras = data.getExtras();
+                bm = (Bitmap) extras.get("data");
+            }
             uploadAvatar(bm);
         } catch (IOException e) {
             e.printStackTrace();
@@ -94,6 +100,9 @@ public class SettingsActivity extends BaseActivity {
             @Override
             public void onRequestSuccess(UserData userData) {
                 dismissProgress();
+                SettingsActivity.this.setResult(Const.NEW_AVATAR);
+                _adapter.notifyDataSetChanged();
+//                SettingsActivity.this.finish();
             }
         });
     }

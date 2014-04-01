@@ -1,20 +1,32 @@
 package com.fantasysport.fragments;
 
+import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import com.fantasysport.R;
+import com.fantasysport.activities.MainActivity;
 import com.fantasysport.models.Market;
 import com.fantasysport.models.Roster;
 import com.fantasysport.webaccess.WebProxy;
 import com.fantasysport.webaccess.requestListeners.RosterResponseListener;
 import com.fantasysport.webaccess.requestListeners.RequestError;
 
+import java.util.List;
+
 /**
  * Created by bylynka on 3/14/14.
  */
-public class PlayersFragment extends BasePlayersFragment{
+public class PlayersFragment extends BasePlayersFragment implements MainActivity.IOnMarketsListener{
 
     public PlayersFragment(WebProxy proxy, MainFragmentMediator fragmentMediator){
         super(proxy,fragmentMediator);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        ((MainActivity)getMainActivity()).addOnMarketsListener(this);
+        return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     @Override
@@ -51,5 +63,10 @@ public class PlayersFragment extends BasePlayersFragment{
     @Override
     public void onRosterLoaded(Roster roster) {
 
+    }
+
+    @Override
+    public void onMarkets(List<Market> markets) {
+        updateMarkets();
     }
 }

@@ -159,7 +159,7 @@ public class AuthActivity extends BaseActivity {
         @Override
         public void onRequestSuccess(MarketResponse response) {
             _storage.setDefaultRosterData(response.getDefaultRosterData());
-            _storage.setMarkets(response.getMarkets());
+            _storage.setMarketsContainer(response.getMarketsContainer());
             navigateToMainActivity();
             dismissProgress();
         }

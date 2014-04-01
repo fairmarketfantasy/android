@@ -6,6 +6,7 @@ import android.util.Base64;
 import com.fantasysport.models.Avatar;
 import com.fantasysport.models.User;
 import com.fantasysport.models.UserData;
+import com.fantasysport.utility.DateUtils;
 import com.fantasysport.utility.Size;
 import com.fantasysport.utility.image.BitmapUtils;
 import com.google.api.client.http.*;
@@ -38,7 +39,10 @@ public class UploadAvaRequest extends BaseRequest<UserData> {
         String url = uriBuilder.build().toString();
         Bitmap bitmap = BitmapUtils.resize(_bitmap, new Size(100, 100));
         String imgInBase64 = BitmapUtils.toBase64(bitmap);
-        Avatar avatar = new Avatar(imgInBase64, "horror-photo-2.jpg", "horror-photo-2.jpg" );
+        bitmap.recycle();
+        _bitmap.recycle();
+        String avaName = String.format("%d%s", DateUtils.getCurrentDate().getTime(), "horror-photo.jpg");
+        Avatar avatar = new Avatar(imgInBase64, avaName, avaName);
         _user.setAvatar(avatar);
         UserRequestBody body = new UserRequestBody(_user);
         String js = new Gson().toJson(body);
@@ -47,7 +51,9 @@ public class UploadAvaRequest extends BaseRequest<UserData> {
                 .buildPutRequest(new GenericUrl(url), content);
         request.getHeaders().setAccept("application/json");
         String result = request.execute().parseAsString();
-        return new Gson().fromJson(result, UserData.class);
+        UserData data = new Gson().fromJson(result, UserData.class);
+        _rHelper.loadUserData(data);
+        return data;
     }
 
 //    @Override

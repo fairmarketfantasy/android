@@ -40,6 +40,7 @@ public class BaseMainActivity extends BaseActivity {
     protected List<IRosterLoadedListener> _rosterLoadedListeners = new ArrayList<IRosterLoadedListener>();
     protected List<IUpdateListener> _updateListener = new ArrayList<IUpdateListener>();
     protected PredictionRoster _predictionRoster = PredictionRoster.None;
+    protected List<IAvatarListener> _avatarListeners = new ArrayList<IAvatarListener>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +53,10 @@ public class BaseMainActivity extends BaseActivity {
         _rightSwipeImg = getViewById(R.id.right_point_img);
         setPager();
         setPageIndicator(0);
+    }
+
+    public void addAvatarListener(IAvatarListener listener){
+        _avatarListeners.add(listener);
     }
 
     public void addRosterLoadedListener(IRosterLoadedListener listener){
@@ -104,6 +109,12 @@ public class BaseMainActivity extends BaseActivity {
     protected void raiseOnPageChanged(int page) {
         for (int i = 0; i < _listeners.size(); i++) {
             _listeners.get(i).onPageChanged(page);
+        }
+    }
+
+    protected void raiseOnAvatarChanged(){
+        for (IAvatarListener listener : _avatarListeners){
+            listener.onAvatarChanged();
         }
     }
 
@@ -198,7 +209,7 @@ public class BaseMainActivity extends BaseActivity {
         public void onPageChanged(int page);
     }
 
-    private void raiseOnRosterLoaded(Roster roster){
+    protected void raiseOnRosterLoaded(Roster roster){
         for (IRosterLoadedListener listener : _rosterLoadedListeners){
             listener.onRosterLoaded(roster);
         }
@@ -248,6 +259,10 @@ public class BaseMainActivity extends BaseActivity {
 
     public interface IUpdateListener {
         public void onUpdated(Object initiator);
+    }
+
+    public interface IAvatarListener{
+        public void onAvatarChanged();
     }
 
 

@@ -2,6 +2,7 @@ package com.fantasysport.repo;
 
 import com.fantasysport.models.DefaultRosterData;
 import com.fantasysport.models.Market;
+import com.fantasysport.models.MarketsContainer;
 import com.fantasysport.models.UserData;
 import com.google.gson.annotations.SerializedName;
 
@@ -20,8 +21,8 @@ public class Storage implements Serializable {
     @SerializedName("user_data")
     private UserData _userData;
 
-    @SerializedName("markets")
-    private List<Market> _markets;
+    @SerializedName("markets_container")
+    private MarketsContainer _marketsContainer;
 
     @SerializedName("default_roster_data")
     private DefaultRosterData _defaultRosterData;
@@ -45,12 +46,16 @@ public class Storage implements Serializable {
         return _defaultRosterData;
     }
 
-    public void setMarkets(List<Market> markets){
-        _markets = markets;
+    public void setMarketsContainer(MarketsContainer container){
+        _marketsContainer = container;
+    }
+
+    public MarketsContainer getMarketsContainer(){
+        return _marketsContainer;
     }
 
     public List<Market> getMarkets(){
-        return _markets;
+        return _marketsContainer!= null? _marketsContainer.getMarkets(): null;
     }
 
     public void setUserData(UserData userData){

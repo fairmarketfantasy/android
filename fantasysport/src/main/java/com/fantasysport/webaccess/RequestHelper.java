@@ -1,9 +1,6 @@
 package com.fantasysport.webaccess;
 
-import com.fantasysport.models.AccessTokenData;
-import com.fantasysport.models.DefaultRosterData;
-import com.fantasysport.models.Market;
-import com.fantasysport.models.UserData;
+import com.fantasysport.models.*;
 import com.fantasysport.utility.DateUtils;
 
 import java.util.List;
@@ -63,11 +60,11 @@ public class RequestHelper {
         _listener.onSignOut();
     }
 
-    private void raiseOnMarketsLoaded(List<Market> markets){
+    private void raiseOnMarketsLoaded(MarketsContainer container){
         if(_listener == null){
             return;
         }
-        _listener.onMarkets(markets);
+        _listener.onMarkets(container);
     }
 
     private void raiseOnDefaultRosterData(DefaultRosterData data){
@@ -88,8 +85,8 @@ public class RequestHelper {
         raiseOnDefaultRosterData(data);
     }
 
-    public void loadMarkets(List<Market> markets){
-        raiseOnMarketsLoaded(markets);
+    public void loadMarkets(MarketsContainer container){
+        raiseOnMarketsLoaded(container);
     }
 
     public void loadUserData(UserData data){
@@ -103,7 +100,7 @@ public class RequestHelper {
     public interface IListener{
         public void onAccessTokenDataChanged(AccessTokenData data);
         public void onSignOut();
-        public void onMarkets(List<Market> markets);
+        public void onMarkets(MarketsContainer container);
         public void onDefaultRosterData(DefaultRosterData data);
         public void onUserData(UserData data);
     }
