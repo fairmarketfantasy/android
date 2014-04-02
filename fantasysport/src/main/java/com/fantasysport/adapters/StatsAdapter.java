@@ -97,15 +97,14 @@ public class StatsAdapter extends BaseAdapter {
         Button moreBtn = (Button) view.findViewById(R.id.more_btn);
         Button lessBtn = (Button) view.findViewById(R.id.less_btn);
 
+
+        setBtn(lessBtn, new ModeOnClickListener(StatsItem.LESS_MODE, item, view), false, true);
+        setBtn(moreBtn, new ModeOnClickListener(StatsItem.MORE_MODE, item, view), false, true);
         if (item.getBidLess()) {
             setBtn(lessBtn, null, true, false);
-            setBtn(moreBtn, new ModeOnClickListener(StatsItem.MORE_MODE, item, view), false, true);
-        } else if (item.getBidMore()) {
-            setBtn(lessBtn, new ModeOnClickListener(StatsItem.LESS_MODE, item, view), false, true);
+        }
+        if (item.getBidMore()) {
             setBtn(moreBtn, null, true, false);
-        } else {
-            setBtn(lessBtn, new ModeOnClickListener(StatsItem.LESS_MODE, item, view), false, true);
-            setBtn(moreBtn, new ModeOnClickListener(StatsItem.MORE_MODE, item, view), false, true);
         }
     }
 
@@ -141,16 +140,14 @@ public class StatsAdapter extends BaseAdapter {
             }
             new AlertDialog.Builder(StatsAdapter.this._context)
                     .setTitle(StatsAdapter.this._player.getName())
-                    .setMessage(String.format("%s than %.1f %s?", (_item.getMode().equalsIgnoreCase(StatsItem.LESS_MODE) ? "Less" : "More"), _item.getValue(), _item.getName()))
+                    .setMessage(String.format("%s than %.1f %s?", (_item.getMode().equalsIgnoreCase(StatsItem.LESS_MODE) ? "More" : "Less"), _item.getValue(), _item.getName()))
                     .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             if (_mode.equalsIgnoreCase(StatsItem.LESS_MODE)) {
                                 _item.setBidLess(true);
-                                _item.setBidMore(false);
                             } else {
                                 _item.setBidMore(true);
-                                _item.setBidLess(false);
                             }
                             updateView(v);
                             raiseSubmitListener();
