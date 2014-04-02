@@ -58,7 +58,7 @@ public abstract class BasePlayersFragment extends MainActivityFragment implement
         setPlayersListView();
         Roster roster = getRoster();
         setMoneyTxt(roster != null? roster.getRemainingSalary(): _storage.getDefaultRosterData().getRemainingSalary());
-        loadPlayers(_positionView.getPosition(), false);
+        loadPlayers(_positionView.getPosition());
     }
 
     @Override
@@ -76,7 +76,7 @@ public abstract class BasePlayersFragment extends MainActivityFragment implement
     @Override
     public void onMarketChanged(Object sender, Market market) {
         setRoster(null);
-        loadPlayers(_positionView.getPosition(), true);
+        loadPlayers(_positionView.getPosition());
         int position = _pagerAdapter.getMarketPosition(market);
         int curPossition = _pager.getCurrentItem();
         if(sender == this || position < 0 || position == curPossition){
@@ -95,10 +95,10 @@ public abstract class BasePlayersFragment extends MainActivityFragment implement
 
     @Override
     public void positionSelected(String position) {
-        loadPlayers(position, true);
+        loadPlayers(position);
     }
 
-    protected abstract void loadPlayers(final String position, boolean showProgress);
+    protected abstract void loadPlayers(final String position);
 
     @Override
     public void onAddPlayer(Player player) {
@@ -174,7 +174,7 @@ public abstract class BasePlayersFragment extends MainActivityFragment implement
 
     @Override
     public void onRefreshStarted(View view) {
-        loadPlayers(_positionView.getPosition(), false);
+        loadPlayers(_positionView.getPosition());
     }
 
     @Override

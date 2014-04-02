@@ -180,9 +180,11 @@ public class AuthActivity extends BaseActivity {
     };
 
     View.OnClickListener _facebookClickBntListener = new View.OnClickListener() {
-
         @Override
         public void onClick(View v) {
+            if(isProgressShowing()){
+                return;
+            }
             authByFacebook2();
         }
     };

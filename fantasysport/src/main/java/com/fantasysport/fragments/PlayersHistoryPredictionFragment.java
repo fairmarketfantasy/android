@@ -49,7 +49,7 @@ public class PlayersHistoryPredictionFragment extends BasePlayersFragment {
     }
 
     @Override
-    protected void loadPlayers(final String position, boolean showProgress) {
+    protected void loadPlayers(final String position) {
     }
 
     @Override

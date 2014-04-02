@@ -101,6 +101,9 @@ public class SignInActivity extends AuthActivity {
     View.OnClickListener _signInBtnClickListener = new View.OnClickListener(){
         @Override
         public void onClick(View v){
+            if(isProgressShowing()){
+                return;
+            }
             attemptGetAccessToken();
         }
     };

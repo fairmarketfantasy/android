@@ -26,15 +26,13 @@ public class PlayersFragment extends BasePlayersFragment implements MainActivity
     }
 
     @Override
-    protected void loadPlayers(final String position, boolean showProgress){
+    protected void loadPlayers(final String position){
         Market market = getMarket();
         if(market == _lastMarket && _lastPosition == position
                 && _lastBenchedState == canBenched() && !_pullToRefreshLayout.isRefreshing()){
             return;
         }
-        if(showProgress){
-            showProgress();
-        }
+        showProgress();
         _lastMarket = market;
         _lastPosition = position;
         _lastBenchedState = canBenched();

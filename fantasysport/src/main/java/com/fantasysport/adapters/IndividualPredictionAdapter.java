@@ -88,7 +88,7 @@ public class IndividualPredictionAdapter extends BaseAdapter {
         SimpleDateFormat sdf = new SimpleDateFormat("EE MM d");
         dayLbl.setText(sdf.format(prediction.getGameData()));
         TextView gameTimeLbl = (TextView)convertView.findViewById(R.id.game_time_lbl);
-        sdf = new SimpleDateFormat("K:m a");
+        sdf = new SimpleDateFormat("K:mm a");
         gameTimeLbl.setText(sdf.format(prediction.getGameData()));
         TextView ptLbl = (TextView)convertView.findViewById(R.id.pt_lbl);
         ptLbl.setText(String.format("%.1f", prediction.getPT()));

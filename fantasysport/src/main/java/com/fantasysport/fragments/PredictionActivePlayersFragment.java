@@ -11,15 +11,13 @@ import com.fantasysport.webaccess.WebProxy;
 public class PredictionActivePlayersFragment extends BasePlayersFragment {
 
     @Override
-    protected void loadPlayers(final String position, boolean showProgress){
+    protected void loadPlayers(final String position){
         Market market = getMarket();
         if(market == _lastMarket && _lastPosition == position
                 && _lastBenchedState == canBenched() || getRoster() == null){
             return;
         }
-        if(showProgress){
-            showProgress();
-        }
+        showProgress();
         _lastMarket = market;
         _lastPosition = position;
         _lastBenchedState = canBenched();
@@ -28,7 +26,7 @@ public class PredictionActivePlayersFragment extends BasePlayersFragment {
 
     @Override
     public void onRosterLoaded(Roster roster) {
-      loadPlayers(_positionView.getPosition(), true);
+      loadPlayers(_positionView.getPosition());
     }
 
     @Override

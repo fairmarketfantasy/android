@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.preference.PreferenceActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -32,7 +33,6 @@ import java.util.regex.Pattern;
 public class BaseActivity extends ActionBarActivity{
 
     protected SpiceManager _spiceManager = new SpiceManager(GsonGoogleHttpClientSpiceService.class);
-    protected ProgressDialog _progress;
     protected WebProxy _webProxy;
 
     protected Handler _handler = new Handler();
@@ -42,10 +42,17 @@ public class BaseActivity extends ActionBarActivity{
     private int _progressCounter;
 
     @Override
+    public View onCreateView(String name, Context context, AttributeSet attrs) {
+        return super.onCreateView(name, context, attrs);
+    }
+
+    @Override
     public void setContentView(int layoutResID) {
         _storage = Storage.instance();
         _webProxy = new WebProxy();
         _webProxy.setSpiceManager(_spiceManager);
+        supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+//        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         super.setContentView(layoutResID);
         initActionBar(getSupportActionBar());
     }
@@ -60,17 +67,11 @@ public class BaseActivity extends ActionBarActivity{
         super.finish();
     }
 
+
     @Override
     public void startActivity(Intent intent) {
         super.startActivity(intent);
         overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
-    }
-
-    private void createProgressBar(){
-        _progress = new ProgressDialog(this);
-        _progress.setTitle(R.string.loading);
-        _progress.setMessage(getString(R.string.wait_while_loading));
-        _progress.setCancelable(false);
     }
 
     private void updateProgress(){
@@ -78,17 +79,9 @@ public class BaseActivity extends ActionBarActivity{
             _progressCounter = 0;
         }
         if(_progressCounter == 0){
-            if(_progress == null){
-                return;
-            }
-            _progress.cancel();
-            _progress.dismiss();
-            _progress = null;
-        }else if(_progressCounter == 1){
-            if(_progress == null){
-                createProgressBar();
-            }
-            _progress.show();
+            setSupportProgressBarIndeterminateVisibility(false);
+        }else if(_progressCounter >= 1 && !isProgressShowing()){
+            setSupportProgressBarIndeterminateVisibility(true);
         }
     }
 
@@ -103,7 +96,7 @@ public class BaseActivity extends ActionBarActivity{
     }
 
     protected boolean isProgressShowing(){
-        return _progress != null && _progress.isShowing();
+        return getSupportLoaderManager().hasRunningLoaders();
     }
 
     @Override
