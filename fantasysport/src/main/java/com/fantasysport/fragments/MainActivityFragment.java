@@ -1,5 +1,6 @@
 package com.fantasysport.fragments;
 
+import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
@@ -54,10 +55,15 @@ public abstract class MainActivityFragment extends BaseActivityFragment implemen
     protected PullToRefreshLayout _pullToRefreshLayout;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
         getFragmentMediator().addMarketListener(this);
         getFragmentMediator().addRemainingSalaryListener(this);
         getFragmentMediator().addPlayerAdListener(this);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
