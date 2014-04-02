@@ -108,7 +108,7 @@ public class PredictionAdapter extends BaseAdapter {
         sdf = new SimpleDateFormat("K:mm a");
         gameTimeLbl.setText(sdf.format(prediction.getStartedAt()));
         TextView stateLbl = (TextView)convertView.findViewById(R.id.state_lbl);
-        stateLbl.setText(prediction.getState());
+        stateLbl.setText(getStateText(prediction.getState()));
         TextView pointsLbl = (TextView)convertView.findViewById(R.id.points_lbl);
         String pointsText = prediction.getState().compareToIgnoreCase("submitted") == 0? "N/A": String.format("%.2f", prediction.getScore());
         pointsLbl.setText(pointsText);
@@ -125,6 +125,21 @@ public class PredictionAdapter extends BaseAdapter {
         TextView awardLbl = (TextView)convertView.findViewById(R.id.award_lbl);
         awardLbl.setText(prediction.getState().compareToIgnoreCase("finished") == 0? String.format("%.1f", prediction.getAward()):"N/A");
         return convertView;
+    }
+
+    public String getStateText(String stateCode){
+      if(stateCode == null){
+          return "N/A";
+      }else if(stateCode.equalsIgnoreCase(Prediction.CANCELED)){
+          return "Canceled";
+      }else if(stateCode.equalsIgnoreCase(Prediction.FINISHED)){
+          return "Finished";
+      }else if(stateCode.equalsIgnoreCase(Prediction.SUBMITTED)){
+          return "Submitted";
+      }else {
+          return stateCode;
+      }
+
     }
 
     public class OnRosterBtnClickListener implements View.OnClickListener{

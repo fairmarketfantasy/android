@@ -42,13 +42,12 @@ public class BaseMainActivity extends BaseActivity {
     protected List<IUpdateListener> _updateListener = new ArrayList<IUpdateListener>();
     protected PredictionRoster _predictionRoster = PredictionRoster.None;
     protected List<IAvatarListener> _avatarListeners = new ArrayList<IAvatarListener>();
-    protected MainFragmentMediator _fragmentMediator;
+    protected MainFragmentMediator _fragmentMediator = new MainFragmentMediator();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        _fragmentMediator = new MainFragmentMediator();
         initStartParams(savedInstanceState);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

@@ -7,6 +7,10 @@ import java.util.Date;
  */
 public class Prediction {
 
+    public static final String FINISHED = "finished";
+    public static final String SUBMITTED = "submitted";
+    public static final String CANCELED = "cancelled";
+
     private Market _market;
     private int _rank;
     private double _score;
