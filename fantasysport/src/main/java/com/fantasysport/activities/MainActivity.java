@@ -5,6 +5,7 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -81,6 +82,7 @@ public class MainActivity extends BaseMainActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 MenuItem item = (MenuItem) _menuAdapter.getItem(position);
+                _drawerLayout.closeDrawer(_menuList);
                 switch (item.getId()) {
                     case LegalStuff:
                         showWebView("pages/mobile/terms", "How it works/support");
@@ -101,6 +103,7 @@ public class MainActivity extends BaseMainActivity {
                         showPredictions();
                         break;
                 }
+
             }
         });
     }
@@ -156,17 +159,17 @@ public class MainActivity extends BaseMainActivity {
         if (newMarkets == null && oldMarkets == null) {
             return false;
         }
-        if(_markets.size() != _markets.size()){
+        if (_markets.size() != _markets.size()) {
             return true;
         }
-        for (Market newMarket : newMarkets){
+        for (Market newMarket : newMarkets) {
             boolean has = false;
-            for (Market oldMarket : oldMarkets){
-                if(oldMarket.getId() == newMarket.getId()){
+            for (Market oldMarket : oldMarkets) {
+                if (oldMarket.getId() == newMarket.getId()) {
                     has = true;
                 }
             }
-            if(!has){
+            if (!has) {
                 return true;
             }
         }
@@ -176,8 +179,8 @@ public class MainActivity extends BaseMainActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == Const.NEW_AVATAR){
-          raiseOnAvatarChanged();
+        if (resultCode == Const.NEW_AVATAR) {
+            raiseOnAvatarChanged();
         }
     }
 
@@ -192,8 +195,8 @@ public class MainActivity extends BaseMainActivity {
         public void onRequestSuccess(MarketResponse response) {
             _storage.setDefaultRosterData(response.getDefaultRosterData());
             _storage.setMarketsContainer(response.getMarketsContainer());
-            List<Market> tmpMarkets =  _storage.getMarkets();
-            if (marketChanged(tmpMarkets, _markets)){
+            List<Market> tmpMarkets = _storage.getMarkets();
+            if (marketChanged(tmpMarkets, _markets)) {
                 _markets = tmpMarkets;
                 raiseOnMarketListener(_markets);
             }
