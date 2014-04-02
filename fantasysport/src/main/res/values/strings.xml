@@ -86,8 +86,8 @@
         <string name="my_games">My Games</string><!--1-->
         <string name="create_game">Create Game</string><!--2-->
         <string name="rules">Rules</string><!--3-->
-        <string name="legal_stuff">Legal Stuff</string><!--4-->
-        <string name="support">Support</string><!--5-->
+        <string name="legal_stuff">How It Works/Support</string><!--4-->
+        <string name="support">Subscription Terms</string><!--5-->
         <string name="settings">Settings</string><!--6-->
         <string name="sign_out">Sign Out</string><!--7-->
         <string name="predictions">Predictions</string>

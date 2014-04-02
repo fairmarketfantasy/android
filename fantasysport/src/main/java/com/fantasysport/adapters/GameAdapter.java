@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.util.Log;
 import android.view.View;
+import com.fantasysport.Const;
 import com.fantasysport.fragments.GameItemFragment;
 import com.fantasysport.models.Market;
 
@@ -37,8 +38,11 @@ public class GameAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int i) {
-        GameItemFragment fragment = new GameItemFragment(_markets.get(i));
-        fragment.setArguments(new Bundle());
+        GameItemFragment fragment = new GameItemFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(Const.MARKET, _markets.get(i));
+        fragment.setArguments(bundle);
+        fragment.setRetainInstance(true);
         return fragment;
     }
 

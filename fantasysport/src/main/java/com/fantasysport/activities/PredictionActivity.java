@@ -141,14 +141,14 @@ public class PredictionActivity extends BaseActivity implements ActionBar.OnNavi
 
         private HistoryPredictionFragment getHistoryFragment(){
             if(_historyFragment == null){
-                _historyFragment = new HistoryPredictionFragment(_webProxy);
+                _historyFragment = new HistoryPredictionFragment();
             }
             return _historyFragment;
         }
 
         private ActivePredictionFragment getActiveFragment(){
             if(_activityFragment == null){
-                _activityFragment = new ActivePredictionFragment(_webProxy);
+                _activityFragment = new ActivePredictionFragment();
             }
             return _activityFragment;
         }

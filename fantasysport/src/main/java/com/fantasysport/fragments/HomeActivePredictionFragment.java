@@ -8,16 +8,11 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import com.fantasysport.R;
 import com.fantasysport.views.Switcher;
-import com.fantasysport.webaccess.WebProxy;
 
 /**
  * Created by bylynka on 3/25/14.
  */
 public class HomeActivePredictionFragment extends BaseHomeFragment  implements AdapterView.OnItemClickListener, Switcher.ISelectedListener {
-
-    public HomeActivePredictionFragment(WebProxy proxy, MainFragmentMediator fragmentMediator) {
-        super(proxy, fragmentMediator);
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

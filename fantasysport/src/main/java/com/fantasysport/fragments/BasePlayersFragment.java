@@ -15,14 +15,10 @@ import com.fantasysport.models.Market;
 import com.fantasysport.models.Player;
 import com.fantasysport.models.Roster;
 import com.fantasysport.views.PositionView;
-import com.fantasysport.webaccess.WebProxy;
 import com.fantasysport.webaccess.requestListeners.AddPlayerResponseListener;
 import com.fantasysport.webaccess.requestListeners.PlayersResponseListener;
 import com.fantasysport.webaccess.requestListeners.RequestError;
 import com.fantasysport.webaccess.responses.PlayersRequestResponse;
-import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
-import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout;
-import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 
 /**
  * Created by bylynka on 3/24/14.
@@ -37,10 +33,11 @@ public abstract class BasePlayersFragment extends MainActivityFragment implement
     protected boolean _lastBenchedState;
     protected ListView _playersList;
 
-    public BasePlayersFragment(WebProxy proxy, MainFragmentMediator fragmentMediator){
-        super(proxy, fragmentMediator);
-        _fragmentMediator.addPlayerPositionListener(this);
-        _fragmentMediator.addOnBenchedStateChangedListener(this);
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        getFragmentMediator().addPlayerPositionListener(this);
+        getFragmentMediator().addOnBenchedStateChangedListener(this);
     }
 
     @Override
@@ -106,7 +103,7 @@ public abstract class BasePlayersFragment extends MainActivityFragment implement
     @Override
     public void onAddPlayer(Player player) {
         showProgress();
-        _webProxy.addPlayer(getRoster().getId(), player, new AddPlayerResponseListener() {
+        getWebProxy().addPlayer(getRoster().getId(), player, new AddPlayerResponseListener() {
             @Override
             public void onRequestError(RequestError error) {
                 dismissProgress();

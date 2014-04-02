@@ -7,16 +7,11 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import com.fantasysport.R;
-import com.fantasysport.webaccess.WebProxy;
 
 /**
  * Created by bylynka on 3/25/14.
  */
 public class HomeHistoryPredictionFragment extends BaseHomeFragment {
-
-    public HomeHistoryPredictionFragment(WebProxy proxy, MainFragmentMediator fragmentMediator) {
-        super(proxy, fragmentMediator);
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

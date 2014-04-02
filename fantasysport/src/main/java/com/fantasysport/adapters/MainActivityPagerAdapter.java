@@ -15,15 +15,12 @@ public class MainActivityPagerAdapter extends FragmentPagerAdapter {
 
     private BaseHomeFragment _homeFragment;
     private BasePlayersFragment _playersFragment;
-    private WebProxy _proxy;
     private PredictionRoster _predictionRoster;
-    private MainFragmentMediator _fragmentMediator;
 
-    public MainActivityPagerAdapter(PredictionRoster predictionRoster, FragmentManager fragmentManager, WebProxy proxy) {
+
+    public MainActivityPagerAdapter(PredictionRoster predictionRoster, FragmentManager fragmentManager) {
         super(fragmentManager);
-        _proxy = proxy;
         _predictionRoster = predictionRoster;
-        _fragmentMediator = new MainFragmentMediator();
     }
 
     @Override
@@ -35,13 +32,13 @@ public class MainActivityPagerAdapter extends FragmentPagerAdapter {
         if (_homeFragment == null) {
             switch (_predictionRoster) {
                 case Active:
-                    _homeFragment = new HomeActivePredictionFragment(_proxy, _fragmentMediator);
+                    _homeFragment = new HomeActivePredictionFragment();
                     break;
                 case History:
-                    _homeFragment = new HomeHistoryPredictionFragment(_proxy, _fragmentMediator);
+                    _homeFragment = new HomeHistoryPredictionFragment();
                     break;
                 default:
-                    _homeFragment = new HomeFragment(_proxy, _fragmentMediator);
+                    _homeFragment = new HomeFragment();
                     break;
             }
         }
@@ -52,13 +49,13 @@ public class MainActivityPagerAdapter extends FragmentPagerAdapter {
         if (_playersFragment == null) {
             switch (_predictionRoster) {
                 case Active:
-                    _playersFragment = new PredictionActivePlayersFragment(_proxy, _fragmentMediator);
+                    _playersFragment = new PredictionActivePlayersFragment();
                     break;
                 case History:
-                    _playersFragment = new PlayersHistoryPredictionFragment(_proxy, _fragmentMediator);
+                    _playersFragment = new PlayersHistoryPredictionFragment();
                     break;
                 default:
-                    _playersFragment = new PlayersFragment(_proxy, _fragmentMediator);
+                    _playersFragment = new PlayersFragment();
             }
         }
         return _playersFragment;

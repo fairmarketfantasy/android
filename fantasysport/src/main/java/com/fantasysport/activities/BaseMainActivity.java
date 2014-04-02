@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import com.fantasysport.Const;
 import com.fantasysport.R;
 import com.fantasysport.adapters.MainActivityPagerAdapter;
+import com.fantasysport.fragments.MainFragmentMediator;
 import com.fantasysport.fragments.PredictionRoster;
 import com.fantasysport.models.Market;
 import com.fantasysport.models.Roster;
@@ -41,11 +42,13 @@ public class BaseMainActivity extends BaseActivity {
     protected List<IUpdateListener> _updateListener = new ArrayList<IUpdateListener>();
     protected PredictionRoster _predictionRoster = PredictionRoster.None;
     protected List<IAvatarListener> _avatarListeners = new ArrayList<IAvatarListener>();
+    protected MainFragmentMediator _fragmentMediator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        _fragmentMediator = new MainFragmentMediator();
         initStartParams(savedInstanceState);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -53,6 +56,10 @@ public class BaseMainActivity extends BaseActivity {
         _rightSwipeImg = getViewById(R.id.right_point_img);
         setPager();
         setPageIndicator(0);
+    }
+
+    public MainFragmentMediator getFragmentMediator(){
+        return _fragmentMediator;
     }
 
     public void addAvatarListener(IAvatarListener listener){
@@ -135,7 +142,7 @@ public class BaseMainActivity extends BaseActivity {
     }
 
     protected void setPager() {
-        _mainActivityPagerAdapter = new MainActivityPagerAdapter(PredictionRoster.None, getSupportFragmentManager(), _webProxy);
+        _mainActivityPagerAdapter = new MainActivityPagerAdapter(PredictionRoster.None, getSupportFragmentManager());
         _pager = getViewById(R.id.root_pager);
         _pager.setPageTransformer(true, new ZoomOutPageTransformer());
         _pager.setAdapter(_mainActivityPagerAdapter);

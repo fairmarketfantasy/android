@@ -27,10 +27,6 @@ public abstract class BaseHomeFragment extends MainActivityFragment  implements 
     private Switcher _switcher;
     private ListView _playersList;
 
-    public BaseHomeFragment(WebProxy proxy, MainFragmentMediator fragmentMediator) {
-        super(proxy, fragmentMediator);
-    }
-
     @Override
     protected void init() {
         super.init();
@@ -127,7 +123,7 @@ public abstract class BaseHomeFragment extends MainActivityFragment  implements 
         public void onTrade(final Player player) {
             showProgress();
             final Roster roster = getRoster();
-            _webProxy.tradePlayer(roster.getId(), player, new TradePlayerResponseListener() {
+            getWebProxy().tradePlayer(roster.getId(), player, new TradePlayerResponseListener() {
                 @Override
                 public void onRequestError(RequestError error) {
                     dismissProgress();
@@ -142,7 +138,7 @@ public abstract class BaseHomeFragment extends MainActivityFragment  implements 
                     roster.setRemainingSalary(salary);
                     updatePlayersList();
                     dismissProgress();
-                    _fragmentMediator.changePlayerPosition(this, player.getPosition());
+                    getFragmentMediator().changePlayerPosition(this, player.getPosition());
                     getMainActivity().navigateToPlayers();
                 }
             });
@@ -155,7 +151,7 @@ public abstract class BaseHomeFragment extends MainActivityFragment  implements 
             Roster roster = getRoster();
             int rosterId = roster == null ? -1 : roster.getId();
             showProgress();
-            _webProxy.autofillRoster(getMarket().getId(), rosterId, new AutofillResponseListener() {
+            getWebProxy().autofillRoster(getMarket().getId(), rosterId, new AutofillResponseListener() {
                 @Override
                 public void onRequestError(RequestError error) {
                     dismissProgress();
@@ -178,14 +174,14 @@ public abstract class BaseHomeFragment extends MainActivityFragment  implements 
 //        if (item instanceof Player) {
 //            return;
 //        }
-        _fragmentMediator.changePlayerPosition(this, item.getPosition());
+        getFragmentMediator().changePlayerPosition(this, item.getPosition());
         getMainActivity().navigateToPlayers();
     }
 
     @Override
     public void onStateChanged(boolean isSelected) {
         setCanBenched(isSelected);
-        _fragmentMediator.changeBenchedState(this, isSelected);
+        getFragmentMediator().changeBenchedState(this, isSelected);
     }
 
     @Override

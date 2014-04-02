@@ -1,38 +1,20 @@
 package com.fantasysport.fragments;
 
-
-import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.ListView;
 import com.fantasysport.R;
 import com.fantasysport.activities.MainActivity;
-import com.fantasysport.adapters.GameAdapter;
-import com.fantasysport.adapters.PlayerItem;
-import com.fantasysport.adapters.RosterPlayersAdapter;
-import com.fantasysport.models.*;
+import com.fantasysport.models.Market;
+import com.fantasysport.models.Roster;
 import com.fantasysport.views.Switcher;
-import com.fantasysport.views.drawable.BitmapButtonDrawable;
-import com.fantasysport.views.listeners.ViewPagerOnPageSelectedListener;
-import com.fantasysport.webaccess.WebProxy;
-import com.fantasysport.webaccess.requestListeners.AutofillResponseListener;
 import com.fantasysport.webaccess.requestListeners.RequestError;
 import com.fantasysport.webaccess.requestListeners.SubmitRosterResponseListener;
-import com.fantasysport.webaccess.requestListeners.TradePlayerResponseListener;
 import com.fantasysport.webaccess.requests.SubmitRosterRequest;
-import com.fantasysport.webaccess.responses.AutofillResponse;
-import com.fantasysport.webaccess.responses.TradePlayerResponse;
-import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
-import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout;
-import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -40,10 +22,6 @@ import java.util.List;
  */
 public class HomeFragment extends BaseHomeFragment  implements AdapterView.OnItemClickListener,
         Switcher.ISelectedListener, MainActivity.IOnMarketsListener{
-
-    public HomeFragment(WebProxy proxy, MainFragmentMediator fragmentMediator) {
-        super(proxy, fragmentMediator);
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -74,7 +52,7 @@ public class HomeFragment extends BaseHomeFragment  implements AdapterView.OnIte
             }
             showProgress();
             String contestType = v.getId() == R.id.submit_100fb_btn ? SubmitRosterRequest.TOP6 : SubmitRosterRequest.H2H;
-            _webProxy.submitRoster(roster.getId(), contestType, new SubmitRosterResponseListener() {
+            getWebProxy().submitRoster(roster.getId(), contestType, new SubmitRosterResponseListener() {
                 @Override
                 public void onRequestError(RequestError error) {
                     dismissProgress();

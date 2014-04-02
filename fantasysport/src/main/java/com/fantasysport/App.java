@@ -1,16 +1,15 @@
 package com.fantasysport;
 
 import android.app.Application;
-import com.fantasysport.models.*;
+import com.fantasysport.models.AccessTokenData;
+import com.fantasysport.models.DefaultRosterData;
+import com.fantasysport.models.MarketsContainer;
+import com.fantasysport.models.UserData;
 import com.fantasysport.repo.Storage;
 import com.fantasysport.utility.CacheProvider;
 import com.fantasysport.webaccess.RequestHelper;
 import com.google.gson.Gson;
 import com.ubertesters.sdk.Ubertesters;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * Created by bylynka on 2/4/14.

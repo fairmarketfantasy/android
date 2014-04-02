@@ -1,10 +1,7 @@
 package com.fantasysport.activities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.AttributeSet;
-import android.view.View;
 import com.fantasysport.Const;
 import com.fantasysport.R;
 import com.fantasysport.adapters.MainActivityPagerAdapter;
@@ -33,7 +30,7 @@ public class MainPredictionActivity  extends BaseMainActivity {
     }
 
     protected void setPager() {
-        _mainActivityPagerAdapter = new MainActivityPagerAdapter( _predictionRoster, getSupportFragmentManager(), _webProxy);
+        _mainActivityPagerAdapter = new MainActivityPagerAdapter( _predictionRoster, getSupportFragmentManager());
         _pager = getViewById(R.id.root_pager);
         _pager.setPageTransformer(true, new ZoomOutPageTransformer());
         _pager.setAdapter(_mainActivityPagerAdapter);
@@ -57,7 +54,6 @@ public class MainPredictionActivity  extends BaseMainActivity {
             loadRoster(_rosterId);
         }
     }
-
 
     @Override
     protected void initStartParams(Bundle savedInstanceState) {

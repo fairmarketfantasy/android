@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import com.fantasysport.Const;
 import com.fantasysport.R;
 import com.fantasysport.models.Market;
 
@@ -19,8 +20,10 @@ public class GameItemFragment extends Fragment {
 
     private Market _market;
 
-    public GameItemFragment(Market market){
-        _market = market;
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        _market = (Market)getArguments().getSerializable(Const.MARKET);
     }
 
     @Override
@@ -34,5 +37,4 @@ public class GameItemFragment extends Fragment {
         marketTimeTxt.setText(sdf.format(startDate));
         return view;
     }
-
 }

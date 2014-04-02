@@ -10,10 +10,6 @@ import com.fantasysport.webaccess.WebProxy;
  */
 public class PredictionActivePlayersFragment extends BasePlayersFragment {
 
-    public PredictionActivePlayersFragment(WebProxy proxy, MainFragmentMediator fragmentMediator) {
-        super(proxy, fragmentMediator);
-    }
-
     @Override
     protected void loadPlayers(final String position, boolean showProgress){
         Market market = getMarket();
@@ -27,7 +23,7 @@ public class PredictionActivePlayersFragment extends BasePlayersFragment {
         _lastMarket = market;
         _lastPosition = position;
         _lastBenchedState = canBenched();
-        _webProxy.getPlayers(position, canBenched(), getRoster().getId(), _playersListener);
+        getWebProxy().getPlayers(position, canBenched(), getRoster().getId(), _playersListener);
     }
 
     @Override

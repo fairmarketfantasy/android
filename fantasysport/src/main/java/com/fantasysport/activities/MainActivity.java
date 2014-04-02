@@ -83,13 +83,13 @@ public class MainActivity extends BaseMainActivity {
                 MenuItem item = (MenuItem) _menuAdapter.getItem(position);
                 switch (item.getId()) {
                     case LegalStuff:
-                        showWebView("pages/mobile/terms", "TERMS");
+                        showWebView("pages/mobile/terms", "How it works/support");
                         break;
                     case Rules:
-                        showWebView("pages/mobile/rules", "RULES");
+                        showWebView("pages/mobile/rules", "Rules");
                         break;
                     case Support:
-                        showWebView("pages/mobile/support", "SUPPORT");
+                        showWebView("pages/mobile/conditions", "Subscription terms");
                         break;
                     case Settings:
                         showSettingsView();

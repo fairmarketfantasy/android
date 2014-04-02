@@ -19,10 +19,6 @@ import java.util.List;
  */
 public class PlayersFragment extends BasePlayersFragment implements MainActivity.IOnMarketsListener{
 
-    public PlayersFragment(WebProxy proxy, MainFragmentMediator fragmentMediator){
-        super(proxy,fragmentMediator);
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ((MainActivity)getMainActivity()).addOnMarketsListener(this);
@@ -43,7 +39,7 @@ public class PlayersFragment extends BasePlayersFragment implements MainActivity
         _lastPosition = position;
         _lastBenchedState = canBenched();
         if (getRoster() == null) {
-            _webProxy.createRoster(market.getId(), new RosterResponseListener() {
+            getWebProxy().createRoster(market.getId(), new RosterResponseListener() {
                 @Override
                 public void onRequestError(RequestError message) {
                     dismissProgress();
@@ -52,11 +48,11 @@ public class PlayersFragment extends BasePlayersFragment implements MainActivity
                 @Override
                 public void onRequestSuccess(Roster roster) {
                     setRoster(roster);
-                    _webProxy.getPlayers(position, canBenched(), getRoster().getId(), _playersListener);
+                    getWebProxy().getPlayers(position, canBenched(), getRoster().getId(), _playersListener);
                 }
             });
         } else {
-            _webProxy.getPlayers(position, canBenched(), getRoster().getId(), _playersListener);
+            getWebProxy().getPlayers(position, canBenched(), getRoster().getId(), _playersListener);
         }
     }
 

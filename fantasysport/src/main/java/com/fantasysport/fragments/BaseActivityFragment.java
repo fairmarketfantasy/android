@@ -14,14 +14,15 @@ import com.fantasysport.webaccess.WebProxy;
 public abstract class BaseActivityFragment extends Fragment {
 
     protected Storage _storage;
-    protected WebProxy _webProxy;
     protected View _rootView;
 
-    public BaseActivityFragment(WebProxy proxy){
+    public BaseActivityFragment(){
         _storage = Storage.instance();
-        _webProxy = proxy;
     }
 
+    protected WebProxy getWebProxy(){
+        return getBaseActivity().getWebProxy();
+    }
 
     protected <T> T getViewById(int viewId){
         return (T)_rootView.findViewById(viewId);

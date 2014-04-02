@@ -22,10 +22,6 @@ import java.util.List;
  */
 public class ActivePredictionFragment extends BasePredictionFragment {
 
-    public ActivePredictionFragment(WebProxy proxy) {
-        super(proxy);
-    }
-
     @Override
     public void onLoad(PredictionActivity.TimeType timeType, PredictionActivity.PredictionType predictionType, boolean showLoading) {
         if(timeType != PredictionActivity.TimeType.Active){
@@ -41,7 +37,7 @@ public class ActivePredictionFragment extends BasePredictionFragment {
 
     private void loadPredictions(){
         showProgress();
-        _webProxy.getPredictions(new PredictionsResponseListener() {
+        getWebProxy().getPredictions(new PredictionsResponseListener() {
             @Override
             public void onRequestError(RequestError error) {
                 dismissProgress();
@@ -62,7 +58,7 @@ public class ActivePredictionFragment extends BasePredictionFragment {
 
     private void loadIndividualPredictions(){
         showProgress();
-        _webProxy.getIndividualPredictions(new IndividualPredictionsResponseListener() {
+        getWebProxy().getIndividualPredictions(new IndividualPredictionsResponseListener() {
             @Override
             public void onRequestError(RequestError error) {
                 dismissProgress();

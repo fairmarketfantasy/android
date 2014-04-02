@@ -33,10 +33,6 @@ public class HistoryPredictionFragment extends BasePredictionFragment {
     private PredictionAdapter _predictionAdapter;
     private IndividualPredictionAdapter _individualPredictionAdapter;
 
-    public HistoryPredictionFragment(WebProxy proxy) {
-        super(proxy);
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         _predictionAdapter = new PredictionAdapter(getActivity(), null, getProhibitionRound());
@@ -73,7 +69,7 @@ public class HistoryPredictionFragment extends BasePredictionFragment {
         if(showLoadPopup){
             showProgress();
         }
-        _webProxy.getPredictions(new PredictionsResponseListener() {
+        getWebProxy().getPredictions(new PredictionsResponseListener() {
             @Override
             public void onRequestError(RequestError error) {
                 dismissProgress();
@@ -116,7 +112,7 @@ public class HistoryPredictionFragment extends BasePredictionFragment {
         if(showLoadPopup){
             showProgress();
         }
-        _webProxy.getIndividualPredictions(new IndividualPredictionsResponseListener() {
+        getWebProxy().getIndividualPredictions(new IndividualPredictionsResponseListener() {
             @Override
             public void onRequestError(RequestError error) {
                 dismissProgress();

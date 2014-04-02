@@ -20,10 +20,6 @@ public class PlayersHistoryPredictionFragment extends BasePlayersFragment {
 
     private TextView _msgLbl;
 
-    public PlayersHistoryPredictionFragment(WebProxy proxy, MainFragmentMediator fragmentMediator) {
-        super(proxy, fragmentMediator);
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         _rootView = inflater.inflate(R.layout.fragment_history_prediction_players, container, false);

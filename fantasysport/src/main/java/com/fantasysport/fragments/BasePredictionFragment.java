@@ -31,11 +31,6 @@ public abstract class BasePredictionFragment extends BaseActivityFragment implem
     protected PullToRefreshLayout _pullToRefreshLayout;
     protected PredictionActivity.TimeType _timeType;
     protected PredictionActivity.PredictionType _predictionType;
-    protected boolean _showLoadPopup;
-
-    public BasePredictionFragment(WebProxy proxy){
-        super(proxy);
-    }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         _rootView = inflater.inflate(R.layout.fragment_prediction, container, false);

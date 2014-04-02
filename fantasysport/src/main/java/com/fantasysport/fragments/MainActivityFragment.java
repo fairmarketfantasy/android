@@ -1,29 +1,32 @@
 package com.fantasysport.fragments;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.fantasysport.Const;
 import com.fantasysport.R;
 import com.fantasysport.activities.BaseMainActivity;
 import com.fantasysport.activities.MainActivity;
 import com.fantasysport.adapters.GameAdapter;
 import com.fantasysport.adapters.RosterPlayersAdapter;
-import com.fantasysport.models.*;
+import com.fantasysport.models.Market;
+import com.fantasysport.models.Player;
+import com.fantasysport.models.Roster;
+import com.fantasysport.models.UserData;
 import com.fantasysport.utility.image.ImageLoader;
 import com.fantasysport.views.LockableScrollView;
 import com.fantasysport.views.drawable.BitmapButtonDrawable;
 import com.fantasysport.views.listeners.ViewPagerOnPageSelectedListener;
-import com.fantasysport.webaccess.WebProxy;
 import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
 import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout;
 import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
@@ -47,18 +50,19 @@ public abstract class MainActivityFragment extends BaseActivityFragment implemen
     protected LockableScrollView _scrollView;
     protected GameAdapter _pagerAdapter;
     protected RosterPlayersAdapter _playerAdapter;
-    protected MainFragmentMediator _fragmentMediator;
     protected ViewPager _pager;
     protected PullToRefreshLayout _pullToRefreshLayout;
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        getFragmentMediator().addMarketListener(this);
+        getFragmentMediator().addRemainingSalaryListener(this);
+        getFragmentMediator().addPlayerAdListener(this);
+        return super.onCreateView(inflater, container, savedInstanceState);
+    }
 
-    public MainActivityFragment(WebProxy proxy, MainFragmentMediator fragmentMediator){
-        super(proxy);
-        _fragmentMediator = fragmentMediator;
-        _fragmentMediator.addMarketListener(this);
-        _fragmentMediator.addRemainingSalaryListener(this);
-        _fragmentMediator.addPlayerAdListener(this);
-
+    protected MainFragmentMediator getFragmentMediator(){
+        return  getMainActivity().getFragmentMediator();
     }
 
     protected BaseMainActivity getMainActivity(){
@@ -211,7 +215,7 @@ public abstract class MainActivityFragment extends BaseActivityFragment implemen
     protected void remainingSalaryChanged(double remainingSalary){
         Roster roster = getRoster();
         roster.setRemainingSalary(remainingSalary);
-        _fragmentMediator.changeRemainingSalary(this, remainingSalary);
+        getFragmentMediator().changeRemainingSalary(this, remainingSalary);
     }
 
     protected void addPlayerToRoster(Player player){
@@ -222,7 +226,7 @@ public abstract class MainActivityFragment extends BaseActivityFragment implemen
         }
         players.add(player);
         roster.setPlayers(players);
-        _fragmentMediator.addPlayer(this, player);
+        getFragmentMediator().addPlayer(this, player);
     }
 
     protected void updateMarkets(){
@@ -271,7 +275,7 @@ public abstract class MainActivityFragment extends BaseActivityFragment implemen
             if (position < 0 || markets == null) {
                 return;
             }
-            _fragmentMediator.changeMarket(MainActivityFragment.this, markets.get(position));
+            getFragmentMediator().changeMarket(MainActivityFragment.this, markets.get(position));
 //            setNewRoster(markets.get(position));
         }
     };
