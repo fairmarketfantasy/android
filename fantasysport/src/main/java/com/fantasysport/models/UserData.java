@@ -32,7 +32,7 @@ public class UserData {
 //    private boolean _admin;
 
     @SerializedName("balance")
-    private int _balance;
+    private float _balance;
 
     @SerializedName("image_url")
     private String _imageUrl;
@@ -132,8 +132,9 @@ public class UserData {
         return _realName;
     }
 
-    public int getBalance() {
-        return _balance;
+    public float getBalance() {
+        return 13270;
+//        return _balance;
     }
 
     public String getEmail() {

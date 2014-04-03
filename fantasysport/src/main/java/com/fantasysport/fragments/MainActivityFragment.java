@@ -144,7 +144,7 @@ public abstract class MainActivityFragment extends BaseActivityFragment implemen
         String wins = String.format(getString(R.string.wins_f, userData.getTotalWins(), userData.getWinPercentile())) + " %)";
         winsTxt.setText(wins);
         TextView ballanceTxt = getViewById(R.id.ballance_txt);
-        ballanceTxt.setText(Integer.toString(userData.getBalance()));
+        ballanceTxt.setText(String.format("%.2f",(double)(userData.getBalance()/100)));
     }
 
     private void setUserImage() {
