@@ -27,6 +27,11 @@ public final class WebProxy {
     }
 
 
+    public void removeBenchedPlayers(int rosterId, RosterResponseListener listener){
+        RemoveBenchedPlayersRequest request = new RemoveBenchedPlayersRequest(rosterId);
+        _spiceManager.execute(request, listener);
+    }
+
     public void resetPassword(String email, ResetPasswordResponse listener){
         ResetPasswordRequest request = new ResetPasswordRequest(email);
         _spiceManager.execute(request, listener);

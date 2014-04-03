@@ -12,6 +12,7 @@ import com.fantasysport.views.Switcher;
 import com.fantasysport.webaccess.WebProxy;
 import com.fantasysport.webaccess.requestListeners.AutofillResponseListener;
 import com.fantasysport.webaccess.requestListeners.RequestError;
+import com.fantasysport.webaccess.requestListeners.RosterResponseListener;
 import com.fantasysport.webaccess.requestListeners.TradePlayerResponseListener;
 import com.fantasysport.webaccess.responses.AutofillResponse;
 import com.fantasysport.webaccess.responses.TradePlayerResponse;
@@ -183,6 +184,24 @@ public abstract class BaseHomeFragment extends MainActivityFragment  implements 
     public void onStateChanged(boolean isSelected) {
         setCanBenched(isSelected);
         getFragmentMediator().changeBenchedState(this, isSelected);
+        Roster roster = getRoster();
+        if(roster != null && !isSelected){
+            showProgress();
+            getWebProxy().removeBenchedPlayers(roster.getId(), new RosterResponseListener() {
+                @Override
+                public void onRequestError(RequestError message) {
+                    dismissProgress();
+                }
+
+                @Override
+                public void onRequestSuccess(Roster roster) {
+                    dismissProgress();
+                    setRoster(roster);
+                    updatePlayersList();
+                }
+            });
+        }
+
     }
 
     @Override
