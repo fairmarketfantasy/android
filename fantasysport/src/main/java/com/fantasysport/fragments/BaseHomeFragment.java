@@ -73,7 +73,8 @@ public abstract class BaseHomeFragment extends MainActivityFragment  implements 
 
     protected void setEmptyRoster() {
         DefaultRosterData rosterData = _storage.getDefaultRosterData();
-        setMoneyTxt(rosterData.getRemainingSalary());
+//        setMoneyTxt(rosterData.getRemainingSalary());
+        getFragmentMediator().changeRemainingSalary(this, rosterData.getRemainingSalary());
         List<IPlayer> items = _playerAdapter.getItems();
         items.clear();
         List<String> positions = rosterData.getPositions();
