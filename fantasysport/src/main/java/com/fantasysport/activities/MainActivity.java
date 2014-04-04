@@ -8,9 +8,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
-import android.view.KeyEvent;
-import android.view.View;
-import android.view.ViewTreeObserver;
+import android.util.Log;
+import android.view.*;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -30,6 +29,7 @@ import com.fantasysport.webaccess.responses.MarketResponse;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
  * Created by bylynka on 2/11/14.
  */
@@ -41,6 +41,7 @@ public class MainActivity extends BaseMainActivity {
     protected ListView _menuList;
     protected List<IOnMarketsListener> _marketListeners = new ArrayList<IOnMarketsListener>();
     protected MenuHeaderFragment _menuHeaderFragment;
+    private android.view.MenuItem _refreshMenuItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +58,6 @@ public class MainActivity extends BaseMainActivity {
         );
 
         _drawerLayout.setDrawerListener(_drawerToggle);
-
     }
 
 
@@ -69,6 +69,15 @@ public class MainActivity extends BaseMainActivity {
         for (IOnMarketsListener listener : _marketListeners) {
             listener.onMarkets(markets);
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main, menu);
+        _refreshMenuItem = menu.findItem(R.id.refresh);
+        _refreshMenuItem.setVisible(!(_progressCounter > 0));
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -116,10 +125,10 @@ public class MainActivity extends BaseMainActivity {
                 _drawerLayout.closeDrawer(_menuList);
                 switch (item.getId()) {
                     case LegalStuff:
-                        showWebView("pages/mobile/terms", "How it works/support");
+                        showWebView("pages/mobile/terms", "How It Works/Support");
                         break;
                     case Rules:
-                        showWebView("pages/mobile/rules", "Rules");
+                        showWebView("pages/mobile/rules?sport=NBA", "Rules");
                         break;
                     case Support:
                         showWebView("pages/mobile/conditions", "Subscription terms");
@@ -140,20 +149,31 @@ public class MainActivity extends BaseMainActivity {
     }
 
     @Override
+    protected void beforeLoading() {
+        if(_refreshMenuItem == null){
+            return;
+        }
+        _refreshMenuItem.setVisible(false);
+    }
+
+    @Override
+    protected void afterLoading() {
+        if(_refreshMenuItem == null){
+            return;
+        }
+        _refreshMenuItem.setVisible(true);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(android.view.MenuItem item) {
         if (_drawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
-//        switch (item.getItemId()) {
-//            case R.id.arrow_close:
-//                item.setVisible(false);
-//                _menu.findItem(R.id.arrow_open).setVisible(true);
-//                return true;
-//            case R.id.arrow_open:
-//                item.setVisible(false);
-//                _menu.findItem(R.id.arrow_close).setVisible(true);
-//                return true;
-//        }
+        switch (item.getItemId()) {
+            case R.id.refresh:
+                updateMainData();
+                return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -181,7 +201,6 @@ public class MainActivity extends BaseMainActivity {
            public void onRequestSuccess(UserData data) {
              dismissProgress();
              _storage.setUserData(data);
-             _storage.getUserData().setBalance(18);
              if (_menuHeaderFragment != null){
                  _menuHeaderFragment.updateView();
              }
@@ -201,6 +220,7 @@ public class MainActivity extends BaseMainActivity {
             @Override
             public void onRequestSuccess(MarketResponse response) {
                 _storage.setDefaultRosterData(response.getDefaultRosterData());
+//                response.getMarketsContainer().getMarkets().remove(1);
                 _storage.setMarketsContainer(response.getMarketsContainer());
                 List<Market> tmpMarkets = _storage.getMarkets();
                 if (marketChanged(tmpMarkets, _markets)) {
@@ -239,7 +259,7 @@ public class MainActivity extends BaseMainActivity {
         if (newMarkets == null && oldMarkets == null) {
             return false;
         }
-        if (_markets.size() != _markets.size()) {
+        if (newMarkets.size() != oldMarkets.size()) {
             return true;
         }
         for (Market newMarket : newMarkets) {

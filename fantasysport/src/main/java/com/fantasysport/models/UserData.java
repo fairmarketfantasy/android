@@ -139,10 +139,6 @@ public class UserData {
         return _balance;
     }
 
-    public void setBalance(int balance) {
-        _balance = balance;
-    }
-
     public String getEmail() {
         return _email;
     }

@@ -39,7 +39,7 @@ public class BaseActivity extends ActionBarActivity{
     protected Storage _storage;
     protected static Typeface _prohibitionRoundTypeFace;
     protected static Typeface _robotoThin;
-    private int _progressCounter;
+    protected int _progressCounter;
 
     @Override
     public View onCreateView(String name, Context context, AttributeSet attrs) {
@@ -74,16 +74,23 @@ public class BaseActivity extends ActionBarActivity{
         overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
     }
 
+
     private void updateProgress(){
         if(_progressCounter < 0){
             _progressCounter = 0;
         }
         if(_progressCounter == 0){
             setSupportProgressBarIndeterminateVisibility(false);
+            afterLoading();
         }else if(_progressCounter >= 1 && !isProgressShowing()){
+            beforeLoading();
             setSupportProgressBarIndeterminateVisibility(true);
         }
     }
+
+    protected void beforeLoading(){}
+
+    protected void afterLoading(){}
 
     public void showProgress(){
         _progressCounter++;

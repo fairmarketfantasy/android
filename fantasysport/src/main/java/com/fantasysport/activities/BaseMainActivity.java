@@ -3,7 +3,6 @@ package com.fantasysport.activities;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.widget.ImageView;
 import com.fantasysport.Const;
 import com.fantasysport.R;
@@ -27,7 +26,6 @@ import java.util.List;
  */
 public class BaseMainActivity extends BaseActivity {
 
-    protected Menu _menu;
     protected MainActivityPagerAdapter _mainActivityPagerAdapter;
     protected Market _market;
     protected Roster _roster;
@@ -178,14 +176,6 @@ public class BaseMainActivity extends BaseActivity {
         if (_roster != null) {
             outState.putSerializable(Const.ROSTER, _roster);
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-//        Inflater inflater = getMenuInflater();
-//        inflater.inflate(R.menu.main, menu);
-//        _menu = menu;
-        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
