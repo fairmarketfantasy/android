@@ -3,6 +3,7 @@ package com.fantasysport.activities;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -118,6 +119,7 @@ public class MainActivity extends BaseMainActivity {
         _menuHeaderFragment = (MenuHeaderFragment)getSupportFragmentManager().findFragmentById(R.id.menu_header_fragment);
         _menuAdapter = new MenuListAdapter(this);
         _menuList.setAdapter(_menuAdapter);
+        _menuList.setCacheColorHint(Color.TRANSPARENT);
         _menuList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

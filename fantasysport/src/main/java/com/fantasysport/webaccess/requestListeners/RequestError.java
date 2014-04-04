@@ -20,10 +20,11 @@ public class RequestError {
         _message = message;
     }
 
-    public String getMessage(){
-//        if(_description == null || _description.length() == 0){
-//            return _message;
-//        }
+    public String getMessage()
+    {
+        if(_message != null && _message.equalsIgnoreCase("invalid_grant")){
+            _message = "Invalid username or password";
+        }
         return _message;
     }
 

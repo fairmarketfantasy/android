@@ -22,7 +22,6 @@ public class MenuListAdapter extends BaseAdapter {
 
     public MenuListAdapter(Context context){
         _context = context;
-
         _items = new ArrayList<MenuItem>();
         _items.add(new MenuItem(MenuItemEnum.Predictions, _context.getString(R.string.predictions)));
         _items.add(new MenuItem(MenuItemEnum.Rules, _context.getString(R.string.rules)));
