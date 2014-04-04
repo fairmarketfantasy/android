@@ -6,70 +6,55 @@
                   android:layout_height="match_parent"
                   android:orientation="vertical"
                   android:layout_weight="1">
-        <com.fantasysport.views.LockableScrollView android:layout_width="match_parent"
-                                                   android:layout_height="match_parent"
-                                                   android:layout_weight="1"
-                                                   android:fillViewport="true"
-                                                   android:scrollbars="none"
-                                                   android:id="@+id/scroll_view"
+        <LinearLayout android:layout_width="match_parent"
+                      android:layout_height="match_parent"
+                      android:orientation="vertical"
                 >
-            <LinearLayout android:layout_width="match_parent"
+            <include layout="@layout/home_header" android:layout_width="wrap_content"
+                     android:id="@+id/header_view"
+                     android:layout_height="wrap_content"/>
+
+            <FrameLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                         android:paddingRight="@dimen/side_marging"
+                         android:paddingLeft="@dimen/side_marging"
+                         android:paddingBottom="@dimen/side_hor_marging"
+                         android:paddingTop="@dimen/side_hor_marging"
+                         android:background="#E6E6E6">
+                <TextView android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:layout_gravity="center_vertical"
+                          android:textSize="@dimen/s_lage_font"
+                          android:textColor="#595959"
+                          android:text="@string/your_team"
+                        />
+
+                <TextView android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:layout_gravity="right|center_vertical"
+                          android:textSize="@dimen/lage_font"
+                          android:textColor="#E84C3D"
+                          android:id="@+id/money_lbl"
+                        />
+
+            </FrameLayout>
+            <View android:layout_width="match_parent"
+                  android:layout_height="1dip"
+                  android:background="#CCCCCC"/>
+            <uk.co.senab.actionbarpulltorefresh.extras.actionbarcompat.PullToRefreshLayout
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/ptr_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                <ListView android:layout_width="match_parent"
                           android:layout_height="match_parent"
-                          android:orientation="vertical"
-                    >
-                <include layout="@layout/home_header" android:layout_width="wrap_content"
-                         android:id="@+id/header_view"
-                         android:layout_height="wrap_content"/>
+                          android:layout_weight="1"
+                          android:id="@+id/roster_list"
+                          android:dividerHeight="2dp"
+                          android:divider="@drawable/player_devider"/>
+            </uk.co.senab.actionbarpulltorefresh.extras.actionbarcompat.PullToRefreshLayout>
 
-                <FrameLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                             android:paddingRight="@dimen/side_marging"
-                             android:paddingLeft="@dimen/side_marging"
-                             android:paddingBottom="@dimen/side_hor_marging"
-                             android:paddingTop="@dimen/side_hor_marging"
-                             android:background="#E6E6E6">
-                    <TextView android:layout_width="wrap_content"
-                              android:layout_height="wrap_content"
-                              android:layout_gravity="center_vertical"
-                              android:textSize="@dimen/s_lage_font"
-                              android:textColor="#595959"
-                              android:text="@string/your_team"
-                            />
-
-                    <TextView android:layout_width="wrap_content"
-                              android:layout_height="wrap_content"
-                              android:layout_gravity="right|center_vertical"
-                              android:textSize="@dimen/lage_font"
-                              android:textColor="#E84C3D"
-                              android:id="@+id/money_lbl"
-                            />
-
-                </FrameLayout>
-                <View android:layout_width="match_parent"
-                      android:layout_height="1dip"
-                      android:background="#CCCCCC"/>
-                <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:id="@+id/list_wrapper">
-
-                    <uk.co.senab.actionbarpulltorefresh.extras.actionbarcompat.PullToRefreshLayout
-                            xmlns:android="http://schemas.android.com/apk/res/android"
-                            android:id="@+id/ptr_layout"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent">
-
-                    <ListView android:layout_width="match_parent"
-                              android:layout_height="match_parent"
-                              android:layout_weight="1"
-                              android:id="@+id/roster_list"
-                              android:dividerHeight="2dp"
-                              android:divider="@drawable/player_devider"/>
-                    </uk.co.senab.actionbarpulltorefresh.extras.actionbarcompat.PullToRefreshLayout>
-                    
-                </FrameLayout>
-
-            </LinearLayout>
-        </com.fantasysport.views.LockableScrollView>
+        </LinearLayout>
         <FrameLayout android:layout_width="match_parent"
                      android:layout_height="wrap_content"
                      android:id="@+id/bottom_bar"
@@ -84,7 +69,7 @@
                     android:text="@string/back"
                     android:textColor="#ffffff"
                     android:id="@+id/back_btn"
-                    android:textSize="@dimen/x_medium_font" />
+                    android:textSize="@dimen/x_medium_font"/>
 
         </FrameLayout>
     </LinearLayout>

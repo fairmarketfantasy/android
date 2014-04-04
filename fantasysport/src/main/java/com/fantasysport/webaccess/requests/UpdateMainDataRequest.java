@@ -38,7 +38,6 @@ public class UpdateMainDataRequest extends BaseRequest<UpdateMainDataResponse>  
         uriBuilder.appendPath("users")
                 .appendPath(Integer.toString(_userId))
                 .appendQueryParameter("access_token", getAccessToken());
-//                .appendQueryParameter("abridged", "true");
         String url = uriBuilder.build().toString();
         HttpRequest request = getHttpRequestFactory()
                 .buildGetRequest(new GenericUrl(url));

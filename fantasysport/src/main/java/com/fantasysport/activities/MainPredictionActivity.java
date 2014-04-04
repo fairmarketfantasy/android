@@ -81,18 +81,18 @@ public class MainPredictionActivity  extends BaseMainActivity {
             finish();
             return true;
         }
-        switch (item.getItemId()) {
-            case R.id.arrow_close:
-                item.setVisible(false);
-                _menu.findItem(R.id.arrow_open).setVisible(true);
-                raiseOnToggleHeader();
-                return true;
-            case R.id.arrow_open:
-                item.setVisible(false);
-                _menu.findItem(R.id.arrow_close).setVisible(true);
-                raiseOnToggleHeader();
-                return true;
-        }
+//        switch (item.getItemId()) {
+//            case R.id.arrow_close:
+//                item.setVisible(false);
+//                _menu.findItem(R.id.arrow_open).setVisible(true);
+//                raiseOnToggleHeader();
+//                return true;
+//            case R.id.arrow_open:
+//                item.setVisible(false);
+//                _menu.findItem(R.id.arrow_close).setVisible(true);
+//                raiseOnToggleHeader();
+//                return true;
+//        }
         return super.onOptionsItemSelected(item);
     }
 }

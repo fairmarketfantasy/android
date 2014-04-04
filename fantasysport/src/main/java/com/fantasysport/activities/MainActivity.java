@@ -2,22 +2,29 @@ package com.fantasysport.activities;
 
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import com.fantasysport.Const;
 import com.fantasysport.R;
 import com.fantasysport.adapters.MenuItem;
 import com.fantasysport.adapters.MenuListAdapter;
+import com.fantasysport.fragments.MenuHeaderFragment;
 import com.fantasysport.models.Market;
+import com.fantasysport.models.UserData;
 import com.fantasysport.utility.DateUtils;
 import com.fantasysport.webaccess.requestListeners.MarketsResponseListener;
 import com.fantasysport.webaccess.requestListeners.RequestError;
+import com.fantasysport.webaccess.requestListeners.UserResponseListener;
 import com.fantasysport.webaccess.responses.MarketResponse;
 
 import java.util.ArrayList;
@@ -28,12 +35,12 @@ import java.util.List;
  */
 public class MainActivity extends BaseMainActivity {
 
-    private final int PLAYER_CANDIDATE = 123;
     private DrawerLayout _drawerLayout;
     private ActionBarDrawerToggle _drawerToggle;
     private MenuListAdapter _menuAdapter;
     protected ListView _menuList;
     protected List<IOnMarketsListener> _marketListeners = new ArrayList<IOnMarketsListener>();
+    protected MenuHeaderFragment _menuHeaderFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +59,7 @@ public class MainActivity extends BaseMainActivity {
         _drawerLayout.setDrawerListener(_drawerToggle);
 
     }
+
 
     public void addOnMarketsListener(IOnMarketsListener listener) {
         _marketListeners.add(listener);
@@ -75,13 +83,36 @@ public class MainActivity extends BaseMainActivity {
         _drawerToggle.onConfigurationChanged(newConfig);
     }
 
+    protected void setMenuHeaderImage(final View headerView) {
+        ViewTreeObserver observer = headerView.getViewTreeObserver();
+        observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                if (Build.VERSION.SDK_INT < 16) {
+                    headerView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                } else {
+                    headerView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                }
+                BitmapDrawable bitmapDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.basket);
+                Bitmap bitmap = bitmapDrawable.getBitmap();
+                Bitmap newBitmap = Bitmap.createBitmap(bitmap, 0, 0, headerView.getWidth(), headerView.getHeight(), null, false);
+                ImageView img = (ImageView)headerView.findViewById(R.id.image);
+                img.setImageBitmap(newBitmap);
+            }
+        });
+    }
+
     private void setMenu() {
+        View header = getLayoutInflater().inflate(R.layout.menu_header, null, false);
+        setMenuHeaderImage(header);
+        _menuList.addHeaderView(header, null, false);
+        _menuHeaderFragment = (MenuHeaderFragment)getSupportFragmentManager().findFragmentById(R.id.menu_header_fragment);
         _menuAdapter = new MenuListAdapter(this);
         _menuList.setAdapter(_menuAdapter);
         _menuList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                MenuItem item = (MenuItem) _menuAdapter.getItem(position);
+                MenuItem item = (MenuItem) _menuAdapter.getItem(position - 1);
                 _drawerLayout.closeDrawer(_menuList);
                 switch (item.getId()) {
                     case LegalStuff:
@@ -113,18 +144,16 @@ public class MainActivity extends BaseMainActivity {
         if (_drawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
-        switch (item.getItemId()) {
-            case R.id.arrow_close:
-                item.setVisible(false);
-                _menu.findItem(R.id.arrow_open).setVisible(true);
-                raiseOnToggleHeader();
-                return true;
-            case R.id.arrow_open:
-                item.setVisible(false);
-                _menu.findItem(R.id.arrow_close).setVisible(true);
-                raiseOnToggleHeader();
-                return true;
-        }
+//        switch (item.getItemId()) {
+//            case R.id.arrow_close:
+//                item.setVisible(false);
+//                _menu.findItem(R.id.arrow_open).setVisible(true);
+//                return true;
+//            case R.id.arrow_open:
+//                item.setVisible(false);
+//                _menu.findItem(R.id.arrow_close).setVisible(true);
+//                return true;
+//        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -138,6 +167,58 @@ public class MainActivity extends BaseMainActivity {
         return false;
     }
 
+    protected void updateUserData(){
+       int userId = _storage.getUserData().getId();
+       showProgress();
+        _webProxy.getUserData(userId, new UserResponseListener() {
+           @Override
+           public void onRequestError(RequestError message) {
+               dismissProgress();
+               showAlert(getString(R.string.error), message.getMessage());
+           }
+
+           @Override
+           public void onRequestSuccess(UserData data) {
+             dismissProgress();
+             _storage.setUserData(data);
+             _storage.getUserData().setBalance(18);
+             if (_menuHeaderFragment != null){
+                 _menuHeaderFragment.updateView();
+             }
+           }
+       });
+    }
+
+    private void updateMarkets(){
+        showProgress();
+        _webProxy.getMarkets(new MarketsResponseListener() {
+            @Override
+            public void onRequestError(RequestError error) {
+                dismissProgress();
+                showAlert(getString(R.string.error), error.getMessage());
+            }
+
+            @Override
+            public void onRequestSuccess(MarketResponse response) {
+                _storage.setDefaultRosterData(response.getDefaultRosterData());
+                _storage.setMarketsContainer(response.getMarketsContainer());
+                List<Market> tmpMarkets = _storage.getMarkets();
+                if (marketChanged(tmpMarkets, _markets)) {
+                    _markets = tmpMarkets;
+                    raiseOnMarketListener(_markets);
+                }
+                dismissProgress();
+            }
+        });
+    }
+
+    private void updateMainData(){
+        updateUserData();
+        updateMarkets();
+    }
+
+
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -146,8 +227,7 @@ public class MainActivity extends BaseMainActivity {
         long deltaTime = nowTime - marketsTime;
         long deltaTimeInMin = deltaTime / 60000;
         if (deltaTimeInMin > 35) {
-            showProgress();
-            _webProxy.getGames(_marketsResponseListener);
+            updateMainData();
         }
     }
 
@@ -183,26 +263,6 @@ public class MainActivity extends BaseMainActivity {
             raiseOnAvatarChanged();
         }
     }
-
-    MarketsResponseListener _marketsResponseListener = new MarketsResponseListener() {
-        @Override
-        public void onRequestError(RequestError error) {
-            dismissProgress();
-            showAlert(getString(R.string.error), error.getMessage());
-        }
-
-        @Override
-        public void onRequestSuccess(MarketResponse response) {
-            _storage.setDefaultRosterData(response.getDefaultRosterData());
-            _storage.setMarketsContainer(response.getMarketsContainer());
-            List<Market> tmpMarkets = _storage.getMarkets();
-            if (marketChanged(tmpMarkets, _markets)) {
-                _markets = tmpMarkets;
-                raiseOnMarketListener(_markets);
-            }
-            dismissProgress();
-        }
-    };
 
     public interface IOnMarketsListener {
         public void onMarkets(List<Market> markets);

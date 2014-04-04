@@ -9,7 +9,6 @@ import com.fantasysport.adapters.PlayerItem;
 import com.fantasysport.adapters.RosterPlayersAdapter;
 import com.fantasysport.models.*;
 import com.fantasysport.views.Switcher;
-import com.fantasysport.webaccess.WebProxy;
 import com.fantasysport.webaccess.requestListeners.AutofillResponseListener;
 import com.fantasysport.webaccess.requestListeners.RequestError;
 import com.fantasysport.webaccess.requestListeners.RosterResponseListener;
@@ -39,7 +38,6 @@ public abstract class BaseHomeFragment extends MainActivityFragment  implements 
         _switcher.setSelectedListener(this);
         setRoster();
         setPager(321);
-        initHeaderView();
     }
 
     @Override

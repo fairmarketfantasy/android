@@ -6,12 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.fantasysport.R;
-import com.fantasysport.models.Market;
 import com.fantasysport.models.Roster;
-import com.fantasysport.utility.StringHelper;
-import com.fantasysport.webaccess.WebProxy;
-import com.fantasysport.webaccess.requestListeners.RequestError;
-import com.fantasysport.webaccess.requestListeners.RosterResponseListener;
 
 /**
  * Created by bylynka on 3/25/14.
@@ -34,14 +29,10 @@ public class PlayersHistoryPredictionFragment extends BasePlayersFragment {
         _pager = getViewById(R.id.pager);
         _moneyTxt = getViewById(R.id.money_lbl);
         _moneyTxt.setTypeface(getProhibitionRound());
-        _listWrapper = getViewById(R.id.list_wrapper);
-        _scrollView = getViewById(R.id.scroll_view);
         getMainActivity().addRosterLoadedListener(this);
-        setUserData();
         //
 
         setPager(123);
-        initHeaderView();
         Roster roster = getRoster();
         setMoneyTxt(roster != null ? roster.getRemainingSalary() : _storage.getDefaultRosterData().getRemainingSalary());
         _msgLbl = getViewById(R.id.msg_lbl);

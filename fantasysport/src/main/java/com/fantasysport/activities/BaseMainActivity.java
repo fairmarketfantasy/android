@@ -27,7 +27,6 @@ import java.util.List;
  */
 public class BaseMainActivity extends BaseActivity {
 
-    protected final int PLAYER_CANDIDATE = 123;
     protected Menu _menu;
     protected MainActivityPagerAdapter _mainActivityPagerAdapter;
     protected Market _market;
@@ -103,12 +102,6 @@ public class BaseMainActivity extends BaseActivity {
     protected void raiseOnUpdateListener(Object initiator) {
         for (int i = 0; i < _listeners.size(); i++) {
             _updateListener.get(i).onUpdated(initiator);
-        }
-    }
-
-    protected void raiseOnToggleHeader() {
-        for (int i = 0; i < _listeners.size(); i++) {
-            _listeners.get(i).onHeaderToggle();
         }
     }
 
@@ -189,9 +182,9 @@ public class BaseMainActivity extends BaseActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main, menu);
-        _menu = menu;
+//        Inflater inflater = getMenuInflater();
+//        inflater.inflate(R.menu.main, menu);
+//        _menu = menu;
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -210,8 +203,6 @@ public class BaseMainActivity extends BaseActivity {
     }
 
     public interface IListener {
-        public void onHeaderToggle();
-
         public void onPageChanged(int page);
     }
 

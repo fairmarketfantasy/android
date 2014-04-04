@@ -3,17 +3,12 @@ package com.fantasysport.fragments;
 import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.TextView;
 import com.fantasysport.R;
 import com.fantasysport.activities.BaseMainActivity;
@@ -23,18 +18,13 @@ import com.fantasysport.adapters.RosterPlayersAdapter;
 import com.fantasysport.models.Market;
 import com.fantasysport.models.Player;
 import com.fantasysport.models.Roster;
-import com.fantasysport.models.UserData;
-import com.fantasysport.utility.image.ImageLoader;
-import com.fantasysport.views.LockableScrollView;
 import com.fantasysport.views.drawable.BitmapButtonDrawable;
 import com.fantasysport.views.listeners.ViewPagerOnPageSelectedListener;
 import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
 import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout;
 import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -43,12 +33,9 @@ import java.util.List;
 public abstract class MainActivityFragment extends BaseActivityFragment implements MainActivity.IListener,
         MainFragmentMediator.IMarketListener, MainFragmentMediator.IRemainingSalaryListener,
         MainFragmentMediator.IPlayerAddListener, BaseMainActivity.IRosterLoadedListener,
-        BaseMainActivity.IUpdateListener, OnRefreshListener, BaseMainActivity.IAvatarListener {
+        BaseMainActivity.IUpdateListener, OnRefreshListener{
 
     protected TextView _moneyTxt;
-    protected View _headerView;
-    protected FrameLayout _listWrapper;
-    protected LockableScrollView _scrollView;
     protected GameAdapter _pagerAdapter;
     protected RosterPlayersAdapter _playerAdapter;
     protected ViewPager _pager;
@@ -110,112 +97,19 @@ public abstract class MainActivityFragment extends BaseActivityFragment implemen
     protected void init(){
         getMainActivity().addListener(this);
         getMainActivity().addUpdateListener(this);
-        getMainActivity().addAvatarListener(this);
         _pager = getViewById(R.id.pager);
         _moneyTxt = getViewById(R.id.money_lbl);
         _moneyTxt.setTypeface(getProhibitionRound());
-        _listWrapper = getViewById(R.id.list_wrapper);
-        _scrollView = getViewById(R.id.scroll_view);
         _pullToRefreshLayout = getViewById(R.id.ptr_layout);
         ActionBarPullToRefresh.from(getActivity())
                 .allChildrenArePullable()
                 .listener(this)
                 .setup(_pullToRefreshLayout);
         getMainActivity().addRosterLoadedListener(this);
-        setUserData();
     }
 
     protected void setMoneyTxt(double price) {
         _moneyTxt.setText(String.format("$%.0f", price));
-    }
-
-    protected void setUserData() {
-        setUserImage();
-        UserData userData = _storage.getUserData();
-        TextView userNameTxt = getViewById(R.id.user_name_txt);
-        userNameTxt.setText(userData.getRealName());
-        TextView userRegTxt = getViewById(R.id.user_reg_txt);
-        Date regDate = userData.getRegistrationdDate();
-        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy");
-        userRegTxt.setText(String.format(getString(R.string.member_since_f, sdf.format(regDate))));
-        TextView pointsTxt = getViewById(R.id.user_points_txt);
-        pointsTxt.setText(String.format(getString(R.string.points_f, userData.getTotalPoints())));
-        TextView winsTxt = getViewById(R.id.user_wins_txt);
-        String wins = String.format(getString(R.string.wins_f, userData.getTotalWins(), userData.getWinPercentile())) + " %)";
-        winsTxt.setText(wins);
-        TextView ballanceTxt = getViewById(R.id.ballance_txt);
-        ballanceTxt.setText(String.format("%.2f",(double)(userData.getBalance()/100)));
-    }
-
-    private void setUserImage() {
-        final String userImgUrl = _storage.getUserData().getUserImageUrl();
-        final ImageView view = getViewById(R.id.user_img);
-        if (userImgUrl == null) {
-            return;
-        }
-        ImageLoader loader = new ImageLoader(getActivity());
-        loader.displayImage(userImgUrl, view);
-    }
-
-    protected void initHeaderView() {
-        _headerView = getViewById(R.id.header_view);
-        ViewTreeObserver observer = _headerView.getViewTreeObserver();
-        observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                if (Build.VERSION.SDK_INT < 16) {
-                    _headerView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                } else {
-                    _headerView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                }
-                setListWrapper();
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-
-                        toggleHeaderView();
-                    }
-                }, 1000);
-            }
-        });
-    }
-
-    private void setListWrapper() {
-        final int padding = _headerView.getHeight();
-        int height = _listWrapper.getHeight();
-        _listWrapper.getLayoutParams().height = height + padding;
-        getActivity().getWindow().getDecorView().findViewById(android.R.id.content).invalidate();
-    }
-
-    private void toggleHeaderView() {
-        final int height = _headerView.getHeight();
-        final int scrollTo = _scrollView.getYPosition() == 0 ? height : 0;
-        final int padding = _scrollView.getYPosition() == 0 ? 0 : height;
-        _scrollView.setScrollingEnabled(true);
-        if (scrollTo != 0) {
-            _listWrapper.setPadding(0, 0, 0, padding);
-            getActivity().getWindow().getDecorView().findViewById(android.R.id.content).invalidate();
-        }
-        _scrollView.setListener(new LockableScrollView.ScrollViewListener() {
-            @Override
-            public void onScrollChanged(LockableScrollView scrollView, int x, int y, int oldx, int oldy) {
-                if (y != scrollTo) {
-                    return;
-                }
-                _scrollView.setListener(null);
-                _scrollView.setScrollingEnabled(false);
-                if (scrollTo == 0) {
-                    _listWrapper.setPadding(0, 0, 0, padding);
-                    getActivity().getWindow().getDecorView().findViewById(android.R.id.content).invalidate();
-                }
-            }
-        });
-        _scrollView.smoothScrollTo(0, scrollTo);
-    }
-
-    @Override
-    public void onHeaderToggle() {
-        toggleHeaderView();
     }
 
     protected void remainingSalaryChanged(double remainingSalary){
@@ -295,11 +189,6 @@ public abstract class MainActivityFragment extends BaseActivityFragment implemen
     @Override
     public void onRemainingSalaryChanged(Object sender, double remainingSalary){
         setMoneyTxt(remainingSalary);
-    }
-
-    @Override
-    public void onAvatarChanged(){
-        setUserImage();
     }
 
     @Override

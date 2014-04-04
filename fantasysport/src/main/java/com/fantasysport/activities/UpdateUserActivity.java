@@ -14,7 +14,7 @@ import com.fantasysport.adapters.SettingsItemEnum;
 import com.fantasysport.models.User;
 import com.fantasysport.models.UserData;
 import com.fantasysport.webaccess.requestListeners.RequestError;
-import com.fantasysport.webaccess.requestListeners.UpdateUserResponseListener;
+import com.fantasysport.webaccess.requestListeners.UserResponseListener;
 
 /**
  * Created by bylynka on 3/11/14.
@@ -158,7 +158,7 @@ public class UpdateUserActivity extends BaseActivity {
 
     private void updateUser(User user){
         showProgress();
-        _webProxy.updateUser(user, new UpdateUserResponseListener() {
+        _webProxy.updateUser(user, new UserResponseListener() {
             @Override
             public void onRequestError(RequestError error) {
                 dismissProgress();

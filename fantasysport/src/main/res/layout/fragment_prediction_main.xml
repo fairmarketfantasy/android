@@ -6,13 +6,6 @@
                   android:layout_height="match_parent"
                   android:orientation="vertical"
                   android:layout_weight="1">
-        <com.fantasysport.views.LockableScrollView android:layout_width="match_parent"
-                                                   android:layout_height="match_parent"
-                                                   android:layout_weight="1"
-                                                   android:fillViewport="true"
-                                                   android:scrollbars="none"
-                                                   android:id="@+id/scroll_view"
-                >
             <LinearLayout android:layout_width="match_parent"
                           android:layout_height="match_parent"
                           android:orientation="vertical"
@@ -90,10 +83,6 @@
                 <View android:layout_width="match_parent"
                       android:layout_height="1dip"
                       android:background="#CCCCCC"/>
-                <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:id="@+id/list_wrapper">
 
                     <uk.co.senab.actionbarpulltorefresh.extras.actionbarcompat.PullToRefreshLayout
                             xmlns:android="http://schemas.android.com/apk/res/android"
@@ -107,10 +96,8 @@
                                   android:dividerHeight="2dp"
                                   android:divider="@drawable/player_devider"/>
                     </uk.co.senab.actionbarpulltorefresh.extras.actionbarcompat.PullToRefreshLayout>
-                </FrameLayout>
 
             </LinearLayout>
-        </com.fantasysport.views.LockableScrollView>
 
         <FrameLayout android:layout_width="match_parent"
                      android:layout_height="wrap_content"

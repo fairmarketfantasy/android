@@ -1,12 +1,9 @@
 package com.fantasysport.activities;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -20,7 +17,7 @@ import com.fantasysport.adapters.SettinsAdapter;
 import com.fantasysport.models.User;
 import com.fantasysport.models.UserData;
 import com.fantasysport.webaccess.requestListeners.RequestError;
-import com.fantasysport.webaccess.requestListeners.UpdateUserResponseListener;
+import com.fantasysport.webaccess.requestListeners.UserResponseListener;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -91,7 +88,7 @@ public class SettingsActivity extends BaseActivity {
 
     private void uploadAvatar(Bitmap bitmap){
         showProgress();
-        _webProxy.uploadAva(bitmap,SettingsActivity.this.getCurrentUser(), new UpdateUserResponseListener() {
+        _webProxy.uploadAva(bitmap,SettingsActivity.this.getCurrentUser(), new UserResponseListener() {
             @Override
             public void onRequestError(RequestError message) {
                 dismissProgress();

@@ -27,6 +27,11 @@ public final class WebProxy {
     }
 
 
+    public void getUserData(int userId, UserResponseListener listener){
+        UserRequest request = new UserRequest(userId);
+        _spiceManager.execute(request, listener);
+    }
+
     public void removeBenchedPlayers(int rosterId, RosterResponseListener listener){
         RemoveBenchedPlayersRequest request = new RemoveBenchedPlayersRequest(rosterId);
         _spiceManager.execute(request, listener);
@@ -68,12 +73,12 @@ public final class WebProxy {
         _spiceManager.execute(request, listener);
     }
 
-    public void uploadAva(Bitmap bitmap, User currentUser, UpdateUserResponseListener listener){
+    public void uploadAva(Bitmap bitmap, User currentUser, UserResponseListener listener){
         UploadAvaRequest request = new UploadAvaRequest(bitmap, currentUser);
         _spiceManager.execute(request, listener);
     }
 
-    public void updateUser(User user, UpdateUserResponseListener listener){
+    public void updateUser(User user, UserResponseListener listener){
         UpdateUserRequest request = new UpdateUserRequest(user);
         _spiceManager.execute(request, listener);
     }
@@ -134,7 +139,7 @@ public final class WebProxy {
         _spiceManager.execute(request, listener);
     }
 
-    public void getGames(MarketsResponseListener listener){
+    public void getMarkets(MarketsResponseListener listener){
         MarketsRequest request = new MarketsRequest();
         _spiceManager.execute(request, listener);
     }

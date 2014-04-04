@@ -28,6 +28,9 @@ public class UserData {
     @SerializedName("email")
     private String _email;
 
+    @SerializedName("prestige")
+    private int _prestige;
+
 //    @SerializedName("admin")
 //    private boolean _admin;
 
@@ -55,8 +58,8 @@ public class UserData {
     @SerializedName("amount")
     private Float _amount;
 
-    @SerializedName("bets")
-    private Float _bets;
+//    @SerializedName("bets")
+//    private Float _bets;
 
     @SerializedName("winnings")
     private Integer _winnings;
@@ -133,8 +136,11 @@ public class UserData {
     }
 
     public float getBalance() {
-        return 13270;
-//        return _balance;
+        return _balance;
+    }
+
+    public void setBalance(int balance) {
+        _balance = balance;
     }
 
     public String getEmail() {
@@ -143,6 +149,10 @@ public class UserData {
 
     public int getId() {
         return _id;
+    }
+
+    public int getPrestige(){
+        return _prestige;
     }
 
 }

@@ -51,7 +51,6 @@ public abstract class BasePlayersFragment extends MainActivityFragment implement
     protected void init() {
         super.init();
         setPager(123);
-        initHeaderView();
         _positionView = getViewById(R.id.position_view);
         _positionView.setPositionListener(this);
         _positionView.setPositions(_storage.getDefaultRosterData().getPositions());

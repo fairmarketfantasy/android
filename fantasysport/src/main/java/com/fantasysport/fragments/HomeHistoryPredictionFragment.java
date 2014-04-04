@@ -27,14 +27,10 @@ public class HomeHistoryPredictionFragment extends BaseHomeFragment {
         _pager = getViewById(R.id.pager);
         _moneyTxt = getViewById(R.id.money_lbl);
         _moneyTxt.setTypeface(getProhibitionRound());
-        _listWrapper = getViewById(R.id.list_wrapper);
-        _scrollView = getViewById(R.id.scroll_view);
         getMainActivity().addRosterLoadedListener(this);
-        setUserData();
         //
         setRoster();
         setPager(321);
-        initHeaderView();
         Button backBtn = getViewById(R.id.back_btn);
         backBtn.setTypeface(getProhibitionRound());
         backBtn.setOnClickListener(_backClickListener);

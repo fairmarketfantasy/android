@@ -8,9 +8,8 @@ import com.fantasysport.R;
 import com.fantasysport.activities.MainActivity;
 import com.fantasysport.models.Market;
 import com.fantasysport.models.Roster;
-import com.fantasysport.webaccess.WebProxy;
-import com.fantasysport.webaccess.requestListeners.RosterResponseListener;
 import com.fantasysport.webaccess.requestListeners.RequestError;
+import com.fantasysport.webaccess.requestListeners.RosterResponseListener;
 
 import java.util.List;
 

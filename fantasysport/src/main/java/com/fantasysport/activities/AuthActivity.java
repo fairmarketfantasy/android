@@ -138,7 +138,7 @@ public class AuthActivity extends BaseActivity {
     }
 
     protected void loadMarkets(){
-        _webProxy.getGames(_marketsResponseListener);
+        _webProxy.getMarkets(_marketsResponseListener);
     }
 
     protected void navigateToMainActivity() {

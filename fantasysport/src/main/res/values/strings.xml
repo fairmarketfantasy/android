@@ -51,6 +51,7 @@
     <string name="individual_predictions">Individual <i>Predictions </i></string>
     <string name="pt25_italic"><i>PT25 </i></string>
     <string name="back">BACK</string>
+    <string name="points">Points</string>
 
     <!--<string name="wins_f">%$d wins%$d win </string>-->
 
@@ -91,6 +92,8 @@
         <string name="settings">Settings</string><!--6-->
         <string name="sign_out">Sign Out</string><!--7-->
         <string name="predictions">Predictions</string>
+    <string name="wins">Wins</string>
+    <string name="prestige">PresTige</string>
 
     <string-array name="prediction_menu_list">
         <item>Roster</item>
