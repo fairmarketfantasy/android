@@ -142,6 +142,13 @@ public class RosterPlayersAdapter extends BaseAdapter {
         _listener.onTrade(player);
     }
 
+    public int getPosition(Player player) {
+        if(_players == null){
+            return -1;
+        }
+        return _players.indexOf(player);
+    }
+
     class ColorViewDrawableListener implements ColorViewDrawable.IStateListener {
 
         private View _view;

@@ -9,7 +9,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.view.*;
 import android.widget.AdapterView;
 import android.widget.ImageView;
@@ -106,7 +105,7 @@ public class MainActivity extends BaseMainActivity {
                 BitmapDrawable bitmapDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.basket);
                 Bitmap bitmap = bitmapDrawable.getBitmap();
                 Bitmap newBitmap = Bitmap.createBitmap(bitmap, 0, 0, headerView.getWidth(), headerView.getHeight(), null, false);
-                ImageView img = (ImageView)headerView.findViewById(R.id.image);
+                ImageView img = (ImageView) headerView.findViewById(R.id.image);
                 img.setImageBitmap(newBitmap);
             }
         });
@@ -116,7 +115,7 @@ public class MainActivity extends BaseMainActivity {
         View header = getLayoutInflater().inflate(R.layout.menu_header, null, false);
         setMenuHeaderImage(header);
         _menuList.addHeaderView(header, null, false);
-        _menuHeaderFragment = (MenuHeaderFragment)getSupportFragmentManager().findFragmentById(R.id.menu_header_fragment);
+        _menuHeaderFragment = (MenuHeaderFragment) getSupportFragmentManager().findFragmentById(R.id.menu_header_fragment);
         _menuAdapter = new MenuListAdapter(this);
         _menuList.setAdapter(_menuAdapter);
         _menuList.setCacheColorHint(Color.TRANSPARENT);
@@ -145,14 +144,13 @@ public class MainActivity extends BaseMainActivity {
                         showPredictions();
                         break;
                 }
-
             }
         });
     }
 
     @Override
     protected void beforeLoading() {
-        if(_refreshMenuItem == null){
+        if (_refreshMenuItem == null) {
             return;
         }
         _refreshMenuItem.setVisible(false);
@@ -160,7 +158,7 @@ public class MainActivity extends BaseMainActivity {
 
     @Override
     protected void afterLoading() {
-        if(_refreshMenuItem == null){
+        if (_refreshMenuItem == null) {
             return;
         }
         _refreshMenuItem.setVisible(true);
@@ -189,28 +187,28 @@ public class MainActivity extends BaseMainActivity {
         return false;
     }
 
-    protected void updateUserData(){
-       int userId = _storage.getUserData().getId();
-       showProgress();
+    protected void updateUserData() {
+        int userId = _storage.getUserData().getId();
+        showProgress();
         _webProxy.getUserData(userId, new UserResponseListener() {
-           @Override
-           public void onRequestError(RequestError message) {
-               dismissProgress();
-               showAlert(getString(R.string.error), message.getMessage());
-           }
+            @Override
+            public void onRequestError(RequestError message) {
+                dismissProgress();
+                showAlert(getString(R.string.error), message.getMessage());
+            }
 
-           @Override
-           public void onRequestSuccess(UserData data) {
-             dismissProgress();
-             _storage.setUserData(data);
-             if (_menuHeaderFragment != null){
-                 _menuHeaderFragment.updateView();
-             }
-           }
-       });
+            @Override
+            public void onRequestSuccess(UserData data) {
+                dismissProgress();
+                _storage.setUserData(data);
+                if (_menuHeaderFragment != null) {
+                    _menuHeaderFragment.updateView();
+                }
+            }
+        });
     }
 
-    private void updateMarkets(){
+    private void updateMarkets() {
         showProgress();
         _webProxy.getMarkets(new MarketsResponseListener() {
             @Override
@@ -234,11 +232,10 @@ public class MainActivity extends BaseMainActivity {
         });
     }
 
-    private void updateMainData(){
+    private void updateMainData() {
         updateUserData();
         updateMarkets();
     }
-
 
 
     @Override

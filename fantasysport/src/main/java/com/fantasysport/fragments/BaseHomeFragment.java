@@ -63,6 +63,11 @@ public abstract class BaseHomeFragment extends MainActivityFragment  implements 
     @Override
     public void onPlayerAdded(Object sender, Player player) {
         updatePlayersList();
+        int position = _playerAdapter.getPosition(player);
+        if(position > 0){
+            _playersList.setSelection(position);
+        }
+
     }
 
     protected void setNewRoster(Market market) {

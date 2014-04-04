@@ -120,6 +120,7 @@ public abstract class BasePlayersFragment extends MainActivityFragment implement
                 double remainingSalary = roster.getRemainingSalary() - player.getBuyPrice();
                 remainingSalaryChanged(remainingSalary);
                 dismissProgress();
+                getMainActivity().navigateToRosters();
             }
         });
     }

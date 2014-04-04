@@ -188,6 +188,10 @@ public class BaseMainActivity extends BaseActivity {
         _pager.setCurrentItem(1, false);
     }
 
+    public void navigateToRosters() {
+        _pager.setCurrentItem(0, false);
+    }
+
     public List<Market> getMarkets() {
         return _markets;
     }
@@ -251,6 +255,5 @@ public class BaseMainActivity extends BaseActivity {
     public interface IAvatarListener{
         public void onAvatarChanged();
     }
-
 
 }
