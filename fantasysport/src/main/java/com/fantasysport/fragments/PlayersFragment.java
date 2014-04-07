@@ -28,7 +28,8 @@ public class PlayersFragment extends BasePlayersFragment implements MainActivity
     protected void loadPlayers(final String position){
         Market market = getMarket();
         if(market == _lastMarket && _lastPosition == position
-                && _lastBenchedState == canBenched() && !_pullToRefreshLayout.isRefreshing()){
+                && _lastBenchedState == canBenched() && !_pullToRefreshLayout.isRefreshing()
+                || market == null){
             return;
         }
         showProgress();

@@ -18,6 +18,7 @@ import com.fantasysport.webaccess.requestListeners.MarketsResponseListener;
 import com.fantasysport.webaccess.requestListeners.RequestError;
 import com.fantasysport.webaccess.responses.AuthResponse;
 import com.fantasysport.webaccess.responses.MarketResponse;
+import com.ubertesters.sdk.tools.Log;
 
 /**
  * Created by bylynka on 2/10/14.
@@ -87,9 +88,16 @@ public class AuthActivity extends BaseActivity {
         public void call(Session session, SessionState state, Exception exception) {
             if (session.isOpened()) {
                 authByFacebook(session);
-            } else if (SessionState.CLOSED_LOGIN_FAILED == state || SessionState.CLOSED == state) {
+            } else if (SessionState.CLOSED == state) {
                 showAlert("Error", "Facebook error", null);
+            } else if (SessionState.CLOSED_LOGIN_FAILED == state){
+                Session.getActiveSession().close();
+                session = new Session(AuthActivity.this);
+
+                Session.setActiveSession(session);
+                Log.e("facebook login state", "CLOSED_LOGIN_FAILED");
             }
+
         }
     };
 
