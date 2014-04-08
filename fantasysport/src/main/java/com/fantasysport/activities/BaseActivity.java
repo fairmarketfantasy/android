@@ -201,11 +201,16 @@ public class BaseActivity extends ActionBarActivity{
     }
 
     private void navigateToSignInScreen(){
-        Intent intent = new Intent(this, SignInActivity.class);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-        startActivityForResult(intent, Const.MAIN_ACTIVITY);
+//        Intent intent = new Intent(this, SignInActivity.class);
+////        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+//        startActivityForResult(intent, Const.MAIN_ACTIVITY);
+
+        overridePendingTransition(R.anim.abc_fade_out, R.anim.abc_fade_in);
+        super.finish();
+
+//        finish();
     }
 
     public boolean isEmailValid(String email) {
