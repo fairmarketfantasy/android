@@ -33,7 +33,7 @@ import java.util.List;
 public abstract class MainActivityFragment extends BaseActivityFragment implements MainActivity.IListener,
         MainFragmentMediator.IMarketListener, MainFragmentMediator.IRemainingSalaryListener,
         MainFragmentMediator.IPlayerAddListener, BaseMainActivity.IRosterLoadedListener,
-        BaseMainActivity.IUpdateListener, OnRefreshListener{
+        BaseMainActivity.IUpdateListener, OnRefreshListener {
 
     protected TextView _moneyTxt;
     protected GameAdapter _pagerAdapter;
@@ -54,49 +54,51 @@ public abstract class MainActivityFragment extends BaseActivityFragment implemen
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
-    protected MainFragmentMediator getFragmentMediator(){
-        return  getMainActivity().getFragmentMediator();
+    protected MainFragmentMediator getFragmentMediator() {
+        return getMainActivity().getFragmentMediator();
     }
 
-    protected BaseMainActivity getMainActivity(){
-        return (BaseMainActivity)getActivity();
+    protected BaseMainActivity getMainActivity() {
+        return (BaseMainActivity) getActivity();
     }
 
-    protected Roster getRoster(){
+    protected Roster getRoster() {
         return getMainActivity().getRoster();
     }
 
-    protected PredictionRoster getPredictionRoster(){
+    protected PredictionRoster getPredictionRoster() {
         return getMainActivity().getPredictionRoster();
     }
 
-    protected void setRoster(Roster roster){
+    protected void setRoster(Roster roster) {
         getMainActivity().setRoster(roster);
     }
 
-    protected Market getMarket(){
+    protected Market getMarket() {
         return getMainActivity().getMarket();
     }
 
-    protected List<Market> getMarkets(){
+    protected List<Market> getMarkets() {
         return getMainActivity().getMarkets();
     }
 
-    protected void setMarket(Market market){
+    protected void setMarket(Market market) {
         getMainActivity().setMarket(market);
     }
 
-    protected void setCanBenched(boolean canBenched){
+    protected void setCanBenched(boolean canBenched) {
         getMainActivity().setCanBenchedPlayers(canBenched);
     }
 
-    protected boolean canBenched(){
+    protected boolean canBenched() {
         return getMainActivity().canRemoveBenchedPlayers();
     }
 
-    protected void init(){
+    protected void init() {
         getMainActivity().addListener(this);
         getMainActivity().addUpdateListener(this);
+        TextView noGamesLbl = getViewById(R.id.no_games_lbl);
+        noGamesLbl.setTypeface(getProhibitionRound());
         _pager = getViewById(R.id.pager);
         _moneyTxt = getViewById(R.id.money_lbl);
         _moneyTxt.setTypeface(getProhibitionRound());
@@ -112,16 +114,16 @@ public abstract class MainActivityFragment extends BaseActivityFragment implemen
         _moneyTxt.setText(String.format("$%.0f", price));
     }
 
-    protected void remainingSalaryChanged(double remainingSalary){
+    protected void remainingSalaryChanged(double remainingSalary) {
         Roster roster = getRoster();
         roster.setRemainingSalary(remainingSalary);
         getFragmentMediator().changeRemainingSalary(this, remainingSalary);
     }
 
-    protected void addPlayerToRoster(Player player){
+    protected void addPlayerToRoster(Player player) {
         Roster roster = getRoster();
         List<Player> players = roster.getPlayers();
-        if(player == null){
+        if (player == null) {
             players = new ArrayList<Player>();
         }
         players.add(player);
@@ -129,24 +131,62 @@ public abstract class MainActivityFragment extends BaseActivityFragment implemen
         getFragmentMediator().addPlayer(this, player);
     }
 
-    protected void updateMarkets(){
+
+    protected void setNoGames(boolean noGames) {
+        TextView noGamesLbl = getViewById(R.id.no_games_lbl);
+        View bottomBar = getViewById(R.id.bottom_bar);
+        if (noGames) {
+            setElementVisibility(noGamesLbl, View.VISIBLE);
+            setElementVisibility(bottomBar, View.GONE);
+        } else {
+            setElementVisibility(noGamesLbl, View.INVISIBLE);
+            setElementVisibility(bottomBar, View.VISIBLE);
+        }
+    }
+
+    private void setElementVisibility(View view, int visibility){
+        if(view == null){
+            return;
+        }
+        view.setVisibility(visibility);
+    }
+
+    protected void updateMarkets() {
         List<Market> markets = getMarkets();
         _pagerAdapter.setMarkets(markets);
         _pagerAdapter.notifyDataSetChanged();
+        setNoGames((markets == null || markets.size() == 0));
+
     }
 
     protected void setPager(int id) {
         List<Market> markets = getMarkets();
+        if (markets == null || markets.size() == 0) {
+            setNoGames(true);
+        } else {
+            setNoGames(false);
+        }
         _pager.setId(id);
-        _pagerAdapter = new GameAdapter(getActivity().getSupportFragmentManager(), markets);
+        _pagerAdapter = new
+                GameAdapter(getActivity()
+
+                .
+                        getSupportFragmentManager(), markets
+
+        );
         _pager.setOnPageChangeListener(_pageChangeListener);
         _pager.setAdapter(_pagerAdapter);
         Button prevBtn = getViewById(R.id.previous_pager_button);
+
         setPagerNavigateButton(prevBtn, R.drawable.ic_action_previous_item);
+
         Button nextBtn = getViewById(R.id.next_pager_button);
+
         setPagerNavigateButton(nextBtn, R.drawable.ic_action_next_item);
 
-        prevBtn.setOnClickListener(new View.OnClickListener() {
+        prevBtn.setOnClickListener(new View.OnClickListener()
+
+        {
             @Override
             public void onClick(View v) {
                 int curItem = _pager.getCurrentItem();
@@ -154,9 +194,13 @@ public abstract class MainActivityFragment extends BaseActivityFragment implemen
                     _pager.setCurrentItem(curItem - 1, false);
                 }
             }
-        });
+        }
 
-        nextBtn.setOnClickListener(new View.OnClickListener() {
+        );
+
+        nextBtn.setOnClickListener(new View.OnClickListener()
+
+        {
             @Override
             public void onClick(View v) {
                 int curItem = _pager.getCurrentItem();
@@ -165,7 +209,9 @@ public abstract class MainActivityFragment extends BaseActivityFragment implemen
                     _pager.setCurrentItem(curItem + 1, false);
                 }
             }
-        });
+        }
+
+        );
     }
 
     ViewPager.OnPageChangeListener _pageChangeListener = new ViewPagerOnPageSelectedListener() {
@@ -187,7 +233,7 @@ public abstract class MainActivityFragment extends BaseActivityFragment implemen
     }
 
     @Override
-    public void onRemainingSalaryChanged(Object sender, double remainingSalary){
+    public void onRemainingSalaryChanged(Object sender, double remainingSalary) {
         setMoneyTxt(remainingSalary);
     }
 

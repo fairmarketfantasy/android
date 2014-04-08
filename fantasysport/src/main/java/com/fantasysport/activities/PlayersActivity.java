@@ -152,7 +152,6 @@ public class PlayersActivity extends BaseActivity implements CandidatePlayersAda
         intent.putExtra(Const.ROSTER_ID, _roster.getId());
         intent.putExtra(Const.MARKET_ID, _marketId);
         startActivity(intent);
-        overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
     }
 
     AddPlayerResponseListener _addPlayerListener = new AddPlayerResponseListener() {

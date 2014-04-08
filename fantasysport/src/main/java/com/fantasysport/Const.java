@@ -24,4 +24,5 @@ public class Const {
     public final static String WEB_ACTIVITY_HEADER = "web_activity_header";
     public final static String PREDICTION = "prediction";
     public static final String MARKETS = "markets";
+    public static final String GAME = "game";
 }

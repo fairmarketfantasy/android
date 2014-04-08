@@ -4,13 +4,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import com.fantasysport.Const;
 import com.fantasysport.R;
 import com.fantasysport.adapters.StatsAdapter;
+import com.fantasysport.models.Game;
 import com.fantasysport.models.Player;
 import com.fantasysport.models.StatsItem;
+import com.fantasysport.utility.image.ImageLoader;
 import com.fantasysport.webaccess.requestListeners.RequestError;
 import com.fantasysport.webaccess.requestListeners.StatEventsResponseListener;
 import com.fantasysport.webaccess.requestListeners.SubmitPredictionResponseListener;
@@ -28,6 +31,7 @@ public class IndividuaPredictionsActivity extends BaseActivity implements StatsA
     private int _rosterId;
     private int _marketId;
     private Player _player;
+    private Game _game;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,17 +47,24 @@ public class IndividuaPredictionsActivity extends BaseActivity implements StatsA
         sbmBtn.setOnClickListener(_submitBtnClickListener);
 
         _statsAdapter = new StatsAdapter(this, _player);
+//        _player.getTeam()
         _statsAdapter.setSubmitListener(this);
         ListView listView = getViewById(R.id.stats_list);
         listView.setAdapter(_statsAdapter);
         TextView nameLbl = getViewById(R.id.name_lbl);
-        nameLbl.setText(_player.getName());
-
+        nameLbl.setTypeface(getRobotoThin());
+        boolean isHomeGame = _player.getTeam().equalsIgnoreCase(_game.getHomeTeam());
+        nameLbl.setText(String.format("%s %s %s",_player.getName(), isHomeGame?"vs":"@", _game.getAwayTeam()));
         View customBar = getLayoutInflater().inflate(R.layout.action_bar_title, null);
         TextView textView = (TextView)customBar.findViewById(R.id.fair_martet_txt);
         textView.setTypeface(getProhibitionRound());
-        textView.setText(_player.getName() + " PT25");
+        textView.setText("PT 25");
         getSupportActionBar().setCustomView(customBar);
+
+
+        ImageView playerImg = getViewById(R.id.player_img);
+        ImageLoader imageLoader = new ImageLoader(this);
+        imageLoader.displayImage(_player.getImageUrl(), playerImg);
 
         if (savedInstanceState == null) {
             loadStatEvents(_player);
@@ -74,7 +85,9 @@ public class IndividuaPredictionsActivity extends BaseActivity implements StatsA
             _player = (Player) intent.getSerializableExtra(Const.PLAYER);
             _rosterId = intent.getIntExtra(Const.ROSTER_ID, -1);
             _marketId = intent.getIntExtra(Const.MARKET_ID, -1);
+            _game = (Game) intent.getSerializableExtra(Const.GAME);
         } else {
+            _game = (Game) savedInstanceState.getSerializable(Const.GAME);
             _player = (Player) savedInstanceState.getSerializable(Const.PLAYER);
             _rosterId = savedInstanceState.getInt(Const.ROSTER_ID);
             _marketId = savedInstanceState.getInt(Const.MARKET_ID);
@@ -87,6 +100,8 @@ public class IndividuaPredictionsActivity extends BaseActivity implements StatsA
         outState.putSerializable(Const.STATS_LIST, new ArrayList<StatsItem>(_statsAdapter.getItems()));
         outState.putInt(Const.ROSTER_ID, _rosterId);
         outState.putInt(Const.MARKET_ID, _marketId);
+        outState.putSerializable(Const.PLAYER, _player);
+        outState.putSerializable(Const.GAME, _game);
     }
 
     private void loadStatEvents(Player player) {

@@ -81,9 +81,9 @@ public abstract class BaseParser {
         gameTime = DateUtils.addMinutes(gameTime, gmt);
         game.setGameTime(gameTime);
         String homeTeam = (String)gameObject.get("home_team");
-//        game.setHomeTeam(homeTeam);
-//        String awayTeam = (String)gameObject.get("away_team");
-//        game.setAwayTeam(awayTeam);
+        game.setHomeTeam(homeTeam);
+        String awayTeam = (String)gameObject.get("away_team");
+        game.setAwayTeam(awayTeam);
         return game;
     }
 

@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.fantasysport.Const;
 import com.fantasysport.R;
 import com.fantasysport.repo.Storage;
+import com.fantasysport.utility.TypefaceProvider;
 import com.fantasysport.webaccess.GsonGoogleHttpClientSpiceService;
 import com.fantasysport.webaccess.WebProxy;
 import com.fantasysport.webaccess.requestListeners.RequestError;
@@ -38,7 +39,6 @@ public class BaseActivity extends ActionBarActivity{
     protected Handler _handler = new Handler();
     protected Storage _storage;
     protected static Typeface _prohibitionRoundTypeFace;
-    protected static Typeface _robotoThin;
     protected int _progressCounter;
 
     @Override
@@ -145,10 +145,7 @@ public class BaseActivity extends ActionBarActivity{
     }
 
     public Typeface getRobotoThin(){
-        if(_robotoThin == null){
-            _robotoThin  = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Thin.ttf");
-        }
-        return _robotoThin;
+        return TypefaceProvider.getRobotoThin(this);
     }
 
     private void initActionBar(ActionBar bar){

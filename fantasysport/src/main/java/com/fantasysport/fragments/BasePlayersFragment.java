@@ -139,8 +139,8 @@ public abstract class BasePlayersFragment extends MainActivityFragment implement
         intent.putExtra(Const.PLAYER, player);
         intent.putExtra(Const.ROSTER_ID, getRoster().getId());
         intent.putExtra(Const.MARKET_ID, getMarket().getId());
+        intent.putExtra(Const.GAME, getMarket().getGames().get(0));
         startActivity(intent);
-        activity.overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
     }
 
     PlayersResponseListener _playersListener = new PlayersResponseListener() {

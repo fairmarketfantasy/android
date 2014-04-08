@@ -154,7 +154,10 @@ public abstract class BaseHomeFragment extends MainActivityFragment  implements 
         @Override
         public void onClick(View v) {
             Roster roster = getRoster();
-            int rosterId = roster == null ? -1 : roster.getId();
+            if(roster == null){
+                return;
+            }
+            int rosterId = roster.getId();
             showProgress();
             getWebProxy().autofillRoster(getMarket().getId(), rosterId, new AutofillResponseListener() {
                 @Override

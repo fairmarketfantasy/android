@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.TextView;
 import com.fantasysport.R;
 import com.fantasysport.activities.MainActivity;
 import com.fantasysport.models.Market;

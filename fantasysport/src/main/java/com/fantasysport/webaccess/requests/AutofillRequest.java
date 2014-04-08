@@ -25,16 +25,16 @@ public class AutofillRequest extends BaseRequest<AutofillResponse> {
 
     @Override
     public AutofillResponse loadDataFromNetwork() throws Exception {
-       if(_rosterId < 0){
-          Roster roster = createRoster();
-          _rosterId = roster.getId();
-       }
+        if (_rosterId < 0) {
+            Roster roster = createRoster();
+            _rosterId = roster.getId();
+        }
 
-       Roster roster = autoFillRoster();
-       return new AutofillResponse(roster);
+        Roster roster = autoFillRoster();
+        return new AutofillResponse(roster);
     }
 
-    private Roster autoFillRoster() throws Exception{
+    private Roster autoFillRoster() throws Exception {
         Uri.Builder uriBuilder = Uri.parse(getUrl()).buildUpon();
         uriBuilder.appendPath("rosters")
                 .appendPath(Integer.toString(_rosterId))

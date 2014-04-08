@@ -89,11 +89,12 @@ public class AuthActivity extends BaseActivity {
             if (session.isOpened()) {
                 authByFacebook(session);
             } else if (SessionState.CLOSED == state) {
-                showAlert("Error", "Facebook error", null);
+//                showAlert("Error", "Facebook error", null);
             } else if (SessionState.CLOSED_LOGIN_FAILED == state){
-                Session.getActiveSession().close();
-                session = new Session(AuthActivity.this);
-
+                Session ses = Session.getActiveSession();
+                if(ses != null){
+                    session = new Session(AuthActivity.this);
+                }
                 Session.setActiveSession(session);
                 Log.e("facebook login state", "CLOSED_LOGIN_FAILED");
             }

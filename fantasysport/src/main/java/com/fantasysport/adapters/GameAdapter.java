@@ -25,14 +25,14 @@ public class GameAdapter extends FragmentStatePagerAdapter {
         _markets = markets;
     }
 
-    public int getMarketPosition(Market market){
-        if(_markets == null || market == null){
+    public int getMarketPosition(Market market) {
+        if (_markets == null || market == null) {
             return -1;
         }
-        return  _markets.indexOf(market);
+        return _markets.indexOf(market);
     }
 
-    public List<Market> getMarkets(){
+    public List<Market> getMarkets() {
         return _markets;
     }
 
@@ -49,10 +49,26 @@ public class GameAdapter extends FragmentStatePagerAdapter {
     @Override
     public int getCount() {
         Log.i("count!!!!!!!!!!!!!", "called");
-        return _markets != null?_markets.size(): 0;
+        return _markets != null ? _markets.size() : 0;
     }
 
     public void setMarkets(List<Market> markets) {
         _markets = markets;
+    }
+
+    @Override
+    public int getItemPosition(Object object) {
+        int position;
+        if (object == null || _markets == null || !(object instanceof GameItemFragment)) {
+            position = -1;
+        } else {
+            Market market = ((GameItemFragment) object).getMarket();
+            position = _markets.indexOf(market);
+        }
+        if (position >= 0) {
+            return position;
+        } else {
+            return POSITION_NONE;
+        }
     }
 }

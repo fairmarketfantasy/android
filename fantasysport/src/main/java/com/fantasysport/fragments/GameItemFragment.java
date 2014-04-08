@@ -37,4 +37,8 @@ public class GameItemFragment extends Fragment {
         marketTimeTxt.setText(sdf.format(startDate));
         return view;
     }
+
+    public Market getMarket(){
+        return _market;
+    }
 }

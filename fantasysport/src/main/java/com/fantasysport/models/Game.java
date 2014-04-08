@@ -22,11 +22,11 @@ public class Game  implements Serializable, Comparable<Game> {
     @SerializedName("game_time")
     private Date _gameTime;
 
-//    @SerializedName("home_team")
-//    private String _homeTeam;
-//
-//    @SerializedName("away_team")
-//    private String _awayTeam;
+    @SerializedName("home_team")
+    private String _homeTeam;
+
+    @SerializedName("away_team")
+    private String _awayTeam;
 
 //    public String getId() {
 //        return _id;
@@ -60,21 +60,21 @@ public class Game  implements Serializable, Comparable<Game> {
         _gameTime = gameTime;
     }
 
-//    public String getHomeTeam() {
-//        return _homeTeam;
-//    }
-//
-//    public void setHomeTeam(String homeTeam) {
-//        _homeTeam = homeTeam;
-//    }
-//
-//    public String getAwayTeam() {
-//        return _awayTeam;
-//    }
-//
-//    public void setAwayTeam(String awayTeam) {
-//        _awayTeam = awayTeam;
-//    }
+    public String getHomeTeam() {
+        return _homeTeam;
+    }
+
+    public void setHomeTeam(String homeTeam) {
+        _homeTeam = homeTeam;
+    }
+
+    public String getAwayTeam() {
+        return _awayTeam;
+    }
+
+    public void setAwayTeam(String awayTeam) {
+        _awayTeam = awayTeam;
+    }
 
     @Override
     public int compareTo(Game another) {
