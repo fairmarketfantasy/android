@@ -20,13 +20,13 @@
                      android:layout_gravity="center_vertical"
                 >
             <com.fantasysport.views.RoundedImageView
-                       android:layout_width="match_parent"
-                       android:layout_height="match_parent"
+                       android:layout_width="34dp"
+                       android:layout_height="34dp"
                        android:layout_gravity="center"
                        android:src="@drawable/tshirt"
                     />
             <com.fantasysport.views.RoundedImageView
-                       android:layout_width="match_parent"
+                       android:layout_width="34dp"
                        android:layout_height="34dp"
                        android:layout_gravity="center"
                        android:id="@+id/player_img"
@@ -42,10 +42,12 @@
         <TextView android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
                   android:layout_gravity="center_vertical"
-                  android:textSize="@dimen/lage_font"
+                  android:textSize="@dimen/s_lage_font"
                   android:textColor="#595959"
                   android:paddingRight="10dp"
-                  android:id="@+id/name_lbl" />
+                  android:id="@+id/name_lbl"
+                  android:singleLine="true"
+                />
 
     </LinearLayout>
 

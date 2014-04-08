@@ -76,6 +76,17 @@
 
         </LinearLayout>
 
+        <Button android:layout_width="38dp"
+                android:layout_height="@dimen/btn_height"
+                android:layout_marginRight="5dp"
+                android:id="@+id/pt25_btn"
+                android:background="@drawable/pt25_button"
+                android:textSize="@dimen/x_medium_font"
+                android:paddingRight="0dp"
+                android:paddingLeft="0dp"
+                android:textColor="@color/app_blue"
+                android:text="PT" />
+
         <Button android:layout_width="wrap_content"
                 android:layout_height="@dimen/btn_height"
                 android:id="@+id/trade_btn"

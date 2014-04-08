@@ -11,6 +11,7 @@ import java.util.List;
 public class Roster  implements Serializable {
 
     public final static String SUBMITTED = "submitted";
+    public static final String IN_PROGRESS = "in_progress";
 
     @SerializedName("id")
     private int _id;

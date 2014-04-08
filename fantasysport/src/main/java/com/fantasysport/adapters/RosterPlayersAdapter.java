@@ -60,6 +60,11 @@ public class RosterPlayersAdapter extends BaseAdapter {
         _players = items;
     }
 
+    private void raisePT25PlayerEvent(Player player) {
+        if (_listener != null) {
+            _listener.onPT25Player(player);
+        }
+    }
     @Override
     public int getCount() {
         return _players != null ? _players.size() : 0;
@@ -78,6 +83,7 @@ public class RosterPlayersAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         Button tradeBtn = null;
+        Button pt25Btn = null;
         if (convertView == null) {
             LayoutInflater mInflater = (LayoutInflater)
                     _context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
@@ -85,6 +91,8 @@ public class RosterPlayersAdapter extends BaseAdapter {
             final ColorViewDrawable viewDrawable = new ColorViewDrawable(Color.parseColor("#F0F0F0"), Color.parseColor("#D6D6D6"));
             viewDrawable.setStateListener(new ColorViewDrawableListener(convertView));
             convertView.setBackgroundDrawable(viewDrawable);
+            pt25Btn = (Button) convertView.findViewById(R.id.pt25_btn);
+            pt25Btn.setTypeface(_context.getProhibitionRound());
             tradeBtn = (Button) convertView.findViewById(R.id.trade_btn);
             tradeBtn.setTypeface(_context.getProhibitionRound());
         }
@@ -97,6 +105,7 @@ public class RosterPlayersAdapter extends BaseAdapter {
         TextView gamePositionTxt = (TextView) convertView.findViewById(R.id.position_lbl);
         gamePositionTxt.setTypeface(_context.getRobotoThin());
         tradeBtn = (Button) convertView.findViewById(R.id.trade_btn);
+        pt25Btn = (Button) convertView.findViewById(R.id.pt25_btn);
         TextView nameLbl = (TextView) convertView.findViewById(R.id.name_lbl);
         TextView priceLbl = (TextView) convertView.findViewById(R.id.buy_price_lbl);
         PlayerProgressTextView progressLbl = (PlayerProgressTextView) convertView.findViewById(R.id.progress_lbl);
@@ -122,10 +131,18 @@ public class RosterPlayersAdapter extends BaseAdapter {
             } else {
                 tradeBtn.setVisibility(View.GONE);
             }
+            if (!player.getIsBenched()&&(_rosterState.equalsIgnoreCase(Roster.SUBMITTED) || _rosterState.equalsIgnoreCase(Roster.IN_PROGRESS))) {
+                pt25Btn.setVisibility(View.VISIBLE);
+                pt25Btn.setOnClickListener(new PT25BtnClickListener(player));
+            } else {
+                pt25Btn.setVisibility(View.GONE);
+                pt25Btn.setOnClickListener(null);
+            }
             benchedImg.setVisibility(player.getIsBenched() ? View.VISIBLE : View.INVISIBLE);
         } else {
             gamePositionTxt.setText(item.getPosition() + " Not Selected");
             tradeBtn.setVisibility(View.GONE);
+            pt25Btn.setVisibility(View.GONE);
             nameLbl.setVisibility(View.INVISIBLE);
             priceLbl.setVisibility(View.INVISIBLE);
             progressLbl.setVisibility(View.INVISIBLE);
@@ -179,6 +196,7 @@ public class RosterPlayersAdapter extends BaseAdapter {
 
     public interface IListener {
         public void onTrade(Player player);
+        public void onPT25Player(Player player);
     }
 
     public class TradeBtnClickListener implements View.OnClickListener {
@@ -194,6 +212,20 @@ public class RosterPlayersAdapter extends BaseAdapter {
             raiseOnTrade(_player);
         }
 
+    }
+
+    class PT25BtnClickListener implements View.OnClickListener {
+
+        private Player _player;
+
+        public PT25BtnClickListener(Player player) {
+            _player = player;
+        }
+
+        @Override
+        public void onClick(View v) {
+            raisePT25PlayerEvent(_player);
+        }
     }
 
 }

@@ -1,10 +1,14 @@
 package com.fantasysport.fragments;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import com.fantasysport.Const;
 import com.fantasysport.R;
+import com.fantasysport.activities.IndividuaPredictionsActivity;
 import com.fantasysport.adapters.PlayerItem;
 import com.fantasysport.adapters.RosterPlayersAdapter;
 import com.fantasysport.models.*;
@@ -147,6 +151,17 @@ public abstract class BaseHomeFragment extends MainActivityFragment  implements 
                     getMainActivity().navigateToPlayers();
                 }
             });
+        }
+
+        @Override
+        public void onPT25Player(Player player) {
+            Activity activity = getActivity();
+            Intent intent = new Intent(activity, IndividuaPredictionsActivity.class);
+            intent.putExtra(Const.PLAYER, player);
+            intent.putExtra(Const.ROSTER_ID, getRoster().getId());
+            intent.putExtra(Const.MARKET_ID, getMarket().getId());
+            intent.putExtra(Const.GAME, getMarket().getGames().get(0));
+            startActivity(intent);
         }
     };
 

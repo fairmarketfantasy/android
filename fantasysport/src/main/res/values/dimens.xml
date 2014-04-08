@@ -14,7 +14,7 @@
     <dimen name="bottom_bar_height">70dip</dimen>
     <dimen name="side_marging">16dip</dimen>
     <dimen name="side_hor_marging">10dip</dimen>
-    <dimen name="btn_padding">18dp</dimen>
+    <dimen name="btn_padding">13dp</dimen>
     <dimen name="switcher_padding">2dp</dimen>
     <dimen name="switcher_btn_width">48dp</dimen>
     <dimen name="switcher_height">34dp</dimen>
