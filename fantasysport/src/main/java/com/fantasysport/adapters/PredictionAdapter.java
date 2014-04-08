@@ -123,7 +123,7 @@ public class PredictionAdapter extends BaseAdapter {
         }
         rankLbl.setText(rankText);
         TextView awardLbl = (TextView)convertView.findViewById(R.id.award_lbl);
-        awardLbl.setText(prediction.getState().compareToIgnoreCase("finished") == 0? String.format("%.1f", prediction.getAward()):"N/A");
+        awardLbl.setText(prediction.getState().compareToIgnoreCase("finished") == 0? String.format("%.2f", (double)(prediction.getAward()/100)):"N/A");
         return convertView;
     }
 
