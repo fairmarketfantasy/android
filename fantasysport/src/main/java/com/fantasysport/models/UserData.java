@@ -92,8 +92,8 @@ public class UserData {
 //    @SerializedName("leagues")
 //    private List<League> _leagues;
 
-//    @SerializedName("customer_object")
-//    private CustomerObject _customerObject;
+    @SerializedName("customer_object")
+    private CustomerObject _customerObject;
 
     public String getCurrentSport() {
         return _currentSport;
@@ -151,5 +151,8 @@ public class UserData {
         return _prestige;
     }
 
+    public double getFanBucks() {
+        return _customerObject.getFanBucks();
+    }
 }
 

@@ -28,12 +28,12 @@ public class MenuHeaderFragment extends BaseActivityFragment {
     public void updateView(){
         setUserImage();
         UserData userData = _storage.getUserData();
-        TextView pointslbl = getViewById(R.id.points_lbl);
-        pointslbl.setText(String.format("%d", userData.getTotalPoints()));
+        TextView pointslbl = getViewById(R.id.funbucks_lbl);
+        pointslbl.setText(String.format("%.2f", (double)(userData.getFanBucks()/100)));
         TextView balansLbl = getViewById(R.id.balance_lbl);
-        balansLbl.setText(String.format("%.2f",(double)(userData.getBalance()/100)));
+        balansLbl.setText(String.format("$%.2f",(double)(userData.getBalance()/100)));
         TextView winsLbl = getViewById(R.id.wins_lbl);
-        winsLbl.setText(String.format("%d(%.2f", userData.getTotalWins(), userData.getWinPercentile())+"%)");
+        winsLbl.setText(String.format("%d", userData.getTotalWins()));
         TextView prestigelbl = getViewById(R.id.prestige_lbl);
         prestigelbl.setText(Integer.toString(userData.getPrestige()));
         TextView userRegTxt = getViewById(R.id.user_reg_txt);

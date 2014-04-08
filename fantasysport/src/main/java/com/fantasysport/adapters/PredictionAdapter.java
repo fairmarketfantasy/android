@@ -10,7 +10,6 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 import com.fantasysport.R;
-import com.fantasysport.fragments.PredictionRoster;
 import com.fantasysport.models.Prediction;
 
 import java.text.SimpleDateFormat;
@@ -109,7 +108,7 @@ public class PredictionAdapter extends BaseAdapter {
         gameTimeLbl.setText(sdf.format(prediction.getStartedAt()));
         TextView stateLbl = (TextView)convertView.findViewById(R.id.state_lbl);
         stateLbl.setText(getStateText(prediction.getState()));
-        TextView pointsLbl = (TextView)convertView.findViewById(R.id.points_lbl);
+        TextView pointsLbl = (TextView)convertView.findViewById(R.id.funbucks_lbl);
         String pointsText = prediction.getState().compareToIgnoreCase("submitted") == 0? "N/A": String.format("%.2f", prediction.getScore());
         pointsLbl.setText(pointsText);
         TextView rankLbl  = (TextView)convertView.findViewById(R.id.rank_lbl);

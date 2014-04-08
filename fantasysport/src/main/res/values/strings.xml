@@ -95,6 +95,7 @@
     <string name="wins">Wins</string>
     <string name="prestige">PresTige</string>
     <string name="no_contents_now">NO CONTENTS NOW</string>
+    <string name="fan_buks">FanBucks</string>
 
     <string-array name="prediction_menu_list">
         <item>Roster</item>
