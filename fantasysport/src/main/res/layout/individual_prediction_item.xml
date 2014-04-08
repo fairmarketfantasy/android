@@ -8,7 +8,6 @@
               android:paddingBottom="@dimen/side_marging"
               android:paddingTop="@dimen/side_hor_marging"
               android:paddingLeft="@dimen/side_marging"
-              android:paddingRight="@dimen/side_marging"
               android:id="@+id/root">
 
     <LinearLayout android:layout_width="match_parent"
@@ -128,12 +127,32 @@
         </TableRow>
 
         <TableRow>
+
             <View android:layout_height="5dp" android:layout_width="5dp"
                   android:background="@drawable/circle_bg"
                   android:layout_gravity="center_vertical"/>
             <TextView android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
-                      android:text="Prediction"
+                      android:text="Result"
+                      android:textColor="#9F9F9F"
+                      android:textSize="@dimen/low_font"
+                      android:paddingLeft="5dp"
+                      android:paddingRight="5dp"
+                    />
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="@string/did_not_play"
+                      android:textColor="#000000"
+                      android:textSize="@dimen/low_font"
+                      android:id="@+id/result_lbl"
+                    />
+
+            <View android:layout_height="5dp" android:layout_width="5dp"
+                  android:background="@drawable/circle_bg"
+                  android:layout_gravity="center_vertical"/>
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="Pred."
                       android:textColor="#9F9F9F"
                       android:textSize="@dimen/low_font"
                       android:paddingLeft="5dp"
@@ -145,7 +164,7 @@
                       android:textColor="#000000"
                       android:textSize="@dimen/low_font"
                       android:id="@+id/prediction_lbl"
-                      android:layout_span="4" />
+                    />
 
         </TableRow>
     </TableLayout>

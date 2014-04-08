@@ -28,7 +28,7 @@
     <dimen name="s_lage_font">20sp</dimen>
     <dimen name="x_medium_font">17sp</dimen>
     <dimen name="medium_font">15sp</dimen>
-    <dimen name="low_font">13sp</dimen>
+    <dimen name="low_font">12sp</dimen>
 
     <!-- Vertical padding around action bar icons. -->
     <dimen name="action_bar_icon_vertical_padding">8dip</dimen>

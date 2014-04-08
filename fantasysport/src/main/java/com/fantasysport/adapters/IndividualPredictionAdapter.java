@@ -104,6 +104,11 @@ public class IndividualPredictionAdapter extends BaseAdapter {
                     item.getValue(), item.getName());
         }
         predictionLbl.setText(predictionText);
+        TextView resultLbl = (TextView)convertView.findViewById(R.id.result_lbl);
+        String resultText = prediction.getState().equalsIgnoreCase(IndividualPrediction.CANCELED)
+                ?_context.getString(R.string.did_not_play)
+                : String.format("%.2f", prediction.getGameResult());
+        resultLbl.setText(resultText);
         return convertView;
     }
 

@@ -8,12 +8,17 @@ import java.util.List;
  */
 public class IndividualPrediction {
 
+    public final static String CANCELED = "canceled";
+    public final static String FINISHED = "finished";
+
     private String _marketName;
     private String _playerName;
     private Date _gameData;
     private double _award;
     private List<StatsItem> _eventPredictions;
     private double _pt;
+    private String _state;
+    private double _gameResult;
 
     public boolean isEmpty(){
         return _eventPredictions == null;
@@ -65,5 +70,21 @@ public class IndividualPrediction {
 
     public void setPT(double pt) {
         _pt = pt;
+    }
+
+    public void setState(String state) {
+        _state = state;
+    }
+
+    public String getState() {
+        return _state;
+    }
+
+    public void setGameResult(double gameResult) {
+        this._gameResult = gameResult;
+    }
+
+    public double getGameResult() {
+        return _gameResult;
     }
 }

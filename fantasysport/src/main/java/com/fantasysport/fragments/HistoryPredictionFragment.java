@@ -81,6 +81,10 @@ public class HistoryPredictionFragment extends BasePredictionFragment {
             public void onRequestSuccess(List list) {
                 dismissProgress();
                 List<Prediction> predictions = (List<Prediction>)list;
+                setRefreshComplete();
+                if(_predictions == null){
+                    _predictions = new ArrayList<Prediction>();
+                }
                 if(_predictions.size() > 0 && _predictions.get(_predictions.size() - 1).isEmpty()){
                     _predictions.remove(_predictions.size() - 1);
                 }
@@ -95,7 +99,7 @@ public class HistoryPredictionFragment extends BasePredictionFragment {
                 _predictions.addAll(predictions);
                 _predictionAdapter.setItems(_predictions);
                 _predictionAdapter.notifyDataSetChanged();
-                setRefreshComplete();
+
             }
         }, _currentPage);
     }
