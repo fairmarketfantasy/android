@@ -144,8 +144,8 @@ public abstract class MainActivityFragment extends BaseActivityFragment implemen
         }
     }
 
-    private void setElementVisibility(View view, int visibility){
-        if(view == null){
+    private void setElementVisibility(View view, int visibility) {
+        if (view == null) {
             return;
         }
         view.setVisibility(visibility);
@@ -156,6 +156,7 @@ public abstract class MainActivityFragment extends BaseActivityFragment implemen
         _pagerAdapter.setMarkets(markets);
         _pagerAdapter.notifyDataSetChanged();
         setNoGames((markets == null || markets.size() == 0));
+        setMarket(null);
 
     }
 
@@ -168,10 +169,7 @@ public abstract class MainActivityFragment extends BaseActivityFragment implemen
         }
         _pager.setId(id);
         _pagerAdapter = new
-                GameAdapter(getActivity()
-
-                .
-                        getSupportFragmentManager(), markets
+                GameAdapter(getActivity().getSupportFragmentManager(), markets
 
         );
         _pager.setOnPageChangeListener(_pageChangeListener);

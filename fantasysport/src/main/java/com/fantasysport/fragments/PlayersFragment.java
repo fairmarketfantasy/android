@@ -63,8 +63,11 @@ public class PlayersFragment extends BasePlayersFragment implements MainActivity
     public void onMarkets(List<Market> markets) {
         updateMarkets();
         if(markets == null || markets.size() == 0){
+            _playersAdapter.setItems(null);
+            _playersAdapter.notifyDataSetInvalidated();
             return;
         }
         _pager.setCurrentItem(0 , false);
+        getFragmentMediator().changeMarket(this, markets.get(0));
     }
 }

@@ -208,6 +208,8 @@ public class MainActivity extends BaseMainActivity {
         });
     }
 
+    private int _counter = 0;
+
     private void updateMarkets() {
         showProgress();
         _webProxy.getMarkets(new MarketsResponseListener() {
@@ -220,7 +222,10 @@ public class MainActivity extends BaseMainActivity {
             @Override
             public void onRequestSuccess(MarketResponse response) {
                 _storage.setDefaultRosterData(response.getDefaultRosterData());
-//                response.getMarketsContainer().getMarkets().remove(1);
+//                _counter++;
+//                if (_counter % 2 == 1) {
+//                    response.getMarketsContainer().getMarkets().clear();
+//                }
                 _storage.setMarketsContainer(response.getMarketsContainer());
                 List<Market> tmpMarkets = _storage.getMarkets();
                 if (marketChanged(tmpMarkets, _markets)) {
