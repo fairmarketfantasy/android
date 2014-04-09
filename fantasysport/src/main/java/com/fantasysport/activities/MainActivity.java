@@ -283,8 +283,8 @@ public class MainActivity extends BaseMainActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Const.NEW_AVATAR) {
-            raiseOnAvatarChanged();
+        if (resultCode == Const.NEW_AVATAR && _menuHeaderFragment != null) {
+            _menuHeaderFragment.updateView();
         }
     }
 

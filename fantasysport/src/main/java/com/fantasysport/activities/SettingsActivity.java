@@ -98,6 +98,8 @@ public class SettingsActivity extends BaseActivity {
             public void onRequestSuccess(UserData userData) {
                 dismissProgress();
                 SettingsActivity.this.setResult(Const.NEW_AVATAR);
+                _storage.setUserData(userData);
+                _adapter.setUserData(_storage.getUserData());
                 _adapter.notifyDataSetChanged();
 //                SettingsActivity.this.finish();
             }

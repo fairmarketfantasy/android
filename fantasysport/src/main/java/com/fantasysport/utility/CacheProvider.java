@@ -8,7 +8,7 @@ import android.content.SharedPreferences;
  */
 public class CacheProvider {
 
-    private static final String APP_PREFERENCES = "my_app_settings";
+    private static final String APP_PREFERENCES = "app_settings";
 
     private static SharedPreferences.Editor getEditor(Context context) {
         SharedPreferences preferences = context.getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);

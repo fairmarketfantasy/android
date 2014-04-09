@@ -1,6 +1,7 @@
 package com.fantasysport.fragments;
 
 import android.content.Context;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -66,6 +67,10 @@ public class MenuHeaderFragment extends BaseActivityFragment {
             LayoutInflater layoutInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View popupView = layoutInflater.inflate(R.layout.account_balance_popup, null);
             final PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, true);
+
+            popupWindow.setBackgroundDrawable(new BitmapDrawable());
+            popupWindow.setOutsideTouchable(true);
+
             TextView headerLbl = (TextView) popupView.findViewById(R.id.title_lbl);
             headerLbl.setTypeface(getProhibitionRound());
 
