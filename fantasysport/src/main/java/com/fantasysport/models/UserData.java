@@ -154,5 +154,18 @@ public class UserData {
     public double getFanBucks() {
         return _customerObject.getFanBucks();
     }
+
+
+    public double getWinningsMultiplier(){
+        return _customerObject.getWinningsMultiplier();
+    }
+
+    public int getMonthlyPredictions(){
+        return _customerObject.getMonthlyPredictions();
+    }
+
+    public double getMonthlyAward(){
+        return _customerObject.getMonthlyAward();
+    }
 }
 

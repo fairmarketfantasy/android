@@ -43,106 +43,90 @@
         </LinearLayout>
     </LinearLayout>
 
-    <TableLayout android:layout_width="match_parent"
-                 android:layout_height="wrap_content"
-                 android:layout_below="@+id/img_container"
-                 android:layout_marginTop="@dimen/side_hor_marging"
-                 android:stretchColumns="*">
-        <TableRow>
-            <FrameLayout android:layout_width="match_parent"
-                         android:layout_height="wrap_content"
-                         android:layout_weight="1"
-                         android:background="@color/app_green"
-                         android:padding="@dimen/side_hor_marging"
-                         android:layout_marginRight="2dp">
-                <TextView android:layout_width="wrap_content"
-                          android:layout_height="wrap_content"
-                          android:layout_gravity="left"
-                          android:textColor="#000000"
-                          android:text="@string/fan_buks"
-                          android:textSize="@dimen/low_font"/>
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/side_hor_marging">
 
-                <TextView android:layout_width="wrap_content"
-                          android:layout_height="wrap_content"
-                          android:layout_gravity="right"
-                          android:textColor="#ffffff"
-                          android:text="102.44"
-                          android:id="@+id/funbucks_lbl"
-                          android:textSize="@dimen/low_font"/>
+        <LinearLayout android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:paddingTop="@dimen/side_hor_marging"
+                      android:paddingBottom="@dimen/side_hor_marging"
+                      android:paddingLeft="@dimen/side_hor_marging"
+                      android:background="@color/app_green"
+                      android:layout_marginRight="2dp"
+                      android:orientation="vertical"
+                      android:id="@+id/fanbucks_container">
 
-            </FrameLayout>
-            <FrameLayout android:layout_width="match_parent"
-                         android:layout_height="wrap_content"
-                         android:background="@color/app_green"
-                         android:padding="@dimen/side_hor_marging"
-                         android:layout_weight="1"
-                         android:layout_marginLeft="2dp">
-                <TextView android:layout_width="wrap_content"
-                          android:layout_height="wrap_content"
-                          android:layout_gravity="left"
-                          android:textColor="#000000"
-                          android:text="@string/balance"
-                          android:textSize="@dimen/low_font"
-                        />
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_gravity="left"
+                      android:textColor="#000000"
+                      android:text="@string/fan_buks"
+                      android:textSize="@dimen/low_font"/>
 
-                <TextView android:layout_width="wrap_content"
-                          android:layout_height="wrap_content"
-                          android:layout_gravity="right"
-                          android:textColor="#ffffff"
-                          android:id="@+id/balance_lbl"
-                          android:text="1000000"
-                          android:textSize="@dimen/low_font"
-                        />
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_gravity="left"
+                      android:textColor="#ffffff"
+                      android:text="102.44"
+                      android:id="@+id/funbucks_lbl"
+                      android:textSize="@dimen/low_font"/>
 
-            </FrameLayout>
-        </TableRow>
 
-        <TableRow android:layout_marginTop="4dp">
-            <FrameLayout android:layout_width="match_parent"
-                         android:layout_height="wrap_content"
-                         android:layout_weight="1"
-                         android:background="@color/app_green"
-                         android:padding="@dimen/side_hor_marging"
-                         android:layout_marginRight="2dp">
-                <TextView android:layout_width="wrap_content"
-                          android:layout_height="wrap_content"
-                          android:layout_gravity="left"
-                          android:textColor="#000000"
-                          android:text="@string/wins"
-                          android:textSize="@dimen/low_font"/>
-                <TextView android:layout_width="wrap_content"
-                          android:layout_height="wrap_content"
-                          android:layout_gravity="right"
-                          android:textColor="#ffffff"
-                          android:text="10000"
-                          android:id="@+id/wins_lbl"
-                          android:textSize="@dimen/low_font"/>
+        </LinearLayout>
 
-            </FrameLayout>
-            <FrameLayout android:layout_width="match_parent"
-                         android:layout_height="wrap_content"
-                         android:layout_weight="1"
-                         android:background="@color/app_green"
-                         android:padding="@dimen/side_hor_marging"
-                         android:layout_marginLeft="2dp">
-                <TextView android:layout_width="wrap_content"
-                          android:layout_height="wrap_content"
-                          android:layout_gravity="left"
-                          android:textColor="#000000"
-                          android:text="@string/prestige"
-                          android:textSize="@dimen/low_font"
-                        />
+        <LinearLayout android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:paddingTop="@dimen/side_hor_marging"
+                      android:paddingBottom="@dimen/side_hor_marging"
+                      android:paddingLeft="@dimen/side_hor_marging"
+                      android:background="@color/app_green"
+                      android:layout_marginRight="2dp"
+                      android:orientation="vertical">
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_gravity="left"
+                      android:textColor="#000000"
+                      android:text="@string/prestige"
+                      android:textSize="@dimen/low_font"
+                    />
 
-                <TextView android:layout_width="wrap_content"
-                          android:layout_height="wrap_content"
-                          android:layout_gravity="right"
-                          android:textColor="#FFFFFF"
-                          android:text="1000"
-                          android:id="@+id/prestige_lbl"
-                          android:textSize="@dimen/low_font"
-                        />
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_gravity="left"
+                      android:textColor="#FFFFFF"
+                      android:text="1000"
+                      android:id="@+id/prestige_lbl"
+                      android:textSize="@dimen/low_font"
+                    />
+        </LinearLayout>
 
-            </FrameLayout>
-        </TableRow>
-    </TableLayout>
+        <LinearLayout android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:paddingTop="@dimen/side_hor_marging"
+                      android:paddingBottom="@dimen/side_hor_marging"
+                      android:paddingLeft="@dimen/side_hor_marging"
+                      android:background="@color/app_green"
+                      android:orientation="vertical">
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_gravity="left"
+                      android:textColor="#000000"
+                      android:text="@string/wins"
+                      android:textSize="@dimen/low_font"/>
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_gravity="left"
+                      android:textColor="#ffffff"
+                      android:text="10000"
+                      android:id="@+id/wins_lbl"
+                      android:textSize="@dimen/low_font"/>
+
+        </LinearLayout>
+    </LinearLayout>
+
 </LinearLayout>
