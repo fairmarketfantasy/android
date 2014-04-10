@@ -79,6 +79,7 @@ public abstract class BasePlayersFragment extends MainActivityFragment implement
     @Override
     public void onMarketChanged(Object sender, Market market) {
         setRoster(null);
+
         loadPlayers(_positionView.getPosition());
         int position = _pagerAdapter.getMarketPosition(market);
         int curPossition = _pager.getCurrentItem();
@@ -105,8 +106,12 @@ public abstract class BasePlayersFragment extends MainActivityFragment implement
 
     @Override
     public void onAddPlayer(Player player) {
+        Roster roster = getRoster();
+        if(roster == null){
+            return;
+        }
         showProgress();
-        getWebProxy().addPlayer(getRoster().getId(), player, new AddPlayerResponseListener() {
+        getWebProxy().addPlayer(roster.getId(), player, new AddPlayerResponseListener() {
             @Override
             public void onRequestError(RequestError error) {
                 dismissProgress();

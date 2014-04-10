@@ -33,6 +33,8 @@ public class PlayersFragment extends BasePlayersFragment implements MainActivity
             return;
         }
         showProgress();
+        _playersAdapter.setItems(null);
+        _playersAdapter.notifyDataSetInvalidated();
         _lastMarket = market;
         _lastPosition = position;
         _lastBenchedState = canBenched();
