@@ -41,6 +41,10 @@ public abstract class MainActivityFragment extends BaseActivityFragment implemen
     protected ViewPager _pager;
     protected PullToRefreshLayout _pullToRefreshLayout;
 
+    public MainActivityFragment(){
+        super();
+    }
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);

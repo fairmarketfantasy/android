@@ -34,7 +34,7 @@ public class PlayersHistoryPredictionFragment extends BasePlayersFragment {
 
         setPager(123);
         Roster roster = getRoster();
-        setMoneyTxt(roster != null ? roster.getRemainingSalary() : _storage.getDefaultRosterData().getRemainingSalary());
+        setMoneyTxt(roster != null ? roster.getRemainingSalary() : getStorage().getDefaultRosterData().getRemainingSalary());
         _msgLbl = getViewById(R.id.msg_lbl);
         _msgLbl.setTypeface(getProhibitionRound());
     }

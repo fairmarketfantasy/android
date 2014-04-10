@@ -57,10 +57,10 @@ public abstract class BasePlayersFragment extends MainActivityFragment implement
         setPager(123);
         _positionView = getViewById(R.id.position_view);
         _positionView.setPositionListener(this);
-        _positionView.setPositions(_storage.getDefaultRosterData().getPositions());
+        _positionView.setPositions(getStorage().getDefaultRosterData().getPositions());
         setPlayersListView();
         Roster roster = getRoster();
-        setMoneyTxt(roster != null? roster.getRemainingSalary(): _storage.getDefaultRosterData().getRemainingSalary());
+        setMoneyTxt(roster != null? roster.getRemainingSalary(): getStorage().getDefaultRosterData().getRemainingSalary());
         loadPlayers(_positionView.getPosition());
     }
 
@@ -134,10 +134,14 @@ public abstract class BasePlayersFragment extends MainActivityFragment implement
 
     @Override
     public void onPT25Player(Player player) {
+        Roster roster = getRoster();
+        if(roster == null){
+            return;
+        }
         Activity activity = getActivity();
         Intent intent = new Intent(activity, IndividuaPredictionsActivity.class);
         intent.putExtra(Const.PLAYER, player);
-        intent.putExtra(Const.ROSTER_ID, getRoster().getId());
+        intent.putExtra(Const.ROSTER_ID, roster.getId());
         intent.putExtra(Const.MARKET_ID, getMarket().getId());
         intent.putExtra(Const.GAME, getMarket().getGames().get(0));
         startActivity(intent);

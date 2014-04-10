@@ -35,7 +35,7 @@ public class MenuHeaderFragment extends BaseActivityFragment {
 
     public void updateView() {
         setUserImage();
-        UserData userData = _storage.getUserData();
+        UserData userData = getStorage().getUserData();
         TextView pointslbl = getViewById(R.id.funbucks_lbl);
         pointslbl.setText(String.format("%.2f", (double) (userData.getFanBucks() / 100)));
         TextView winsLbl = getViewById(R.id.wins_lbl);
@@ -51,7 +51,8 @@ public class MenuHeaderFragment extends BaseActivityFragment {
     }
 
     private void setUserImage() {
-        final String userImgUrl = _storage.getUserData().getUserImageUrl();
+        UserData userData = getStorage().getUserData();
+        final String userImgUrl = userData.getUserImageUrl();
         final ImageView view = getViewById(R.id.user_img);
         if (userImgUrl == null) {
             return;
@@ -85,7 +86,7 @@ public class MenuHeaderFragment extends BaseActivityFragment {
                 }
             });
 
-            UserData userData = _storage.getUserData();
+            UserData userData = getStorage().getUserData();
             TextView pointslbl = (TextView) popupView.findViewById(R.id.funbucks_lbl);
             pointslbl.setText(String.format("%.2f", (double) (userData.getFanBucks() / 100)));
 

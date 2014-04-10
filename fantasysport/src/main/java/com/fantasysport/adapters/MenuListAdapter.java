@@ -38,6 +38,9 @@ public class MenuListAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int position) {
+        if(_items == null || position < 0 || _items.size() <= position) {
+            return null;
+        }
         return _items.get(position);
     }
 

@@ -31,6 +31,11 @@ public abstract class BaseHomeFragment extends MainActivityFragment  implements 
     private Switcher _switcher;
     private ListView _playersList;
 
+
+    public BaseHomeFragment(){
+        super();
+    }
+
     @Override
     protected void init() {
         super.init();
@@ -80,7 +85,7 @@ public abstract class BaseHomeFragment extends MainActivityFragment  implements 
     }
 
     protected void setEmptyRoster() {
-        DefaultRosterData rosterData = _storage.getDefaultRosterData();
+        DefaultRosterData rosterData = getStorage().getDefaultRosterData();
 //        setMoneyTxt(rosterData.getRemainingSalary());
         getFragmentMediator().changeRemainingSalary(this, rosterData.getRemainingSalary());
         List<IPlayer> items = _playerAdapter.getItems();

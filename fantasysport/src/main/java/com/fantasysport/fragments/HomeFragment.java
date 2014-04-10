@@ -24,6 +24,11 @@ import java.util.List;
 public class HomeFragment extends BaseHomeFragment  implements AdapterView.OnItemClickListener,
         Switcher.ISelectedListener, MainActivity.IOnMarketsListener{
 
+
+    public HomeFragment(){
+        super();
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         _rootView = inflater.inflate(R.layout.fragment_main, container, false);

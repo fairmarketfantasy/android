@@ -38,7 +38,6 @@ public class BaseMainActivity extends BaseActivity {
     protected List<IRosterLoadedListener> _rosterLoadedListeners = new ArrayList<IRosterLoadedListener>();
     protected List<IUpdateListener> _updateListener = new ArrayList<IUpdateListener>();
     protected PredictionRoster _predictionRoster = PredictionRoster.None;
-    protected List<IAvatarListener> _avatarListeners = new ArrayList<IAvatarListener>();
     protected MainFragmentMediator _fragmentMediator = new MainFragmentMediator();
 
     @Override
@@ -56,10 +55,6 @@ public class BaseMainActivity extends BaseActivity {
 
     public MainFragmentMediator getFragmentMediator(){
         return _fragmentMediator;
-    }
-
-    public void addAvatarListener(IAvatarListener listener){
-        _avatarListeners.add(listener);
     }
 
     public void addRosterLoadedListener(IRosterLoadedListener listener){
@@ -106,12 +101,6 @@ public class BaseMainActivity extends BaseActivity {
     protected void raiseOnPageChanged(int page) {
         for (int i = 0; i < _listeners.size(); i++) {
             _listeners.get(i).onPageChanged(page);
-        }
-    }
-
-    protected void raiseOnAvatarChanged(){
-        for (IAvatarListener listener : _avatarListeners){
-            listener.onAvatarChanged();
         }
     }
 
@@ -250,10 +239,6 @@ public class BaseMainActivity extends BaseActivity {
 
     public interface IUpdateListener {
         public void onUpdated(Object initiator);
-    }
-
-    public interface IAvatarListener{
-        public void onAvatarChanged();
     }
 
 }

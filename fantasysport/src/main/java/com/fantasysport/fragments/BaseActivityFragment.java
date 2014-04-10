@@ -13,11 +13,15 @@ import com.fantasysport.webaccess.WebProxy;
  */
 public abstract class BaseActivityFragment extends Fragment {
 
-    protected Storage _storage;
     protected View _rootView;
 
+
     public BaseActivityFragment(){
-        _storage = Storage.instance();
+        super();
+    }
+
+    protected Storage getStorage(){
+        return Storage.instance();
     }
 
     protected WebProxy getWebProxy(){

@@ -19,7 +19,7 @@ public class CustomerObject {
 //    private float _contestEntriesDeficit;
 
     @SerializedName("contest_winnings_multiplier")
-    private int _contestWinningsMultiplier;
+    private double _contestWinningsMultiplier;
 
 //    @SerializedName("has_agreed_terms")
 //    private boolean _hasAgreedTerms;

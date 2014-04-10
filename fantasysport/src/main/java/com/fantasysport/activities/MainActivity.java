@@ -123,6 +123,9 @@ public class MainActivity extends BaseMainActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 MenuItem item = (MenuItem) _menuAdapter.getItem(position - 1);
+                if(item == null){
+                    return;
+                }
                 _drawerLayout.closeDrawer(_menuList);
                 switch (item.getId()) {
                     case LegalStuff:
