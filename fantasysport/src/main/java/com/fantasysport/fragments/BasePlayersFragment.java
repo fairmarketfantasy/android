@@ -133,8 +133,6 @@ public abstract class BasePlayersFragment extends MainActivityFragment implement
 
     @Override
     public void onPlayerAdded(Object sender, Player player) {
-//        _playersAdapter.getPlayers().remove(player);
-//        _playersAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -171,9 +169,6 @@ public abstract class BasePlayersFragment extends MainActivityFragment implement
 
     @Override
     public void onPageChanged(int page) {
-        if(page != 1){
-            return;
-        }
     }
 
     @Override

@@ -31,6 +31,9 @@ public class Roster  implements Serializable {
     @SerializedName("state")
     private String _state;
 
+    @SerializedName("market")
+    private ShortMarket _market;
+
     public int getContestRank(){
         return _contestRank;
     }
@@ -63,4 +66,7 @@ public class Roster  implements Serializable {
         return _state;
     }
 
+    public int getMarketId(){
+        return _market.getId();
+    }
 }

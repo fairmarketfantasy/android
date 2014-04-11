@@ -28,7 +28,7 @@ public class PlayersFragment extends BasePlayersFragment implements MainActivity
     protected void loadPlayers(final String position){
         Market market = getMarket();
         if(market == _lastMarket && _lastPosition == position
-                && _lastBenchedState == canBenched() && !_pullToRefreshLayout.isRefreshing()
+                && _lastBenchedState == canBenched() && !_pullToRefreshLayout.isRefreshing() && getRoster() != null
                 || market == null){
             return;
         }
@@ -59,6 +59,15 @@ public class PlayersFragment extends BasePlayersFragment implements MainActivity
     @Override
     public void onRosterLoaded(Roster roster) {
 
+    }
+
+    @Override
+    public void onPageChanged(int page) {
+        Roster roster = getRoster();
+        if(page != 1 || roster != null){
+            return;
+        }
+        loadPlayers(_positionView.getPosition());
     }
 
     @Override

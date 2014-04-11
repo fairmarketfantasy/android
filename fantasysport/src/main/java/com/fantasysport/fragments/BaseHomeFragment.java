@@ -12,12 +12,14 @@ import com.fantasysport.activities.IndividuaPredictionsActivity;
 import com.fantasysport.adapters.PlayerItem;
 import com.fantasysport.adapters.RosterPlayersAdapter;
 import com.fantasysport.models.*;
+import com.fantasysport.utility.OutParameter;
 import com.fantasysport.views.Switcher;
 import com.fantasysport.webaccess.requestListeners.AutoFillResponseListener;
 import com.fantasysport.webaccess.requestListeners.RequestError;
 import com.fantasysport.webaccess.requestListeners.RosterResponseListener;
 import com.fantasysport.webaccess.requestListeners.TradePlayerResponseListener;
-import com.fantasysport.webaccess.responses.AutofillResponse;
+import com.fantasysport.webaccess.requests.AutoFillRequest;
+import com.fantasysport.webaccess.responses.AutoFillResponse;
 import com.fantasysport.webaccess.responses.TradePlayerResponse;
 
 import java.util.ArrayList;
@@ -30,6 +32,7 @@ public abstract class BaseHomeFragment extends MainActivityFragment  implements 
 
     private Switcher _switcher;
     private ListView _playersList;
+    private AutoFillRequest _autoFillRequest;
 
 
     public BaseHomeFragment(){
@@ -60,6 +63,16 @@ public abstract class BaseHomeFragment extends MainActivityFragment  implements 
     @Override
     public void onMarketChanged(Object sender, Market market) {
         setNewRoster(market);
+        if(_autoFillRequest != null && !_autoFillRequest.isCancelled()){
+            try{
+                dismissProgress();
+                getWebProxy().getSpiceManager().cancel(_autoFillRequest);
+            }catch (Exception e){
+            }finally {
+                _autoFillRequest = null;
+            }
+
+        }
         int position = _pagerAdapter.getMarketPosition(market);
         int curPossition = _pager.getCurrentItem();
         if(sender == this || position < 0 || curPossition == position){
@@ -177,6 +190,7 @@ public abstract class BaseHomeFragment extends MainActivityFragment  implements 
             }
             Roster roster = getRoster();
             showProgress();
+            final OutParameter outPar = new OutParameter();
             if(roster == null){
                 getWebProxy().createRoster(getMarket().getId(), new RosterResponseListener() {
                     @Override
@@ -191,11 +205,13 @@ public abstract class BaseHomeFragment extends MainActivityFragment  implements 
                             dismissProgress();
                             return;
                         }
-                        getWebProxy().autofillRoster(getMarket().getId(), roster.getId(), _autoFillResponseListener);
+                        getWebProxy().autofillRoster(getMarket().getId(), roster.getId(), _autoFillResponseListener, outPar);
+                        _autoFillRequest = outPar.getParameter();
                     }
                 });
             }else {
-                getWebProxy().autofillRoster(getMarket().getId(), roster.getId(), _autoFillResponseListener);
+                getWebProxy().autofillRoster(getMarket().getId(), roster.getId(), _autoFillResponseListener, outPar);
+                _autoFillRequest = outPar.getParameter();
             }
         }
     };
@@ -203,15 +219,23 @@ public abstract class BaseHomeFragment extends MainActivityFragment  implements 
     AutoFillResponseListener _autoFillResponseListener = new AutoFillResponseListener() {
         @Override
         public void onRequestError(RequestError error) {
+            _autoFillRequest = null;
             dismissProgress();
+            if(error.isCanceledRequest()){
+                return;
+            }
             showAlert(getString(R.string.error), error.getMessage());
+
         }
 
         @Override
-        public void onRequestSuccess(AutofillResponse response) {
-            setRoster(response.getRoster());
-            updatePlayersList();
+        public void onRequestSuccess(AutoFillResponse response) {
+            _autoFillRequest = null;
             dismissProgress();
+            if(response.getRoster().getMarketId() == getMarket().getId()){
+                setRoster(response.getRoster());
+            }
+            updatePlayersList();
         }
     };
 

@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import com.fantasysport.models.Player;
 import com.fantasysport.models.StatsItem;
 import com.fantasysport.models.User;
+import com.fantasysport.utility.OutParameter;
 import com.fantasysport.webaccess.requestListeners.*;
 import com.fantasysport.webaccess.requests.*;
 import com.octo.android.robospice.SpiceManager;
@@ -103,9 +104,10 @@ public final class WebProxy {
         _spiceManager.execute(request, listener);
     }
 
-    public void autofillRoster(int marketId, int rosterId, AutoFillResponseListener listener){
-        AutofillRequest request = new AutofillRequest(marketId, rosterId);
+    public void autofillRoster(int marketId, int rosterId, AutoFillResponseListener listener, OutParameter parameter){
+        AutoFillRequest request = new AutoFillRequest(marketId, rosterId);
         request.setRetryPolicy(getRetryPolicy());
+        parameter.setParameter(request);
         _spiceManager.execute(request, listener);
     }
 
@@ -182,5 +184,9 @@ public final class WebProxy {
                 return 0;
             }
         };
+    }
+
+    public SpiceManager getSpiceManager() {
+        return _spiceManager;
     }
 }

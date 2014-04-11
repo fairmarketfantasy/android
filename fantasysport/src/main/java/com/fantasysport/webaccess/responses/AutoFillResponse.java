@@ -5,11 +5,11 @@ import com.fantasysport.models.Roster;
 /**
  * Created by bylynka on 3/4/14.
  */
-public class AutofillResponse {
+public class AutoFillResponse {
 
     private Roster _roster;
 
-    public AutofillResponse(Roster roster){
+    public AutoFillResponse(Roster roster){
         _roster = roster;
     }
 

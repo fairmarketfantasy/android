@@ -18,7 +18,6 @@ import com.fantasysport.webaccess.requestListeners.MarketsResponseListener;
 import com.fantasysport.webaccess.requestListeners.RequestError;
 import com.fantasysport.webaccess.responses.AuthResponse;
 import com.fantasysport.webaccess.responses.MarketResponse;
-import com.ubertesters.sdk.tools.Log;
 
 /**
  * Created by bylynka on 2/10/14.
@@ -96,9 +95,7 @@ public class AuthActivity extends BaseActivity {
                     session = new Session(AuthActivity.this);
                 }
                 Session.setActiveSession(session);
-                Log.e("facebook login state", "CLOSED_LOGIN_FAILED");
             }
-
         }
     };
 

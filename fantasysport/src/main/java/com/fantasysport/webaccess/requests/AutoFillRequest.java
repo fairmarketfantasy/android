@@ -2,7 +2,7 @@ package com.fantasysport.webaccess.requests;
 
 import android.net.Uri;
 import com.fantasysport.models.Roster;
-import com.fantasysport.webaccess.responses.AutofillResponse;
+import com.fantasysport.webaccess.responses.AutoFillResponse;
 import com.google.api.client.http.ByteArrayContent;
 import com.google.api.client.http.GenericUrl;
 import com.google.api.client.http.HttpContent;
@@ -12,26 +12,26 @@ import com.google.gson.Gson;
 /**
  * Created by bylynka on 3/4/14.
  */
-public class AutofillRequest extends BaseRequest<AutofillResponse> {
+public class AutoFillRequest extends BaseRequest<AutoFillResponse> {
 
     private int _rosterId;
     private int _marketId;
 
-    public AutofillRequest(int marketId, int rosterId) {
-        super(AutofillResponse.class);
+    public AutoFillRequest(int marketId, int rosterId) {
+        super(AutoFillResponse.class);
         _rosterId = rosterId;
         _marketId = marketId;
     }
 
     @Override
-    public AutofillResponse loadDataFromNetwork() throws Exception {
+    public AutoFillResponse loadDataFromNetwork() throws Exception {
         if (_rosterId < 0) {
             Roster roster = createRoster();
             _rosterId = roster.getId();
         }
 
         Roster roster = autoFillRoster();
-        return new AutofillResponse(roster);
+        return new AutoFillResponse(roster);
     }
 
     private Roster autoFillRoster() throws Exception {

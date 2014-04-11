@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.AttributeSet;
@@ -21,6 +22,8 @@ import com.fantasysport.webaccess.WebProxy;
 import com.fantasysport.webaccess.requestListeners.RequestError;
 import com.fantasysport.webaccess.requestListeners.SignOutResponseListener;
 import com.octo.android.robospice.SpiceManager;
+import net.hockeyapp.android.CrashManager;
+import net.hockeyapp.android.UpdateManager;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -34,6 +37,23 @@ public class BaseActivity extends ActionBarActivity{
     protected WebProxy _webProxy;
     protected Storage _storage;
     protected int _progressCounter;
+
+    private static final String APP_ID = "f7a14bcc9eb0186b4bf705f93229f693";
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        checkForUpdates();
+    }
+
+    private void checkForCrashes() {
+        CrashManager.register(this, APP_ID);
+    }
+
+    private void checkForUpdates() {
+        // Remove this for store builds!
+        UpdateManager.register(this, APP_ID);
+    }
 
     @Override
     public View onCreateView(String name, Context context, AttributeSet attrs) {

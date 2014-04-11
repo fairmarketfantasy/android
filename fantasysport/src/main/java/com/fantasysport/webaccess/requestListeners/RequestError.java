@@ -13,11 +13,21 @@ public class RequestError {
     @SerializedName("error_sbdescription")
     private String _description;
 
+    private boolean _isCanceled = false;
+
     public RequestError(){
     }
 
     public RequestError(String message){
         _message = message;
+    }
+
+    public void setIsCanceledRequest(boolean isCanceled){
+        _isCanceled = isCanceled;
+    }
+
+    public boolean isCanceledRequest(){
+        return _isCanceled;
     }
 
     public String getMessage()
