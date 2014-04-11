@@ -1,7 +1,5 @@
 package com.fantasysport.fragments;
 
-
-import android.graphics.Typeface;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import com.fantasysport.activities.BaseActivity;
@@ -34,10 +32,6 @@ public abstract class BaseActivityFragment extends Fragment {
 
     protected BaseActivity getBaseActivity(){
         return (BaseActivity)getActivity();
-    }
-
-    public Typeface getProhibitionRound(){
-       return getBaseActivity().getProhibitionRound();
     }
 
     public void showProgress(){

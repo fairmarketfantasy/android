@@ -48,7 +48,6 @@ public class PlayersActivity extends BaseActivity implements CandidatePlayersAda
         boolean _removeBooleanExtra = intent.getBooleanExtra(Const.REMOVE_BENCHED_PLAYERS, true);
         _moneyForRoster = intent.getDoubleExtra(Const.MONEY_FOR_ROSTER, 0);
         TextView moneyView = getViewById(R.id.money_lbl);
-        moneyView.setTypeface(getProhibitionRound());
         moneyView.setText(String.format("$%.0f",_moneyForRoster));
         _marketId = intent.getIntExtra(Const.MARKET_ID, - 1);
         if (savedInstanceState != null) {

@@ -12,9 +12,7 @@ import com.fantasysport.activities.PredictionActivity;
 import com.fantasysport.adapters.IndividualPredictionAdapter;
 import com.fantasysport.adapters.PredictionAdapter;
 import com.fantasysport.models.IndividualPrediction;
-import com.fantasysport.models.Market;
 import com.fantasysport.models.Prediction;
-import com.fantasysport.webaccess.WebProxy;
 import com.fantasysport.webaccess.requestListeners.IndividualPredictionsResponseListener;
 import com.fantasysport.webaccess.requestListeners.PredictionsResponseListener;
 import com.fantasysport.webaccess.requestListeners.RequestError;
@@ -35,9 +33,9 @@ public class HistoryPredictionFragment extends BasePredictionFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        _predictionAdapter = new PredictionAdapter(getActivity(), null, getProhibitionRound());
+        _predictionAdapter = new PredictionAdapter(getActivity(), null);
         _predictionAdapter.setOnShowRosterListener(this);
-        _individualPredictionAdapter = new IndividualPredictionAdapter(getActivity(), null, getProhibitionRound());
+        _individualPredictionAdapter = new IndividualPredictionAdapter(getActivity(), null);
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 

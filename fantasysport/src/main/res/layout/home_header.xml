@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:custom="http://schemas.android.com/apk/res-auto"
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
@@ -24,13 +25,14 @@
                 android:layout_marginRight="@dimen/side_marging"
                 />
 
-        <TextView android:layout_width="wrap_content"
+        <com.fantasysport.views.ExTextView android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
                   android:layout_gravity="center"
                   android:text="@string/no_contents_now"
                   android:textSize="@dimen/s_lage_font"
                   android:textColor="#CCCCCC"
-                  android:id="@+id/no_games_lbl" />
+                  android:id="@+id/no_games_lbl"
+                  custom:fontFamily="prohibitionRound"/>
 
     </FrameLayout>
     <View android:layout_width="match_parent"

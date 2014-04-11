@@ -2,8 +2,6 @@ package com.fantasysport.adapters;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Typeface;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,14 +23,11 @@ public class CandidatePlayersAdapter extends BaseAdapter {
 
     private Context _context;
     private List<Player> _players;
-    private Typeface _prohibitionRoundTypeFace;
     private IListener _listener;
-    private Handler _handler = new Handler();
     public ImageLoader _imageLoader;
 
     public CandidatePlayersAdapter(Context context) {
         _context = context;
-        _prohibitionRoundTypeFace = Typeface.createFromAsset(_context.getAssets(), "fonts/ProhibitionRound.ttf");
         _imageLoader = new ImageLoader(_context);
     }
 
@@ -65,16 +60,10 @@ public class CandidatePlayersAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Button pt25Btn = null;
-        Button addBtn = null;
         if (convertView == null) {
             LayoutInflater mInflater = (LayoutInflater)
                     _context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
             convertView = mInflater.inflate(R.layout.candidate_player_item, null);
-            pt25Btn = (Button) convertView.findViewById(R.id.pt25_btn);
-            addBtn = (Button) convertView.findViewById(R.id.add_btn);
-            pt25Btn.setTypeface(_prohibitionRoundTypeFace);
-            addBtn.setTypeface(_prohibitionRoundTypeFace);
         }
 
         Player player = _players.get(position);
@@ -82,7 +71,7 @@ public class CandidatePlayersAdapter extends BaseAdapter {
         ImageView benchedImg = (ImageView) convertView.findViewById(R.id.benched_img);
         benchedImg.setVisibility(player.getIsBenched() ? View.VISIBLE : View.INVISIBLE);
 
-        pt25Btn = (Button) convertView.findViewById(R.id.pt25_btn);
+        Button pt25Btn = (Button) convertView.findViewById(R.id.pt25_btn);
         if (player.getIsBenched()) {
             pt25Btn.setVisibility(View.INVISIBLE);
         } else {
@@ -90,7 +79,7 @@ public class CandidatePlayersAdapter extends BaseAdapter {
             pt25Btn.setOnClickListener(new PT25BtnClickListener(player));
         }
 
-        addBtn = (Button) convertView.findViewById(R.id.add_btn);
+        Button addBtn = (Button) convertView.findViewById(R.id.add_btn);
         addBtn.setOnClickListener(new AddBtnClickListener(player));
 
         TextView namelbl = (TextView) convertView.findViewById(R.id.name_lbl);

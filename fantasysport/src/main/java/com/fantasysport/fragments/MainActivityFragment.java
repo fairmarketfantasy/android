@@ -101,11 +101,8 @@ public abstract class MainActivityFragment extends BaseActivityFragment implemen
     protected void init() {
         getMainActivity().addListener(this);
         getMainActivity().addUpdateListener(this);
-        TextView noGamesLbl = getViewById(R.id.no_games_lbl);
-        noGamesLbl.setTypeface(getProhibitionRound());
         _pager = getViewById(R.id.pager);
         _moneyTxt = getViewById(R.id.money_lbl);
-        _moneyTxt.setTypeface(getProhibitionRound());
         _pullToRefreshLayout = getViewById(R.id.ptr_layout);
         ActionBarPullToRefresh.from(getActivity())
                 .allChildrenArePullable()

@@ -25,7 +25,6 @@ public class HomeActivePredictionFragment extends BaseHomeFragment  implements A
     protected void init() {
         super.init();
         Button backBtn = getViewById(R.id.back_btn);
-        backBtn.setTypeface(getProhibitionRound());
         backBtn.setOnClickListener(_backClickListener);
     }
 

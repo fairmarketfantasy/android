@@ -23,13 +23,11 @@ public class IndividualPredictionAdapter extends BaseAdapter {
 
     private List<IndividualPrediction> _items;
     private Context _context;
-    private Typeface _typeface;
     private ILoadListener _listener;
 
-    public IndividualPredictionAdapter(Context context, List<IndividualPrediction> items, Typeface typeface){
+    public IndividualPredictionAdapter(Context context, List<IndividualPrediction> items){
         _items = items;
         _context = context;
-        _typeface = typeface;
     }
 
     public void setLoadListener(ILoadListener listener){
@@ -70,8 +68,6 @@ public class IndividualPredictionAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         IndividualPrediction prediction = _items.get(position);
         if(prediction.isEmpty()){
-            convertView = getLayoutInflater().inflate(R.layout.loading_item, null);
-            ((TextView)convertView).setTypeface(_typeface);
             raiseOnLoad();
             return convertView;
         }

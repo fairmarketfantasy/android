@@ -1,13 +1,10 @@
 package com.fantasysport.activities;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
-import android.os.Handler;
-import android.preference.PreferenceActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.AttributeSet;
@@ -35,10 +32,7 @@ public class BaseActivity extends ActionBarActivity{
 
     protected SpiceManager _spiceManager = new SpiceManager(GsonGoogleHttpClientSpiceService.class);
     protected WebProxy _webProxy;
-
-    protected Handler _handler = new Handler();
     protected Storage _storage;
-    protected static Typeface _prohibitionRoundTypeFace;
     protected int _progressCounter;
 
     @Override
@@ -102,7 +96,7 @@ public class BaseActivity extends ActionBarActivity{
         updateProgress();
     }
 
-    protected boolean isProgressShowing(){
+    public boolean isProgressShowing(){
         return getSupportLoaderManager().hasRunningLoaders();
     }
 
@@ -137,17 +131,6 @@ public class BaseActivity extends ActionBarActivity{
         showAlert(title, message, null);
     }
 
-    public Typeface getProhibitionRound(){
-        if(_prohibitionRoundTypeFace == null){
-            _prohibitionRoundTypeFace  = Typeface.createFromAsset(getAssets(), "fonts/ProhibitionRound.ttf");
-        }
-        return _prohibitionRoundTypeFace;
-    }
-
-    public Typeface getRobotoThin(){
-        return TypefaceProvider.getRobotoThin(this);
-    }
-
     private void initActionBar(ActionBar bar){
         bar.setDisplayShowCustomEnabled(true);
         bar.setDisplayShowTitleEnabled(false);
@@ -155,8 +138,6 @@ public class BaseActivity extends ActionBarActivity{
         LayoutInflater inflator = (LayoutInflater) this
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View customBar = inflator.inflate(R.layout.action_bar_title, null);
-        TextView textView = (TextView)customBar.findViewById(R.id.fair_martet_txt);
-        textView.setTypeface(getProhibitionRound());
         getSupportActionBar().setCustomView(customBar);
     }
 

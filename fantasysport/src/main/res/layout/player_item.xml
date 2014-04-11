@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:custom="http://schemas.android.com/apk/res-auto"
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
@@ -50,11 +51,12 @@
                       android:textColor="#333333"
                       android:textSize="@dimen/medium_font"
                     />
-            <TextView android:layout_width="wrap_content"
+            <com.fantasysport.views.ExTextView android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
                       android:id="@+id/position_lbl"
                       android:textColor="#999999"
                       android:textSize="@dimen/medium_font"
+                      custom:fontFamily="robotoThin"
                     />
             <LinearLayout android:layout_width="wrap_content"
                           android:layout_height="wrap_content"
@@ -76,7 +78,7 @@
 
         </LinearLayout>
 
-        <Button android:layout_width="38dp"
+        <com.fantasysport.views.ExButton android:layout_width="38dp"
                 android:layout_height="@dimen/btn_height"
                 android:layout_marginRight="5dp"
                 android:id="@+id/pt25_btn"
@@ -85,15 +87,17 @@
                 android:paddingRight="0dp"
                 android:paddingLeft="0dp"
                 android:textColor="@color/app_blue"
-                android:text="PT" />
+                android:text="PT"
+                custom:fontFamily="prohibitionRound"/>
 
-        <Button android:layout_width="wrap_content"
+        <com.fantasysport.views.ExButton android:layout_width="wrap_content"
                 android:layout_height="@dimen/btn_height"
                 android:id="@+id/trade_btn"
                 android:background="@drawable/trade_button"
                 android:textSize="@dimen/x_medium_font"
                 android:paddingRight="@dimen/btn_padding"
                 android:paddingLeft="@dimen/btn_padding"
-                android:text="@string/trade"/>
+                android:text="@string/trade"
+                custom:fontFamily="prohibitionRound"/>
     </LinearLayout>
 </LinearLayout>

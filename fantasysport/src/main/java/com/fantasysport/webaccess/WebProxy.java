@@ -103,7 +103,7 @@ public final class WebProxy {
         _spiceManager.execute(request, listener);
     }
 
-    public void autofillRoster(int marketId, int rosterId, AutofillResponseListener listener){
+    public void autofillRoster(int marketId, int rosterId, AutoFillResponseListener listener){
         AutofillRequest request = new AutofillRequest(marketId, rosterId);
         request.setRetryPolicy(getRetryPolicy());
         _spiceManager.execute(request, listener);

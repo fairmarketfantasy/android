@@ -13,7 +13,7 @@ import com.fantasysport.adapters.PlayerItem;
 import com.fantasysport.adapters.RosterPlayersAdapter;
 import com.fantasysport.models.*;
 import com.fantasysport.views.Switcher;
-import com.fantasysport.webaccess.requestListeners.AutofillResponseListener;
+import com.fantasysport.webaccess.requestListeners.AutoFillResponseListener;
 import com.fantasysport.webaccess.requestListeners.RequestError;
 import com.fantasysport.webaccess.requestListeners.RosterResponseListener;
 import com.fantasysport.webaccess.requestListeners.TradePlayerResponseListener;
@@ -40,7 +40,6 @@ public abstract class BaseHomeFragment extends MainActivityFragment  implements 
     protected void init() {
         super.init();
         Button autofillBtn = getViewById(R.id.autofill_btn);
-        autofillBtn.setTypeface(getProhibitionRound());
         autofillBtn.setOnClickListener(_autofillClickListener);
         _switcher = getViewById(R.id.switcher);
         _switcher.setSelected(true);
@@ -97,7 +96,7 @@ public abstract class BaseHomeFragment extends MainActivityFragment  implements 
         _playerAdapter.notifyDataSetChanged();
     }
 
-    private void updatePlayersList() {
+    protected void updatePlayersList() {
         Roster roster = getRoster();
         if (roster == null) {
             return;
@@ -173,26 +172,46 @@ public abstract class BaseHomeFragment extends MainActivityFragment  implements 
     View.OnClickListener _autofillClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Roster roster = getRoster();
-            if(roster == null){
+            if(getMarket() == null){
                 return;
             }
-            int rosterId = roster.getId();
+            Roster roster = getRoster();
             showProgress();
-            getWebProxy().autofillRoster(getMarket().getId(), rosterId, new AutofillResponseListener() {
-                @Override
-                public void onRequestError(RequestError error) {
-                    dismissProgress();
-                    showAlert(getString(R.string.error), error.getMessage());
-                }
+            if(roster == null){
+                getWebProxy().createRoster(getMarket().getId(), new RosterResponseListener() {
+                    @Override
+                    public void onRequestError(RequestError message) {
+                        dismissProgress();
+                        showAlert(getString(R.string.error), getString(R.string.unknown_error));
+                    }
+                    @Override
+                    public void onRequestSuccess(Roster roster) {
+                        setRoster(roster);
+                        if(getMarket() == null){
+                            dismissProgress();
+                            return;
+                        }
+                        getWebProxy().autofillRoster(getMarket().getId(), roster.getId(), _autoFillResponseListener);
+                    }
+                });
+            }else {
+                getWebProxy().autofillRoster(getMarket().getId(), roster.getId(), _autoFillResponseListener);
+            }
+        }
+    };
 
-                @Override
-                public void onRequestSuccess(AutofillResponse response) {
-                    setRoster(response.getRoster());
-                    updatePlayersList();
-                    dismissProgress();
-                }
-            });
+    AutoFillResponseListener _autoFillResponseListener = new AutoFillResponseListener() {
+        @Override
+        public void onRequestError(RequestError error) {
+            dismissProgress();
+            showAlert(getString(R.string.error), error.getMessage());
+        }
+
+        @Override
+        public void onRequestSuccess(AutofillResponse response) {
+            setRoster(response.getRoster());
+            updatePlayersList();
+            dismissProgress();
         }
     };
 

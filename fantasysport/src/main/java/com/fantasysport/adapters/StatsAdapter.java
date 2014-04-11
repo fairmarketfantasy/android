@@ -140,7 +140,7 @@ public class StatsAdapter extends BaseAdapter {
             }
             new AlertDialog.Builder(StatsAdapter.this._context)
                     .setTitle(StatsAdapter.this._player.getName())
-                    .setMessage(String.format("%s than %.1f %s?", (_item.getMode().equalsIgnoreCase(StatsItem.LESS_MODE) ? "More" : "Less"), _item.getValue(), _item.getName()))
+                    .setMessage(String.format("%s than %.1f %s?", (_mode.equalsIgnoreCase(StatsItem.LESS_MODE) ? "Less" : "More"), _item.getValue(), _item.getName()))
                     .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {

@@ -25,10 +25,9 @@ public class PlayersHistoryPredictionFragment extends BasePlayersFragment {
     @Override
     protected void init() {
         //
+        _moneyTxt = getViewById(R.id.money_lbl);
         getMainActivity().addListener(this);
         _pager = getViewById(R.id.pager);
-        _moneyTxt = getViewById(R.id.money_lbl);
-        _moneyTxt.setTypeface(getProhibitionRound());
         getMainActivity().addRosterLoadedListener(this);
         //
 
@@ -36,7 +35,6 @@ public class PlayersHistoryPredictionFragment extends BasePlayersFragment {
         Roster roster = getRoster();
         setMoneyTxt(roster != null ? roster.getRemainingSalary() : getStorage().getDefaultRosterData().getRemainingSalary());
         _msgLbl = getViewById(R.id.msg_lbl);
-        _msgLbl.setTypeface(getProhibitionRound());
     }
 
     @Override

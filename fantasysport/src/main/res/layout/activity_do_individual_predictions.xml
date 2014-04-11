@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:custom="http://schemas.android.com/apk/res-auto"
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
@@ -39,7 +40,7 @@
 
         </FrameLayout>
 
-        <TextView android:layout_width="wrap_content"
+        <com.fantasysport.views.ExTextView android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
                   android:layout_gravity="center_vertical"
                   android:textSize="@dimen/s_lage_font"
@@ -47,6 +48,7 @@
                   android:paddingRight="10dp"
                   android:id="@+id/name_lbl"
                   android:singleLine="true"
+                  custom:fontFamily="robotoThin"
                 />
 
     </LinearLayout>
@@ -63,28 +65,5 @@
               android:dividerHeight="2dp"
               android:divider="@drawable/player_devider"
             />
-
-
-    <FrameLayout android:layout_width="match_parent"
-                 android:layout_height="wrap_content"
-                 android:id="@+id/bottom_bar"
-                 android:background="#464646"
-                 android:padding="@dimen/side_marging"
-                 android:visibility="gone"
-            >
-            <Button android:layout_width="wrap_content"
-                    android:layout_height="@dimen/submit_btn_height"
-                    android:layout_gravity="center"
-                    android:background="@drawable/green_button"
-                    android:text="@string/submit"
-                    android:paddingRight="@dimen/btn_padding"
-                    android:paddingLeft="@dimen/btn_padding"
-                    android:textColor="#ffffff"
-                    android:id="@+id/submit_btn"
-                    android:textSize="@dimen/x_medium_font"
-                    />
-
-
-    </FrameLayout>
 
 </LinearLayout>

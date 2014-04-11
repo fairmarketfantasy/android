@@ -8,12 +8,20 @@ import android.graphics.Typeface;
  */
 public class TypefaceProvider {
 
-    protected static Typeface _robotoThin;
+    private static Typeface _robotoThin;
+    private static Typeface _prohibitionRoundTypeFace;
 
     public static Typeface getRobotoThin(Context context){
         if(_robotoThin == null){
             _robotoThin  = Typeface.createFromAsset(context.getAssets(), "fonts/Roboto-Thin.ttf");
         }
         return _robotoThin;
+    }
+
+    public static Typeface getProhibitionRound(Context context){
+        if(_prohibitionRoundTypeFace == null){
+            _prohibitionRoundTypeFace  = Typeface.createFromAsset(context.getAssets(), "fonts/ProhibitionRound.ttf");
+        }
+        return _prohibitionRoundTypeFace;
     }
 }

@@ -35,11 +35,9 @@ public class SignUpActivity extends AuthActivity {
 
         Button facebookBtn = getViewById(R.id.facebook_btn);
         initFacebookAuth(facebookBtn);
-        facebookBtn.setTypeface(getProhibitionRound());
 
         Button signUpBtn = getViewById(R.id.sign_up_btn);
         signUpBtn.setOnClickListener(_signUpBtnClickListener);
-        signUpBtn.setTypeface(getProhibitionRound());
 
         _emailTxt = getViewById(R.id.email_txt);
         _nameTxt = getViewById(R.id.name_txt);
@@ -107,7 +105,6 @@ public class SignUpActivity extends AuthActivity {
         titleView.setOnClickListener(_toSingnInListener);
         TextView txt = (TextView)titleView.findViewById(R.id.item_txt);
         txt.setText(getString(R.string.sign_in));
-        txt.setTypeface(getProhibitionRound());
         MenuItemCompat.setActionView(item, titleView);
         return super.onCreateOptionsMenu(menu);
     }

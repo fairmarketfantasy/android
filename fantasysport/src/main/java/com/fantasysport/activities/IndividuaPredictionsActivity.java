@@ -42,25 +42,18 @@ public class IndividuaPredictionsActivity extends BaseActivity implements StatsA
 
         setStartParameters(savedInstanceState);
 
-        Button sbmBtn = getViewById(R.id.submit_btn);
-        sbmBtn.setTypeface(getProhibitionRound());
-        sbmBtn.setOnClickListener(_submitBtnClickListener);
-
         _statsAdapter = new StatsAdapter(this, _player);
 //        _player.getTeam()
         _statsAdapter.setSubmitListener(this);
         ListView listView = getViewById(R.id.stats_list);
         listView.setAdapter(_statsAdapter);
         TextView nameLbl = getViewById(R.id.name_lbl);
-        nameLbl.setTypeface(getRobotoThin());
         boolean isHomeGame = _player.getTeam().equalsIgnoreCase(_game.getHomeTeam());
         nameLbl.setText(String.format("%s %s %s",_player.getName(), isHomeGame?"vs":"@", _game.getAwayTeam()));
         View customBar = getLayoutInflater().inflate(R.layout.action_bar_title, null);
         TextView textView = (TextView)customBar.findViewById(R.id.fair_martet_txt);
-        textView.setTypeface(getProhibitionRound());
-        textView.setText("PT 25");
+        textView.setText("PT");
         getSupportActionBar().setCustomView(customBar);
-
 
         ImageView playerImg = getViewById(R.id.player_img);
         ImageLoader imageLoader = new ImageLoader(this);

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:custom="http://schemas.android.com/apk/res-auto"
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
@@ -42,7 +43,7 @@
 
         </LinearLayout>
 
-        <Button android:layout_width="wrap_content"
+        <com.fantasysport.views.ExButton android:layout_width="wrap_content"
                 android:layout_height="@dimen/btn_height"
                 android:layout_gravity="center_vertical"
                 android:textColor="#FFFFFF"
@@ -51,6 +52,7 @@
                 android:background="@drawable/autofill_button"
                 android:text="ROSTER"
                 android:id="@+id/roster_btn"
+                custom:fontFamily="prohibitionRound"
                 />
 
     </LinearLayout>

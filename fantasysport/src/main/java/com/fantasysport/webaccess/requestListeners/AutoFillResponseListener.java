@@ -5,5 +5,5 @@ import com.fantasysport.webaccess.responses.AutofillResponse;
 /**
  * Created by bylynka on 3/4/14.
  */
-public abstract class AutofillResponseListener extends ResponseListener<AutofillResponse> {
+public abstract class AutoFillResponseListener extends ResponseListener<AutofillResponse> {
 }

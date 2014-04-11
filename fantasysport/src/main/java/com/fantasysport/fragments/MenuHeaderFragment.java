@@ -72,13 +72,7 @@ public class MenuHeaderFragment extends BaseActivityFragment {
             popupWindow.setBackgroundDrawable(new BitmapDrawable());
             popupWindow.setOutsideTouchable(true);
 
-            TextView headerLbl = (TextView) popupView.findViewById(R.id.title_lbl);
-            headerLbl.setTypeface(getProhibitionRound());
-
-            TextView thisMonthLbl = (TextView) popupView.findViewById(R.id.this_month_lbl);
-            thisMonthLbl.setTypeface(getProhibitionRound());
             Button closeBtn = (Button) popupView.findViewById(R.id.close_btn);
-            closeBtn.setTypeface(getProhibitionRound());
             closeBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -91,7 +85,6 @@ public class MenuHeaderFragment extends BaseActivityFragment {
             pointslbl.setText(String.format("%.2f", (double) (userData.getFanBucks() / 100)));
 
             TextView balansLbl = (TextView) popupView.findViewById(R.id.balance_lbl);
-            balansLbl.setTypeface(getProhibitionRound());
             balansLbl.setText(String.format("$%.2f",(double)(userData.getBalance()/100)));
 
             TextView awardLbl = (TextView) popupView.findViewById(R.id.award_lbl);

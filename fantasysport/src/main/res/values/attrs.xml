@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ExTextView">
+        <attr name="fontFamily" format="enum">
+            <enum name="themeFont" value="0"/>
+            <enum name="prohibitionRound" value="1"/>
+            <enum name="robotoThin" value="2"/>
+        </attr>
+    </declare-styleable>
+</resources>

@@ -82,8 +82,6 @@ public class RosterPlayersAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Button tradeBtn = null;
-        Button pt25Btn = null;
         if (convertView == null) {
             LayoutInflater mInflater = (LayoutInflater)
                     _context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
@@ -91,10 +89,6 @@ public class RosterPlayersAdapter extends BaseAdapter {
             final ColorViewDrawable viewDrawable = new ColorViewDrawable(Color.parseColor("#F0F0F0"), Color.parseColor("#D6D6D6"));
             viewDrawable.setStateListener(new ColorViewDrawableListener(convertView));
             convertView.setBackgroundDrawable(viewDrawable);
-            pt25Btn = (Button) convertView.findViewById(R.id.pt25_btn);
-            pt25Btn.setTypeface(_context.getProhibitionRound());
-            tradeBtn = (Button) convertView.findViewById(R.id.trade_btn);
-            tradeBtn.setTypeface(_context.getProhibitionRound());
         }
         IPlayer item = _players.get(position);
         boolean isSelected = item instanceof Player;
@@ -103,9 +97,8 @@ public class RosterPlayersAdapter extends BaseAdapter {
             player = (Player) item;
         }
         TextView gamePositionTxt = (TextView) convertView.findViewById(R.id.position_lbl);
-        gamePositionTxt.setTypeface(_context.getRobotoThin());
-        tradeBtn = (Button) convertView.findViewById(R.id.trade_btn);
-        pt25Btn = (Button) convertView.findViewById(R.id.pt25_btn);
+        Button tradeBtn = (Button) convertView.findViewById(R.id.trade_btn);
+        Button pt25Btn = (Button) convertView.findViewById(R.id.pt25_btn);
         TextView nameLbl = (TextView) convertView.findViewById(R.id.name_lbl);
         TextView priceLbl = (TextView) convertView.findViewById(R.id.buy_price_lbl);
         PlayerProgressTextView progressLbl = (PlayerProgressTextView) convertView.findViewById(R.id.progress_lbl);

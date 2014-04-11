@@ -48,7 +48,7 @@ public class ActivePredictionFragment extends BasePredictionFragment {
             @Override
             public void onRequestSuccess(List list) {
                 dismissProgress();
-                PredictionAdapter adapter = new PredictionAdapter(getActivity(), (List<Prediction>)list, getProhibitionRound());
+                PredictionAdapter adapter = new PredictionAdapter(getActivity(), (List<Prediction>)list);
                 adapter.setOnShowRosterListener(ActivePredictionFragment.this);
                 _predictionListView.setAdapter(adapter);
                 setRefreshComplete();
@@ -69,7 +69,7 @@ public class ActivePredictionFragment extends BasePredictionFragment {
             @Override
             public void onRequestSuccess(List list) {
                 dismissProgress();
-                IndividualPredictionAdapter adapter = new IndividualPredictionAdapter(getActivity(), (List<IndividualPrediction>)list, getProhibitionRound());
+                IndividualPredictionAdapter adapter = new IndividualPredictionAdapter(getActivity(), (List<IndividualPrediction>)list);
                 _predictionListView.setAdapter(adapter);
                 setRefreshComplete();
             }

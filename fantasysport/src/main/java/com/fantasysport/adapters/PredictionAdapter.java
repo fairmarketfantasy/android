@@ -22,14 +22,12 @@ public class PredictionAdapter extends BaseAdapter {
 
     private List<Prediction> _items;
     private Context _context;
-    private Typeface _typeface;
     private ILoadListener _listener;
     private IOnShowRosterListener _onShowRosterListener;
 
-    public PredictionAdapter(Context context, List<Prediction> items, Typeface typeface){
+    public PredictionAdapter(Context context, List<Prediction> items){
         _items = items;
         _context = context;
-        _typeface = typeface;
     }
 
     public void setOnShowRosterListener(IOnShowRosterListener onShowRosterListener){
@@ -83,18 +81,14 @@ public class PredictionAdapter extends BaseAdapter {
         Prediction prediction = _items.get(position);
         if(prediction.isEmpty()){
             convertView = getLayoutInflater().inflate(R.layout.loading_item, null);
-            ((TextView)convertView).setTypeface(_typeface);
             raiseOnLoad();
             return convertView;
         }
 
-        Button btn;
         if (convertView == null || convertView.getId() != R.id.root) {
             convertView = getLayoutInflater().inflate(R.layout.prediction_item, null);
-            btn = (Button)convertView.findViewById(R.id.roster_btn);
-            btn.setTypeface(_typeface);
         }
-        btn = (Button)convertView.findViewById(R.id.roster_btn);
+        Button btn = (Button)convertView.findViewById(R.id.roster_btn);
         btn.setOnClickListener(new OnRosterBtnClickListener(prediction));
         TextView nameLbl = (TextView)convertView.findViewById(R.id.name_lbl);
         nameLbl.setText(prediction.getMarket().getName());

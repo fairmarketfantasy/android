@@ -103,7 +103,7 @@ public class PredictionActivity extends BaseActivity implements ActionBar.OnNavi
         {
             height = TypedValue.complexToDimensionPixelSize(tv.data,getResources().getDisplayMetrics());
         }
-        getSupportActionBar().setListNavigationCallbacks(new PredictionsDropdownAdapter(PredictionActivity.this, height, getProhibitionRound()), this);
+        getSupportActionBar().setListNavigationCallbacks(new PredictionsDropdownAdapter(PredictionActivity.this, height), this);
         getSupportActionBar().setSelectedNavigationItem(_currentPredictionType);
     }
 

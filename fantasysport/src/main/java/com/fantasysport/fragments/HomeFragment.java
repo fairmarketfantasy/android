@@ -6,10 +6,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.TextView;
 import com.fantasysport.R;
 import com.fantasysport.activities.MainActivity;
+import com.fantasysport.adapters.PlayerItem;
+import com.fantasysport.models.IPlayer;
 import com.fantasysport.models.Market;
+import com.fantasysport.models.Player;
 import com.fantasysport.models.Roster;
 import com.fantasysport.views.Switcher;
 import com.fantasysport.webaccess.requestListeners.RequestError;
@@ -21,11 +23,13 @@ import java.util.List;
 /**
  * Created by bylynka on 3/14/14.
  */
-public class HomeFragment extends BaseHomeFragment  implements AdapterView.OnItemClickListener,
-        Switcher.ISelectedListener, MainActivity.IOnMarketsListener{
+public class HomeFragment extends BaseHomeFragment implements AdapterView.OnItemClickListener,
+        Switcher.ISelectedListener, MainActivity.IOnMarketsListener {
 
+    private Button _submit100fbBtn;
+    private Button _submitHth27fb;
 
-    public HomeFragment(){
+    public HomeFragment() {
         super();
     }
 
@@ -33,25 +37,60 @@ public class HomeFragment extends BaseHomeFragment  implements AdapterView.OnIte
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         _rootView = inflater.inflate(R.layout.fragment_main, container, false);
         init();
-        ((MainActivity)getMainActivity()).addOnMarketsListener(this);
+        ((MainActivity) getMainActivity()).addOnMarketsListener(this);
         return _rootView;
     }
 
     @Override
     protected void init() {
         super.init();
-        Button submit100fbBtn = getViewById(R.id.submit_100fb_btn);
-        submit100fbBtn.setTypeface(getProhibitionRound());
-        submit100fbBtn.setOnClickListener(_submitClickListenere);
-        Button submitHth27fb = getViewById(R.id.submit_hth_btn);
-        submitHth27fb.setTypeface(getProhibitionRound());
-        submitHth27fb.setOnClickListener(_submitClickListenere);
+        _submit100fbBtn = getViewById(R.id.submit_100fb_btn);
+        _submit100fbBtn.setOnClickListener(_submitClickListenere);
+        _submitHth27fb = getViewById(R.id.submit_hth_btn);
+        _submitHth27fb.setOnClickListener(_submitClickListenere);
+        enableSubmitButtons();
+    }
+
+    private void enableSubmitButtons(){
+        if(_submit100fbBtn == null || _submitHth27fb == null){
+            return;
+        }
+        boolean canSubmitRoster = canSubmitRoster();
+        _submit100fbBtn.setEnabled(canSubmitRoster);
+        _submitHth27fb.setEnabled(canSubmitRoster);
+    }
+
+
+    @Override
+    protected void setEmptyRoster() {
+        super.setEmptyRoster();
+       enableSubmitButtons();
+    }
+
+    protected boolean canSubmitRoster() {
+        if (_playerAdapter == null ||
+                _playerAdapter.getItems() == null ||
+                _playerAdapter.getItems().size() == 0) {
+            return false;
+        }
+        for (IPlayer player : _playerAdapter.getItems()){
+            if(player instanceof PlayerItem){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    protected void updatePlayersList() {
+        super.updatePlayersList();
+        enableSubmitButtons();
     }
 
     View.OnClickListener _submitClickListenere = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-       Roster roster = getRoster();
+            Roster roster = getRoster();
             if (roster == null) {
                 showAlert("", getString(R.string.fill_roster));
                 return;
@@ -82,7 +121,7 @@ public class HomeFragment extends BaseHomeFragment  implements AdapterView.OnIte
         if (markets != null && markets.size() > 0) {
             _pager.setCurrentItem(0);
             setNewRoster(markets.get(0));
-        }else {
+        } else {
             setEmptyRoster();
         }
     }
