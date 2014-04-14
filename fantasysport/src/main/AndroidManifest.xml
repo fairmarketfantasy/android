@@ -17,7 +17,6 @@
 
     <uses-feature android:name="android.hardware.camera" android:required="true" />
 
-
       <supports-screens
               android:smallScreens="true"
               android:normalScreens="true"
@@ -130,7 +129,7 @@
 
 
 
-        <activity android:name="net.hockeyapp.android.UpdateActivity" />
+        <!--<activity android:name="net.hockeyapp.android.UpdateActivity" />-->
 
         <service
                 android:name=".webaccess.GsonGoogleHttpClientSpiceService"

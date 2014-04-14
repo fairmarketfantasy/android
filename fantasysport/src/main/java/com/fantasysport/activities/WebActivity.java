@@ -9,6 +9,8 @@ import com.fantasysport.webaccess.WebProxy;
 import com.fantasysport.webaccess.requestListeners.RequestError;
 import com.fantasysport.webaccess.requestListeners.StringResponseListener;
 
+import java.net.URLEncoder;
+
 /**
  * Created by bylynka on 3/7/14.
  */
@@ -36,7 +38,7 @@ public class WebActivity extends BaseActivity {
             }
             @Override
             public void onRequestSuccess(String s) {
-               _webView.loadData(s,"text/html", "utf-8");
+               _webView.loadData(URLEncoder.encode(s).replaceAll("\\+"," "),"text/html", "utf-8");
                 dismissProgress();
             }
         });
