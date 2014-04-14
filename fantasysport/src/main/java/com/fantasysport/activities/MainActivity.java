@@ -18,15 +18,19 @@ import com.fantasysport.R;
 import com.fantasysport.adapters.MenuItem;
 import com.fantasysport.adapters.MenuListAdapter;
 import com.fantasysport.fragments.MenuHeaderFragment;
+import com.fantasysport.models.Game;
 import com.fantasysport.models.Market;
 import com.fantasysport.models.UserData;
+import com.fantasysport.utility.CacheProvider;
 import com.fantasysport.utility.DateUtils;
+import com.fantasysport.utility.DeviceInfo;
 import com.fantasysport.webaccess.requestListeners.MarketsResponseListener;
 import com.fantasysport.webaccess.requestListeners.RequestError;
 import com.fantasysport.webaccess.requestListeners.UserResponseListener;
 import com.fantasysport.webaccess.responses.MarketResponse;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -211,8 +215,6 @@ public class MainActivity extends BaseMainActivity {
         });
     }
 
-    private int _counter = 0;
-
     private void updateMarkets() {
         showProgress();
         _webProxy.getMarkets(new MarketsResponseListener() {
@@ -225,10 +227,6 @@ public class MainActivity extends BaseMainActivity {
             @Override
             public void onRequestSuccess(MarketResponse response) {
                 _storage.setDefaultRosterData(response.getDefaultRosterData());
-//                _counter++;
-//                if (_counter % 2 == 1) {
-//                    response.getMarketsContainer().getMarkets().clear();
-//                }
                 _storage.setMarketsContainer(response.getMarketsContainer());
                 List<Market> tmpMarkets = _storage.getMarkets();
                 if (marketChanged(tmpMarkets, _markets)) {
@@ -246,9 +244,34 @@ public class MainActivity extends BaseMainActivity {
     }
 
 
+    public void updateMarketsTime(){
+
+        int currentGmt = DeviceInfo.getGMTInMinutes();
+        int gmt = CacheProvider.getInt(this, Const.GMT_IN_MINUTES);
+
+        if(_markets == null || gmt == -1 || currentGmt == gmt){
+            return;
+        }
+
+        for (Market market : _markets){
+            List<Game> games = market.getGames();
+            if(games == null){
+                continue;
+            }
+            for (Game game : games){
+                Date gameTime = game.getGameTime();
+                gameTime = DateUtils.addMinutes(gameTime, currentGmt - gmt);
+                game.setGameTime(gameTime);
+            }
+        }
+        getWindow().getDecorView().findViewById(android.R.id.content).invalidate();
+        getWindow().getDecorView().findViewById(android.R.id.content).requestLayout();
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
+        updateMarketsTime();
         long nowTime = DateUtils.getCurrentDate().getTime();
         long marketsTime = _storage.getMarketsContainer().getUpdatedAt();
         long deltaTime = nowTime - marketsTime;
@@ -267,6 +290,11 @@ public class MainActivity extends BaseMainActivity {
             return false;
         }
         if (newMarkets.size() != oldMarkets.size()) {
+            return true;
+        }
+        int currentGmt = DeviceInfo.getGMTInMinutes();
+        int gmt = CacheProvider.getInt(this, Const.GMT_IN_MINUTES);
+        if(gmt != -1 && currentGmt != gmt){
             return true;
         }
         for (Market newMarket : newMarkets) {

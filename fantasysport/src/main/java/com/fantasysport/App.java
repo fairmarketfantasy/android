@@ -7,6 +7,7 @@ import com.fantasysport.models.MarketsContainer;
 import com.fantasysport.models.UserData;
 import com.fantasysport.repo.Storage;
 import com.fantasysport.utility.CacheProvider;
+import com.fantasysport.utility.DeviceInfo;
 import com.fantasysport.webaccess.RequestHelper;
 import com.google.gson.Gson;
 //import com.ubertesters.sdk.Ubertesters;
@@ -90,6 +91,9 @@ public class App extends Application {
         public void onMarkets(MarketsContainer container) {
             String marketsStr = container != null? new Gson().toJson(container): null;
             CacheProvider.putString(App.this, MARKETS, marketsStr);
+            int gmt = DeviceInfo.getGMTInMinutes();
+            CacheProvider.putInt(App.this, Const.GMT_IN_MINUTES, gmt);
+
         }
 
         @Override
