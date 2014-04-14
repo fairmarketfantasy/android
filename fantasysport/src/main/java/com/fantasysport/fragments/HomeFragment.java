@@ -74,12 +74,13 @@ public class HomeFragment extends BaseHomeFragment implements AdapterView.OnItem
                 _playerAdapter.getItems().size() == 0) {
             return false;
         }
+        int counter = 0;
         for (IPlayer player : _playerAdapter.getItems()){
-            if(player instanceof PlayerItem){
-                return false;
+            if(player instanceof Player){
+                counter++;
             }
         }
-        return true;
+        return counter > 0;
     }
 
     @Override
