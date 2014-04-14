@@ -17,6 +17,7 @@ import com.fantasysport.views.Switcher;
 import com.fantasysport.webaccess.requestListeners.RequestError;
 import com.fantasysport.webaccess.requestListeners.SubmitRosterResponseListener;
 import com.fantasysport.webaccess.requests.SubmitRosterRequest;
+import com.fantasysport.webaccess.responses.SubmitRosterResponse;
 
 import java.util.List;
 
@@ -105,10 +106,14 @@ public class HomeFragment extends BaseHomeFragment implements AdapterView.OnItem
                 }
 
                 @Override
-                public void onRequestSuccess(Object o) {
+                public void onRequestSuccess(SubmitRosterResponse response) {
                     setRoster((Roster) null);
                     setEmptyRoster();
                     dismissProgress();
+                    String msg = response.getMessage();
+                    if(msg != null){
+                        showAlert("", msg);
+                    }
                 }
             });
         }
