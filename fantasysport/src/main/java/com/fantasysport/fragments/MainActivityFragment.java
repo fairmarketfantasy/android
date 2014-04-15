@@ -112,6 +112,9 @@ public abstract class MainActivityFragment extends BaseActivityFragment implemen
     }
 
     protected void setMoneyTxt(double price) {
+        if(_moneyTxt == null){
+            return;
+        }
         _moneyTxt.setText(String.format("$%.0f", price));
     }
 

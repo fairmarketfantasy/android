@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.*;
 import android.widget.AdapterView;
 import android.widget.ImageView;
@@ -178,7 +179,7 @@ public class MainActivity extends BaseMainActivity {
         }
         switch (item.getItemId()) {
             case R.id.refresh:
-                updateMainData();
+                updateMainData(false);
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -215,7 +216,7 @@ public class MainActivity extends BaseMainActivity {
         });
     }
 
-    private void updateMarkets() {
+    private void updateMarkets(final boolean isTimeChanged) {
         showProgress();
         _webProxy.getMarkets(new MarketsResponseListener() {
             @Override
@@ -229,7 +230,7 @@ public class MainActivity extends BaseMainActivity {
                 _storage.setDefaultRosterData(response.getDefaultRosterData());
                 _storage.setMarketsContainer(response.getMarketsContainer());
                 List<Market> tmpMarkets = _storage.getMarkets();
-                if (marketChanged(tmpMarkets, _markets)) {
+                if (isTimeChanged || marketChanged(tmpMarkets, _markets)) {
                     _markets = tmpMarkets;
                     raiseOnMarketListener(_markets);
                 }
@@ -238,46 +239,22 @@ public class MainActivity extends BaseMainActivity {
         });
     }
 
-    private void updateMainData() {
+    private void updateMainData(boolean isTimeChanged) {
         updateUserData();
-        updateMarkets();
-    }
-
-
-    public void updateMarketsTime(){
-
-        int currentGmt = DeviceInfo.getGMTInMinutes();
-        int gmt = CacheProvider.getInt(this, Const.GMT_IN_MINUTES);
-
-        if(_markets == null || gmt == -1 || currentGmt == gmt){
-            return;
-        }
-
-        for (Market market : _markets){
-            List<Game> games = market.getGames();
-            if(games == null){
-                continue;
-            }
-            for (Game game : games){
-                Date gameTime = game.getGameTime();
-                gameTime = DateUtils.addMinutes(gameTime, currentGmt - gmt);
-                game.setGameTime(gameTime);
-            }
-        }
-        getWindow().getDecorView().findViewById(android.R.id.content).invalidate();
-        getWindow().getDecorView().findViewById(android.R.id.content).requestLayout();
+        updateMarkets(isTimeChanged);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        updateMarketsTime();
         long nowTime = DateUtils.getCurrentDate().getTime();
         long marketsTime = _storage.getMarketsContainer().getUpdatedAt();
         long deltaTime = nowTime - marketsTime;
         long deltaTimeInMin = deltaTime / 60000;
-        if (deltaTimeInMin > 35) {
-            updateMainData();
+        boolean isTimeChanged = CacheProvider.getBoolean(this, Const.TIME_ZONE_CHANGED);
+        CacheProvider.putBoolean(this, Const.TIME_ZONE_CHANGED ,false);
+        if (deltaTimeInMin > 35 || isTimeChanged) {
+            updateMainData(isTimeChanged);
         }
     }
 

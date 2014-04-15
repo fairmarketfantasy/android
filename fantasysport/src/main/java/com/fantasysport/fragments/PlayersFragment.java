@@ -41,9 +41,9 @@ public class PlayersFragment extends BasePlayersFragment implements MainActivity
         if (getRoster() == null) {
             getWebProxy().createRoster(market.getId(), new RosterResponseListener() {
                 @Override
-                public void onRequestError(RequestError message) {
+                public void onRequestError(RequestError error) {
                     dismissProgress();
-                    showAlert(getString(R.string.error), getString(R.string.unknown_error));
+                    showAlert(getString(R.string.error), error.getMessage());
                 }
                 @Override
                 public void onRequestSuccess(Roster roster) {

@@ -91,9 +91,7 @@ public class App extends Application {
         public void onMarkets(MarketsContainer container) {
             String marketsStr = container != null? new Gson().toJson(container): null;
             CacheProvider.putString(App.this, MARKETS, marketsStr);
-            int gmt = DeviceInfo.getGMTInMinutes();
-            CacheProvider.putInt(App.this, Const.GMT_IN_MINUTES, gmt);
-
+            CacheProvider.putBoolean(App.this, Const.TIME_ZONE_CHANGED ,false);
         }
 
         @Override

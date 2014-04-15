@@ -48,4 +48,15 @@ public class CacheProvider {
         return preferences.getInt(key, -1);
     }
 
+    public static boolean putBoolean(Context context, String key, boolean value){
+        SharedPreferences.Editor editor = getEditor(context);
+        editor.putBoolean(key, value);
+        return editor.commit();
+    }
+
+    public static boolean getBoolean(Context context, String key){
+        SharedPreferences preferences = context.getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
+        return preferences.getBoolean(key, false);
+    }
+
 }
