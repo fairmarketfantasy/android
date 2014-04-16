@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.fantasysport.R;
+import com.fantasysport.models.Position;
 import com.fantasysport.models.Roster;
 
 /**
@@ -38,7 +39,7 @@ public class PlayersHistoryPredictionFragment extends BasePlayersFragment {
     }
 
     @Override
-    protected void loadPlayers(final String position) {
+    protected void loadPlayers(final Position position) {
     }
 
     @Override

@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 import com.fantasysport.Const;
 import com.fantasysport.R;
 import com.fantasysport.activities.IndividuaPredictionsActivity;
@@ -14,6 +15,7 @@ import com.fantasysport.activities.MainActivity;
 import com.fantasysport.adapters.CandidatePlayersAdapter;
 import com.fantasysport.models.Market;
 import com.fantasysport.models.Player;
+import com.fantasysport.models.Position;
 import com.fantasysport.models.Roster;
 import com.fantasysport.views.PositionView;
 import com.fantasysport.webaccess.requestListeners.AddPlayerResponseListener;
@@ -89,6 +91,14 @@ public abstract class BasePlayersFragment extends MainActivityFragment implement
         _pager.setCurrentItem(position , false);
     }
 
+    protected void setPositionLabel(String positionName){
+        TextView lbl = getViewById(R.id.position_name_lbl);
+        if(lbl == null){
+            return;
+        }
+        lbl.setText(positionName);
+    }
+
     private void setPlayersListView() {
         _playersList = getViewById(R.id.players_list);
         _playersAdapter = new CandidatePlayersAdapter(getActivity());
@@ -98,11 +108,11 @@ public abstract class BasePlayersFragment extends MainActivityFragment implement
 
 
     @Override
-    public void positionSelected(String position) {
+    public void positionSelected(Position position) {
         loadPlayers(position);
     }
 
-    protected abstract void loadPlayers(final String position);
+    protected abstract void loadPlayers(final Position position);
 
     @Override
     public void onAddPlayer(Player player) {

@@ -14,9 +14,9 @@ public class DefaultRosterData implements Serializable {
     private double _remainingSalary;
 
     @SerializedName("positions")
-    private List<String> _positions;
+    private List<Position> _positions;
 
-    public List<String> getPositions(){
+    public List<Position> getPositions(){
         return _positions;
     }
 

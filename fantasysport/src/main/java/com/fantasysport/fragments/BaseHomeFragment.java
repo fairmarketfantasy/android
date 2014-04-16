@@ -102,9 +102,9 @@ public abstract class BaseHomeFragment extends MainActivityFragment  implements 
         getFragmentMediator().changeRemainingSalary(this, rosterData.getRemainingSalary());
         List<IPlayer> items = _playerAdapter.getItems();
         items.clear();
-        List<String> positions = rosterData.getPositions();
+        List<Position> positions = rosterData.getPositions();
         for (int i = 0; i < positions.size(); i++) {
-            items.add(new PlayerItem(positions.get(i)));
+            items.add(new PlayerItem(positions.get(i).getAcronym()));
         }
         _playerAdapter.notifyDataSetChanged();
     }

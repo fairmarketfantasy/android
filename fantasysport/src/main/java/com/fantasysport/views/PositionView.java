@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import com.fantasysport.R;
+import com.fantasysport.models.Position;
 
 import java.util.List;
 
@@ -19,7 +20,7 @@ import java.util.List;
 public class PositionView extends LinearLayout {
 
     private OnPositionSelecteListener _positionListener;
-    private String _position;
+    private Position _position;
 
     public PositionView(Context context) {
         super(context);
@@ -35,12 +36,12 @@ public class PositionView extends LinearLayout {
         _positionListener = listener;
     }
 
-    public void setPositions(List<String> positions){
+    public void setPositions(List<Position> positions){
         if(positions == null || positions.size() == 0){
             return;
         }
         for (int i = 0; i < positions.size(); i++){
-            String pos = positions.get(i);
+            Position pos = positions.get(i);
             ButtonGravity gravity = ButtonGravity.Center;
             if(i == 0){
                 gravity = ButtonGravity.Left;
@@ -53,12 +54,12 @@ public class PositionView extends LinearLayout {
         getChildAt(0).setSelected(true);
     }
 
-    private void addPositionButton(String position, ButtonGravity gravity){
+    private void addPositionButton(Position position, ButtonGravity gravity){
         Button btn = new Button(getContext());
         LinearLayout.LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, getResources().getDimensionPixelOffset(R.dimen.btn_height), 1);
         params.setMargins(1,0,1,0);
         btn.setLayoutParams(params);
-        btn.setText(position.toUpperCase());
+        btn.setText(position.getAcronym());
         btn.setTag(position);
         btn.setOnClickListener(_clickBtnListener);
         btn.setPadding(0,0,0,0);
@@ -78,7 +79,7 @@ public class PositionView extends LinearLayout {
         addView(btn);
     }
 
-    private void raisOnPositionSelected(String position){
+    private void raisOnPositionSelected(Position position){
         if(_positionListener == null){
             return;
         }
@@ -100,12 +101,12 @@ public class PositionView extends LinearLayout {
                 getChildAt(i).setSelected(false);
             }
             v.setSelected(true);
-            _position = (String)v.getTag();
+            _position = (Position)v.getTag();
             raisOnPositionSelected(_position);
         }
     };
 
-    public String getPosition() {
+    public Position getPosition() {
         return _position;
     }
 
@@ -119,7 +120,7 @@ public class PositionView extends LinearLayout {
     }
 
     public interface OnPositionSelecteListener{
-        public void positionSelected(String position);
+        public void positionSelected(Position position);
     }
 
     public enum ButtonGravity{

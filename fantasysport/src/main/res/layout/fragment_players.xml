@@ -34,6 +34,7 @@
                               android:textSize="@dimen/s_lage_font"
                               android:textColor="#595959"
                               android:text="@string/your_team"
+                              android:id="@+id/position_name_lbl"
                             />
 
                     <com.fantasysport.views.ExTextView android:layout_width="wrap_content"

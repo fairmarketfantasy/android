@@ -22,10 +22,6 @@ import com.fantasysport.webaccess.WebProxy;
 import com.fantasysport.webaccess.requestListeners.RequestError;
 import com.fantasysport.webaccess.requestListeners.SignOutResponseListener;
 import com.octo.android.robospice.SpiceManager;
-import net.hockeyapp.android.CrashManager;
-import net.hockeyapp.android.UpdateManager;
-//import net.hockeyapp.android.CrashManager;
-//import net.hockeyapp.android.UpdateManager;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

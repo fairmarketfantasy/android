@@ -2,6 +2,7 @@ package com.fantasysport.fragments;
 
 import android.view.View;
 import com.fantasysport.models.Market;
+import com.fantasysport.models.Position;
 import com.fantasysport.models.Roster;
 import com.fantasysport.webaccess.WebProxy;
 
@@ -11,17 +12,18 @@ import com.fantasysport.webaccess.WebProxy;
 public class PredictionActivePlayersFragment extends BasePlayersFragment {
 
     @Override
-    protected void loadPlayers(final String position){
+    protected void loadPlayers(final Position position){
         Market market = getMarket();
-        if(market == _lastMarket && _lastPosition == position
+        if(market == _lastMarket && _lastPosition == position.getAcronym()
                 && _lastBenchedState == canBenched() || getRoster() == null){
             return;
         }
+        setPositionLabel(position.getName());
         showProgress();
         _lastMarket = market;
-        _lastPosition = position;
+        _lastPosition = position.getAcronym();
         _lastBenchedState = canBenched();
-        getWebProxy().getPlayers(position, canBenched(), getRoster().getId(), _playersListener);
+        getWebProxy().getPlayers(position.getAcronym(), canBenched(), getRoster().getId(), _playersListener);
     }
 
     @Override
