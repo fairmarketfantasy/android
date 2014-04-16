@@ -141,7 +141,7 @@ public class BaseActivity extends ActionBarActivity{
         new AlertDialog.Builder(this)
                 .setTitle(title)
                 .setMessage(message)
-                .setNeutralButton(R.string.close, onCloseListener)
+                .setNeutralButton("OK", onCloseListener)
                 .show();
     }
 

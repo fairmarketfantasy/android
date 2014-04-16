@@ -113,7 +113,7 @@ public class PositionView extends LinearLayout {
     public void setPosition(String position) {
         for (int i = 0; i < getChildCount(); i++){
            View v = getChildAt(i);
-            if(((String)v.getTag()).equalsIgnoreCase(position)){
+            if(((Position)v.getTag()).getAcronym().equalsIgnoreCase(position)){
                 _clickBtnListener.onClick(v);
             }
         }
