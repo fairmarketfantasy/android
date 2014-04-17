@@ -37,7 +37,7 @@ public class BaseActivity extends ActionBarActivity{
     protected WebProxy _webProxy;
     protected Storage _storage;
     protected int _progressCounter;
-    private static final String APP_ID = "f7a14bcc9eb0186b4bf705f93229f693";
+    private static final String APP_ID = "3b749930a830362f2e47565e66fec8b8";
 
     @Override
     protected void onResume() {
