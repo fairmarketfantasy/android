@@ -37,23 +37,18 @@ public class BaseActivity extends ActionBarActivity{
     protected WebProxy _webProxy;
     protected Storage _storage;
     protected int _progressCounter;
-
     private static final String APP_ID = "f7a14bcc9eb0186b4bf705f93229f693";
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        checkForUpdates();
+    protected void onResume() {
+        super.onResume();
+        checkForCrashes();
     }
 
     private void checkForCrashes() {
         CrashManager.register(this, APP_ID);
     }
 
-    private void checkForUpdates() {
-        // Remove this for store builds!
-        UpdateManager.register(this, APP_ID);
-    }
 
     @Override
     public View onCreateView(String name, Context context, AttributeSet attrs) {
