@@ -9,5 +9,7 @@ public enum MenuItemEnum {
     Predictions,
     Support,
     Settings,
-    SignOut
+    SignOut,
+    Sports,
+    MLB
 }

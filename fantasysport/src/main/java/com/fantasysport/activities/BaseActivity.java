@@ -22,6 +22,8 @@ import com.fantasysport.webaccess.WebProxy;
 import com.fantasysport.webaccess.requestListeners.RequestError;
 import com.fantasysport.webaccess.requestListeners.SignOutResponseListener;
 import com.octo.android.robospice.SpiceManager;
+import net.hockeyapp.android.CrashManager;
+import net.hockeyapp.android.UpdateManager;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -41,17 +43,17 @@ public class BaseActivity extends ActionBarActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        checkForUpdates();
+        checkForUpdates();
     }
 
-//    private void checkForCrashes() {
-//        CrashManager.register(this, APP_ID);
-//    }
-//
-//    private void checkForUpdates() {
-//        // Remove this for store builds!
-//        UpdateManager.register(this, APP_ID);
-//    }
+    private void checkForCrashes() {
+        CrashManager.register(this, APP_ID);
+    }
+
+    private void checkForUpdates() {
+        // Remove this for store builds!
+        UpdateManager.register(this, APP_ID);
+    }
 
     @Override
     public View onCreateView(String name, Context context, AttributeSet attrs) {
@@ -137,16 +139,17 @@ public class BaseActivity extends ActionBarActivity{
         return (T)findViewById(viewId);
     }
 
-    protected void showAlert(String title, String message, DialogInterface.OnClickListener onCloseListener){
-        new AlertDialog.Builder(this)
+    protected AlertDialog showAlert(String title, String message, DialogInterface.OnClickListener onCloseListener){
+       AlertDialog dialog = new AlertDialog.Builder(this)
                 .setTitle(title)
                 .setMessage(message)
                 .setNeutralButton("OK", onCloseListener)
                 .show();
+        return dialog;
     }
 
-    public void showAlert(String title, String message){
-        showAlert(title, message, null);
+    public AlertDialog showAlert(String title, String message){
+       return showAlert(title, message, null);
     }
 
     private void initActionBar(ActionBar bar){

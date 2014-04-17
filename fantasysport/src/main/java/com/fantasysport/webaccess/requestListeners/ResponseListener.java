@@ -21,7 +21,6 @@ public abstract class ResponseListener<T> implements RequestListener<T> {
         try{
             if(e instanceof NoNetworkException){
                 error = new RequestError("Network is not available");
-
             }
             else if(e.getCause() instanceof HttpResponseException){
                 HttpResponseException exception = (HttpResponseException)e.getCause();

@@ -34,14 +34,18 @@
                     />
         </LinearLayout>
     </FrameLayout>
-    <ListView android:id="@+id/left_drawer"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:layout_gravity="start"
-              android:choiceMode="singleChoice"
+    <ExpandableListView android:id="@+id/left_drawer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="start"
+                android:choiceMode="singleChoice"
               android:divider="#CC757575"
+              android:childDivider="#213651"
               android:dividerHeight="1dp"
               android:background="#90000000"
               android:scrollbars="none"
+              android:headerDividersEnabled="false"
+              android:groupIndicator="@android:color/transparent"
             />
+    <!--android:groupIndicator="@android:color/transparent"-->
 </android.support.v4.widget.DrawerLayout>

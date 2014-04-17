@@ -1,5 +1,6 @@
 package com.fantasysport.activities;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
@@ -11,9 +12,7 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.*;
-import android.widget.AdapterView;
-import android.widget.ImageView;
-import android.widget.ListView;
+import android.widget.*;
 import com.fantasysport.Const;
 import com.fantasysport.R;
 import com.fantasysport.adapters.MenuItem;
@@ -43,7 +42,7 @@ public class MainActivity extends BaseMainActivity {
     private DrawerLayout _drawerLayout;
     private ActionBarDrawerToggle _drawerToggle;
     private MenuListAdapter _menuAdapter;
-    protected ListView _menuList;
+    protected ExpandableListView _menuList;
     protected List<IOnMarketsListener> _marketListeners = new ArrayList<IOnMarketsListener>();
     protected MenuHeaderFragment _menuHeaderFragment;
     private android.view.MenuItem _refreshMenuItem;
@@ -121,16 +120,12 @@ public class MainActivity extends BaseMainActivity {
         setMenuHeaderImage(header);
         _menuList.addHeaderView(header, null, false);
         _menuHeaderFragment = (MenuHeaderFragment) getSupportFragmentManager().findFragmentById(R.id.menu_header_fragment);
-        _menuAdapter = new MenuListAdapter(this);
+        _menuAdapter = new MenuListAdapter(this, _menuList);
         _menuList.setAdapter(_menuAdapter);
         _menuList.setCacheColorHint(Color.TRANSPARENT);
-        _menuList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        _menuAdapter.setOnItemClickListener(new MenuListAdapter.IOnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                MenuItem item = (MenuItem) _menuAdapter.getItem(position - 1);
-                if(item == null){
-                    return;
-                }
+            public void onClick(MenuItem item) {
                 _drawerLayout.closeDrawer(_menuList);
                 switch (item.getId()) {
                     case LegalStuff:
@@ -151,9 +146,44 @@ public class MainActivity extends BaseMainActivity {
                     case Predictions:
                         showPredictions();
                         break;
+                    case MLB:
+                        AlertDialog dialog = showAlert(null, getString(R.string.coming_soon));
+//                        TextView messageText = (TextView)dialog.findViewById(android.R.id.message);
+//                        messageText.setGravity(Gravity.CENTER);
+                        break;
                 }
             }
         });
+//        _menuList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                MenuItem item = (MenuItem) _menuAdapter.getItem(position - 1);
+//                if(item == null){
+//                    return;
+//                }
+//                _drawerLayout.closeDrawer(_menuList);
+//                switch (item.getId()) {
+//                    case LegalStuff:
+//                        showWebView("pages/mobile/terms", "How It Works/Support");
+//                        break;
+//                    case Rules:
+//                        showWebView("pages/mobile/rules?sport=NBA", "Rules");
+//                        break;
+//                    case Support:
+//                        showWebView("pages/mobile/conditions", "Subscription terms");
+//                        break;
+//                    case Settings:
+//                        showSettingsView();
+//                        break;
+//                    case SignOut:
+//                        signOut();
+//                        break;
+//                    case Predictions:
+//                        showPredictions();
+//                        break;
+//                }
+//            }
+//        });
     }
 
     @Override

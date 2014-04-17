@@ -7,10 +7,8 @@ import com.fantasysport.models.MarketsContainer;
 import com.fantasysport.models.UserData;
 import com.fantasysport.repo.Storage;
 import com.fantasysport.utility.CacheProvider;
-import com.fantasysport.utility.DeviceInfo;
 import com.fantasysport.webaccess.RequestHelper;
 import com.google.gson.Gson;
-import com.ubertesters.sdk.Ubertesters;
 
 /**
  * Created by bylynka on 2/4/14.
