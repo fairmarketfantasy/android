@@ -108,7 +108,9 @@ public class MainActivity extends BaseMainActivity {
                 }
                 BitmapDrawable bitmapDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.basket);
                 Bitmap bitmap = bitmapDrawable.getBitmap();
-                Bitmap newBitmap = Bitmap.createBitmap(bitmap, 0, 0, headerView.getWidth(), headerView.getHeight(), null, false);
+                int width = headerView.getWidth() > bitmap.getWidth()? bitmap.getWidth(): headerView.getWidth();
+                int height = headerView.getHeight() > bitmap.getHeight()? bitmap.getHeight(): headerView.getHeight();
+                Bitmap newBitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height, null, false);
                 ImageView img = (ImageView) headerView.findViewById(R.id.image);
                 img.setImageBitmap(newBitmap);
             }
@@ -154,36 +156,6 @@ public class MainActivity extends BaseMainActivity {
                 }
             }
         });
-//        _menuList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                MenuItem item = (MenuItem) _menuAdapter.getItem(position - 1);
-//                if(item == null){
-//                    return;
-//                }
-//                _drawerLayout.closeDrawer(_menuList);
-//                switch (item.getId()) {
-//                    case LegalStuff:
-//                        showWebView("pages/mobile/terms", "How It Works/Support");
-//                        break;
-//                    case Rules:
-//                        showWebView("pages/mobile/rules?sport=NBA", "Rules");
-//                        break;
-//                    case Support:
-//                        showWebView("pages/mobile/conditions", "Subscription terms");
-//                        break;
-//                    case Settings:
-//                        showSettingsView();
-//                        break;
-//                    case SignOut:
-//                        signOut();
-//                        break;
-//                    case Predictions:
-//                        showPredictions();
-//                        break;
-//                }
-//            }
-//        });
     }
 
     @Override

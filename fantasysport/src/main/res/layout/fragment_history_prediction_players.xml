@@ -26,12 +26,13 @@
                          android:paddingLeft="@dimen/side_marging"
                          android:background="#E6E6E6">
 
-                <com.fantasysport.views.RobotoThinTextView android:layout_width="wrap_content"
+                <com.fantasysport.views.ExTextView android:layout_width="wrap_content"
                           android:layout_height="wrap_content"
                           android:layout_gravity="right|center_vertical"
                           android:textSize="@dimen/lage_font"
                           android:textColor="#E84C3D"
                           android:id="@+id/money_lbl"
+                          custom:fontFamily="prohibitionRound"
                         />
 
             </FrameLayout>

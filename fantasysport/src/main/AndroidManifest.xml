@@ -22,8 +22,7 @@
               android:normalScreens="true"
               android:largeScreens="true"
               android:xlargeScreens="true"
-              android:resizeable="true"
-              android:anyDensity="true" />
+              android:resizeable="true" />
 
       <compatible-screens>
           <!-- all small size screens -->

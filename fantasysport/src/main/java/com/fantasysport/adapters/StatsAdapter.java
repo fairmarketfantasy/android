@@ -16,6 +16,7 @@ import com.fantasysport.R;
 import com.fantasysport.models.Player;
 import com.fantasysport.models.StatsItem;
 import com.fantasysport.utility.StringHelper;
+import com.fantasysport.views.ConfirmDialog;
 
 import java.util.List;
 
@@ -138,12 +139,31 @@ public class StatsAdapter extends BaseAdapter {
                 updateView(v);
                 return;
             }
-            new AlertDialog.Builder(StatsAdapter.this._context)
+//            new AlertDialog.Builder(StatsAdapter.this._context)
+//                    .setTitle(StatsAdapter.this._player.getName())
+//                    .setMessage(String.format("%s than %.1f %s?", (_mode.equalsIgnoreCase(StatsItem.LESS_MODE) ? "Less" : "More"), _item.getValue(), _item.getName()))
+//                    .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {
+//                            if (_mode.equalsIgnoreCase(StatsItem.LESS_MODE)) {
+//                                _item.setBidLess(true);
+//                            } else {
+//                                _item.setBidMore(true);
+//                            }
+//                            updateView(v);
+//                            raiseSubmitListener();
+//
+//                        }
+//                    })
+//                    .setNegativeButton(R.string.cancel, null)
+//                    .show();
+
+            new ConfirmDialog(_context)
                     .setTitle(StatsAdapter.this._player.getName())
-                    .setMessage(String.format("%s than %.1f %s?", (_mode.equalsIgnoreCase(StatsItem.LESS_MODE) ? "Less" : "More"), _item.getValue(), _item.getName()))
-                    .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                    .setContent(String.format("%s than %.1f %s?", (_mode.equalsIgnoreCase(StatsItem.LESS_MODE) ? "Less" : "More"), _item.getValue(), _item.getName()))
+                    .setOkAction(new Runnable() {
                         @Override
-                        public void onClick(DialogInterface dialog, int which) {
+                        public void run() {
                             if (_mode.equalsIgnoreCase(StatsItem.LESS_MODE)) {
                                 _item.setBidLess(true);
                             } else {
@@ -151,10 +171,8 @@ public class StatsAdapter extends BaseAdapter {
                             }
                             updateView(v);
                             raiseSubmitListener();
-
                         }
                     })
-                    .setNegativeButton(R.string.cancel, null)
                     .show();
         }
     }

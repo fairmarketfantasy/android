@@ -80,8 +80,8 @@
     <!--production-->
 
     <!---->
-    <string name="app_id">380919122046469</string>
-
+    <!--<string name="app_id">380919122046469</string>-->
+    <string name="app_id">517379538328159</string>
     <!-- Nav Drawer Menu Items -->
 
         <string name="my_games">My Games</string><!--1-->
@@ -94,12 +94,13 @@
         <string name="predictions">Predictions</string>
     <string name="wins">Wins</string>
     <string name="prestige">PresTige</string>
-    <string name="no_contents_now">NO CONTENTS NOW</string>
+    <string name="no_contents_now">No Games Scheduled</string>
     <string name="fan_buks">FanBucks</string>
     <string name="did_not_play">Did not play</string>
     <string name="sports">Sports</string>
     <string name="mlb">MLB</string>
     <string name="coming_soon">Coming Soon</string>
+    <string name="ok">Ok</string>
 
     <string-array name="prediction_menu_list">
         <item>Roster</item>
