@@ -113,7 +113,7 @@ public class HomeFragment extends BaseHomeFragment implements AdapterView.OnItem
                     dismissProgress();
                     String msg = response.getMessage();
                     if(msg != null){
-                        showAlert("", msg);
+                        showAlert("Info", msg);
                     }
                 }
             });

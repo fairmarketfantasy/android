@@ -35,8 +35,8 @@
               android:layout_height="1dip"
               android:background="#E6E6E6"/>
 
-        <com.fantasysport.views.ExTextView android:layout_width="wrap_content"
-                                           android:layout_height="wrap_content"
+        <com.fantasysport.views.ExTextView android:layout_width="match_parent"
+                                           android:layout_height="match_parent"
                                            android:id="@+id/content_lbl"
                                            android:text="YOUR ACCOUNT THIS MONTH"
                                            android:textSize="@dimen/s_lage_font"
@@ -58,33 +58,19 @@
             <LinearLayout android:layout_width="match_parent"
                           android:layout_height="wrap_content">
 
-            <com.fantasysport.views.ExButton
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/submit_btn_height"
-                    android:layout_weight="1"
-                    android:background="@drawable/left_submit_button"
-                    android:text="@string/ok"
-                    android:textColor="@color/submit_button_text_color"
-                    android:id="@+id/ok_btn"
-                    android:textSize="@dimen/x_medium_font"
-                    custom:fontFamily="prohibitionRound" />
+                <com.fantasysport.views.ExButton
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/submit_btn_height"
+                        android:layout_weight="1"
+                        android:background="@drawable/green_button"
+                        android:text="@string/ok"
+                        android:textColor="@color/submit_button_text_color"
+                        android:id="@+id/ok_btn"
+                        android:textSize="@dimen/x_medium_font"
+                        custom:fontFamily="prohibitionRound" />
 
-            <com.fantasysport.views.ExButton
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/submit_btn_height"
-                    android:layout_weight="1"
-                    android:textColor="@color/submit_button_text_color"
-                    android:background="@drawable/right_submit_button"
-                    android:text="@string/cancel"
-                    android:id="@+id/cancel_btn"
-                    android:textSize="@dimen/x_medium_font"
-                    custom:fontFamily="prohibitionRound" />
             </LinearLayout>
 
-            <View android:layout_width="1dp"
-                  android:layout_height="@dimen/submit_btn_devider_height"
-                  android:layout_gravity="center"
-                  android:background="#AAFFFFFF"/>
         </FrameLayout>
 
 

@@ -89,6 +89,7 @@ public class AuthActivity extends BaseActivity {
                 authByFacebook(session);
             } else if (SessionState.CLOSED == state) {
 //                showAlert("Error", "Facebook error", null);
+                finishAuth();
             } else if (SessionState.CLOSED_LOGIN_FAILED == state){
                 Session ses = Session.getActiveSession();
                 if(ses != null){
@@ -107,6 +108,7 @@ public class AuthActivity extends BaseActivity {
             public void onCompleted(Response response) {
                 if(response.getError() != null){
                     dismissProgress();
+                    finishAuth();
                     return;
                 }
                 GraphObject user = response.getGraphObject();
@@ -155,11 +157,16 @@ public class AuthActivity extends BaseActivity {
         startActivityForResult(intent, Const.MAIN_ACTIVITY);
     }
 
+    protected void startAuth(){}
+
+    protected void finishAuth(){}
+
     MarketsResponseListener _marketsResponseListener = new MarketsResponseListener() {
         @Override
         public void onRequestError(RequestError error) {
             dismissProgress();
             showAlert(getString(R.string.error), error.getMessage());
+            finishAuth();
         }
 
         @Override
@@ -168,6 +175,7 @@ public class AuthActivity extends BaseActivity {
             _storage.setMarketsContainer(response.getMarketsContainer());
             navigateToMainActivity();
             dismissProgress();
+            finishAuth();
         }
     };
 
@@ -176,6 +184,7 @@ public class AuthActivity extends BaseActivity {
         public void onRequestError(RequestError error) {
             dismissProgress();
             showAlert(getString(R.string.error), error.getMessage());
+            finishAuth();
         }
 
         @Override
@@ -191,6 +200,7 @@ public class AuthActivity extends BaseActivity {
             if(isProgressShowing()){
                 return;
             }
+            startAuth();
             authByFacebook2();
         }
     };

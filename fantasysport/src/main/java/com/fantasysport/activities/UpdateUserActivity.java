@@ -110,7 +110,7 @@ public class UpdateUserActivity extends BaseActivity {
     private void updateName(){
         String name = _contentTxt.getText().toString();
         if (TextUtils.isEmpty(name.trim())) {
-            showAlert(null, getString(R.string.please_provide_name), null);
+            showAlert(null, getString(R.string.please_provide_name));
             return;
         }
         User user = getCurrentUser();

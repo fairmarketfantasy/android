@@ -33,7 +33,7 @@ public class MenuListAdapter extends BaseExpandableListAdapter
         _context = context;
         _listView = listView;
         _items = new ArrayList<MenuItem>();
-        MenuItem item = new MenuItem(MenuItemEnum.Sports, _context.getString(R.string.sports));
+        MenuItem item = new MenuItem(MenuItemEnum.Sports, _context.getString(R.string.fantasy_sports));
         List<MenuItem> items = new ArrayList<MenuItem>();
         items.add(new MenuItem(MenuItemEnum.MLB, _context.getString(R.string.mlb)));
         item.setChildren(items);

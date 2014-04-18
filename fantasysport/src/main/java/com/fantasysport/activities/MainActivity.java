@@ -149,9 +149,7 @@ public class MainActivity extends BaseMainActivity {
                         showPredictions();
                         break;
                     case MLB:
-                        AlertDialog dialog = showAlert(null, getString(R.string.coming_soon));
-//                        TextView messageText = (TextView)dialog.findViewById(android.R.id.message);
-//                        messageText.setGravity(Gravity.CENTER);
+                        showAlert("MLB", getString(R.string.coming_soon));
                         break;
                 }
             }

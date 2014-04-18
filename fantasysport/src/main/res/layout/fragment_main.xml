@@ -123,8 +123,7 @@
                     android:textColor="@color/submit_button_text_color"
                     android:id="@+id/submit_100fb_btn"
                     android:textSize="@dimen/x_medium_font"
-                    custom:fontFamily="prohibitionRound"
-                    />
+                    custom:fontFamily="prohibitionRound" />
             <com.fantasysport.views.ExButton
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/submit_btn_height"

@@ -69,19 +69,19 @@ public class SignUpActivity extends AuthActivity {
         String name = _nameTxt.getText().toString();
 
         if (TextUtils.isEmpty(name)) {
-            showAlert(null, getString(R.string.please_provide_name), null);
+            showAlert(null, getString(R.string.please_provide_name));
             return;
         }
         if (TextUtils.isEmpty(email)) {
-            showAlert(null, getString(R.string.please_provide_email), null);
+            showAlert(null, getString(R.string.please_provide_email));
             return;
         }
         if (!isEmailValid(email)) {
-            showAlert(null, getString(R.string.please_provide_valid_email), null);
+            showAlert(null, getString(R.string.please_provide_valid_email));
             return;
         }
         if (TextUtils.isEmpty(password)) {
-            showAlert(null, getString(R.string.please_provide_password), null);
+            showAlert(null, getString(R.string.please_provide_password));
             return;
         }
 

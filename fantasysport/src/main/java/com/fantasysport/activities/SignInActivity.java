@@ -1,6 +1,5 @@
 package com.fantasysport.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.*;
@@ -10,13 +9,11 @@ import android.widget.EditText;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import com.fantasysport.R;
-import com.fantasysport.models.UserData;
 import com.fantasysport.webaccess.RequestHelper;
 import com.fantasysport.webaccess.requestListeners.RequestError;
 import com.fantasysport.webaccess.requestListeners.ResetPasswordResponse;
 import com.fantasysport.webaccess.requestListeners.SignInResponseListener;
 import com.fantasysport.webaccess.responses.AuthResponse;
-import com.google.gson.Gson;
 
 public class SignInActivity extends AuthActivity {
 
@@ -25,17 +22,18 @@ public class SignInActivity extends AuthActivity {
 
     private EditText _emailTxt;
     private EditText _passwordTxt;
+    private Button _facebookBtn;
+    private Button _signInBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        test();
         setContentView(R.layout.activity_sign_in);
-        Button facebookBtn = getViewById(R.id.facebook_btn);
-        initFacebookAuth(facebookBtn);
-        Button signInBtn = getViewById(R.id.sign_in_btn);
+        _facebookBtn = getViewById(R.id.facebook_btn);
+        initFacebookAuth(_facebookBtn);
+        _signInBtn = getViewById(R.id.sign_in_btn);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
-        signInBtn.setOnClickListener(_signInBtnClickListener);
+        _signInBtn.setOnClickListener(_signInBtnClickListener);
 
         TextView forgotPwdLbl = getViewById(R.id.forgot_pwd_lbl);
         forgotPwdLbl.setOnClickListener(_forgotPwdClickListener);
@@ -59,18 +57,19 @@ public class SignInActivity extends AuthActivity {
         String password = _passwordTxt.getText().toString();
 
         if (TextUtils.isEmpty(email)) {
-            showAlert(null, getString(R.string.please_provide_email), null);
+            showAlert(null, getString(R.string.please_provide_email));
             return;
         }
         if (!isEmailValid(email)) {
-            showAlert(null, getString(R.string.please_provide_valid_email), null);
+            showAlert(null, getString(R.string.please_provide_valid_email));
             return;
         }
         if (TextUtils.isEmpty(password)) {
-            showAlert(null, getString(R.string.please_provide_password), null);
+            showAlert(null, getString(R.string.please_provide_password));
             return;
         }
         showProgress();
+        startAuth();
         _webProxy.signIn(email, password, _userSignInResponseListener);
     }
 
@@ -89,6 +88,7 @@ public class SignInActivity extends AuthActivity {
         @Override
         public void onRequestError(RequestError error) {
             dismissProgress();
+            finishAuth();
             showAlert(getString(R.string.error), error.getMessage());
         }
 
@@ -102,18 +102,7 @@ public class SignInActivity extends AuthActivity {
     View.OnClickListener _signInBtnClickListener = new View.OnClickListener(){
         @Override
         public void onClick(View v){
-            if(isProgressShowing()){
-                return;
-            }
             attemptGetAccessToken();
-        }
-    };
-
-    View.OnClickListener _toSignUpListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            Intent intent = new Intent(SignInActivity.this, SignUpActivity.class);
-            startActivity(intent);
         }
     };
 
@@ -170,5 +159,24 @@ public class SignInActivity extends AuthActivity {
         super.onSaveInstanceState(outState);
     }
 
+    @Override
+    protected void startAuth() {
+        _emailTxt.setEnabled(false);
+        _passwordTxt.setEnabled(false);
+        _facebookBtn.setEnabled(false);
+        _signInBtn.setEnabled(false);
+    }
 
+    @Override
+    protected void finishAuth() {
+        _emailTxt.setEnabled(true);
+        _passwordTxt.setEnabled(true);
+        _facebookBtn.setEnabled(true);
+        _signInBtn.setEnabled(true);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
 }
