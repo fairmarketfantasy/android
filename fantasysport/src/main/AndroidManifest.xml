@@ -10,9 +10,9 @@
 
 
     <!-- Ubertesters library user-permisions -->
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.GET_TASKS" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <!--<uses-permission android:name="android.permission.READ_PHONE_STATE" />-->
+    <!--<uses-permission android:name="android.permission.GET_TASKS" />-->
+    <!--<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />-->
     <!-- Ubertesters library user-permisions -->
 
     <uses-feature android:name="android.hardware.camera" android:required="true" />

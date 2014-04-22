@@ -89,7 +89,7 @@ public class AuthActivity extends BaseActivity {
                 authByFacebook(session);
             } else if (SessionState.CLOSED == state) {
 //                showAlert("Error", "Facebook error", null);
-                finishAuth();
+//                finishAuth();
             } else if (SessionState.CLOSED_LOGIN_FAILED == state){
                 Session ses = Session.getActiveSession();
                 if(ses != null){
@@ -197,9 +197,6 @@ public class AuthActivity extends BaseActivity {
     View.OnClickListener _facebookClickBntListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if(isProgressShowing()){
-                return;
-            }
             startAuth();
             authByFacebook2();
         }

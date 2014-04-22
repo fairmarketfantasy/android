@@ -17,7 +17,7 @@ android {
     buildToolsVersion "19.0.1"
 
     defaultConfig {
-        versionCode 17
+        versionCode 18
         versionName "1.5"
     }
     packagingOptions {
