@@ -1,13 +1,9 @@
 package com.fantasysport.models;
 
-import android.net.Uri;
-import android.support.v7.appcompat.R;
 import com.fantasysport.Config;
 import com.fantasysport.utility.Converter;
 import com.google.gson.annotations.SerializedName;
-import org.apache.commons.lang3.StringUtils;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -40,11 +36,11 @@ public class UserData {
     @SerializedName("image_url")
     private String _imageUrl;
 
-    @SerializedName("win_percentile")
-    private float _winPercentile;
+//    @SerializedName("win_percentile")
+//    private float _winPercentile;
 
-    @SerializedName("total_points")
-    private int _totalPoints;
+//    @SerializedName("total_points")
+//    private int _totalPoints;
 
     @SerializedName("joined_at")
     private String _joinedAt;
@@ -92,11 +88,22 @@ public class UserData {
 //    @SerializedName("leagues")
 //    private List<League> _leagues;
 
+    @SerializedName("active_sports")
+    private List<String> _activeSports;
+
     @SerializedName("customer_object")
     private CustomerObject _customerObject;
 
-    public String getCurrentSport() {
+    public String getCurrentSport(){
         return _currentSport;
+    }
+
+    public void setCurrentSport(String sport){
+        _currentSport = sport;
+    }
+
+    public List<String> getActiveSports() {
+        return _activeSports;
     }
 
     public String getUserImageUrl() {
@@ -115,21 +122,21 @@ public class UserData {
 //        return _inProgressRoster;
 //    }
 
-    public int getInProgressRosterId(){
+    public int getInProgressRosterId() {
         return _inProgressRosterId;
     }
 
-    public int getTotalPoints() {
-        return _totalPoints;
-    }
+//    public int getTotalPoints() {
+//        return _totalPoints;
+//    }
 
     public int getTotalWins() {
         return _totalWins;
     }
 
-    public float getWinPercentile() {
-        return _winPercentile;
-    }
+//    public float getWinPercentile() {
+//        return _winPercentile;
+//    }
 
     public String getRealName() {
         return _realName;
@@ -147,7 +154,7 @@ public class UserData {
         return _id;
     }
 
-    public int getPrestige(){
+    public int getPrestige() {
         return _prestige;
     }
 
@@ -156,15 +163,15 @@ public class UserData {
     }
 
 
-    public double getWinningsMultiplier(){
+    public double getWinningsMultiplier() {
         return _customerObject.getWinningsMultiplier();
     }
 
-    public int getMonthlyPredictions(){
+    public int getMonthlyPredictions() {
         return _customerObject.getMonthlyPredictions();
     }
 
-    public double getMonthlyAward(){
+    public double getMonthlyAward() {
         return _customerObject.getMonthlyAward();
     }
 }

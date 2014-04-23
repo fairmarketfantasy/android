@@ -11,8 +11,11 @@ import com.google.gson.Gson;
  */
 public class PlayersPositionRequest extends BaseRequest<DefaultRosterData> {
 
-    public PlayersPositionRequest() {
+    private String _sport;
+
+    public PlayersPositionRequest(String sport) {
         super(DefaultRosterData.class);
+        _sport = sport;
     }
 
     @Override
@@ -20,7 +23,7 @@ public class PlayersPositionRequest extends BaseRequest<DefaultRosterData> {
         Uri.Builder uriBuilder = Uri.parse(getUrl()).buildUpon();
         uriBuilder.appendPath("rosters")
                 .appendPath("new")
-                .appendQueryParameter("sport", "NBA")
+                .appendQueryParameter("sport", _sport)
                 .appendQueryParameter("access_token", getAccessToken());
         String url = uriBuilder.build().toString();
         HttpRequest request = getHttpRequestFactory().buildGetRequest(new GenericUrl(url));

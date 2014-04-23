@@ -14,9 +14,11 @@ import java.util.List;
 public class IndividualPredictionRequest extends BaseRequest<List>  {
 
     private int _page = 0;
+    private String _sport;
 
-    public IndividualPredictionRequest() {
+    public IndividualPredictionRequest(String sport) {
         super(List.class);
+        _sport = sport;
     }
 
     public IndividualPredictionRequest(int page) {
@@ -29,7 +31,7 @@ public class IndividualPredictionRequest extends BaseRequest<List>  {
         Uri.Builder uriBuilder = Uri.parse(getUrl()).buildUpon()
                 .appendPath("individual_predictions")
                 .appendPath("mine")
-                .appendQueryParameter("sport", "NBA")
+                .appendQueryParameter("sport", _sport)
                 .appendQueryParameter("access_token", getAccessToken());
         if(_page > 0){
             uriBuilder.appendQueryParameter("historical", "true");

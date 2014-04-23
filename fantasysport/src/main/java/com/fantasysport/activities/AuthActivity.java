@@ -5,6 +5,8 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
@@ -13,16 +15,25 @@ import com.facebook.*;
 import com.facebook.model.GraphObject;
 import com.fantasysport.Const;
 import com.fantasysport.R;
+import com.fantasysport.models.UserData;
+import com.fantasysport.utility.image.ImageViewAnimatedChanger;
 import com.fantasysport.webaccess.requestListeners.FaceBookAuthListener;
 import com.fantasysport.webaccess.requestListeners.MarketsResponseListener;
 import com.fantasysport.webaccess.requestListeners.RequestError;
 import com.fantasysport.webaccess.responses.AuthResponse;
 import com.fantasysport.webaccess.responses.MarketResponse;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 /**
  * Created by bylynka on 2/10/14.
  */
 public class AuthActivity extends BaseActivity {
+
+    protected Bitmap _nbaBackground;
+    protected Bitmap _mlbBackground;
+    private Timer _backgroundImgTimer;
 
     protected void initFacebookAuth(Button facebookBtn) {
         facebookBtn.setOnClickListener(_facebookClickBntListener);
@@ -131,22 +142,89 @@ public class AuthActivity extends BaseActivity {
                 } else {
                     imgView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 }
-                BitmapDrawable bitmapDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.basket);
-                Bitmap bitmap = bitmapDrawable.getBitmap();
-                Bitmap newBitmap = null;
-                int diffHeight = bitmap.getHeight() - imgView.getHeight();
-                if (diffHeight > 0 && imgView.getHeight() != 0) {
-                    newBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight() - diffHeight, null, false);
-                } else {
-                    newBitmap = bitmap;
-                }
-                imgView.setImageBitmap(newBitmap);
+                BitmapDrawable nbaDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.nba_background);
+                BitmapDrawable mlbDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.mlb_background);
+                _nbaBackground = getBackground(nbaDrawable);
+                _mlbBackground = getBackground(mlbDrawable);
+                imgView.setImageBitmap(_nbaBackground);
             }
         });
     }
 
+
+
+
+    private void startTimer(){
+        stopTimer();
+        final Handler handler = new Handler();
+        TimerTask task = new TimerTask() {
+            public void run() {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        switchBackgroundImg();
+                    }
+                });
+
+            }
+        };
+        _backgroundImgTimer = new Timer();
+        _backgroundImgTimer.schedule(task, 3000, 3000);
+    }
+
+    Bitmap _current;
+    protected void switchBackgroundImg(){
+        if(_mlbBackground == null || _nbaBackground == null){
+            return;
+        }
+        ImageView subImg = getViewById(R.id.sub_background_img);
+        if(_current == null){
+            _current = _nbaBackground;
+        }
+        if(_current == _nbaBackground){
+            _current = _mlbBackground;
+        }else {
+            _current = _nbaBackground;
+        }
+        subImg.setImageBitmap(_current);
+        ImageViewAnimatedChanger.changeImage(this, (ImageView) getViewById(R.id.background_img), _current);
+    }
+
+    private void stopTimer(){
+        if(_backgroundImgTimer != null){
+            _backgroundImgTimer.cancel();
+            _backgroundImgTimer = null;
+        }
+    }
+
+    protected Bitmap getBackground(BitmapDrawable bitmapDrawable){
+        final ImageView imgView = getViewById(R.id.background_img);
+        Bitmap bitmap = bitmapDrawable.getBitmap();
+        Bitmap newBitmap = null;
+        int diffHeight = bitmap.getHeight() - imgView.getHeight();
+        if (diffHeight > 0 && imgView.getHeight() != 0) {
+            newBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight() - diffHeight, null, false);
+        } else {
+            newBitmap = bitmap;
+        }
+        return newBitmap;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        startTimer();
+    }
+
+    @Override
+    protected void onPause() {
+        stopTimer();
+        super.onPause();
+    }
+
     protected void loadMarkets(){
-        _webProxy.getMarkets(_marketsResponseListener);
+        UserData data = _storage.getUserData();
+        _webProxy.getMarkets(data.getCurrentSport(), _marketsResponseListener);
     }
 
     protected void navigateToMainActivity() {

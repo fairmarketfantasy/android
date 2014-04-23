@@ -11,5 +11,6 @@ public enum MenuItemEnum {
     Settings,
     SignOut,
     Sports,
-    MLB
+    MLB,
+    FantasySport
 }

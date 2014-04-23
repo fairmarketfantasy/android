@@ -8,7 +8,6 @@ import com.google.api.client.http.GenericUrl;
 import com.google.api.client.http.HttpRequest;
 import com.google.gson.Gson;
 
-
 public class SignInRequest extends BaseRequest<AuthResponse> {
 
     private String _email;

@@ -90,6 +90,10 @@ public class App extends Application {
             String marketsStr = container != null? new Gson().toJson(container): null;
             CacheProvider.putString(App.this, MARKETS, marketsStr);
             CacheProvider.putBoolean(App.this, Const.TIME_ZONE_CHANGED ,false);
+            UserData data = Storage.instance().getUserData();
+            if(data != null){
+                onUserData(Storage.instance().getUserData());
+            }
         }
 
         @Override

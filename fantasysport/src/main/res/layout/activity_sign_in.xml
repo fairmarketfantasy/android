@@ -19,6 +19,11 @@
                          android:layout_height="match_parent">
                 <ImageView android:layout_width="match_parent"
                            android:layout_height="match_parent"
+                           android:background="@color/abc_search_url_text_pressed"
+                           android:id="@+id/sub_background_img"
+                           android:scaleType="centerCrop"/>
+                <ImageView android:layout_width="match_parent"
+                           android:layout_height="match_parent"
                           android:background="@color/abc_search_url_text_pressed"
 
                            android:id="@+id/background_img"

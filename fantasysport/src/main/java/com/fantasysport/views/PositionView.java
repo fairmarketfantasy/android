@@ -40,6 +40,7 @@ public class PositionView extends LinearLayout {
         if(positions == null || positions.size() == 0){
             return;
         }
+        removeAllViews();
         for (int i = 0; i < positions.size(); i++){
             Position pos = positions.get(i);
             ButtonGravity gravity = ButtonGravity.Center;

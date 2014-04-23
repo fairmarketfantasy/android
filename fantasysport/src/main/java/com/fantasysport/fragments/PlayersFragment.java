@@ -75,6 +75,7 @@ public class PlayersFragment extends BasePlayersFragment implements MainActivity
     @Override
     public void onMarkets(List<Market> markets) {
         updateMarkets();
+        _positionView.setPositions(getStorage().getDefaultRosterData().getPositions());
         if(markets == null || markets.size() == 0){
             _playersAdapter.setItems(null);
             _playersAdapter.notifyDataSetInvalidated();

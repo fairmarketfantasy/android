@@ -21,9 +21,11 @@ public class MarketsRequest extends BaseRequest<MarketResponse>  {
 
     public static final String REGULAR_SEASON = "regular_season";
     public static final String SINGLE_ELIMINATION = "single_elimination";
+    public String _sport;
 
-    public MarketsRequest() {
+    public MarketsRequest(String sport) {
         super(MarketResponse.class);
+        _sport = sport;
     }
 
     @Override
@@ -50,7 +52,7 @@ public class MarketsRequest extends BaseRequest<MarketResponse>  {
     private List<Market> loadMarkets(String gameType) throws Exception {
         Uri.Builder uriBuilder = Uri.parse(getUrl()).buildUpon();
         uriBuilder.appendPath("markets")
-                .appendQueryParameter("sport","NBA")
+                .appendQueryParameter("sport", _sport)
                 .appendQueryParameter("type", gameType)
                 .appendQueryParameter("access_token", getAccessToken());
         String url = uriBuilder.build().toString();
@@ -64,7 +66,7 @@ public class MarketsRequest extends BaseRequest<MarketResponse>  {
         Uri.Builder uriBuilder = Uri.parse(getUrl()).buildUpon();
         uriBuilder.appendPath("rosters")
                 .appendPath("new")
-                .appendQueryParameter("sport", "NBA")
+                .appendQueryParameter("sport", _sport)
                 .appendQueryParameter("access_token", getAccessToken());
         String url = uriBuilder.build().toString();
         HttpRequest request = getHttpRequestFactory().buildGetRequest(new GenericUrl(url));

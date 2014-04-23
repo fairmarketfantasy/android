@@ -106,7 +106,7 @@ public class MainActivity extends BaseMainActivity {
                 } else {
                     headerView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 }
-                BitmapDrawable bitmapDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.basket);
+                BitmapDrawable bitmapDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.nba_background);
                 Bitmap bitmap = bitmapDrawable.getBitmap();
                 int width = headerView.getWidth() > bitmap.getWidth()? bitmap.getWidth(): headerView.getWidth();
                 int height = headerView.getHeight() > bitmap.getHeight()? bitmap.getHeight(): headerView.getHeight();
@@ -122,7 +122,7 @@ public class MainActivity extends BaseMainActivity {
         setMenuHeaderImage(header);
         _menuList.addHeaderView(header, null, false);
         _menuHeaderFragment = (MenuHeaderFragment) getSupportFragmentManager().findFragmentById(R.id.menu_header_fragment);
-        _menuAdapter = new MenuListAdapter(this, _menuList);
+        _menuAdapter = new MenuListAdapter(this, _menuList, _storage.getUserData());
         _menuList.setAdapter(_menuAdapter);
         _menuList.setCacheColorHint(Color.TRANSPARENT);
         _menuAdapter.setOnItemClickListener(new MenuListAdapter.IOnItemClickListener() {
@@ -150,6 +150,13 @@ public class MainActivity extends BaseMainActivity {
                         break;
                     case MLB:
                         showAlert("MLB", getString(R.string.coming_soon));
+                        break;
+                    case FantasySport:
+                        UserData data = _storage.getUserData();
+                        data.setCurrentSport(item.getTitle());
+                        _menuAdapter.setMenu(data);
+                        _menuAdapter.notifyDataSetChanged();
+                        updateMarkets(true);
                         break;
                 }
             }
@@ -217,8 +224,9 @@ public class MainActivity extends BaseMainActivity {
     }
 
     private void updateMarkets(final boolean isTimeChanged) {
+        UserData data = _storage.getUserData();
         showProgress();
-        _webProxy.getMarkets(new MarketsResponseListener() {
+        _webProxy.getMarkets(data.getCurrentSport(), new MarketsResponseListener() {
             @Override
             public void onRequestError(RequestError error) {
                 dismissProgress();

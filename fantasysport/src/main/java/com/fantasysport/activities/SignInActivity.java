@@ -1,19 +1,21 @@
 package com.fantasysport.activities;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.*;
 import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.PopupWindow;
-import android.widget.TextView;
+import android.widget.*;
 import com.fantasysport.R;
+import com.fantasysport.utility.image.ImageViewAnimatedChanger;
 import com.fantasysport.webaccess.RequestHelper;
 import com.fantasysport.webaccess.requestListeners.RequestError;
 import com.fantasysport.webaccess.requestListeners.ResetPasswordResponse;
 import com.fantasysport.webaccess.requestListeners.SignInResponseListener;
 import com.fantasysport.webaccess.responses.AuthResponse;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class SignInActivity extends AuthActivity {
 
@@ -175,8 +177,4 @@ public class SignInActivity extends AuthActivity {
         _signInBtn.setEnabled(true);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
 }

@@ -49,8 +49,8 @@ public final class WebProxy {
         _spiceManager.execute(request, listener);
     }
 
-    public void getIndividualPredictions(IndividualPredictionsResponseListener listener){
-        IndividualPredictionRequest request = new IndividualPredictionRequest();
+    public void getIndividualPredictions(String sport, IndividualPredictionsResponseListener listener){
+        IndividualPredictionRequest request = new IndividualPredictionRequest(sport);
         _spiceManager.execute(request, listener);
     }
 
@@ -59,8 +59,8 @@ public final class WebProxy {
         _spiceManager.execute(request, listener);
     }
 
-    public void getPredictions(PredictionsResponseListener listener){
-        PredictionRequest request = new PredictionRequest();
+    public void getPredictions(String sport, PredictionsResponseListener listener){
+        PredictionRequest request = new PredictionRequest(sport);
         _spiceManager.execute(request, listener);
     }
 
@@ -136,13 +136,13 @@ public final class WebProxy {
         _spiceManager.execute(request, listener);
     }
 
-    public void loadPlayersPosition(DefaultRosterResponseListener listener){
-        PlayersPositionRequest request = new PlayersPositionRequest();
+    public void loadPlayersPosition(String sport, DefaultRosterResponseListener listener){
+        PlayersPositionRequest request = new PlayersPositionRequest(sport);
         _spiceManager.execute(request, listener);
     }
 
-    public void getMarkets(MarketsResponseListener listener){
-        MarketsRequest request = new MarketsRequest();
+    public void getMarkets(String sport, MarketsResponseListener listener){
+        MarketsRequest request = new MarketsRequest(sport);
         _spiceManager.execute(request, listener);
     }
 

@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import com.fantasysport.R;
+import com.fantasysport.models.UserData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,13 +30,22 @@ public class MenuListAdapter extends BaseExpandableListAdapter
     private IOnItemClickListener _onItemClickListener;
 
 
-    public MenuListAdapter(Context context, ExpandableListView listView) {
+    public MenuListAdapter(Context context, ExpandableListView listView, UserData data) {
         _context = context;
         _listView = listView;
+        setMenu(data);
+
+    }
+
+    public void setMenu(UserData data){
         _items = new ArrayList<MenuItem>();
         MenuItem item = new MenuItem(MenuItemEnum.Sports, _context.getString(R.string.fantasy_sports));
         List<MenuItem> items = new ArrayList<MenuItem>();
-        items.add(new MenuItem(MenuItemEnum.MLB, _context.getString(R.string.mlb)));
+        for (String sport : data.getActiveSports()){
+            if(!data.getCurrentSport().equalsIgnoreCase(sport)){
+                items.add(new MenuItem(MenuItemEnum.FantasySport, sport));
+            }
+        }
         item.setChildren(items);
         _items.add(item);
         _items.add(new MenuItem(MenuItemEnum.Predictions, _context.getString(R.string.predictions)));

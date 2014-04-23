@@ -15,9 +15,11 @@ import java.util.List;
 public class PredictionRequest extends BaseRequest<List> {
 
     private int _page = 0;
+    private String _sport;
 
-    public PredictionRequest() {
+    public PredictionRequest(String sport) {
         super(List.class);
+        _sport = sport;
     }
 
     public PredictionRequest(int page) {
@@ -30,7 +32,7 @@ public class PredictionRequest extends BaseRequest<List> {
         Uri.Builder uriBuilder = Uri.parse(getUrl()).buildUpon()
                 .appendPath("rosters")
                 .appendPath("mine")
-                .appendQueryParameter("sport", "NBA")
+                .appendQueryParameter("sport", _sport)
                 .appendQueryParameter("access_token", getAccessToken());
         if(_page > 0){
             uriBuilder.appendQueryParameter("historical", "true");
