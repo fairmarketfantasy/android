@@ -104,7 +104,11 @@ public abstract class BaseHomeFragment extends MainActivityFragment  implements 
         items.clear();
         List<Position> positions = rosterData.getPositions();
         for (int i = 0; i < positions.size(); i++) {
-            items.add(new PlayerItem(positions.get(i).getAcronym()));
+            Position position = positions.get(i);
+            if(position != null){
+                String acronym = position.getAcronym();
+                items.add(new PlayerItem(acronym));
+            }
         }
         _playerAdapter.notifyDataSetChanged();
     }

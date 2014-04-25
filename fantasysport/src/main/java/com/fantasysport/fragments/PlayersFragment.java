@@ -30,7 +30,7 @@ public class PlayersFragment extends BasePlayersFragment implements MainActivity
         Market market = getMarket();
         if(market == _lastMarket && _lastPosition == position.getAcronym()
                 && _lastBenchedState == canBenched() && !_pullToRefreshLayout.isRefreshing() && getRoster() != null
-                || market == null){
+                || market == null || _playersAdapter == null){
             return;
         }
         setPositionLabel(position.getName());

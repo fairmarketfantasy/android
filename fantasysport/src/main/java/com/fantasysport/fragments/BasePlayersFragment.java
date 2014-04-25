@@ -11,28 +11,27 @@ import android.widget.TextView;
 import com.fantasysport.Const;
 import com.fantasysport.R;
 import com.fantasysport.activities.IndividuaPredictionsActivity;
-import com.fantasysport.activities.MainActivity;
 import com.fantasysport.adapters.CandidatePlayersAdapter;
 import com.fantasysport.models.Market;
 import com.fantasysport.models.Player;
 import com.fantasysport.models.Position;
 import com.fantasysport.models.Roster;
+import com.fantasysport.views.IOnPositionSelectedListener;
 import com.fantasysport.views.PositionView;
+import com.fantasysport.views.ScrollPositionControl;
 import com.fantasysport.webaccess.requestListeners.AddPlayerResponseListener;
 import com.fantasysport.webaccess.requestListeners.PlayersResponseListener;
 import com.fantasysport.webaccess.requestListeners.RequestError;
 import com.fantasysport.webaccess.responses.PlayersRequestResponse;
 
-import java.util.List;
-
 /**
  * Created by bylynka on 3/24/14.
  */
-public abstract class BasePlayersFragment extends MainActivityFragment implements PositionView.OnPositionSelecteListener, CandidatePlayersAdapter.IListener,
+public abstract class BasePlayersFragment extends MainActivityFragment implements IOnPositionSelectedListener, CandidatePlayersAdapter.IListener,
         MainFragmentMediator.IPlayerPositionListener, MainFragmentMediator.IOnBenchedStateChangedListener
         {
 
-    protected PositionView _positionView;
+    protected ScrollPositionControl _positionView;
     protected CandidatePlayersAdapter _playersAdapter;
     protected Market _lastMarket;
     protected String _lastPosition;

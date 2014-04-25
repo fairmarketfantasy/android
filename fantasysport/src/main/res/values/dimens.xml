@@ -35,4 +35,7 @@
     <dimen name="action_bar_marging">15dip</dimen>
     <dimen name="action_bar_button_width">76dip</dimen>
 
+    <dimen name="position_view_height">69dp</dimen>
+    <dimen name="position_padding">3dip</dimen>
+
 </resources>

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -17,9 +16,9 @@ import java.util.List;
 /**
  * Created by bylynka on 3/17/14.
  */
-public class PositionView extends LinearLayout {
+public class PositionView extends LinearLayout implements IPositionView {
 
-    private OnPositionSelecteListener _positionListener;
+    private IOnPositionSelectedListener _positionListener;
     private Position _position;
 
     public PositionView(Context context) {
@@ -32,7 +31,7 @@ public class PositionView extends LinearLayout {
         init();
     }
 
-    public void setPositionListener(OnPositionSelecteListener listener){
+    public void setPositionListener(IOnPositionSelectedListener listener){
         _positionListener = listener;
     }
 
@@ -118,10 +117,6 @@ public class PositionView extends LinearLayout {
                 _clickBtnListener.onClick(v);
             }
         }
-    }
-
-    public interface OnPositionSelecteListener{
-        public void positionSelected(Position position);
     }
 
     public enum ButtonGravity{
