@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.fantasysport.Const;
 import com.fantasysport.R;
 import com.fantasysport.repo.Storage;
+import com.fantasysport.utility.DeviceInfo;
 import com.fantasysport.views.AlertDialog;
 import com.fantasysport.webaccess.GsonGoogleHttpClientSpiceService;
 import com.fantasysport.webaccess.WebProxy;
@@ -45,6 +46,7 @@ public class BaseActivity extends ActionBarActivity{
     protected void onResume() {
         super.onResume();
         checkForCrashes();
+        int volume = DeviceInfo.getCurrentMediaVolume(this);
     }
 
     private void checkForCrashes() {

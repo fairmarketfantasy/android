@@ -1,6 +1,5 @@
 package com.fantasysport.activities;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
@@ -10,7 +9,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.view.*;
 import android.widget.*;
 import com.fantasysport.Const;
@@ -18,7 +16,6 @@ import com.fantasysport.R;
 import com.fantasysport.adapters.MenuItem;
 import com.fantasysport.adapters.MenuListAdapter;
 import com.fantasysport.fragments.MenuHeaderFragment;
-import com.fantasysport.models.Game;
 import com.fantasysport.models.Market;
 import com.fantasysport.models.UserData;
 import com.fantasysport.utility.CacheProvider;
@@ -30,7 +27,6 @@ import com.fantasysport.webaccess.requestListeners.UserResponseListener;
 import com.fantasysport.webaccess.responses.MarketResponse;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 
@@ -148,7 +144,7 @@ public class MainActivity extends BaseMainActivity {
                     case Predictions:
                         showPredictions();
                         break;
-                    case MLB:
+                    case Sport:
                         showAlert("MLB", getString(R.string.coming_soon));
                         break;
                     case FantasySport:

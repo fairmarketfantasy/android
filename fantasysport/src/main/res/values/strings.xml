@@ -80,8 +80,8 @@
     <!--production-->
 
     <!---->
-    <!--<string name="app_id">380919122046469</string>-->
-    <string name="app_id">517379538328159</string>
+    <string name="app_id">380919122046469</string>
+    <!--<string name="app_id">517379538328159</string>-->
     <!-- Nav Drawer Menu Items -->
 
         <string name="my_games">My Games</string><!--1-->

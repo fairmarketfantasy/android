@@ -1,11 +1,9 @@
 package com.fantasysport.adapters;
 
 import android.app.Activity;
-import android.app.ExpandableListActivity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.Matrix;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,7 +37,9 @@ public class MenuListAdapter extends BaseExpandableListAdapter
 
     public void setMenu(UserData data){
         _items = new ArrayList<MenuItem>();
-        MenuItem item = new MenuItem(MenuItemEnum.Sports, _context.getString(R.string.fantasy_sports));
+
+        //fantasy sports
+        MenuItem item = new MenuItem(MenuItemEnum.FantasySportsHeader, _context.getString(R.string.fantasy_sports));
         List<MenuItem> items = new ArrayList<MenuItem>();
         for (String sport : data.getActiveSports()){
             if(!data.getCurrentSport().equalsIgnoreCase(sport)){
@@ -48,6 +48,14 @@ public class MenuListAdapter extends BaseExpandableListAdapter
         }
         item.setChildren(items);
         _items.add(item);
+
+        //sports
+        item = new MenuItem(MenuItemEnum.SportsHeader, "SPORTS");
+        items = new ArrayList<MenuItem>();
+        items.add(new MenuItem(MenuItemEnum.Sport, "MLB"));
+        item.setChildren(items);
+        _items.add(item);
+
         _items.add(new MenuItem(MenuItemEnum.Predictions, _context.getString(R.string.predictions)));
         _items.add(new MenuItem(MenuItemEnum.Rules, _context.getString(R.string.rules)));
         _items.add(new MenuItem(MenuItemEnum.LegalStuff, _context.getString(R.string.legal_stuff)));
@@ -109,7 +117,6 @@ public class MenuListAdapter extends BaseExpandableListAdapter
 
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-
         MenuItem item = _items.get(groupPosition);
         if (item.hasChildren()) {
             return inflateParentItemView(item, convertView);
@@ -130,11 +137,11 @@ public class MenuListAdapter extends BaseExpandableListAdapter
     }
 
     private View inflateParentItemView(MenuItem item, View convertView) {
-        if (convertView == null) {
+//        if (convertView == null) {
             LayoutInflater mInflater = (LayoutInflater)
                     _context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
             convertView = mInflater.inflate(R.layout.group_menu_item, null);
-        }
+//        }
         TextView itemTxt = (TextView) convertView.findViewById(R.id.item);
         itemTxt.setText(item.getTitle());
 //        setGroupIndicatorImg(convertView, false);
@@ -145,7 +152,8 @@ public class MenuListAdapter extends BaseExpandableListAdapter
         LayoutInflater mInflater = (LayoutInflater)
                 _context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         int layoutId;
-        if (item.getId() == MenuItemEnum.MLB) {
+        if (item.getId() == MenuItemEnum.FantasySport  ||
+                item.getId() == MenuItemEnum.Sport) {
             layoutId = R.layout.sub_menu_item;
         }else {
             layoutId = R.layout.menu_item;

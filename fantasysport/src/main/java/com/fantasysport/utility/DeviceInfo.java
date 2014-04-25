@@ -1,6 +1,8 @@
 package com.fantasysport.utility;
 
-import java.security.Timestamp;
+import android.content.Context;
+import android.media.AudioManager;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -14,7 +16,6 @@ public class DeviceInfo {
     private static Integer _gmtInMinutes = null;
 
     public static int getGMTInMinutes() {
-
         if (_gmtInMinutes == null) {
             Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"), Locale.getDefault());
             String timeZone = new SimpleDateFormat("Z").format(calendar.getTime());
@@ -24,5 +25,15 @@ public class DeviceInfo {
             _gmtInMinutes = ((hours * 60) + minutes) * sign;
         }
         return _gmtInMinutes;
+    }
+
+    public static int getCurrentMediaVolume(Context context){
+        AudioManager audio = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+        return audio.getStreamVolume(AudioManager.STREAM_MUSIC);
+    }
+
+    public static int getMaxMediaVolume(Context context){
+        AudioManager audio = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+        return audio.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
     }
 }
