@@ -34,7 +34,7 @@ public class SignUpActivity extends AuthActivity {
         setContentView(R.layout.activity_sign_up);
 
         Button facebookBtn = getViewById(R.id.facebook_btn);
-        initFacebookAuth(facebookBtn);
+//        initFacebookAuth(facebookBtn);
 
         Button signUpBtn = getViewById(R.id.sign_up_btn);
         signUpBtn.setOnClickListener(_signUpBtnClickListener);

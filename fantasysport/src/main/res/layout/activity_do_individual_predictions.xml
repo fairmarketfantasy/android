@@ -1,69 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:custom="http://schemas.android.com/apk/res-auto"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
-    <View android:layout_width="match_parent"
-          android:layout_height="1dip"
-          android:background="#CCCCCC"/>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:custom="http://schemas.android.com/apk/res-auto"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent">
+    <LinearLayout
+                  android:orientation="vertical"
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent">
+        <View android:layout_width="match_parent"
+              android:layout_height="1dip"
+              android:background="#CCCCCC"/>
 
-    <LinearLayout android:layout_width="match_parent"
-                  android:layout_height="50dp"
-                 android:paddingRight="@dimen/side_marging"
-                 android:paddingLeft="@dimen/side_marging"
-                 android:orientation="horizontal"
-                 android:background="#E6E6E6"
-            >
-
-        <FrameLayout android:layout_width="35dp" android:layout_height="35dp"
-                     android:layout_marginRight="10dp"
-                     android:layout_gravity="center_vertical"
+        <LinearLayout android:layout_width="match_parent"
+                      android:layout_height="50dp"
+                      android:paddingRight="@dimen/side_marging"
+                      android:paddingLeft="@dimen/side_marging"
+                      android:orientation="horizontal"
+                      android:background="#E6E6E6"
                 >
-            <com.fantasysport.views.RoundedImageView
-                       android:layout_width="34dp"
-                       android:layout_height="34dp"
-                       android:layout_gravity="center"
-                       android:src="@drawable/tshirt"
+
+            <FrameLayout android:layout_width="35dp" android:layout_height="35dp"
+                         android:layout_marginRight="10dp"
+                         android:layout_gravity="center_vertical"
+                    >
+                <com.fantasysport.views.RoundedImageView
+                        android:layout_width="34dp"
+                        android:layout_height="34dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/tshirt"
+                        />
+                <com.fantasysport.views.RoundedImageView
+                        android:layout_width="34dp"
+                        android:layout_height="34dp"
+                        android:layout_gravity="center"
+                        android:id="@+id/player_img"
+                        android:scaleType="centerCrop"
+                        />
+
+                <ImageView android:layout_width="match_parent"
+                           android:layout_height="match_parent"
+                           android:background="@drawable/white_oval" />
+
+            </FrameLayout>
+
+            <com.fantasysport.views.ExTextView android:layout_width="wrap_content"
+                                               android:layout_height="wrap_content"
+                                               android:layout_gravity="center_vertical"
+                                               android:textSize="@dimen/s_lage_font"
+                                               android:textColor="#595959"
+                                               android:paddingRight="10dp"
+                                               android:id="@+id/name_lbl"
+                                               android:singleLine="true"
+                                               custom:fontFamily="robotoThin"
                     />
-            <com.fantasysport.views.RoundedImageView
-                       android:layout_width="34dp"
-                       android:layout_height="34dp"
-                       android:layout_gravity="center"
-                       android:id="@+id/player_img"
-                       android:scaleType="centerCrop"
-                    />
 
-            <ImageView android:layout_width="match_parent"
-                       android:layout_height="match_parent"
-                       android:background="@drawable/white_oval" />
+        </LinearLayout>
 
-        </FrameLayout>
+        <View android:layout_width="match_parent"
+              android:layout_height="1dip"
+              android:background="#CCCCCC"
+                />
 
-        <com.fantasysport.views.ExTextView android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:layout_gravity="center_vertical"
-                  android:textSize="@dimen/s_lage_font"
-                  android:textColor="#595959"
-                  android:paddingRight="10dp"
-                  android:id="@+id/name_lbl"
-                  android:singleLine="true"
-                  custom:fontFamily="robotoThin"
+        <ListView android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:layout_weight="1"
+                  android:id="@+id/stats_list"
+                  android:dividerHeight="2dp"
+                  android:divider="@drawable/player_devider"
                 />
 
     </LinearLayout>
 
-    <View android:layout_width="match_parent"
-          android:layout_height="1dip"
-          android:background="#CCCCCC"
-            />
 
-    <ListView android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:layout_weight="1"
-              android:id="@+id/stats_list"
-              android:dividerHeight="2dp"
-              android:divider="@drawable/player_devider"
+    <ProgressBar
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/progressBar" android:layout_gravity="center"
+            android:visibility="gone"
             />
-
-</LinearLayout>
+</FrameLayout>

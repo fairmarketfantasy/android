@@ -1,21 +1,24 @@
 package com.fantasysport.activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
-import android.view.View;
+import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.ViewTreeObserver;
-import android.widget.Button;
 import android.widget.ImageView;
 import com.facebook.*;
 import com.facebook.model.GraphObject;
+import com.facebook.model.GraphUser;
+import com.facebook.widget.LoginButton;
 import com.fantasysport.Const;
 import com.fantasysport.R;
 import com.fantasysport.models.UserData;
+import com.fantasysport.utility.TypefaceProvider;
 import com.fantasysport.utility.image.ImageViewAnimatedChanger;
 import com.fantasysport.webaccess.requestListeners.FaceBookAuthListener;
 import com.fantasysport.webaccess.requestListeners.MarketsResponseListener;
@@ -23,6 +26,7 @@ import com.fantasysport.webaccess.requestListeners.RequestError;
 import com.fantasysport.webaccess.responses.AuthResponse;
 import com.fantasysport.webaccess.responses.MarketResponse;
 
+import java.util.Arrays;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -34,17 +38,30 @@ public class AuthActivity extends BaseActivity {
     protected Bitmap _nbaBackground;
     protected Bitmap _mlbBackground;
     private Timer _backgroundImgTimer;
+    private UiLifecycleHelper _uiHelper;
 
-    protected void initFacebookAuth(Button facebookBtn) {
-        facebookBtn.setOnClickListener(_facebookClickBntListener);
+    protected void initFacebookAuth(LoginButton facebookBtn) {
+//        facebookBtn.setOnClickListener(_facebookClickBntListener);
+        facebookBtn.setReadPermissions(Arrays.asList("email", "basic_info"));
+        facebookBtn.setTypeface(TypefaceProvider.getProhibitionRound(this));
+        Settings.addLoggingBehavior(LoggingBehavior.INCLUDE_ACCESS_TOKENS);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Session.getActiveSession().onActivityResult(this, requestCode, resultCode, data);
-        if(resultCode == Const.FINISH_ACTIVITY){
+        _uiHelper.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == Const.FINISH_ACTIVITY){
             finish();
+        }
+        switch (resultCode){
+            case Const.SIGN_OUT:
+                Session s = Session.getActiveSession();
+                if(s != null && s.isOpened()){
+                    s.closeAndClearTokenInformation();
+                }
+                break;
         }
     }
 
@@ -52,15 +69,8 @@ public class AuthActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Session session = Session.getActiveSession();
-        if (session == null) {
-            if (savedInstanceState != null) {
-                session = Session.restoreSession(this, null, _fbSessionCallback, savedInstanceState);
-            }
-            if (session == null) {
-                session = new Session(this);
-            }
-            Session.setActiveSession(session);
-        }
+        _uiHelper = new UiLifecycleHelper(this, _fbSessionCallback);
+        _uiHelper.onCreate(savedInstanceState);
     }
 
     @Override
@@ -78,38 +88,61 @@ public class AuthActivity extends BaseActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Session session = Session.getActiveSession();
-        Session.saveSession(session, outState);
+        _uiHelper.onSaveInstanceState(outState);
     }
 
-    private void authByFacebook2() {
-        final Session.OpenRequest request = new Session.OpenRequest(AuthActivity.this).setPermissions("basic_info", "email").setLoginBehavior(SessionLoginBehavior.SSO_WITH_FALLBACK);
-        request.setCallback(_fbSessionCallback);
-        Session session = Session.getActiveSession();
-        if (!session.isOpened()) {
-            session.openForRead(request);
-        } else {
-            Session.openActiveSession(this, true, _fbSessionCallback);
+
+    private void onSessionStateChange(Session session, SessionState state,
+                                    Exception exception) {
+
+        session = Session.getActiveSession();
+        SharedPreferences storedPrefs = PreferenceManager
+                .getDefaultSharedPreferences(AuthActivity.this.getApplicationContext());
+        SharedPreferences.Editor editor = storedPrefs.edit();
+        editor.putBoolean("userLoggedTracker", true);
+        editor.commit();
+
+        if (state.isOpened()) {
+            Log.i("AuthActivity", "Logged in...");
+            makeMeRequest(session);
+            editor.putBoolean("userLoggedTracker", false);
+            editor.commit();
+//                getView().setVisibility(View.GONE);
+
+        } else if (state.isClosed()) {
+            Log.i("AuthActivity", "Logged out...");
+            editor.putBoolean("userLoggedTracker", true);
+            editor.commit();
+//                getView().setVisibility(View.VISIBLE);
         }
+
     }
+
 
     Session.StatusCallback _fbSessionCallback = new Session.StatusCallback() {
         @Override
         public void call(Session session, SessionState state, Exception exception) {
-            if (session.isOpened()) {
-                authByFacebook(session);
-            } else if (SessionState.CLOSED == state) {
-//                showAlert("Error", "Facebook error", null);
-//                finishAuth();
-            } else if (SessionState.CLOSED_LOGIN_FAILED == state){
-                Session ses = Session.getActiveSession();
-                if(ses != null){
-                    session = new Session(AuthActivity.this);
-                }
-                Session.setActiveSession(session);
-            }
+            onSessionStateChange(session, state, exception);
         }
     };
+
+    private void makeMeRequest(final Session session) {
+        Request request = Request.newMeRequest(session,
+                new Request.GraphUserCallback() {
+                    @Override
+                    public void onCompleted(GraphUser user, Response response) {
+
+                        // If the response is successful
+                        if (session == Session.getActiveSession()) {
+                            authByFacebook(session);
+                        }
+                        if (response.getError() != null) {
+                            showAlert(getString(R.string.error), response.getError().getErrorMessage());
+                        }
+                    }
+                });
+        request.executeAsync();
+    }
 
     private void authByFacebook(Session session) {
         final String accessToken = session.getAccessToken();
@@ -214,24 +247,35 @@ public class AuthActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         startTimer();
+
+//        Session session = Session.getActiveSession();
+//        if (session != null && (session.isOpened() || session.isClosed())) {
+//            onSessionStateChange(session, session.getState(), null);
+//        }
+        _uiHelper.onResume();
     }
 
     @Override
     protected void onPause() {
         stopTimer();
         super.onPause();
+        _uiHelper.onPause();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        _uiHelper.onDestroy();
     }
 
     protected void loadMarkets(){
+        showProgress();
         UserData data = _storage.getUserData();
         _webProxy.getMarkets(data.getCurrentSport(), _marketsResponseListener);
     }
 
     protected void navigateToMainActivity() {
         Intent intent = new Intent(this, MainActivity.class);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         startActivityForResult(intent, Const.MAIN_ACTIVITY);
     }
 
@@ -266,17 +310,13 @@ public class AuthActivity extends BaseActivity {
         }
 
         @Override
-        public void onRequestSuccess(AuthResponse response) {
+        public synchronized void onRequestSuccess(AuthResponse response) {
+            dismissProgress();
+            if(_storage.getUserData() != null){
+                return;
+            }
             _storage.setUserData(response.getUserData());
             loadMarkets();
-        }
-    };
-
-    View.OnClickListener _facebookClickBntListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            startAuth();
-            authByFacebook2();
         }
     };
 }

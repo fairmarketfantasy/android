@@ -79,6 +79,9 @@ public class App extends Application {
         @Override
         public void onSignOut() {
             RequestHelper.instance().setAccessTokenData(null);
+            Storage.instance().setUserData(null);
+            Storage.instance().setMarketsContainer(null);
+            Storage.instance().setDefaultRosterData(null);
             CacheProvider.putString(App.this, ACCESS_TOKEN, null);
             CacheProvider.putString(App.this, MARKETS, null);
             CacheProvider.putString(App.this, DEFAULT_ROSTER_DATA, null);

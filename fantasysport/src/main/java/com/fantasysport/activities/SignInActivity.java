@@ -1,11 +1,14 @@
 package com.fantasysport.activities;
 
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.view.*;
 import android.view.inputmethod.EditorInfo;
 import android.widget.*;
+import com.facebook.widget.LoginButton;
 import com.fantasysport.R;
 import com.fantasysport.utility.image.ImageViewAnimatedChanger;
 import com.fantasysport.webaccess.RequestHelper;
@@ -24,7 +27,7 @@ public class SignInActivity extends AuthActivity {
 
     private EditText _emailTxt;
     private EditText _passwordTxt;
-    private Button _facebookBtn;
+    private LoginButton _facebookBtn;
     private Button _signInBtn;
 
     @Override
@@ -52,6 +55,7 @@ public class SignInActivity extends AuthActivity {
         if(RequestHelper.instance().getAccessTokenData() != null){
             navigateToMainActivity();
         }
+
     }
 
     private void attemptGetAccessToken(){

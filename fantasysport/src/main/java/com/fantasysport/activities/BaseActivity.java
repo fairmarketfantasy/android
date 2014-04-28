@@ -8,6 +8,7 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import com.fantasysport.Const;
 import com.fantasysport.R;
@@ -27,12 +28,13 @@ import java.util.regex.Pattern;
 /**
  * Created by bylynka on 2/3/14.
  */
-public class BaseActivity extends ActionBarActivity{
+public class BaseActivity extends ActionBarActivity {
 
     protected SpiceManager _spiceManager = new SpiceManager(GsonGoogleHttpClientSpiceService.class);
     protected WebProxy _webProxy;
     protected Storage _storage;
     protected int _progressCounter;
+    private ProgressBar _progressBar;
 
 
     //prod
@@ -53,12 +55,6 @@ public class BaseActivity extends ActionBarActivity{
         CrashManager.register(this, APP_ID);
     }
 
-
-    @Override
-    public View onCreateView(String name, Context context, AttributeSet attrs) {
-        return super.onCreateView(name, context, attrs);
-    }
-
     @Override
     public void setContentView(int layoutResID) {
         _storage = Storage.instance();
@@ -69,7 +65,7 @@ public class BaseActivity extends ActionBarActivity{
         initActionBar(getSupportActionBar());
     }
 
-    public WebProxy getWebProxy(){
+    public WebProxy getWebProxy() {
         return _webProxy;
     }
 
@@ -87,34 +83,45 @@ public class BaseActivity extends ActionBarActivity{
     }
 
 
-    private void updateProgress(){
-        if(_progressCounter < 0){
+    private void updateProgress() {
+        if (_progressCounter < 0) {
             _progressCounter = 0;
         }
-        if(_progressCounter == 0){
-            setSupportProgressBarIndeterminateVisibility(false);
+        if (_progressCounter == 0) {
+//            setSupportProgressBarIndeterminateVisibility(false);
+            getProgressBar().setVisibility(View.GONE);
             afterLoading();
-        }else if(_progressCounter >= 1 && !isProgressShowing()){
+        } else if (_progressCounter >= 1 && !isProgressShowing()) {
             beforeLoading();
-            setSupportProgressBarIndeterminateVisibility(true);
+            getProgressBar().setVisibility(View.VISIBLE);
+//            setSupportProgressBarIndeterminateVisibility(true);
         }
     }
 
-    protected void beforeLoading(){}
+    private ProgressBar getProgressBar() {
+        if (_progressBar == null) {
+            _progressBar = getViewById(R.id.progressBar);
+        }
+        return _progressBar;
+    }
 
-    protected void afterLoading(){}
+    protected void beforeLoading() {
+    }
 
-    public void showProgress(){
+    protected void afterLoading() {
+    }
+
+    public void showProgress() {
         _progressCounter++;
         updateProgress();
     }
 
-    public void dismissProgress(){
+    public void dismissProgress() {
         _progressCounter--;
         updateProgress();
     }
 
-    public boolean isProgressShowing(){
+    public boolean isProgressShowing() {
         return getSupportLoaderManager().hasRunningLoaders();
     }
 
@@ -133,18 +140,18 @@ public class BaseActivity extends ActionBarActivity{
         super.onStop();
     }
 
-    protected <T> T getViewById(int viewId){
-        return (T)findViewById(viewId);
+    protected <T> T getViewById(int viewId) {
+        return (T) findViewById(viewId);
     }
 
-    public void showAlert(String title, String message){
+    public void showAlert(String title, String message) {
         new AlertDialog(this)
                 .setTitle(title)
                 .setContent(message)
                 .show();
     }
 
-    private void initActionBar(ActionBar bar){
+    private void initActionBar(ActionBar bar) {
         bar.setDisplayShowCustomEnabled(true);
         bar.setDisplayShowTitleEnabled(false);
         bar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_CUSTOM);
@@ -154,30 +161,30 @@ public class BaseActivity extends ActionBarActivity{
         getSupportActionBar().setCustomView(customBar);
     }
 
-    protected void setHeaderText(String text){
-        TextView textView = (TextView)getSupportActionBar().getCustomView().findViewById(R.id.fair_martet_txt);
+    protected void setHeaderText(String text) {
+        TextView textView = (TextView) getSupportActionBar().getCustomView().findViewById(R.id.fair_martet_txt);
         textView.setText(text);
     }
 
-    protected void showWebView(String link, String header){
+    protected void showWebView(String link, String header) {
         Intent intent = new Intent(this, WebActivity.class);
         intent.putExtra(Const.WEB_LINK, link);
         intent.putExtra(Const.WEB_ACTIVITY_HEADER, header);
         startActivity(intent);
     }
 
-    protected void showPredictions(){
+    protected void showPredictions() {
         Intent intent = new Intent(this, PredictionActivity.class);
         startActivity(intent);
     }
 
 
-    protected void showSettingsView(){
+    protected void showSettingsView() {
         Intent intent = new Intent(this, SettingsActivity.class);
         startActivityForResult(intent, Const.SETTINGS_ACTIVITY);
     }
 
-    protected void signOut(){
+    protected void signOut() {
         showProgress();
         _webProxy.signOut(new SignOutResponseListener() {
             @Override
@@ -194,7 +201,7 @@ public class BaseActivity extends ActionBarActivity{
         });
     }
 
-    private void navigateToSignInScreen(){
+    private void navigateToSignInScreen() {
 //        Intent intent = new Intent(this, SignInActivity.class);
 ////        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
 //        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -202,13 +209,14 @@ public class BaseActivity extends ActionBarActivity{
 //        startActivityForResult(intent, Const.MAIN_ACTIVITY);
 
         overridePendingTransition(R.anim.abc_fade_out, R.anim.abc_fade_in);
+        setResult(Const.SIGN_OUT);
         super.finish();
 
 //        finish();
     }
 
     public boolean isEmailValid(String email) {
-        if(email == null){
+        if (email == null) {
             return false;
         }
         email = email.trim();

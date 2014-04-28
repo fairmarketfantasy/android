@@ -62,10 +62,10 @@
                             style="@style/green_auth_button"
                             custom:fontFamily="prohibitionRound"/>
 
-                    <com.fantasysport.views.ExButton android:text="@string/sign_in_with_facebook"
+                    <com.facebook.widget.LoginButton android:text="@string/sign_in_with_facebook"
                             android:id="@+id/facebook_btn"
                             style="@style/blue_auth_button"
-                            custom:fontFamily="prohibitionRound" />
+                            />
 
                     <TextView android:layout_marginTop="15dip"
                               android:layout_width="wrap_content"
@@ -79,14 +79,14 @@
 
                 </LinearLayout>
 
-            </FrameLayout>
+                <ProgressBar
+                        style="?android:attr/progressBarStyleLarge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/progressBar" android:layout_gravity="center"
+                        android:visibility="gone"
+                        />
 
-
-
-            <FrameLayout android:layout_width="match_parent" android:layout_height="0dp"
-                         android:id="@+id/bottom_bar"
-                         android:background="@color/bottom_bar_background"
-                         android:layout_gravity="bottom">
             </FrameLayout>
         </LinearLayout>
 
