@@ -13,6 +13,7 @@ import com.fantasysport.adapters.IndividualPredictionAdapter;
 import com.fantasysport.adapters.PredictionAdapter;
 import com.fantasysport.models.IndividualPrediction;
 import com.fantasysport.models.Prediction;
+import com.fantasysport.models.UserData;
 import com.fantasysport.webaccess.requestListeners.IndividualPredictionsResponseListener;
 import com.fantasysport.webaccess.requestListeners.PredictionsResponseListener;
 import com.fantasysport.webaccess.requestListeners.RequestError;
@@ -67,7 +68,8 @@ public class HistoryPredictionFragment extends BasePredictionFragment {
         if(showLoadPopup){
             showProgress();
         }
-        getWebProxy().getPredictions(new PredictionsResponseListener() {
+        UserData data = getStorage().getUserData();
+        getWebProxy().getPredictions(data.getCurrentSport(), new PredictionsResponseListener() {
             @Override
             public void onRequestError(RequestError error) {
                 dismissProgress();
@@ -114,7 +116,8 @@ public class HistoryPredictionFragment extends BasePredictionFragment {
         if(showLoadPopup){
             showProgress();
         }
-        getWebProxy().getIndividualPredictions(new IndividualPredictionsResponseListener() {
+        UserData data = getStorage().getUserData();
+        getWebProxy().getIndividualPredictions(data.getCurrentSport(), new IndividualPredictionsResponseListener() {
             @Override
             public void onRequestError(RequestError error) {
                 dismissProgress();

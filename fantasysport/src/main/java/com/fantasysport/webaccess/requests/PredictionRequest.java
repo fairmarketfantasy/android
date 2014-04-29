@@ -22,9 +22,10 @@ public class PredictionRequest extends BaseRequest<List> {
         _sport = sport;
     }
 
-    public PredictionRequest(int page) {
+    public PredictionRequest(String sport, int page) {
         super(List.class);
         _page = page;
+        _sport = sport;
     }
 
     @Override

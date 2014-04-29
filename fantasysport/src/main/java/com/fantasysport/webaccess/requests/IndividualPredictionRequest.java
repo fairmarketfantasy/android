@@ -21,9 +21,10 @@ public class IndividualPredictionRequest extends BaseRequest<List>  {
         _sport = sport;
     }
 
-    public IndividualPredictionRequest(int page) {
+    public IndividualPredictionRequest(String sport, int page) {
         super(List.class);
         _page = page;
+        _sport = sport;
     }
 
     @Override

@@ -54,8 +54,8 @@ public final class WebProxy {
         _spiceManager.execute(request, listener);
     }
 
-    public void getIndividualPredictions(IndividualPredictionsResponseListener listener, int page){
-        IndividualPredictionRequest request = new IndividualPredictionRequest(page);
+    public void getIndividualPredictions(String sport, IndividualPredictionsResponseListener listener, int page){
+        IndividualPredictionRequest request = new IndividualPredictionRequest(sport, page);
         _spiceManager.execute(request, listener);
     }
 
@@ -64,8 +64,8 @@ public final class WebProxy {
         _spiceManager.execute(request, listener);
     }
 
-    public void getPredictions(PredictionsResponseListener listener, int page){
-        PredictionRequest request = new PredictionRequest(page);
+    public void getPredictions(String sport, PredictionsResponseListener listener, int page){
+        PredictionRequest request = new PredictionRequest(sport, page);
         _spiceManager.execute(request, listener);
     }
 

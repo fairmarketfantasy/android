@@ -23,7 +23,7 @@ import java.util.TimerTask;
 public class SignInActivity extends AuthActivity {
 
     private final String STATE_EMAIL = "state_email";
-    private final String STATE_PASSWORD= "state_password";
+    private final String STATE_PASSWORD = "state_password";
 
     private EditText _emailTxt;
     private EditText _passwordTxt;
@@ -46,19 +46,20 @@ public class SignInActivity extends AuthActivity {
         setBackground();
         _emailTxt = getViewById(R.id.email_txt);
         _passwordTxt = getViewById(R.id.password_txt);
-        _emailTxt.setOnEditorActionListener(_passwordTxtEditorActionListener);
+        _passwordTxt.setOnEditorActionListener(_passwordTxtEditorActionListener);
+
 
         if (savedInstanceState != null) {
             _emailTxt.setText(savedInstanceState.getString(STATE_EMAIL));
             _passwordTxt.setText(savedInstanceState.getString(STATE_PASSWORD));
         }
-        if(RequestHelper.instance().getAccessTokenData() != null){
+        if (RequestHelper.instance().getAccessTokenData() != null) {
             navigateToMainActivity();
         }
 
     }
 
-    private void attemptGetAccessToken(){
+    private void attemptGetAccessToken() {
         String email = _emailTxt.getText().toString();
         String password = _passwordTxt.getText().toString();
 
@@ -82,7 +83,8 @@ public class SignInActivity extends AuthActivity {
     TextView.OnEditorActionListener _passwordTxtEditorActionListener = new TextView.OnEditorActionListener() {
         @Override
         public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-            if (id == R.id.login || id == EditorInfo.IME_NULL) {
+            if (id == R.id.login || id == EditorInfo.IME_NULL
+                    || id == EditorInfo.IME_ACTION_DONE) {
                 attemptGetAccessToken();
                 return true;
             }
@@ -105,9 +107,9 @@ public class SignInActivity extends AuthActivity {
         }
     };
 
-    View.OnClickListener _signInBtnClickListener = new View.OnClickListener(){
+    View.OnClickListener _signInBtnClickListener = new View.OnClickListener() {
         @Override
-        public void onClick(View v){
+        public void onClick(View v) {
             attemptGetAccessToken();
         }
     };
@@ -115,12 +117,12 @@ public class SignInActivity extends AuthActivity {
     View.OnClickListener _forgotPwdClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            LayoutInflater layoutInflater = (LayoutInflater)getBaseContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+            LayoutInflater layoutInflater = (LayoutInflater) getBaseContext().getSystemService(LAYOUT_INFLATER_SERVICE);
             View popupView = layoutInflater.inflate(R.layout.popup_forgot_password, null);
-            Button submit = (Button)popupView.findViewById(R.id.submit_btn);
-            final EditText mailTxt = (EditText)popupView.findViewById(R.id.email_txt);
+            Button submit = (Button) popupView.findViewById(R.id.submit_btn);
+            final EditText mailTxt = (EditText) popupView.findViewById(R.id.email_txt);
             View cancelView = popupView.findViewById(R.id.cancel_btn);
-            final TextView errorLbl = (TextView)popupView.findViewById(R.id.error_lbl);
+            final TextView errorLbl = (TextView) popupView.findViewById(R.id.error_lbl);
             final PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, true);
             cancelView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -132,10 +134,10 @@ public class SignInActivity extends AuthActivity {
                 @Override
                 public void onClick(View v) {
                     String mail = mailTxt.getText().toString();
-                    if(isEmailValid(mail)){
+                    if (isEmailValid(mail)) {
                         popupWindow.dismiss();
                         sendRestorePasswordInstruction(mail);
-                    }else {
+                    } else {
                         errorLbl.setVisibility(View.VISIBLE);
                     }
                 }
@@ -144,7 +146,7 @@ public class SignInActivity extends AuthActivity {
         }
     };
 
-    private void sendRestorePasswordInstruction(String email){
+    private void sendRestorePasswordInstruction(String email) {
         _webProxy.resetPassword(email, new ResetPasswordResponse() {
             @Override
             public void onRequestError(RequestError message) {
