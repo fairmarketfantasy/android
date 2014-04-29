@@ -1,15 +1,11 @@
 package com.fantasysport.webaccess.requests;
 
 import android.net.Uri;
-import com.fantasysport.models.StatsItem;
 import com.fantasysport.models.Player;
 import com.fantasysport.webaccess.responses.StatEventsResponse;
 import com.google.api.client.http.GenericUrl;
 import com.google.api.client.http.HttpRequest;
 import com.google.gson.Gson;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**

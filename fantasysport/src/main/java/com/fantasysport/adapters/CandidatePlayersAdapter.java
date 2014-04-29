@@ -72,7 +72,7 @@ public class CandidatePlayersAdapter extends BaseAdapter {
         benchedImg.setVisibility(player.getIsBenched() ? View.VISIBLE : View.INVISIBLE);
 
         Button pt25Btn = (Button) convertView.findViewById(R.id.pt25_btn);
-        if (player.getIsBenched()) {
+        if (player.getIsBenched() || player.getPPG() == 0) {
             pt25Btn.setVisibility(View.INVISIBLE);
         } else {
             pt25Btn.setVisibility(View.VISIBLE);

@@ -60,7 +60,7 @@ public class BaseActivity extends ActionBarActivity {
         _storage = Storage.instance();
         _webProxy = new WebProxy();
         _webProxy.setSpiceManager(_spiceManager);
-        supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+//        supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         super.setContentView(layoutResID);
         initActionBar(getSupportActionBar());
     }

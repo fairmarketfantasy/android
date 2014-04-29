@@ -124,7 +124,7 @@ public class RosterPlayersAdapter extends BaseAdapter {
             } else {
                 tradeBtn.setVisibility(View.GONE);
             }
-            if (!player.getIsBenched()&&(_rosterState.equalsIgnoreCase(Roster.SUBMITTED) || _rosterState.equalsIgnoreCase(Roster.IN_PROGRESS))) {
+            if (player.getPPG() > 0 && !player.getIsBenched()&&(_rosterState.equalsIgnoreCase(Roster.SUBMITTED) || _rosterState.equalsIgnoreCase(Roster.IN_PROGRESS))) {
                 pt25Btn.setVisibility(View.VISIBLE);
                 pt25Btn.setOnClickListener(new PT25BtnClickListener(player));
             } else {
