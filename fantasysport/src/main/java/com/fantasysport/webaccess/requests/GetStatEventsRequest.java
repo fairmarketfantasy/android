@@ -34,7 +34,8 @@ public class GetStatEventsRequest extends BaseRequest<StatEventsResponse> {
                 .appendQueryParameter("access_token", getAccessToken())
                 .appendQueryParameter("player_ids", _player.getStatsId())
                 .appendQueryParameter("average", "true")
-                .appendQueryParameter("market_id", Integer.toString(_marketId));
+                .appendQueryParameter("market_id", Integer.toString(_marketId))
+                .appendQueryParameter("position", _player.getPosition());
 
         String url = uriBuilder.build().toString();
         HttpRequest request = getHttpRequestFactory().buildGetRequest(new GenericUrl(url));
