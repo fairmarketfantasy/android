@@ -116,6 +116,7 @@ public abstract class MainActivityFragment extends BaseActivityFragment implemen
             return;
         }
         _moneyTxt.setText(String.format("$%.0f", price));
+        _moneyTxt.setTextColor(price > 0?Color.parseColor("#6FA648"):Color.parseColor("#E44B3D"));
     }
 
     protected void remainingSalaryChanged(double remainingSalary) {
