@@ -85,7 +85,7 @@ public class CandidatePlayersAdapter extends BaseAdapter {
         TextView namelbl = (TextView) convertView.findViewById(R.id.name_lbl);
         namelbl.setText(player.getName());
         TextView positionLbl = (TextView) convertView.findViewById(R.id.position_lbl);
-        positionLbl.setText(String.format("%s PPG %.1f", player.getTeam(), player.getPPG()));
+        positionLbl.setText(String.format("%s PPG %d", player.getTeam(), Math.round(player.getPPG())));
         TextView buyPriceLbl = (TextView) convertView.findViewById(R.id.buy_price_lbl);
         buyPriceLbl.setText(String.format("$%.0f", player.getBuyPrice()));
         ImageView imageView = (ImageView) convertView.findViewById(R.id.player_img);

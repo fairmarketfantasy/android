@@ -106,7 +106,7 @@ public class RosterPlayersAdapter extends BaseAdapter {
         ImageView imageView = (ImageView) convertView.findViewById(R.id.player_img);
         imageView.setImageBitmap(null);
         if (isSelected) {
-            gamePositionTxt.setText(String.format("%s %s PPG %.1f", player.getPosition(), player.getTeam(), player.getPPG()));
+            gamePositionTxt.setText(String.format("%s %s PPG %d", player.getPosition(), player.getTeam(), Math.round(player.getPPG())));
             tradeBtn.setVisibility(View.VISIBLE);
             _imageLoader.displayImage(player.getImageUrl(), imageView);
             nameLbl.setVisibility(View.VISIBLE);
