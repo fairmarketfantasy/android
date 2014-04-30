@@ -17,8 +17,8 @@ android {
     buildToolsVersion "19.0.1"
 
     defaultConfig {
-        versionCode 20
-        versionName "1.7"
+        versionCode 21
+        versionName "1.8"
     }
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES'

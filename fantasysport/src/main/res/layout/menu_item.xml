@@ -14,10 +14,5 @@
               android:layout_gravity="center_vertical|left"
               android:paddingLeft="@dimen/side_marging"
               android:id="@+id/item"/>
-    <ImageView android:layout_width="25dp"
-               android:layout_height="25dp"
-               android:paddingRight="@dimen/side_marging"
-               android:layout_gravity="center_vertical"
-               android:src="@drawable/ic_action_next_item"/>
 </LinearLayout>
 </FrameLayout>

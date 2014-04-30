@@ -145,10 +145,10 @@ public class BaseActivity extends ActionBarActivity {
     }
 
     public void showAlert(String title, String message) {
-        new AlertDialog(this)
-                .setTitle(title)
-                .setContent(message)
-                .show();
+        AlertDialog dialog = new AlertDialog(this);
+        dialog.setTitle(title);
+        dialog.setContent(message);
+        dialog.show();
     }
 
     private void initActionBar(ActionBar bar) {

@@ -22,6 +22,7 @@ public class AlertDialog extends PopupWindow{
     private View _popupView;
 
     public AlertDialog(Context context){
+        super(context);
         _context = context;
         init();
     }
