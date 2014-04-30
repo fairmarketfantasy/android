@@ -129,8 +129,13 @@ public class ScrollPositionControl extends FrameLayout implements IPositionView 
     public void setPositions(List<Position> positions) {
         _position = null;
         _positions = positions;
-        _positions.add(null);
-        _positions.add(0, null);
+        int posCount = _positions.size();
+        if(posCount > 0 && _positions.get(posCount - 1) != null){
+            _positions.add(null);
+        }
+        if(posCount > 0 &&_positions.get(0) != null){
+            _positions.add(0, null);
+        }
         _adapter.notifyDataSetChanged();
         _listView.setSelectionFromTop(0, _yOffset);
         setPosition(1);
@@ -184,23 +189,6 @@ public class ScrollPositionControl extends FrameLayout implements IPositionView 
             if(_firstItem == firstVisibleItem){
                 return;
             }
-//            if(_mp.isPlaying()){
-//                _mp.stop();
-////                _mp.reset();
-////                _mp = MediaPlayer.create(getContext(), R.raw.click2);
-////            _mp.setVolume(0.5f,0.5f);
-////                _mp.start();
-//            }
-////            }else {
-////            _mp.stop();
-////            _mp.reset();
-//                _mp.start();
-////            _mp.release();
-//            _mp = MediaPlayer.create(getContext(), R.raw.click2);
-//            _mp.setVolume(0.5f,0.5f);
-////            }
-
-//            _volume = getVolume();
             _soundPool.play(_soundId, 0.5f, 0.5f, 0, 0, 1);
             _firstItem = firstVisibleItem;
         }
