@@ -43,7 +43,7 @@ public abstract class BaseHomeFragment extends MainActivityFragment  implements 
     protected void init() {
         super.init();
         Button autofillBtn = getViewById(R.id.autofill_btn);
-        autofillBtn.setOnClickListener(_autofillClickListener);
+        autofillBtn.setOnClickListener(_autoFillClickListener);
         _switcher = getViewById(R.id.switcher);
         _switcher.setSelected(true);
         _switcher.setSelectedListener(this);
@@ -196,7 +196,7 @@ public abstract class BaseHomeFragment extends MainActivityFragment  implements 
                     roster.setRemainingSalary(salary);
                     updatePlayersList();
                     dismissProgress();
-                    getFragmentMediator().changePlayerPosition(this, player.getPosition());
+                    getFragmentMediator().changePlayerPosition(this, player.getPosition(), 0);
                     getMainActivity().navigateToPlayers();
                 }
             });
@@ -214,7 +214,7 @@ public abstract class BaseHomeFragment extends MainActivityFragment  implements 
         }
     };
 
-    View.OnClickListener _autofillClickListener = new View.OnClickListener() {
+    View.OnClickListener _autoFillClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             if(getMarket() == null){
@@ -277,9 +277,23 @@ public abstract class BaseHomeFragment extends MainActivityFragment  implements 
 //        if (item instanceof Player) {
 //            return;
 //        }
-        getFragmentMediator().changePlayerPosition(this, item.getPosition());
+        int index = getPlayerIndexInPositionScope(item);
+        getFragmentMediator().changePlayerPosition(this, item.getPosition(), index);
         getMainActivity().navigateToPlayers();
     }
+
+   private int getPlayerIndexInPositionScope(IPlayer player){
+        if(_playerAdapter == null || player == null || _playerAdapter.getItems() == null){
+            return -1;
+        }
+       List<IPlayer> players = new ArrayList<IPlayer>();
+       for (IPlayer p : _playerAdapter.getItems()){
+           if(p.getPosition().equalsIgnoreCase(player.getPosition())){
+               players.add(p);
+           }
+       }
+       return players.indexOf(player);
+   }
 
     @Override
     public void onStateChanged(boolean isSelected) {

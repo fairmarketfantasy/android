@@ -17,7 +17,6 @@ import com.fantasysport.models.Player;
 import com.fantasysport.models.Position;
 import com.fantasysport.models.Roster;
 import com.fantasysport.views.IOnPositionSelectedListener;
-import com.fantasysport.views.PositionView;
 import com.fantasysport.views.ScrollPositionControl;
 import com.fantasysport.webaccess.requestListeners.AddPlayerResponseListener;
 import com.fantasysport.webaccess.requestListeners.PlayersResponseListener;
@@ -107,7 +106,7 @@ public abstract class BasePlayersFragment extends MainActivityFragment implement
 
 
     @Override
-    public void positionSelected(Position position) {
+    public void positionSelected(Position position, int index) {
         loadPlayers(position);
     }
 
@@ -181,8 +180,8 @@ public abstract class BasePlayersFragment extends MainActivityFragment implement
     }
 
     @Override
-    public void onPlayerPositionChanged(Object sender, String position) {
-        _positionView.setPosition(position);
+    public void onPlayerPositionChanged(Object sender, String position, int index) {
+        _positionView.setPosition(position, index);
     }
 
     @Override

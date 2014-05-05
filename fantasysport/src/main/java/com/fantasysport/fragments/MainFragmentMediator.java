@@ -2,6 +2,7 @@ package com.fantasysport.fragments;
 
 import com.fantasysport.models.Market;
 import com.fantasysport.models.Player;
+import com.fantasysport.models.Position;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,8 +53,8 @@ public class MainFragmentMediator {
         raiseOnPlayerAdded(sender, player);
     }
 
-    public void changePlayerPosition(Object sender, String position){
-        raiseOnPlayerPosition(sender, position);
+    public void changePlayerPosition(Object sender, String posAbr, int index){
+        raiseOnPlayerPosition(sender, posAbr, index);
     }
 
     public void changeBenchedState(Object sender, boolean state){
@@ -66,9 +67,9 @@ public class MainFragmentMediator {
         }
     }
 
-    private void raiseOnPlayerPosition(Object sender, String position){
+    private void raiseOnPlayerPosition(Object sender, String posAbr, int index){
         for (IPlayerPositionListener listener: _playerPositionListeners){
-            listener.onPlayerPositionChanged(sender, position);
+            listener.onPlayerPositionChanged(sender, posAbr, index);
         }
     }
 
@@ -103,7 +104,7 @@ public class MainFragmentMediator {
     }
 
     public interface IPlayerPositionListener{
-        public void onPlayerPositionChanged(Object sender, String position);
+        public void onPlayerPositionChanged(Object sender, String posAbr, int index);
     }
 
     public interface IOnBenchedStateChangedListener {

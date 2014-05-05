@@ -22,6 +22,7 @@ import com.fantasysport.R;
 import com.fantasysport.models.Position;
 import com.fantasysport.utility.DeviceInfo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -41,7 +42,6 @@ public class ScrollPositionControl extends FrameLayout implements IPositionView 
     private int _soundId;
     private int _maxMediaVolume;
     private float _volume;
-
 
 
     public ScrollPositionControl(Context context) {
@@ -73,7 +73,7 @@ public class ScrollPositionControl extends FrameLayout implements IPositionView 
 //                _volume = getVolume();
 //            }
 //        });
-        _yOffset = (int)dipToPixels(getContext(), 7) * -1;
+        _yOffset = (int) dipToPixels(getContext(), 7) * -1;
         initListView();
         addView(_listView);
         setGradient();
@@ -92,7 +92,7 @@ public class ScrollPositionControl extends FrameLayout implements IPositionView 
         _listView.setAdapter(_adapter);
     }
 
-    private void setGradient(){
+    private void setGradient() {
         View view = new View(getContext());
         view.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         Drawable drawable = getContext().getResources().getDrawable(R.drawable.picker_gradient);
@@ -107,15 +107,20 @@ public class ScrollPositionControl extends FrameLayout implements IPositionView 
     }
 
     @Override
-    public void setPosition(String positionAcronym) {
-        if(_positions == null){
+    public void setPosition(String positionAcronym, int index) {
+        if (_positions == null) {
             return;
         }
-        for(int i = 1; i < _positions.size(); i++){
+        index++;
+        int curIndex = 0;
+        for (int i = 1; i < _positions.size(); i++) {
             Position position = _positions.get(i);
-            if(position != null && position.getAcronym().equalsIgnoreCase(positionAcronym)){
-                _listView.setSelectionFromTop(i - 1, _yOffset);
-                setPosition(i);
+            if (position != null && position.getAcronym().equalsIgnoreCase(positionAcronym)) {
+                curIndex++;
+                if (curIndex == index) {
+                    _listView.setSelectionFromTop(i - 1, _yOffset);
+                    setPosition(i);
+                }
             }
         }
     }
@@ -130,10 +135,10 @@ public class ScrollPositionControl extends FrameLayout implements IPositionView 
         _position = null;
         _positions = positions;
         int posCount = _positions.size();
-        if(posCount > 0 && _positions.get(posCount - 1) != null){
+        if (posCount > 0 && _positions.get(posCount - 1) != null) {
             _positions.add(null);
         }
-        if(posCount > 0 &&_positions.get(0) != null){
+        if (posCount > 0 && _positions.get(0) != null) {
             _positions.add(0, null);
         }
         _adapter.notifyDataSetChanged();
@@ -141,11 +146,11 @@ public class ScrollPositionControl extends FrameLayout implements IPositionView 
         setPosition(1);
     }
 
-    private void raisOnPositionSelected(Position position){
-        if(_positionListener == null){
+    private void raisOnPositionSelected(Position position, int index) {
+        if (_positionListener == null) {
             return;
         }
-        _positionListener.positionSelected(position);
+        _positionListener.positionSelected(position, index);
     }
 
     @Override
@@ -153,29 +158,39 @@ public class ScrollPositionControl extends FrameLayout implements IPositionView 
         _positionListener = listener;
     }
 
-    private void setPosition(int location){
+    private void setPosition(int location) {
         Position position = _positions.get(location);
-        if(_position == position){
+        if (_position == position) {
             return;
         }
         _position = position;
-        raisOnPositionSelected(_position);
+        raisOnPositionSelected(_position, 0);
     }
 
-    private float getVolume(){
+    public int getPositionIndex(Position position) {
+        List<Position> positions = new ArrayList<Position>();
+        for (Position pos : _positions) {
+            if (pos.getAcronym().equalsIgnoreCase(position.getAcronym())) {
+                positions.add(pos);
+            }
+        }
+        return positions.indexOf(position);
+    }
+
+    private float getVolume() {
         float curVolume = DeviceInfo.getCurrentMediaVolume(getContext());
-        if(_maxMediaVolume == 0){
+        if (_maxMediaVolume == 0) {
             return 0.3f;
         }
 
-        return (0.3f * _maxMediaVolume)/curVolume;
+        return (0.3f * _maxMediaVolume) / curVolume;
     }
 
     AbsListView.OnScrollListener _scrollListener = new AbsListView.OnScrollListener() {
 
         @Override
         public void onScrollStateChanged(AbsListView view, int scrollState) {
-            if(scrollState != 0){
+            if (scrollState != 0) {
                 return;
             }
             _listView.setSelectionFromTop(_firstItem, _yOffset);
@@ -183,10 +198,9 @@ public class ScrollPositionControl extends FrameLayout implements IPositionView 
         }
 
 
-
         @Override
         public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-            if(_firstItem == firstVisibleItem){
+            if (_firstItem == firstVisibleItem) {
                 return;
             }
             _soundPool.play(_soundId, 0.5f, 0.5f, 0, 0, 1);
@@ -194,11 +208,11 @@ public class ScrollPositionControl extends FrameLayout implements IPositionView 
         }
     };
 
-    class PositionAdapter extends BaseAdapter{
+    class PositionAdapter extends BaseAdapter {
 
         @Override
         public int getCount() {
-            return _positions != null? _positions.size(): 0;
+            return _positions != null ? _positions.size() : 0;
         }
 
         @Override
@@ -215,14 +229,14 @@ public class ScrollPositionControl extends FrameLayout implements IPositionView 
         public View getView(int position, View convertView, ViewGroup parent) {
             TextView textView;
             if (convertView == null) {
-                LayoutInflater mInflater = (LayoutInflater)getContext().getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
+                LayoutInflater mInflater = (LayoutInflater) getContext().getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
                 textView = (TextView) mInflater.inflate(R.layout.position_item, null);
-                textView.setLayoutParams(new ListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,(int)dipToPixels(getContext(), 27)));
-            }else {
-                textView = (TextView)convertView;
+                textView.setLayoutParams(new ListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) dipToPixels(getContext(), 27)));
+            } else {
+                textView = (TextView) convertView;
             }
             Position pos = _positions.get(position);
-            String item = pos != null? pos.getName(): "";
+            String item = pos != null ? pos.getName() : "";
             textView.setText(item);
             return textView;
         }

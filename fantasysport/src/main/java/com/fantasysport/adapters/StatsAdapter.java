@@ -91,7 +91,7 @@ public class StatsAdapter extends BaseAdapter {
     private void setPredictionView(View view, StatsItem item) {
         TextView headerLbl = (TextView) view.findViewById(R.id.header_lbl);
 
-        headerLbl.setText(String.format("%s: %.1f", StringHelper.capitalizeFirstLetter(item.getName()), item.getValue()));
+        headerLbl.setText(String.format("%s: %.2f", StringHelper.capitalizeFirstLetter(item.getName()), item.getValue()));
         View predictionBlock = view.findViewById(R.id.prediction_block);
         predictionBlock.setVisibility(View.INVISIBLE);
         View cancelBtn = view.findViewById(R.id.cancel_btn);
@@ -139,28 +139,10 @@ public class StatsAdapter extends BaseAdapter {
                 updateView(v);
                 return;
             }
-//            new AlertDialog.Builder(StatsAdapter.this._context)
-//                    .setTitle(StatsAdapter.this._player.getName())
-//                    .setMessage(String.format("%s than %.1f %s?", (_mode.equalsIgnoreCase(StatsItem.LESS_MODE) ? "Less" : "More"), _item.getValue(), _item.getName()))
-//                    .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialog, int which) {
-//                            if (_mode.equalsIgnoreCase(StatsItem.LESS_MODE)) {
-//                                _item.setBidLess(true);
-//                            } else {
-//                                _item.setBidMore(true);
-//                            }
-//                            updateView(v);
-//                            raiseSubmitListener();
-//
-//                        }
-//                    })
-//                    .setNegativeButton(R.string.cancel, null)
-//                    .show();
 
             new ConfirmDialog(_context)
                     .setTitle(StatsAdapter.this._player.getName())
-                    .setContent(String.format("%s than %.1f %s?", (_mode.equalsIgnoreCase(StatsItem.LESS_MODE) ? "Less" : "More"), _item.getValue(), _item.getName()))
+                    .setContent(String.format("%s than %.2f %s?", (_mode.equalsIgnoreCase(StatsItem.LESS_MODE) ? "Less" : "More"), _item.getValue(), _item.getName()))
                     .setOkAction(new Runnable() {
                         @Override
                         public void run() {
