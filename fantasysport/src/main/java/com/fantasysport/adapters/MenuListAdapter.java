@@ -20,7 +20,7 @@ import java.util.List;
  */
 public class MenuListAdapter extends BaseExpandableListAdapter
         implements ExpandableListView.OnGroupCollapseListener, ExpandableListView.OnGroupExpandListener,
-        ExpandableListView.OnGroupClickListener, ExpandableListView.OnChildClickListener{
+        ExpandableListView.OnGroupClickListener, ExpandableListView.OnChildClickListener {
 
     private List<MenuItem> _items;
     private Context _context;
@@ -35,14 +35,14 @@ public class MenuListAdapter extends BaseExpandableListAdapter
 
     }
 
-    public void setMenu(UserData data){
+    public void setMenu(UserData data) {
         _items = new ArrayList<MenuItem>();
 
         //fantasy sports
         MenuItem item = new MenuItem(MenuItemEnum.FantasySportsHeader, _context.getString(R.string.fantasy_sports));
         List<MenuItem> items = new ArrayList<MenuItem>();
-        for (String sport : data.getActiveSports()){
-            if(!data.getCurrentSport().equalsIgnoreCase(sport)){
+        for (String sport : data.getActiveSports()) {
+            if (!data.getCurrentSport().equalsIgnoreCase(sport)) {
                 items.add(new MenuItem(MenuItemEnum.FantasySport, sport));
             }
         }
@@ -68,12 +68,12 @@ public class MenuListAdapter extends BaseExpandableListAdapter
         _listView.setOnChildClickListener(this);
     }
 
-    public void setOnItemClickListener(IOnItemClickListener listener){
+    public void setOnItemClickListener(IOnItemClickListener listener) {
         _onItemClickListener = listener;
     }
 
-    private void raiseOnItemClick(MenuItem item){
-        if(_onItemClickListener == null){
+    private void raiseOnItemClick(MenuItem item) {
+        if (_onItemClickListener == null) {
             return;
         }
         _onItemClickListener.onClick(item);
@@ -137,14 +137,11 @@ public class MenuListAdapter extends BaseExpandableListAdapter
     }
 
     private View inflateParentItemView(MenuItem item, View convertView) {
-//        if (convertView == null) {
-            LayoutInflater mInflater = (LayoutInflater)
-                    _context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-            convertView = mInflater.inflate(R.layout.group_menu_item, null);
-//        }
+        LayoutInflater mInflater = (LayoutInflater)
+                _context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
+        convertView = mInflater.inflate(R.layout.group_menu_item, null);
         TextView itemTxt = (TextView) convertView.findViewById(R.id.item);
         itemTxt.setText(item.getTitle());
-//        setGroupIndicatorImg(convertView, false);
         return convertView;
     }
 
@@ -152,38 +149,39 @@ public class MenuListAdapter extends BaseExpandableListAdapter
         LayoutInflater mInflater = (LayoutInflater)
                 _context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         int layoutId;
-        if (item.getId() == MenuItemEnum.FantasySport  ||
+        if (item.getId() == MenuItemEnum.FantasySport ||
                 item.getId() == MenuItemEnum.Sport) {
             layoutId = R.layout.sub_menu_item;
-        }else {
+        } else {
             layoutId = R.layout.menu_item;
         }
         convertView = mInflater.inflate(layoutId, null);
         TextView itemTxt = (TextView) convertView.findViewById(R.id.item);
         itemTxt.setText(item.getTitle());
-
         return convertView;
     }
 
 
-
-    private void setGroupIndicator(int groupPosition,  boolean isExpanded){
+    private void setGroupIndicator(int groupPosition, boolean isExpanded) {
         MenuItem item = _items.get(groupPosition);
-        if(!item.hasChildren()){
+        if (!item.hasChildren()) {
             return;
         }
         View view = _listView.getChildAt(groupPosition + 1);
         setGroupIndicatorImg(view, isExpanded);
     }
 
-    private void setGroupIndicatorImg(View itemView, boolean isExpanded){
-        ImageView img = (ImageView)itemView.findViewById(R.id.group_img);
-        if(img == null){
+    private void setGroupIndicatorImg(View itemView, boolean isExpanded) {
+        ImageView img = (ImageView) itemView.findViewById(R.id.group_img);
+        if (img == null) {
             return;
         }
-        Matrix matrix=new Matrix();
+
+//        Bitmap myImg = BitmapFactory.decodeResource(_context.getResources(), isExpanded?R.drawable.group_indicator_up:R.drawable.group_indicator_down);
+
+        Matrix matrix = new Matrix();
         Bitmap myImg = BitmapFactory.decodeResource(_context.getResources(), R.drawable.group_indicator_down);
-        matrix.postRotate(isExpanded?180:0);
+        matrix.postRotate(isExpanded ? 180 : 0);
         Bitmap rotated = Bitmap.createBitmap(myImg, 0, 0, myImg.getWidth(), myImg.getHeight(), matrix, true);
 //        myImg.recycle();
         img.setImageBitmap(rotated);
@@ -202,7 +200,7 @@ public class MenuListAdapter extends BaseExpandableListAdapter
     @Override
     public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
         MenuItem item = _items.get(groupPosition);
-        if(item.hasChildren()){
+        if (item.hasChildren()) {
             return false;
         }
         raiseOnItemClick(item);
@@ -216,7 +214,7 @@ public class MenuListAdapter extends BaseExpandableListAdapter
         return true;
     }
 
-    public interface IOnItemClickListener{
+    public interface IOnItemClickListener {
         public void onClick(MenuItem item);
     }
 

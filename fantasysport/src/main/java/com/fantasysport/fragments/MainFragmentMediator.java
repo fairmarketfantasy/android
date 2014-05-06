@@ -53,8 +53,8 @@ public class MainFragmentMediator {
         raiseOnPlayerAdded(sender, player);
     }
 
-    public void changePlayerPosition(Object sender, String posAbr, int index){
-        raiseOnPlayerPosition(sender, posAbr, index);
+    public void changePlayerPosition(Object sender, String posAcr){
+        raiseOnPlayerPosition(sender, posAcr);
     }
 
     public void changeBenchedState(Object sender, boolean state){
@@ -67,9 +67,9 @@ public class MainFragmentMediator {
         }
     }
 
-    private void raiseOnPlayerPosition(Object sender, String posAbr, int index){
+    private void raiseOnPlayerPosition(Object sender, String posAbr){
         for (IPlayerPositionListener listener: _playerPositionListeners){
-            listener.onPlayerPositionChanged(sender, posAbr, index);
+            listener.onPlayerPositionChanged(sender, posAbr);
         }
     }
 
@@ -104,7 +104,7 @@ public class MainFragmentMediator {
     }
 
     public interface IPlayerPositionListener{
-        public void onPlayerPositionChanged(Object sender, String posAbr, int index);
+        public void onPlayerPositionChanged(Object sender, String posAcr);
     }
 
     public interface IOnBenchedStateChangedListener {

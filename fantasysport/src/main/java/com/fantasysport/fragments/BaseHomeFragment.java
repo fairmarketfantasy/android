@@ -196,7 +196,7 @@ public abstract class BaseHomeFragment extends MainActivityFragment  implements 
                     roster.setRemainingSalary(salary);
                     updatePlayersList();
                     dismissProgress();
-                    getFragmentMediator().changePlayerPosition(this, player.getPosition(), 0);
+                    getFragmentMediator().changePlayerPosition(this, player.getPosition());
                     getMainActivity().navigateToPlayers();
                 }
             });
@@ -277,23 +277,9 @@ public abstract class BaseHomeFragment extends MainActivityFragment  implements 
 //        if (item instanceof Player) {
 //            return;
 //        }
-        int index = getPlayerIndexInPositionScope(item);
-        getFragmentMediator().changePlayerPosition(this, item.getPosition(), index);
+        getFragmentMediator().changePlayerPosition(this, item.getPosition());
         getMainActivity().navigateToPlayers();
     }
-
-   private int getPlayerIndexInPositionScope(IPlayer player){
-        if(_playerAdapter == null || player == null || _playerAdapter.getItems() == null){
-            return -1;
-        }
-       List<IPlayer> players = new ArrayList<IPlayer>();
-       for (IPlayer p : _playerAdapter.getItems()){
-           if(p.getPosition().equalsIgnoreCase(player.getPosition())){
-               players.add(p);
-           }
-       }
-       return players.indexOf(player);
-   }
 
     @Override
     public void onStateChanged(boolean isSelected) {

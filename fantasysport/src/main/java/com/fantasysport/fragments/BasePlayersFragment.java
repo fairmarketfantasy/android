@@ -180,8 +180,8 @@ public abstract class BasePlayersFragment extends MainActivityFragment implement
     }
 
     @Override
-    public void onPlayerPositionChanged(Object sender, String position, int index) {
-        _positionView.setPosition(position, index);
+    public void onPlayerPositionChanged(Object sender, String posAcr) {
+        _positionView.setPosition(posAcr);
     }
 
     @Override

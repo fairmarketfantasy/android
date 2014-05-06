@@ -8,8 +8,6 @@ import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.SoundPool;
-import android.os.Handler;
-import android.provider.Settings;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
@@ -22,8 +20,7 @@ import com.fantasysport.R;
 import com.fantasysport.models.Position;
 import com.fantasysport.utility.DeviceInfo;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by bylynka on 4/24/14.
@@ -63,16 +60,6 @@ public class ScrollPositionControl extends FrameLayout implements IPositionView 
         _soundPool = new SoundPool(7, AudioManager.STREAM_MUSIC, 0);
         _soundId = _soundPool.load(getContext(), R.raw.click2, 1);
         _maxMediaVolume = DeviceInfo.getMaxMediaVolume(getContext());
-//        _volume = getVolume();
-
-//        getContext().getContentResolver().registerContentObserver(
-//                Settings.System.getUriFor(Settings.System.VOLUME_SETTINGS[AudioManager.]), true, new ContentObserver(new Handler()) {
-//            @Override
-//            public void onChange(boolean selfChange) {
-//                super.onChange(selfChange);
-//                _volume = getVolume();
-//            }
-//        });
         _yOffset = (int) dipToPixels(getContext(), 7) * -1;
         initListView();
         addView(_listView);
@@ -107,20 +94,15 @@ public class ScrollPositionControl extends FrameLayout implements IPositionView 
     }
 
     @Override
-    public void setPosition(String positionAcronym, int index) {
+    public void setPosition(String positionAcronym) {
         if (_positions == null) {
             return;
         }
-        index++;
-        int curIndex = 0;
         for (int i = 1; i < _positions.size(); i++) {
             Position position = _positions.get(i);
             if (position != null && position.getAcronym().equalsIgnoreCase(positionAcronym)) {
-                curIndex++;
-                if (curIndex == index) {
                     _listView.setSelectionFromTop(i - 1, _yOffset);
                     setPosition(i);
-                }
             }
         }
     }
@@ -133,17 +115,30 @@ public class ScrollPositionControl extends FrameLayout implements IPositionView 
     @Override
     public void setPositions(List<Position> positions) {
         _position = null;
-        _positions = positions;
-        int posCount = _positions.size();
-        if (posCount > 0 && _positions.get(posCount - 1) != null) {
-            _positions.add(null);
-        }
-        if (posCount > 0 && _positions.get(0) != null) {
-            _positions.add(0, null);
-        }
+        _positions = preparePositionList(positions);
         _adapter.notifyDataSetChanged();
         _listView.setSelectionFromTop(0, _yOffset);
         setPosition(1);
+    }
+
+    private List<Position> preparePositionList(List<Position> positions){
+        if(positions == null){
+            return null;
+        }
+        for(int i = 0; i < positions.size();i++){
+            if(positions.get(i) == null){
+                positions.remove(i);
+            }
+        }
+        List<Position> newPositions = new ArrayList<Position>();
+        for (Position position : positions){
+            if(!newPositions.contains(position)){
+                newPositions.add(position);
+            }
+        }
+        newPositions.add(null);
+        newPositions.add(0,null);
+        return newPositions;
     }
 
     private void raisOnPositionSelected(Position position, int index) {
@@ -165,16 +160,6 @@ public class ScrollPositionControl extends FrameLayout implements IPositionView 
         }
         _position = position;
         raisOnPositionSelected(_position, 0);
-    }
-
-    public int getPositionIndex(Position position) {
-        List<Position> positions = new ArrayList<Position>();
-        for (Position pos : _positions) {
-            if (pos.getAcronym().equalsIgnoreCase(position.getAcronym())) {
-                positions.add(pos);
-            }
-        }
-        return positions.indexOf(position);
     }
 
     private float getVolume() {
