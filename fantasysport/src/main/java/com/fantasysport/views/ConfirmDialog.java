@@ -24,6 +24,7 @@ public class ConfirmDialog extends PopupWindow {
     private View _popupView;
 
     public ConfirmDialog(Context context){
+        super(context);
         _context = context;
         init();
     }

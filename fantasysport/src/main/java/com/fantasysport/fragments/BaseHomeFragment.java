@@ -141,32 +141,6 @@ public abstract class BaseHomeFragment extends MainActivityFragment  implements 
         _playerAdapter.notifyDataSetChanged();
     }
 
-//    protected void updatePlayersList() {
-//        Roster roster = getRoster();
-//        if (roster == null) {
-//            return;
-//        }
-//        remainingSalaryChanged(roster.getRemainingSalary());
-//        List<Player> newPlayers = roster.getPlayers();
-//        List<IPlayer> playerItems = _playerAdapter.getItems();
-//        _playerAdapter.setRosterState(roster.getState());
-//        for (int i = 0; i < playerItems.size(); i++) {
-//            boolean updated = false;
-//            IPlayer iPlayer = playerItems.get(i);
-//            for (int j = 0; j < newPlayers.size(); j++) {
-//                Player player = newPlayers.get(j);
-//                if (iPlayer.getPosition().compareToIgnoreCase(player.getPosition()) == 0) {
-//                    playerItems.set(i, player);
-//                    updated = true;
-//                }
-//            }
-//            if (!updated && iPlayer instanceof Player) {
-//                playerItems.set(i, new PlayerItem(iPlayer.getPosition()));
-//            }
-//        }
-//        _playerAdapter.notifyDataSetChanged();
-//    }
-
     protected void setRoster() {
         _playersList = getViewById(R.id.roster_list);
         _playersList.setOnItemClickListener(this);
