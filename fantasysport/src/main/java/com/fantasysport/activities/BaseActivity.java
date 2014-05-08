@@ -47,8 +47,7 @@ public class BaseActivity extends ActionBarActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        checkForCrashes();
-        int volume = DeviceInfo.getCurrentMediaVolume(this);
+//        checkForCrashes();
     }
 
     private void checkForCrashes() {

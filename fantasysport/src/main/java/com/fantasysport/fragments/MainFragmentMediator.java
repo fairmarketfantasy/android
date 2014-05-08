@@ -2,7 +2,6 @@ package com.fantasysport.fragments;
 
 import com.fantasysport.models.Market;
 import com.fantasysport.models.Player;
-import com.fantasysport.models.Position;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,12 +16,16 @@ public class MainFragmentMediator {
     private List<IPlayerAddListener> _playerAddListeners = new ArrayList<IPlayerAddListener>();
     private List<IPlayerPositionListener> _playerPositionListeners = new ArrayList<IPlayerPositionListener>();
     private List<IOnBenchedStateChangedListener> _onBenchedStateChangedListeners = new ArrayList<IOnBenchedStateChangedListener>();
-    private static MainFragmentMediator _instance;
+    private List<ITradePlayerListener> _tradePlayerListeners = new ArrayList<ITradePlayerListener>();
 
     public MainFragmentMediator(){}
 
     public void addOnBenchedStateChangedListener(IOnBenchedStateChangedListener listener){
         _onBenchedStateChangedListeners.add(listener);
+    }
+
+    public void addTradePlayerListener(ITradePlayerListener listener){
+        _tradePlayerListeners.add(listener);
     }
 
     public void addPlayerPositionListener(IPlayerPositionListener listener){
@@ -59,6 +62,16 @@ public class MainFragmentMediator {
 
     public void changeBenchedState(Object sender, boolean state){
         raiseOnBenchedStateChanged(sender, state);
+    }
+
+    public void tradePlayer(Object sender, String posAcr){
+        raiseOnTradePlayer(sender, posAcr);
+    }
+
+    private void raiseOnTradePlayer(Object sender, String posAcr){
+        for (ITradePlayerListener listener : _tradePlayerListeners){
+            listener.onTradePlayer(sender, posAcr);
+        }
     }
 
     private void raiseOnBenchedStateChanged(Object sender, boolean state){
@@ -105,6 +118,10 @@ public class MainFragmentMediator {
 
     public interface IPlayerPositionListener{
         public void onPlayerPositionChanged(Object sender, String posAcr);
+    }
+
+    public interface ITradePlayerListener {
+        public void onTradePlayer(Object sender, String posAcr);
     }
 
     public interface IOnBenchedStateChangedListener {

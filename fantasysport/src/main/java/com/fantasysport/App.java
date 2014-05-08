@@ -32,7 +32,7 @@ public class App extends Application {
         _current = this;
         restoreState();
         setRequestHelper();
-        Ubertesters.initialize(this);
+//        Ubertesters.initialize(this);
     }
 
     private void setRequestHelper(){

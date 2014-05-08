@@ -26,9 +26,10 @@ import com.fantasysport.webaccess.responses.PlayersRequestResponse;
 /**
  * Created by bylynka on 3/24/14.
  */
-public abstract class BasePlayersFragment extends MainActivityFragment implements IOnPositionSelectedListener, CandidatePlayersAdapter.IListener,
-        MainFragmentMediator.IPlayerPositionListener, MainFragmentMediator.IOnBenchedStateChangedListener
-        {
+public abstract class BasePlayersFragment extends MainActivityFragment
+        implements IOnPositionSelectedListener, CandidatePlayersAdapter.IListener,
+        MainFragmentMediator.IPlayerPositionListener, MainFragmentMediator.IOnBenchedStateChangedListener,
+        MainFragmentMediator.ITradePlayerListener{
 
     protected ScrollPositionControl _positionView;
     protected CandidatePlayersAdapter _playersAdapter;
@@ -42,6 +43,7 @@ public abstract class BasePlayersFragment extends MainActivityFragment implement
         super.onCreate(savedInstanceState);
         getFragmentMediator().addPlayerPositionListener(this);
         getFragmentMediator().addOnBenchedStateChangedListener(this);
+        getFragmentMediator().addTradePlayerListener(this);
     }
 
     @Override
@@ -128,16 +130,18 @@ public abstract class BasePlayersFragment extends MainActivityFragment implement
 
             @Override
             public void onRequestSuccess(Player player) {
+                _playersAdapter.getPlayers().remove(player);
+                _playersAdapter.notifyDataSetChanged();
                 Roster roster = getRoster();
                 addPlayerToRoster(player);
                 double remainingSalary = roster.getRemainingSalary() - player.getBuyPrice();
                 remainingSalaryChanged(remainingSalary);
                 dismissProgress();
                 getMainActivity().navigateToRosters();
+
             }
         });
     }
-
 
     @Override
     public void onPlayerAdded(Object sender, Player player) {
@@ -149,8 +153,7 @@ public abstract class BasePlayersFragment extends MainActivityFragment implement
         if(roster == null){
             return;
         }
-        Activity activity = getActivity();
-        Intent intent = new Intent(activity, IndividuaPredictionsActivity.class);
+        Intent intent = new Intent(getActivity(), IndividuaPredictionsActivity.class);
         intent.putExtra(Const.PLAYER, player);
         intent.putExtra(Const.ROSTER_ID, roster.getId());
         intent.putExtra(Const.MARKET_ID, getMarket().getId());
@@ -182,6 +185,15 @@ public abstract class BasePlayersFragment extends MainActivityFragment implement
     @Override
     public void onPlayerPositionChanged(Object sender, String posAcr) {
         _positionView.setPosition(posAcr);
+    }
+
+    @Override
+    public void onTradePlayer(Object sender, String posAcr) {
+        _positionView.setPosition(posAcr);
+        if(_lastPosition != null && _lastPosition.equalsIgnoreCase(posAcr)){
+            _lastPosition = ".-.";
+            loadPlayers(_positionView.getPosition());
+        }
     }
 
     @Override

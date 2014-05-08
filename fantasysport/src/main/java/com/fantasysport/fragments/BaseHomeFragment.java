@@ -34,7 +34,6 @@ public abstract class BaseHomeFragment extends MainActivityFragment  implements 
     private ListView _playersList;
     private AutoFillRequest _autoFillRequest;
 
-
     public BaseHomeFragment(){
         super();
     }
@@ -42,8 +41,8 @@ public abstract class BaseHomeFragment extends MainActivityFragment  implements 
     @Override
     protected void init() {
         super.init();
-        Button autofillBtn = getViewById(R.id.autofill_btn);
-        autofillBtn.setOnClickListener(_autoFillClickListener);
+        Button autoFillBtn = getViewById(R.id.autofill_btn);
+        autoFillBtn.setOnClickListener(_autoFillClickListener);
         _switcher = getViewById(R.id.switcher);
         _switcher.setSelected(true);
         _switcher.setSelectedListener(this);
@@ -74,8 +73,8 @@ public abstract class BaseHomeFragment extends MainActivityFragment  implements 
 
         }
         int position = _pagerAdapter.getMarketPosition(market);
-        int curPossition = _pager.getCurrentItem();
-        if(sender == this || position < 0 || curPossition == position){
+        int curPosition = _pager.getCurrentItem();
+        if(sender == this || position < 0 || curPosition == position){
             return;
         }
         _pager.setCurrentItem(position , false);
@@ -170,7 +169,7 @@ public abstract class BaseHomeFragment extends MainActivityFragment  implements 
                     roster.setRemainingSalary(salary);
                     updatePlayersList();
                     dismissProgress();
-                    getFragmentMediator().changePlayerPosition(this, player.getPosition());
+                    getFragmentMediator().tradePlayer(this, player.getPosition());
                     getMainActivity().navigateToPlayers();
                 }
             });
