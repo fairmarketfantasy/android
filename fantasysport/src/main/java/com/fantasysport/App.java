@@ -9,6 +9,7 @@ import com.fantasysport.repo.Storage;
 import com.fantasysport.utility.CacheProvider;
 import com.fantasysport.webaccess.RequestHelper;
 import com.google.gson.Gson;
+import com.ubertesters.sdk.Ubertesters;
 
 /**
  * Created by bylynka on 2/4/14.
@@ -31,7 +32,7 @@ public class App extends Application {
         _current = this;
         restoreState();
         setRequestHelper();
-//        Ubertesters.initialize(this);
+        Ubertesters.initialize(this);
     }
 
     private void setRequestHelper(){
