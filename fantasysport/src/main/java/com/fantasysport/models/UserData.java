@@ -70,6 +70,10 @@ public class UserData {
         return _currentSport;
     }
 
+    public String getCurrentCategory(){
+        return null;
+    }
+
     public void setCurrentSport(String sport){
         _currentSport = sport;
     }

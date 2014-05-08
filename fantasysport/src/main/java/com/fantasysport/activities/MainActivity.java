@@ -230,8 +230,10 @@ public class MainActivity extends BaseMainActivity {
 
     private void updateMarkets(final boolean isTimeChanged) {
         UserData data = _storage.getUserData();
+        String cat = data.getCurrentCategory();
+        String sport = data.getCurrentSport();
         showProgress();
-        _webProxy.getMarkets(data.getCurrentSport(), new MarketsResponseListener() {
+        _webProxy.getMarkets(cat, sport, new MarketsResponseListener() {
             @Override
             public void onRequestError(RequestError error) {
                 dismissProgress();

@@ -69,6 +69,7 @@ public class MarketsRequest extends BaseRequest<MarketResponse>  {
         Uri.Builder uriBuilder = Uri.parse(getUrl()).buildUpon();
         uriBuilder.appendPath("rosters")
                 .appendPath("new")
+                .appendQueryParameter("category", _category)
                 .appendQueryParameter("sport", _sport)
                 .appendQueryParameter("access_token", getAccessToken());
         String url = uriBuilder.build().toString();
