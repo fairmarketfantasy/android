@@ -59,13 +59,13 @@ public final class WebProxy {
         _spiceManager.execute(request, listener);
     }
 
-    public void getPredictions(String sport, PredictionsResponseListener listener){
-        PredictionRequest request = new PredictionRequest(sport);
+    public void getPredictions(String category, String sport, PredictionsResponseListener listener){
+        PredictionRequest request = new PredictionRequest(category, sport);
         _spiceManager.execute(request, listener);
     }
 
-    public void getPredictions(String sport, PredictionsResponseListener listener, int page){
-        PredictionRequest request = new PredictionRequest(sport, page);
+    public void getPredictions(String category, String sport, PredictionsResponseListener listener, int page){
+        PredictionRequest request = new PredictionRequest(category, sport, page);
         _spiceManager.execute(request, listener);
     }
 
@@ -136,8 +136,8 @@ public final class WebProxy {
         _spiceManager.execute(request, listener);
     }
 
-    public void loadPlayersPosition(String sport, DefaultRosterResponseListener listener){
-        PlayersPositionRequest request = new PlayersPositionRequest(sport);
+    public void loadPlayersPosition(String category, String sport, DefaultRosterResponseListener listener){
+        PlayersPositionRequest request = new PlayersPositionRequest(category, sport);
         _spiceManager.execute(request, listener);
     }
 

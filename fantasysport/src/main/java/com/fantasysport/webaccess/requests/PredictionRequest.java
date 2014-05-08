@@ -16,16 +16,19 @@ public class PredictionRequest extends BaseRequest<List> {
 
     private int _page = 0;
     private String _sport;
+    private String _category;
 
-    public PredictionRequest(String sport) {
+    public PredictionRequest(String category, String sport) {
         super(List.class);
         _sport = sport;
+        _category = category;
     }
 
-    public PredictionRequest(String sport, int page) {
+    public PredictionRequest(String category, String sport, int page) {
         super(List.class);
         _page = page;
         _sport = sport;
+        _category = category;
     }
 
     @Override
@@ -34,6 +37,7 @@ public class PredictionRequest extends BaseRequest<List> {
                 .appendPath("rosters")
                 .appendPath("mine")
                 .appendQueryParameter("sport", _sport)
+                .appendQueryParameter("category", _category)
                 .appendQueryParameter("access_token", getAccessToken());
         if(_page > 0){
             uriBuilder.appendQueryParameter("historical", "true");
