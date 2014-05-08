@@ -63,8 +63,6 @@
                              android:layout_height="50dp"
                              android:paddingRight="@dimen/side_marging"
                              android:paddingLeft="@dimen/side_marging"
-                             android:paddingBottom="@dimen/side_hor_marging"
-                             android:paddingTop="@dimen/side_hor_marging"
                              android:background="#E6E6E6">
                     <com.fantasysport.views.RobotoThinTextView android:layout_width="wrap_content"
                               android:layout_height="wrap_content"
