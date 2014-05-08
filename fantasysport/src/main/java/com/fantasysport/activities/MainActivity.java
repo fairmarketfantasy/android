@@ -17,6 +17,7 @@ import com.fantasysport.adapters.MenuItem;
 import com.fantasysport.adapters.MenuListAdapter;
 import com.fantasysport.fragments.MenuHeaderFragment;
 import com.fantasysport.models.Market;
+import com.fantasysport.models.Sport;
 import com.fantasysport.models.UserData;
 import com.fantasysport.utility.CacheProvider;
 import com.fantasysport.utility.DateUtils;
@@ -102,19 +103,25 @@ public class MainActivity extends BaseMainActivity {
                 } else {
                     headerView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 }
-                BitmapDrawable bitmapDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.nba_background);
-                Bitmap bitmap = bitmapDrawable.getBitmap();
-                int width = headerView.getWidth() > bitmap.getWidth()? bitmap.getWidth(): headerView.getWidth();
-                int height = headerView.getHeight() > bitmap.getHeight()? bitmap.getHeight(): headerView.getHeight();
-                Bitmap newBitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height, null, false);
-                ImageView img = (ImageView) headerView.findViewById(R.id.image);
-                img.setImageBitmap(newBitmap);
+                updateMenuHeaderImage(headerView);
             }
         });
     }
 
+    protected void updateMenuHeaderImage(View headerView){
+       String sport = _storage.getUserData().getCurrentSport();
+        int drawableId = sport.equalsIgnoreCase(Sport.NBA)?R.drawable.nba_background:R.drawable.mlb_background;
+        BitmapDrawable bitmapDrawable = (BitmapDrawable) getResources().getDrawable(drawableId);
+        Bitmap bitmap = bitmapDrawable.getBitmap();
+        int width = headerView.getWidth() > bitmap.getWidth()? bitmap.getWidth(): headerView.getWidth();
+        int height = headerView.getHeight() > bitmap.getHeight()? bitmap.getHeight(): headerView.getHeight();
+        Bitmap newBitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height, null, false);
+        ImageView img = (ImageView) headerView.findViewById(R.id.image);
+        img.setImageBitmap(newBitmap);
+    }
+
     private void setMenu() {
-        View header = getLayoutInflater().inflate(R.layout.menu_header, null, false);
+        final View header = getLayoutInflater().inflate(R.layout.menu_header, null, false);
         setMenuHeaderImage(header);
         _menuList.addHeaderView(header, null, false);
         _menuHeaderFragment = (MenuHeaderFragment) getSupportFragmentManager().findFragmentById(R.id.menu_header_fragment);
@@ -148,11 +155,13 @@ public class MainActivity extends BaseMainActivity {
                         showAlert("MLB", getString(R.string.coming_soon));
                         break;
                     case FantasySport:
+
                         UserData data = _storage.getUserData();
                         data.setCurrentSport(item.getTitle());
                         _menuAdapter.setMenu(data);
                         _menuAdapter.notifyDataSetChanged();
                         updateMarkets(true);
+                        updateMenuHeaderImage(header);
                         break;
                 }
             }

@@ -27,20 +27,11 @@ public class UserData {
     @SerializedName("prestige")
     private int _prestige;
 
-//    @SerializedName("admin")
-//    private boolean _admin;
-
     @SerializedName("balance")
     private float _balance;
 
     @SerializedName("image_url")
     private String _imageUrl;
-
-//    @SerializedName("win_percentile")
-//    private float _winPercentile;
-
-//    @SerializedName("total_points")
-//    private int _totalPoints;
 
     @SerializedName("joined_at")
     private String _joinedAt;
@@ -66,27 +57,8 @@ public class UserData {
     @SerializedName("in_progress_roster_id")
     private int _inProgressRosterId;
 
-//    @SerializedName("total_losses")
-//    private Integer _totalLosses;
-
     @SerializedName("currentSport")
     private String _currentSport;
-
-//    @SerializedName("referral_code")
-//    private String _referralCode;
-//
-//    @SerializedName("invited_id")
-//    private Integer _invitedId;
-//
-//
-//    @SerializedName("confirmed")
-//    private boolean _confirmed;
-
-//    @SerializedName("in_progress_roster")
-//    private Roster _inProgressRoster;
-
-//    @SerializedName("leagues")
-//    private List<League> _leagues;
 
     @SerializedName("active_sports")
     private List<String> _activeSports;

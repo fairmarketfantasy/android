@@ -27,6 +27,7 @@ public class ConfirmDialog extends PopupWindow {
         super(context);
         _context = context;
         init();
+
     }
 
     public ConfirmDialog setCancelAction(Runnable cancelAction){
