@@ -33,7 +33,7 @@ public class GameItemFragment extends Fragment {
         marketNameTxt.setText(_market.getName());
         TextView marketTimeTxt = (TextView)view.findViewById(R.id.game_time_lbl);
         Date startDate = _market.getStartedAt();
-        SimpleDateFormat sdf = new SimpleDateFormat("EE M @ K:mm a");
+        SimpleDateFormat sdf = new SimpleDateFormat("EE d @ K:mm a");
         marketTimeTxt.setText(sdf.format(startDate));
         return view;
     }
