@@ -11,7 +11,6 @@ public class MenuItem{
     private String _title;
     private List<MenuItem> _children;
 
-
     public MenuItem(MenuItemEnum id, String title){
         _id = id;
         _title = title;

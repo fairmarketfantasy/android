@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import com.fantasysport.R;
+import com.fantasysport.models.Category;
+import com.fantasysport.models.Sport;
 import com.fantasysport.models.UserData;
 
 import java.util.ArrayList;
@@ -37,25 +39,7 @@ public class MenuListAdapter extends BaseExpandableListAdapter
 
     public void setMenu(UserData data) {
         _items = new ArrayList<MenuItem>();
-
-        //fantasy sports
-        MenuItem item = new MenuItem(MenuItemEnum.FantasySportsHeader, _context.getString(R.string.fantasy_sports));
-        List<MenuItem> items = new ArrayList<MenuItem>();
-        for (String sport : data.getActiveSports()) {
-            if (!data.getCurrentSport().equalsIgnoreCase(sport)) {
-                items.add(new MenuItem(MenuItemEnum.FantasySport, sport));
-            }
-        }
-        item.setChildren(items);
-        _items.add(item);
-
-        //sports
-        item = new MenuItem(MenuItemEnum.SportsHeader, "SPORTS");
-        items = new ArrayList<MenuItem>();
-        items.add(new MenuItem(MenuItemEnum.Sport, "MLB"));
-        item.setChildren(items);
-        _items.add(item);
-
+        addCategories(data);
         _items.add(new MenuItem(MenuItemEnum.Predictions, _context.getString(R.string.predictions)));
         _items.add(new MenuItem(MenuItemEnum.Rules, _context.getString(R.string.rules)));
         _items.add(new MenuItem(MenuItemEnum.LegalStuff, _context.getString(R.string.legal_stuff)));
@@ -66,6 +50,23 @@ public class MenuListAdapter extends BaseExpandableListAdapter
         _listView.setOnGroupExpandListener(this);
         _listView.setOnGroupClickListener(this);
         _listView.setOnChildClickListener(this);
+    }
+
+    private void addCategories(UserData data) {
+        for (Category cat : data.getCategories()) {
+            MenuItem item = new MenuItem(MenuItemEnum.Category, cat.getName().toUpperCase().replace("_", ""));
+            List<MenuItem> children = new ArrayList<MenuItem>();
+            for (Sport sport : cat.getSports()) {
+                if (sport.isActive()) {
+                    SportMenuItem subItem = new SportMenuItem(MenuItemEnum.Sport, sport.getName());
+                    subItem.setCategory(cat);
+                    subItem.setSport(sport);
+                    children.add(subItem);
+                }
+            }
+            item.setChildren(children);
+            _items.add(item);
+        }
     }
 
     public void setOnItemClickListener(IOnItemClickListener listener) {
@@ -149,8 +150,7 @@ public class MenuListAdapter extends BaseExpandableListAdapter
         LayoutInflater mInflater = (LayoutInflater)
                 _context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         int layoutId;
-        if (item.getId() == MenuItemEnum.FantasySport ||
-                item.getId() == MenuItemEnum.Sport) {
+        if (item.getId() == MenuItemEnum.Sport) {
             layoutId = R.layout.sub_menu_item;
         } else {
             layoutId = R.layout.menu_item;

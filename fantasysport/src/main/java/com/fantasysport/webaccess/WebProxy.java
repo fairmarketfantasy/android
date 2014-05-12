@@ -148,6 +148,7 @@ public final class WebProxy {
 
     public void signIn(String email, String password, SignInResponseListener listener){
         SignInRequest request = new SignInRequest(email, password);
+        request.setRetryPolicy(getRetryPolicy());
         _spiceManager.execute(request, listener);
     }
 

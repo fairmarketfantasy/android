@@ -60,8 +60,12 @@ public class UserData {
     @SerializedName("currentSport")
     private String _currentSport;
 
-    @SerializedName("active_sports")
-    private List<String> _activeSports;
+    @SerializedName("current_category")
+    private String _currentCategory;
+
+
+    @SerializedName("categories")
+    private List<Category> _categories;
 
     @SerializedName("customer_object")
     private CustomerObject _customerObject;
@@ -71,15 +75,19 @@ public class UserData {
     }
 
     public String getCurrentCategory(){
-        return null;
+        return  _currentCategory != null? _currentCategory:"fantasy_sports";
+    }
+
+    public void setCurrentCategory(String category){
+        _currentCategory = category;
     }
 
     public void setCurrentSport(String sport){
         _currentSport = sport;
     }
 
-    public List<String> getActiveSports() {
-        return _activeSports;
+    public List<Category> getCategories() {
+        return _categories;
     }
 
     public String getUserImageUrl() {

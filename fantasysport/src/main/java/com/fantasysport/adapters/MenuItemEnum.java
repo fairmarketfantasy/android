@@ -10,9 +10,6 @@ public enum MenuItemEnum {
     Support,
     Settings,
     SignOut,
-    FantasySportsHeader,
-    MLB,
-    FantasySport,
-    SportsHeader,
-    Sport
+    Sport,
+    Category
 }

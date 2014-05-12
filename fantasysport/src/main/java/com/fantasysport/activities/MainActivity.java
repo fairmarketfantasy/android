@@ -15,7 +15,9 @@ import com.fantasysport.Const;
 import com.fantasysport.R;
 import com.fantasysport.adapters.MenuItem;
 import com.fantasysport.adapters.MenuListAdapter;
+import com.fantasysport.adapters.SportMenuItem;
 import com.fantasysport.fragments.MenuHeaderFragment;
+import com.fantasysport.models.Category;
 import com.fantasysport.models.Market;
 import com.fantasysport.models.Sport;
 import com.fantasysport.models.UserData;
@@ -137,7 +139,8 @@ public class MainActivity extends BaseMainActivity {
                         showWebView("pages/mobile/terms", "How It Works/Support");
                         break;
                     case Rules:
-                        showWebView("pages/mobile/rules?sport=NBA", "Rules");
+                        UserData udata = _storage.getUserData();
+                        showWebView(String.format("pages/mobile/rules?sport=%s&category=%s", udata.getCurrentSport(), udata.getCurrentCategory()), "Rules");
                         break;
                     case Support:
                         showWebView("pages/mobile/conditions", "Subscription terms");
@@ -152,17 +155,21 @@ public class MainActivity extends BaseMainActivity {
                         showPredictions();
                         break;
                     case Sport:
-                        showAlert("MLB", getString(R.string.coming_soon));
-                        break;
-                    case FantasySport:
-
-                        UserData data = _storage.getUserData();
-                        data.setCurrentSport(item.getTitle());
-                        _menuAdapter.setMenu(data);
-                        _menuAdapter.notifyDataSetChanged();
-                        updateMarkets(true);
-                        updateMenuHeaderImage(header);
-                        break;
+                        SportMenuItem sportItem = (SportMenuItem)item;
+                        Sport sport = sportItem.getSport();
+                        Category category = sportItem.getCategory();
+                        if(sport.comingSoon()){
+                            showAlert(sport.getName(), getString(R.string.coming_soon));
+                        }else {
+                            UserData data = _storage.getUserData();
+                            data.setCurrentSport(sport.getName());
+                            data.setCurrentCategory(category.getName());
+                            _menuAdapter.setMenu(data);
+                            _menuAdapter.notifyDataSetChanged();
+                            updateMarkets(true);
+                            updateMenuHeaderImage(header);
+                            break;
+                        }
                 }
             }
         });
