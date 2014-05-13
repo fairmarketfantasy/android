@@ -5,6 +5,7 @@ import com.fantasysport.R;
 import com.google.api.client.http.HttpResponseException;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.octo.android.robospice.exception.NetworkException;
 import com.octo.android.robospice.exception.NoNetworkException;
 import com.octo.android.robospice.exception.RequestCancelledException;
 import com.octo.android.robospice.persistence.exception.SpiceException;
@@ -32,6 +33,8 @@ public abstract class ResponseListener<T> implements RequestListener<T> {
             }else if(e instanceof RequestCancelledException){
                 error = new RequestError(((RequestCancelledException)e).getLocalizedMessage());
                 error.setIsCanceledRequest(true);
+            }else if(e instanceof NetworkException){
+                error = new RequestError("Network Error");
             }
             else {
                 error = new RequestError(App.getCurrent().getString(R.string.unknown_error));
