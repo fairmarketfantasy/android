@@ -7,8 +7,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import com.fantasysport.R;
-import com.fantasysport.activities.MainActivity;
-import com.fantasysport.adapters.PlayerItem;
+import com.fantasysport.fragments.main.FantasyFragment;
 import com.fantasysport.models.IPlayer;
 import com.fantasysport.models.Market;
 import com.fantasysport.models.Player;
@@ -25,7 +24,7 @@ import java.util.List;
  * Created by bylynka on 3/14/14.
  */
 public class HomeFragment extends BaseHomeFragment implements AdapterView.OnItemClickListener,
-        Switcher.ISelectedListener, MainActivity.IOnMarketsListener {
+        Switcher.ISelectedListener, FantasyFragment.IOnMarketsListener {
 
     private Button _submit100fbBtn;
     private Button _submitHth27fb;
@@ -38,7 +37,7 @@ public class HomeFragment extends BaseHomeFragment implements AdapterView.OnItem
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         _rootView = inflater.inflate(R.layout.fragment_main, container, false);
         init();
-        ((MainActivity) getMainActivity()).addOnMarketsListener(this);
+        ((FantasyFragment) getBaseFFragment()).addOnMarketsListener(this);
         return _rootView;
     }
 

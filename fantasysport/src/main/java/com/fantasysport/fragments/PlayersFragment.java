@@ -5,7 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.fantasysport.R;
-import com.fantasysport.activities.MainActivity;
+import com.fantasysport.fragments.main.FantasyFragment;
 import com.fantasysport.models.Market;
 import com.fantasysport.models.Position;
 import com.fantasysport.models.Roster;
@@ -17,11 +17,11 @@ import java.util.List;
 /**
  * Created by bylynka on 3/14/14.
  */
-public class PlayersFragment extends BasePlayersFragment implements MainActivity.IOnMarketsListener{
+public class PlayersFragment extends BasePlayersFragment implements FantasyFragment.IOnMarketsListener{
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        ((MainActivity)getMainActivity()).addOnMarketsListener(this);
+        ((FantasyFragment)getBaseFFragment()).addOnMarketsListener(this);
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 

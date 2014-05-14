@@ -168,6 +168,12 @@ public final class WebProxy {
         _spiceManager.execute(request, listener);
     }
 
+    public void getNFGames(String sport, ResponseListener listener){
+        GetNFGamesRequest request = new GetNFGamesRequest(sport);
+        request.setRetryPolicy(getRetryPolicy());
+        _spiceManager.execute(request, listener);
+    }
+
     private RetryPolicy getRetryPolicy(){
         return new RetryPolicy() {
             @Override

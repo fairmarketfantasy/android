@@ -1,79 +1,47 @@
 package com.fantasysport.activities;
 
-import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import com.fantasysport.Const;
+import android.support.v4.app.Fragment;
+import android.widget.ImageView;
 import com.fantasysport.R;
-import com.fantasysport.adapters.MainActivityPagerAdapter;
-import com.fantasysport.fragments.PredictionRoster;
-import com.fantasysport.models.Market;
-import com.fantasysport.views.AnimatedViewPager;
-import com.fantasysport.views.animations.ZoomOutPageTransformer;
-
-import java.util.ArrayList;
+import com.fantasysport.fragments.main.BaseFantasyFragment;
+import com.fantasysport.fragments.main.FantasyPredictionFragment;
+import com.fantasysport.fragments.main.IMainFragment;
 
 /**
  * Created by bylynka on 3/24/14.
  */
-public class MainPredictionActivity  extends BaseMainActivity {
+public class MainPredictionActivity extends BaseActivity implements BaseFantasyFragment.IPageChangedListener, IMainActivity {
 
-    private int _rosterId;
+    protected IMainFragment _rootFragment;
+    private final String _fragmentName = "root_fragment";
 
-    @Override
-    public void setContentView(int layoutResID) {
-        super.setContentView(R.layout.activity_prediction_main);
-    }
+    protected ImageView _leftSwipeImg;
+    protected ImageView _rightSwipeImg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    }
-
-    protected void setPager() {
-        _mainActivityPagerAdapter = new MainActivityPagerAdapter( _predictionRoster, getSupportFragmentManager());
-        _pager = getViewById(R.id.root_pager);
-        _pager.setPageTransformer(true, new ZoomOutPageTransformer());
-        _pager.setAdapter(_mainActivityPagerAdapter);
-        _pager.setOnPageChangeListener(new AnimatedViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                setPageIndicator(position);
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
-        if(_rosterId > 0){
-            loadRoster(_rosterId);
-        }
-    }
-
-    @Override
-    protected void initStartParams(Bundle savedInstanceState) {
-        super.initStartParams(savedInstanceState);
+        setContentView(R.layout.activity_prediction_main);
         if (savedInstanceState == null) {
-            Intent intent = getIntent();
-            _predictionRoster = intent.hasExtra(Const.PREDICTION) ? (PredictionRoster) intent.getSerializableExtra(Const.PREDICTION) : PredictionRoster.None;
-            Market market = (Market)intent.getSerializableExtra(Const.MARKET);
-            _markets = new ArrayList<Market>();
-            _markets.add(market);
-            _rosterId = intent.getIntExtra(Const.ROSTER_ID, -1);
+            _rootFragment = new FantasyPredictionFragment();
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.fragment_holder, (Fragment) _rootFragment, _fragmentName)
+                    .commit();
+            _rootFragment.addPageChangedListener(this);
         }
+        _leftSwipeImg = getViewById(R.id.left_point_img);
+        _rightSwipeImg = getViewById(R.id.right_point_img);
+        setPageIndicator(0);
     }
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putSerializable(Const.PREDICTION, _predictionRoster);
+    protected void setPageIndicator(int position) {
+        Drawable drawable = position == 0 ? getResources().getDrawable(R.drawable.swipe_active) : getResources().getDrawable(R.drawable.swipe_passive);
+        _leftSwipeImg.setBackgroundDrawable(drawable);
+        drawable = position != 0 ? getResources().getDrawable(R.drawable.swipe_active) : getResources().getDrawable(R.drawable.swipe_passive);
+        _rightSwipeImg.setBackgroundDrawable(drawable);
     }
-
 
     @Override
     public boolean onOptionsItemSelected(android.view.MenuItem item) {
@@ -81,18 +49,29 @@ public class MainPredictionActivity  extends BaseMainActivity {
             finish();
             return true;
         }
-//        switch (item.getItemId()) {
-//            case R.id.arrow_close:
-//                item.setVisible(false);
-//                _menu.findItem(R.id.arrow_open).setVisible(true);
-//                raiseOnToggleHeader();
-//                return true;
-//            case R.id.arrow_open:
-//                item.setVisible(false);
-//                _menu.findItem(R.id.arrow_close).setVisible(true);
-//                raiseOnToggleHeader();
-//                return true;
-//        }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onPageChanged(int page) {
+        setPageIndicator(page);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState){
+        super.onSaveInstanceState(outState);
+        getSupportFragmentManager().putFragment(outState, _fragmentName,(Fragment)_rootFragment);
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle inState){
+        super.onRestoreInstanceState(inState);
+        _rootFragment = (IMainFragment)getSupportFragmentManager().getFragment(inState, _fragmentName);
+        _rootFragment.addPageChangedListener(this);
+    }
+
+    @Override
+    public IMainFragment getRootFragment() {
+        return _rootFragment;
     }
 }

@@ -5,50 +5,70 @@ import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.view.*;
-import android.widget.*;
+import android.widget.ExpandableListView;
+import android.widget.ImageView;
 import com.fantasysport.Const;
 import com.fantasysport.R;
 import com.fantasysport.adapters.MenuItem;
 import com.fantasysport.adapters.MenuListAdapter;
 import com.fantasysport.adapters.SportMenuItem;
 import com.fantasysport.fragments.MenuHeaderFragment;
+import com.fantasysport.fragments.main.BaseFantasyFragment;
+import com.fantasysport.fragments.main.FantasyFragment;
+import com.fantasysport.fragments.main.IMainFragment;
+import com.fantasysport.fragments.main.MainActivityFragmentProvider;
 import com.fantasysport.models.Category;
-import com.fantasysport.models.Market;
 import com.fantasysport.models.Sport;
 import com.fantasysport.models.UserData;
-import com.fantasysport.utility.CacheProvider;
-import com.fantasysport.utility.DateUtils;
-import com.fantasysport.utility.DeviceInfo;
-import com.fantasysport.webaccess.requestListeners.MarketsResponseListener;
-import com.fantasysport.webaccess.requestListeners.RequestError;
-import com.fantasysport.webaccess.requestListeners.UserResponseListener;
-import com.fantasysport.webaccess.responses.MarketResponse;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
  * Created by bylynka on 2/11/14.
  */
-public class MainActivity extends BaseMainActivity {
+public class MainActivity extends BaseActivity implements BaseFantasyFragment.IPageChangedListener, IMainActivity{
+
+
+
+    private final String _fragmentName = "root_fragment";
+
+    protected ImageView _leftSwipeImg;
+    protected ImageView _rightSwipeImg;
+    protected IMainFragment _rootFragment;
+
 
     private DrawerLayout _drawerLayout;
     private ActionBarDrawerToggle _drawerToggle;
     private MenuListAdapter _menuAdapter;
     protected ExpandableListView _menuList;
-    protected List<IOnMarketsListener> _marketListeners = new ArrayList<IOnMarketsListener>();
     protected MenuHeaderFragment _menuHeaderFragment;
     private android.view.MenuItem _refreshMenuItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        if (savedInstanceState == null) {
+            _rootFragment = MainActivityFragmentProvider.getFragment(Const.FANTASY_SPORT);
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.fragment_holder, (Fragment) _rootFragment, _fragmentName)
+                    .commit();
+            _rootFragment.addPageChangedListener(this);
+        }
+
+        _leftSwipeImg = getViewById(R.id.left_point_img);
+        _rightSwipeImg = getViewById(R.id.right_point_img);
+        setPageIndicator(0);
+
         _menuList = getViewById(R.id.left_drawer);
         setMenu();
         _drawerLayout = getViewById(R.id.drawer_layout);
@@ -63,15 +83,43 @@ public class MainActivity extends BaseMainActivity {
         _drawerLayout.setDrawerListener(_drawerToggle);
     }
 
-
-    public void addOnMarketsListener(IOnMarketsListener listener) {
-        _marketListeners.add(listener);
+    public MenuHeaderFragment getMenuHeaderFragment(){
+        return _menuHeaderFragment;
     }
 
-    private void raiseOnMarketListener(List<Market> markets) {
-        for (IOnMarketsListener listener : _marketListeners) {
-            listener.onMarkets(markets);
-        }
+    public IMainFragment getRootFragment(){
+        return _rootFragment;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState){
+        super.onSaveInstanceState(outState);
+        getSupportFragmentManager().putFragment(outState, _fragmentName,(Fragment)_rootFragment);
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle inState){
+        super.onRestoreInstanceState(inState);
+        _rootFragment = (IMainFragment)getSupportFragmentManager().getFragment(inState, _fragmentName);
+        _rootFragment.addPageChangedListener(this);
+    }
+
+    protected void setPageIndicator(int position) {
+        Drawable drawable = position == 0 ? getResources().getDrawable(R.drawable.swipe_active) : getResources().getDrawable(R.drawable.swipe_passive);
+        _leftSwipeImg.setBackgroundDrawable(drawable);
+        drawable = position != 0 ? getResources().getDrawable(R.drawable.swipe_active) : getResources().getDrawable(R.drawable.swipe_passive);
+        _rightSwipeImg.setBackgroundDrawable(drawable);
+    }
+
+    @Override
+    public void onBackPressed() {
+        setResult(Const.FINISH_ACTIVITY);
+        super.onBackPressed();
+    }
+
+    @Override
+    public void onPageChanged(int page) {
+        setPageIndicator(page);
     }
 
     @Override
@@ -166,7 +214,7 @@ public class MainActivity extends BaseMainActivity {
                             data.setCurrentCategory(category.getName());
                             _menuAdapter.setMenu(data);
                             _menuAdapter.notifyDataSetChanged();
-                            updateMarkets(true);
+                            ((FantasyFragment)_rootFragment).updateMarkets(true);
                             updateMenuHeaderImage(header);
                             break;
                         }
@@ -198,7 +246,7 @@ public class MainActivity extends BaseMainActivity {
         }
         switch (item.getItemId()) {
             case R.id.refresh:
-                updateMainData(false);
+                ((FantasyFragment)_rootFragment).updateMainData(false);
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -214,111 +262,11 @@ public class MainActivity extends BaseMainActivity {
         return false;
     }
 
-    protected void updateUserData() {
-        int userId = _storage.getUserData().getId();
-        showProgress();
-        _webProxy.getUserData(userId, new UserResponseListener() {
-            @Override
-            public void onRequestError(RequestError message) {
-                dismissProgress();
-                showAlert(getString(R.string.error), message.getMessage());
-            }
-
-            @Override
-            public void onRequestSuccess(UserData data) {
-                dismissProgress();
-                _storage.setUserData(data);
-                if (_menuHeaderFragment != null) {
-                    _menuHeaderFragment.updateView();
-                }
-            }
-        });
-    }
-
-    private void updateMarkets(final boolean isTimeChanged) {
-        UserData data = _storage.getUserData();
-        String cat = data.getCurrentCategory();
-        String sport = data.getCurrentSport();
-        showProgress();
-        _webProxy.getMarkets(cat, sport, new MarketsResponseListener() {
-            @Override
-            public void onRequestError(RequestError error) {
-                dismissProgress();
-                showAlert(getString(R.string.error), error.getMessage());
-            }
-
-            @Override
-            public void onRequestSuccess(MarketResponse response) {
-                _storage.setDefaultRosterData(response.getDefaultRosterData());
-                _storage.setMarketsContainer(response.getMarketsContainer());
-                List<Market> tmpMarkets = _storage.getMarkets();
-                if (isTimeChanged || marketChanged(tmpMarkets, _markets)) {
-                    _markets = tmpMarkets;
-                    raiseOnMarketListener(_markets);
-                }
-                dismissProgress();
-            }
-        });
-    }
-
-    private void updateMainData(boolean isTimeChanged) {
-        updateUserData();
-        updateMarkets(isTimeChanged);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        long nowTime = DateUtils.getCurrentDate().getTime();
-        long marketsTime = _storage.getMarketsContainer().getUpdatedAt();
-        long deltaTime = nowTime - marketsTime;
-        long deltaTimeInMin = deltaTime / 60000;
-        boolean isTimeChanged = CacheProvider.getBoolean(this, Const.TIME_ZONE_CHANGED);
-        CacheProvider.putBoolean(this, Const.TIME_ZONE_CHANGED ,false);
-        if (deltaTimeInMin > 35 || isTimeChanged) {
-            updateMainData(isTimeChanged);
-        }
-    }
-
-    private boolean marketChanged(List<Market> newMarkets, List<Market> oldMarkets) {
-        if (newMarkets == null && oldMarkets != null ||
-                newMarkets != null && oldMarkets == null) {
-            return true;
-        }
-        if (newMarkets == null && oldMarkets == null) {
-            return false;
-        }
-        if (newMarkets.size() != oldMarkets.size()) {
-            return true;
-        }
-        int currentGmt = DeviceInfo.getGMTInMinutes();
-        int gmt = CacheProvider.getInt(this, Const.GMT_IN_MINUTES);
-        if(gmt != -1 && currentGmt != gmt){
-            return true;
-        }
-        for (Market newMarket : newMarkets) {
-            boolean has = false;
-            for (Market oldMarket : oldMarkets) {
-                if (oldMarket.getId() == newMarket.getId()) {
-                    has = true;
-                }
-            }
-            if (!has) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Const.SETTINGS_ACTIVITY && _menuHeaderFragment != null) {
             _menuHeaderFragment.updateView();
         }
-    }
-
-    public interface IOnMarketsListener {
-        public void onMarkets(List<Market> markets);
     }
 }

@@ -1,14 +1,11 @@
 package com.fantasysport.parsers;
 
-import com.fantasysport.models.Game;
+import com.fantasysport.models.FGame;
 import com.fantasysport.models.Market;
 import com.fantasysport.models.Prediction;
-import com.fantasysport.utility.Converter;
-import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -77,7 +74,7 @@ public class PredictionParser extends BaseParser {
         Market market = new Market();
         String name = (String)object.get("name");
         market.setName(name);
-        List<Game> games = parseGames((ArrayList)object.get("games"));
+        List<FGame> games = parseGames((ArrayList)object.get("games"));
         market.setGames(games);
         return market;
     }

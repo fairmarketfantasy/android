@@ -1,6 +1,6 @@
 package com.fantasysport.parsers;
 
-import com.fantasysport.models.Game;
+import com.fantasysport.models.FGame;
 import com.fantasysport.utility.Converter;
 import com.fantasysport.utility.DateUtils;
 import com.fantasysport.utility.DeviceInfo;
@@ -52,25 +52,25 @@ public abstract class BaseParser {
         fillKeyMap();
     }
 
-    protected List<Game> parseGames(ArrayList gameObjects){
+    protected List<FGame> parseGames(ArrayList gameObjects){
         if(gameObjects == null ||
                 (gameObjects).size() == 0){
             return null;
         }
-        List<Game> games = new ArrayList<Game>();
+        List<FGame> games = new ArrayList<FGame>();
 
         for (int i = 0; i < gameObjects.size(); i++){
             LinkedTreeMap objectGame = (LinkedTreeMap)gameObjects.get(i);
-            Game game = parseGame(objectGame);
+            FGame game = parseGame(objectGame);
             games.add(game);
         }
         Collections.sort(games);
         return games;
     }
 
-    protected Game parseGame(LinkedTreeMap gameObject){
+    protected FGame parseGame(LinkedTreeMap gameObject){
         int gmt = DeviceInfo.getGMTInMinutes();
-        Game game = new Game();
+        FGame game = new FGame();
 //        String id = (String)gameObject.get("id");
 //        game.setId(id);
 //        String statsId = (String)gameObject.get("stats_id");

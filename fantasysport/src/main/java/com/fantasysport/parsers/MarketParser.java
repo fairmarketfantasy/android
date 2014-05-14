@@ -1,6 +1,6 @@
 package com.fantasysport.parsers;
 
-import com.fantasysport.models.Game;
+import com.fantasysport.models.FGame;
 import com.fantasysport.models.Market;
 
 import java.util.ArrayList;
@@ -52,7 +52,7 @@ public class MarketParser extends BaseParser {
         market.setState(state);
         String gameType = (String) _objects.get(firstField + _keyMap.get(GAME_TYPE));
         market.setGameType(gameType);
-        List<Game> games = parseGames((ArrayList) _objects.get(firstField + _keyMap.get(GAMES)));
+        List<FGame> games = parseGames((ArrayList) _objects.get(firstField + _keyMap.get(GAMES)));
         market.setGames(games);
         return market;
     }

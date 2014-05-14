@@ -11,6 +11,9 @@ public class Const {
     public final static int SETTINGS_ACTIVITY = 1003;
     public static final int SIGN_OUT = 1004;
 
+    public static final int FANTASY_SPORT = 1005;
+    public static final int NON_FANTASY_SPORT = 1005;
+
     public final static String PLAYER_POSITION = "player_position";
     public final static String ROSTER = "roster";
     public final static String ROSTER_ID = "roster_id";

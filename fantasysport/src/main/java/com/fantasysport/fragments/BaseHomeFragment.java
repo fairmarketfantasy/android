@@ -171,7 +171,7 @@ public abstract class BaseHomeFragment extends MainActivityFragment  implements 
                     updatePlayersList();
                     dismissProgress();
                     getFragmentMediator().changePlayerPosition(this, player.getPosition());
-                    getMainActivity().navigateToPlayers();
+                    getBaseFFragment().navigateToPlayers();
                 }
             });
         }
@@ -252,7 +252,7 @@ public abstract class BaseHomeFragment extends MainActivityFragment  implements 
 //            return;
 //        }
         getFragmentMediator().changePlayerPosition(this, item.getPosition());
-        getMainActivity().navigateToPlayers();
+        getBaseFFragment().navigateToPlayers();
     }
 
     @Override
@@ -298,6 +298,6 @@ public abstract class BaseHomeFragment extends MainActivityFragment  implements 
 
     @Override
     public void onRefreshStarted(View view) {
-        getMainActivity().updateUserData(this);
+        getBaseFFragment().updateUserData(this);
     }
 }

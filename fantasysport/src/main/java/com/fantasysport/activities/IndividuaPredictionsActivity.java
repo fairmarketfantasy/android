@@ -3,14 +3,13 @@ package com.fantasysport.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import com.fantasysport.Const;
 import com.fantasysport.R;
 import com.fantasysport.adapters.StatsAdapter;
-import com.fantasysport.models.Game;
+import com.fantasysport.models.FGame;
 import com.fantasysport.models.Player;
 import com.fantasysport.models.StatsItem;
 import com.fantasysport.utility.image.ImageLoader;
@@ -31,7 +30,7 @@ public class IndividuaPredictionsActivity extends BaseActivity implements StatsA
     private int _rosterId;
     private int _marketId;
     private Player _player;
-    private Game _game;
+    private FGame _game;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,9 +77,9 @@ public class IndividuaPredictionsActivity extends BaseActivity implements StatsA
             _player = (Player) intent.getSerializableExtra(Const.PLAYER);
             _rosterId = intent.getIntExtra(Const.ROSTER_ID, -1);
             _marketId = intent.getIntExtra(Const.MARKET_ID, -1);
-            _game = (Game) intent.getSerializableExtra(Const.GAME);
+            _game = (FGame) intent.getSerializableExtra(Const.GAME);
         } else {
-            _game = (Game) savedInstanceState.getSerializable(Const.GAME);
+            _game = (FGame) savedInstanceState.getSerializable(Const.GAME);
             _player = (Player) savedInstanceState.getSerializable(Const.PLAYER);
             _rosterId = savedInstanceState.getInt(Const.ROSTER_ID);
             _marketId = savedInstanceState.getInt(Const.MARKET_ID);

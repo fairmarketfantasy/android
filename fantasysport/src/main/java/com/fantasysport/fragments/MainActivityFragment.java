@@ -11,10 +11,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import com.fantasysport.R;
-import com.fantasysport.activities.BaseMainActivity;
+import com.fantasysport.activities.IMainActivity;
 import com.fantasysport.activities.MainActivity;
 import com.fantasysport.adapters.GameAdapter;
 import com.fantasysport.adapters.RosterPlayersAdapter;
+import com.fantasysport.fragments.main.BaseFantasyFragment;
+import com.fantasysport.fragments.main.FantasyFragment;
 import com.fantasysport.models.Market;
 import com.fantasysport.models.Player;
 import com.fantasysport.models.Roster;
@@ -30,10 +32,10 @@ import java.util.List;
 /**
  * Created by bylynka on 3/17/14.
  */
-public abstract class MainActivityFragment extends BaseActivityFragment implements MainActivity.IListener,
+public abstract class MainActivityFragment extends BaseActivityFragment implements BaseFantasyFragment.IPageChangedListener,
         MainFragmentMediator.IMarketListener, MainFragmentMediator.IRemainingSalaryListener,
-        MainFragmentMediator.IPlayerAddListener, BaseMainActivity.IRosterLoadedListener,
-        BaseMainActivity.IUpdateListener, OnRefreshListener {
+        MainFragmentMediator.IPlayerAddListener, BaseFantasyFragment.IRosterLoadedListener,
+        BaseFantasyFragment.IUpdateListener, OnRefreshListener {
 
     protected TextView _moneyTxt;
     protected GameAdapter _pagerAdapter;
@@ -58,49 +60,54 @@ public abstract class MainActivityFragment extends BaseActivityFragment implemen
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
-    protected MainFragmentMediator getFragmentMediator() {
-        return getMainActivity().getFragmentMediator();
+    public BaseFantasyFragment getBaseFFragment(){
+        return  (BaseFantasyFragment)getMainActivity().getRootFragment();
     }
 
-    protected BaseMainActivity getMainActivity() {
-        return (BaseMainActivity) getActivity();
+    public IMainActivity getMainActivity(){
+        return (IMainActivity)getActivity();
     }
+
+    protected MainFragmentMediator getFragmentMediator() {
+        return getBaseFFragment().getFragmentMediator();
+    }
+
 
     protected Roster getRoster() {
-        return getMainActivity().getRoster();
+        return getBaseFFragment().getRoster();
     }
 
     protected PredictionRoster getPredictionRoster() {
-        return getMainActivity().getPredictionRoster();
+        return getBaseFFragment().getPredictionRoster();
     }
 
     protected void setRoster(Roster roster) {
-        getMainActivity().setRoster(roster);
+        getBaseFFragment().setRoster(roster);
     }
 
     protected Market getMarket() {
-        return getMainActivity().getMarket();
+        return getBaseFFragment().getMarket();
     }
 
     protected List<Market> getMarkets() {
-        return getMainActivity().getMarkets();
+        return getBaseFFragment().getMarkets();
     }
 
     protected void setMarket(Market market) {
-        getMainActivity().setMarket(market);
+        getBaseFFragment().setMarket(market);
     }
 
     protected void setCanBenched(boolean canBenched) {
-        getMainActivity().setCanBenchedPlayers(canBenched);
+        getBaseFFragment().setCanBenchedPlayers(canBenched);
     }
 
     protected boolean canBenched() {
-        return getMainActivity().canRemoveBenchedPlayers();
+        return getBaseFFragment().canRemoveBenchedPlayers();
     }
 
     protected void init() {
-        getMainActivity().addListener(this);
-        getMainActivity().addUpdateListener(this);
+        getBaseFFragment().addPageChangedListener(this);
+        getBaseFFragment().addUpdateListener(this);
         _pager = getViewById(R.id.pager);
         _moneyTxt = getViewById(R.id.money_lbl);
         _pullToRefreshLayout = getViewById(R.id.ptr_layout);
@@ -108,7 +115,7 @@ public abstract class MainActivityFragment extends BaseActivityFragment implemen
                 .allChildrenArePullable()
                 .listener(this)
                 .setup(_pullToRefreshLayout);
-        getMainActivity().addRosterLoadedListener(this);
+        getBaseFFragment().addRosterLoadedListener(this);
     }
 
     protected void setMoneyTxt(double price) {

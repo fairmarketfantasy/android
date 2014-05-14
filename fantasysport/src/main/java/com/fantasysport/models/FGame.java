@@ -8,7 +8,7 @@ import java.util.Date;
 /**
  * Created by bylynka on 2/20/14.
  */
-public class Game  implements Serializable, Comparable<Game> {
+public class FGame implements Serializable, Comparable<FGame> {
 
 //    @SerializedName("id")
 //    private String _id;
@@ -77,7 +77,7 @@ public class Game  implements Serializable, Comparable<Game> {
     }
 
     @Override
-    public int compareTo(Game another) {
+    public int compareTo(FGame another) {
         return  _gameTime.compareTo(another._gameTime);
     }
 }

@@ -1,6 +1,5 @@
 package com.fantasysport.models;
 
-import android.support.v7.appcompat.R;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -37,7 +36,7 @@ public class Market  implements Serializable {
     private String _gameType;
 
     @SerializedName("games")
-    private List<Game> _games;
+    private List<FGame> _games;
 
     public void setId(int id){
         _id = id;
@@ -107,11 +106,11 @@ public class Market  implements Serializable {
         return _gameType;
     }
 
-    public void setGames(List<Game> games){
+    public void setGames(List<FGame> games){
         _games = games;
     }
 
-    public List<Game> getGames(){
+    public List<FGame> getGames(){
         return _games;
     }
 

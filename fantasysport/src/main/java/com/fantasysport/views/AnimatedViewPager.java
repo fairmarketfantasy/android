@@ -34,6 +34,7 @@ import android.view.ViewParent;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.animation.Interpolator;
 import android.widget.Scroller;
+import com.fantasysport.views.animations.ZoomOutPageTransformer;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -310,6 +311,7 @@ public class AnimatedViewPager  extends ViewGroup {
             ViewCompat.setImportantForAccessibility(this,
                     ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_YES);
         }
+        setPageTransformer(true, new ZoomOutPageTransformer());
     }
 
     @Override

@@ -24,9 +24,9 @@ public class HomeHistoryPredictionFragment extends BaseHomeFragment {
     protected void init() {
         //
         _moneyTxt = getViewById(R.id.money_lbl);
-        getMainActivity().addListener(this);
+        getBaseFFragment().addPageChangedListener(this);
         _pager = getViewById(R.id.pager);
-        getMainActivity().addRosterLoadedListener(this);
+        getBaseFFragment().addRosterLoadedListener(this);
         //
         setRoster();
         setPager(321);
