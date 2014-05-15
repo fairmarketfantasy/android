@@ -24,6 +24,7 @@ public class IndividualPredictionParser extends BaseParser {
     private final String EVENT_PREDICTIONS = "event_predictions";
     private final String STATE = "state";
     private final String GAME_RESULT = "game_result";
+    private final String ID = "id";
 
     public List<IndividualPrediction> parse(String json) {
         BsonDataWrapper bsonData = getBsonData(json);
@@ -63,6 +64,8 @@ public class IndividualPredictionParser extends BaseParser {
         prediction.setGameResult(gameResult);
         List<StatsItem> statsItems = parseStatsItems((ArrayList) _objects.get(firstField + _keyMap.get(EVENT_PREDICTIONS)));
         prediction.setEventPredictions(statsItems);
+        int id = getDouble(_objects.get(firstField + _keyMap.get(ID))).intValue();
+        prediction.setId(id);
         return prediction;
     }
 
@@ -112,6 +115,8 @@ public class IndividualPredictionParser extends BaseParser {
             }else if (atemptPutKey(STATE, field, i)) {
                 continue;
             }else if (atemptPutKey(GAME_RESULT, field, i)) {
+                continue;
+            }else if (atemptPutKey(ID, field, i)) {
                 continue;
             }
         }

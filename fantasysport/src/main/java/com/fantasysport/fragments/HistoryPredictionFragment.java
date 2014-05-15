@@ -18,8 +18,7 @@ import com.fantasysport.webaccess.requestListeners.IndividualPredictionsResponse
 import com.fantasysport.webaccess.requestListeners.PredictionsResponseListener;
 import com.fantasysport.webaccess.requestListeners.RequestError;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by bylynka on 3/21/14.
@@ -42,30 +41,30 @@ public class HistoryPredictionFragment extends BasePredictionFragment {
 
     @Override
     public void onLoad(PredictionActivity.TimeType timeType, PredictionActivity.PredictionType predictionType, boolean showLoadPopup) {
-        if(timeType != PredictionActivity.TimeType.History){
+        if (timeType != PredictionActivity.TimeType.History) {
             return;
         }
         super.onLoad(timeType, predictionType, showLoadPopup);
         _currentPage = 0;
         _predictions = null;
         _individualPredictions = null;
-        if(predictionType == PredictionActivity.PredictionType.Individual){
+        if (predictionType == PredictionActivity.PredictionType.Individual) {
             loadIndividualPredictions(showLoadPopup);
-        }else {
+        } else {
             loadPredictions(showLoadPopup);
         }
     }
 
-    private void loadPredictions(boolean showLoadPopup){
+    private void loadPredictions(boolean showLoadPopup) {
         _individualPredictions = null;
-        if(_predictions == null){
+        if (_predictions == null) {
             _predictions = new ArrayList<Prediction>();
             _currentPage = 1;
             _predictionListView.setAdapter(_predictionAdapter);
-        }else {
+        } else {
             _currentPage++;
         }
-        if(showLoadPopup){
+        if (showLoadPopup) {
             showProgress();
         }
         UserData data = getStorage().getUserData();
@@ -80,19 +79,32 @@ public class HistoryPredictionFragment extends BasePredictionFragment {
             @Override
             public void onRequestSuccess(List list) {
                 dismissProgress();
-                List<Prediction> predictions = (List<Prediction>)list;
+                List<Prediction> predictions = (List<Prediction>) list;
+                if (predictions != null) {
+                    Collections.sort(predictions, new Comparator<Prediction>() {
+                        @Override
+                        public int compare(Prediction lhs, Prediction rhs) {
+                            if(lhs.getId() > rhs.getId()){
+                                return  -1;
+                            }else if(lhs.getId() < rhs.getId()){
+                                return 1;
+                            }
+                            return 0;
+                        }
+                    });
+                }
                 setRefreshComplete();
-                if(_predictions == null){
+                if (_predictions == null) {
                     _predictions = new ArrayList<Prediction>();
                 }
-                if(_predictions.size() > 0 && _predictions.get(_predictions.size() - 1).isEmpty()){
+                if (_predictions.size() > 0 && _predictions.get(_predictions.size() - 1).isEmpty()) {
                     _predictions.remove(_predictions.size() - 1);
                 }
-                if(predictions == null){
+                if (predictions == null) {
                     _predictionAdapter.notifyDataSetChanged();
                     return;
                 }
-                if(predictions.size() >= 25){
+                if (predictions.size() >= 25) {
                     predictions.add(new Prediction());
                     _predictionAdapter.setLoadListener(_predictionOnLoadListener);
                 }
@@ -104,16 +116,16 @@ public class HistoryPredictionFragment extends BasePredictionFragment {
         }, _currentPage);
     }
 
-    private void loadIndividualPredictions(boolean showLoadPopup){
+    private void loadIndividualPredictions(boolean showLoadPopup) {
         _predictions = null;
-        if(_individualPredictions == null){
+        if (_individualPredictions == null) {
             _individualPredictions = new ArrayList<IndividualPrediction>();
             _currentPage = 1;
             _predictionListView.setAdapter(_individualPredictionAdapter);
-        }else {
+        } else {
             _currentPage++;
         }
-        if(showLoadPopup){
+        if (showLoadPopup) {
             showProgress();
         }
         UserData data = getStorage().getUserData();
@@ -128,15 +140,28 @@ public class HistoryPredictionFragment extends BasePredictionFragment {
             @Override
             public void onRequestSuccess(List list) {
                 dismissProgress();
-                List<IndividualPrediction> predictions = (List<IndividualPrediction>)list;
-                if(_individualPredictions.size() > 0 && _individualPredictions.get(_individualPredictions.size() - 1).isEmpty()){
+                List<IndividualPrediction> predictions = (List<IndividualPrediction>) list;
+                if (predictions != null) {
+                    Collections.sort(predictions, new Comparator<IndividualPrediction>() {
+                        @Override
+                        public int compare(IndividualPrediction lhs, IndividualPrediction rhs) {
+                            if(lhs.getId() > rhs.getId()){
+                                return  -1;
+                            }else if(lhs.getId() < rhs.getId()){
+                                return 1;
+                            }
+                            return 0;
+                        }
+                    });
+                }
+                if (_individualPredictions.size() > 0 && _individualPredictions.get(_individualPredictions.size() - 1).isEmpty()) {
                     _individualPredictions.remove(_individualPredictions.size() - 1);
                 }
-                if(predictions == null){
+                if (predictions == null) {
                     _individualPredictionAdapter.notifyDataSetChanged();
                     return;
                 }
-                if(predictions.size() >= 25){
+                if (predictions.size() >= 25) {
                     predictions.add(new IndividualPrediction());
                     _individualPredictionAdapter.setLoadListener(_individualPredictionOnLoadListener);
                 }

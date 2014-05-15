@@ -16,6 +16,8 @@ import com.fantasysport.webaccess.requestListeners.IndividualPredictionsResponse
 import com.fantasysport.webaccess.requestListeners.PredictionsResponseListener;
 import com.fantasysport.webaccess.requestListeners.RequestError;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -49,6 +51,19 @@ public class ActivePredictionFragment extends BasePredictionFragment {
 
             @Override
             public void onRequestSuccess(List list) {
+                if ((List<Prediction>)list != null) {
+                    Collections.sort((List<Prediction>)list, new Comparator<Prediction>() {
+                        @Override
+                        public int compare(Prediction lhs, Prediction rhs) {
+                            if (lhs.getId() > rhs.getId()) {
+                                return -1;
+                            } else if (lhs.getId() < rhs.getId()) {
+                                return 1;
+                            }
+                            return 0;
+                        }
+                    });
+                }
                 dismissProgress();
                 PredictionAdapter adapter = new PredictionAdapter(getActivity(), (List<Prediction>)list);
                 adapter.setOnShowRosterListener(ActivePredictionFragment.this);
@@ -71,6 +86,20 @@ public class ActivePredictionFragment extends BasePredictionFragment {
 
             @Override
             public void onRequestSuccess(List list) {
+
+                if (((List<IndividualPrediction>)list) != null) {
+                    Collections.sort(((List<IndividualPrediction>)list), new Comparator<IndividualPrediction>() {
+                        @Override
+                        public int compare(IndividualPrediction lhs, IndividualPrediction rhs) {
+                            if(lhs.getId() > rhs.getId()){
+                                return  -1;
+                            }else if(lhs.getId() < rhs.getId()){
+                                return 1;
+                            }
+                            return 0;
+                        }
+                    });
+                }
                 dismissProgress();
                 IndividualPredictionAdapter adapter = new IndividualPredictionAdapter(getActivity(), (List<IndividualPrediction>)list);
                 _predictionListView.setAdapter(adapter);

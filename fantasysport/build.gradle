@@ -17,8 +17,8 @@ android {
     buildToolsVersion "19.0.1"
 
     defaultConfig {
-        versionCode 24
-        versionName "1.8.4"
+        versionCode 25
+        versionName "1.9"
     }
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES'
@@ -39,7 +39,7 @@ dependencies {
     compile 'com.android.support:support-v4:18.0.0'
     compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
     compile 'com.nineoldandroids:library:2.4.0'
-    compile files('libs/ubertesters.sdk.android.jar')
+//    compile files('libs/ubertesters.sdk.android.jar')
     compile files('libs/HockeySDK-3.0.1.jar')
     compile 'com.github.chrisbanes.actionbarpulltorefresh:extra-abc:+'
     compile project(':facebook')

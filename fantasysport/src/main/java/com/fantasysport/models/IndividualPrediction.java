@@ -19,6 +19,7 @@ public class IndividualPrediction {
     private double _pt;
     private String _state;
     private double _gameResult;
+    private int _id;
 
     public boolean isEmpty(){
         return _eventPredictions == null;
@@ -86,5 +87,13 @@ public class IndividualPrediction {
 
     public double getGameResult() {
         return _gameResult;
+    }
+
+    public void setId(int id) {
+        _id = id;
+    }
+
+    public int getId() {
+        return _id;
     }
 }
