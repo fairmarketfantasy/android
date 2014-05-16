@@ -24,28 +24,17 @@ import java.util.List;
 /**
  * Created by bylynka on 5/13/14.
  */
-public class BaseFantasyFragment extends BaseActivityFragment
-        implements IMainFragment {
+public class BaseFantasyFragment extends BaseFragment{
 
     protected MainActivityPagerAdapter _mainActivityPagerAdapter;
     protected Market _market;
     protected Roster _roster;
-    protected List<IPageChangedListener> _listeners = new ArrayList<IPageChangedListener>();
     protected boolean _removeBenchedPlayers = true;
     protected List<Market> _markets;
     protected List<IRosterLoadedListener> _rosterLoadedListeners = new ArrayList<IRosterLoadedListener>();
     protected List<IUpdateListener> _updateListener = new ArrayList<IUpdateListener>();
     protected PredictionRoster _predictionRoster = PredictionRoster.None;
     protected MainFragmentMediator _fragmentMediator = new MainFragmentMediator();
-    protected AnimatedViewPager _pager;
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        _rootView = inflater.inflate(R.layout.fragment_root_main, container, false);
-        initStartParams(savedInstanceState);
-        setPager();
-        return _rootView;
-    }
 
     protected void initStartParams(Bundle savedInstanceState) {
         if (savedInstanceState != null) {
@@ -90,22 +79,12 @@ public class BaseFantasyFragment extends BaseActivityFragment
         return _roster;
     }
 
-    protected void raiseOnPageChanged(int page) {
-        for (int i = 0; i < _listeners.size(); i++) {
-            _listeners.get(i).onPageChanged(page);
-        }
-    }
-
     public void setRoster(Roster roster) {
         _roster = roster;
     }
 
     public boolean canRemoveBenchedPlayers() {
         return _removeBenchedPlayers;
-    }
-
-    public void addPageChangedListener(IPageChangedListener listener) {
-        _listeners.add(listener);
     }
 
     public MainFragmentMediator getFragmentMediator(){
@@ -179,26 +158,10 @@ public class BaseFantasyFragment extends BaseActivityFragment
         });
     }
 
+    @Override
     protected void setPager() {
         _mainActivityPagerAdapter = new MainActivityPagerAdapter(PredictionRoster.None, getActivity().getSupportFragmentManager());
-        _pager = getViewById(R.id.root_pager);
         _pager.setAdapter(_mainActivityPagerAdapter);
-        _pager.setOnPageChangeListener(new AnimatedViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                raiseOnPageChanged(position);
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
         raiseOnPageChanged(0);
     }
 
