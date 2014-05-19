@@ -1,24 +1,20 @@
 package com.fantasysport.activities;
 
-import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.view.*;
 import android.view.inputmethod.EditorInfo;
 import android.widget.*;
 import com.facebook.widget.LoginButton;
+import com.fantasysport.Const;
 import com.fantasysport.R;
-import com.fantasysport.utility.image.ImageViewAnimatedChanger;
+import com.fantasysport.models.NFDataContainer;
 import com.fantasysport.webaccess.RequestHelper;
+import com.fantasysport.webaccess.requestListeners.GetNFGamesResponseListener;
 import com.fantasysport.webaccess.requestListeners.RequestError;
 import com.fantasysport.webaccess.requestListeners.ResetPasswordResponse;
 import com.fantasysport.webaccess.requestListeners.SignInResponseListener;
 import com.fantasysport.webaccess.responses.AuthResponse;
-
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class SignInActivity extends AuthActivity {
 
@@ -53,10 +49,11 @@ public class SignInActivity extends AuthActivity {
             _emailTxt.setText(savedInstanceState.getString(STATE_EMAIL));
             _passwordTxt.setText(savedInstanceState.getString(STATE_PASSWORD));
         }
-        if (RequestHelper.instance().getAccessTokenData() != null) {
-            navigateToMainActivity();
+        if (RequestHelper.instance().getAccessTokenData() == null) {
+            return;
         }
-
+        int category_type = _storage.isFantasyCategory()? Const.FANTASY_SPORT : Const.NON_FANTASY_SPORT;
+        navigateToMainActivity(category_type);
     }
 
     private void attemptGetAccessToken() {
@@ -78,6 +75,27 @@ public class SignInActivity extends AuthActivity {
         showProgress();
         startAuth();
         _webProxy.signIn(email, password, _userSignInResponseListener);
+    }
+
+    private void loadNonFantasyGames(){
+        String sport = "MLB";//_storage.getUserData().getCurrentSport();
+        showProgress();
+        _webProxy.getNFGames(sport, new GetNFGamesResponseListener() {
+            @Override
+            public void onRequestError(RequestError error) {
+                dismissProgress();
+                showAlert(getString(R.string.error), error.getMessage());
+                finishAuth();
+            }
+
+            @Override
+            public void onRequestSuccess(NFDataContainer response) {
+                dismissProgress();
+                _storage.setNFData(response);
+                finishAuth();
+                navigateToMainActivity(Const.NON_FANTASY_SPORT);
+            }
+        });
     }
 
     TextView.OnEditorActionListener _passwordTxtEditorActionListener = new TextView.OnEditorActionListener() {
@@ -103,9 +121,16 @@ public class SignInActivity extends AuthActivity {
         @Override
         public void onRequestSuccess(AuthResponse response) {
             _storage.setUserData(response.getUserData());
-            loadMarkets();
+            loadNonFantasyGames();
+//            if(_storage.isFantasyCategory()){
+//                loadMarkets();
+//            }else {
+//                loadNonFantasyGames();
+//            }
+
         }
     };
+
 
     View.OnClickListener _signInBtnClickListener = new View.OnClickListener() {
         @Override

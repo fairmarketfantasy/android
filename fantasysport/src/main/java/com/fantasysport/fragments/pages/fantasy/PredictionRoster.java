@@ -1,4 +1,4 @@
-package com.fantasysport.fragments;
+package com.fantasysport.fragments.pages.fantasy;
 
 /**
  * Created by bylynka on 3/24/14.

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:custom="http://schemas.android.com/apk/res-auto"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="@dimen/position_view_height"
+                  android:paddingLeft="@dimen/side_marging"
+                  android:paddingRight="@dimen/side_marging"
+                  android:orientation="horizontal">
+        <com.fantasysport.views.ExButton android:layout_width="wrap_content"
+                                         android:layout_height="@dimen/btn_height"
+                                         android:layout_gravity="center_vertical"
+                                         android:background="@drawable/autofill_button"
+                                         android:text="@string/auto_fill"
+                                         android:textSize="@dimen/x_medium_font"
+                                         android:paddingRight="@dimen/btn_padding"
+                                         android:paddingLeft="@dimen/btn_padding"
+                                         android:textColor="#ffffff"
+                                         android:id="@+id/autofill_btn"
+                                         custom:fontFamily="prohibitionRound" />
+    </LinearLayout>
+
+    <View android:layout_width="match_parent"
+          android:layout_height="1dip"
+          android:background="#CCCCCC"/>
+
+    <FrameLayout android:layout_width="match_parent"
+                 android:layout_height="50dp"
+                 android:paddingRight="@dimen/side_marging"
+                 android:paddingLeft="@dimen/side_marging"
+                 android:background="#E6E6E6">
+        <com.fantasysport.views.RobotoThinTextView android:layout_width="wrap_content"
+                                                   android:layout_height="wrap_content"
+                                                   android:layout_gravity="center_vertical"
+                                                   android:textSize="@dimen/s_lage_font"
+                                                   android:textColor="#595959"
+                                                   android:text="@string/games_for_today"
+                />
+
+    </FrameLayout>
+    <View android:layout_width="match_parent"
+          android:layout_height="1dip"
+          android:background="#CCCCCC"/>
+    <ListView android:layout_width="match_parent" android:layout_height="match_parent"
+              android:layout_weight="1" android:id="@+id/game_list"
+            android:background="#F0F0F0"/>
+
+</LinearLayout>

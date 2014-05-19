@@ -3,22 +3,19 @@ package com.fantasysport.adapters;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
-import com.fantasysport.fragments.*;
-import com.fantasysport.models.Prediction;
-import com.fantasysport.repo.Storage;
-import com.fantasysport.webaccess.WebProxy;
+import com.fantasysport.fragments.pages.fantasy.*;
 
 /**
  * Created by bylynka on 3/14/14.
  */
-public class MainActivityPagerAdapter extends FragmentPagerAdapter {
+public class FantasyPagerAdapter extends FragmentPagerAdapter {
 
     private BaseHomeFragment _homeFragment;
     private BasePlayersFragment _playersFragment;
     private PredictionRoster _predictionRoster;
 
 
-    public MainActivityPagerAdapter(PredictionRoster predictionRoster, FragmentManager fragmentManager) {
+    public FantasyPagerAdapter(PredictionRoster predictionRoster, FragmentManager fragmentManager) {
         super(fragmentManager);
         _predictionRoster = predictionRoster;
     }

@@ -58,7 +58,8 @@ public class MainActivity extends BaseActivity implements BaseFantasyFragment.IP
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         if (savedInstanceState == null) {
-            _rootFragment = MainActivityFragmentProvider.getFragment(Const.FANTASY_SPORT);
+            int fantasyType = getIntent().getIntExtra(Const.CATEGORY_TYPE, Const.FANTASY_SPORT);
+            _rootFragment = MainActivityFragmentProvider.getFragment(fantasyType);
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.fragment_holder, (Fragment) _rootFragment, _fragmentName)
                     .commit();

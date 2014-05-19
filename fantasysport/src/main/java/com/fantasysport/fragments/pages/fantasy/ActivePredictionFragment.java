@@ -1,4 +1,4 @@
-package com.fantasysport.fragments;
+package com.fantasysport.fragments.pages.fantasy;
 
 import android.content.Intent;
 import com.fantasysport.Const;
@@ -8,10 +8,8 @@ import com.fantasysport.activities.PredictionActivity;
 import com.fantasysport.adapters.IndividualPredictionAdapter;
 import com.fantasysport.adapters.PredictionAdapter;
 import com.fantasysport.models.IndividualPrediction;
-import com.fantasysport.models.Market;
 import com.fantasysport.models.Prediction;
 import com.fantasysport.models.UserData;
-import com.fantasysport.webaccess.WebProxy;
 import com.fantasysport.webaccess.requestListeners.IndividualPredictionsResponseListener;
 import com.fantasysport.webaccess.requestListeners.PredictionsResponseListener;
 import com.fantasysport.webaccess.requestListeners.RequestError;

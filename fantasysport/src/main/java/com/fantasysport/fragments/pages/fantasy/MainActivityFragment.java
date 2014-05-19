@@ -1,4 +1,4 @@
-package com.fantasysport.fragments;
+package com.fantasysport.fragments.pages.fantasy;
 
 import android.app.Activity;
 import android.graphics.Color;
@@ -12,11 +12,10 @@ import android.widget.Button;
 import android.widget.TextView;
 import com.fantasysport.R;
 import com.fantasysport.activities.IMainActivity;
-import com.fantasysport.activities.MainActivity;
 import com.fantasysport.adapters.GameAdapter;
 import com.fantasysport.adapters.RosterPlayersAdapter;
+import com.fantasysport.fragments.BaseActivityFragment;
 import com.fantasysport.fragments.main.BaseFantasyFragment;
-import com.fantasysport.fragments.main.FantasyFragment;
 import com.fantasysport.models.Market;
 import com.fantasysport.models.Player;
 import com.fantasysport.models.Roster;

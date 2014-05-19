@@ -1,4 +1,4 @@
-package com.fantasysport.fragments;
+package com.fantasysport.fragments.pages.fantasy;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.fantasysport.R;
+import com.fantasysport.fragments.pages.fantasy.BasePlayersFragment;
 import com.fantasysport.models.Position;
 import com.fantasysport.models.Roster;
 

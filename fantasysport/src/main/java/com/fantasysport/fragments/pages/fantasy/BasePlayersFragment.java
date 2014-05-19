@@ -1,4 +1,4 @@
-package com.fantasysport.fragments;
+package com.fantasysport.fragments.pages.fantasy;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -71,7 +71,7 @@ public abstract class BasePlayersFragment extends MainActivityFragment implement
         if(position < 0){
             return;
         }
-        _pager.setCurrentItem(position , false);
+        _pager.setCurrentItem(position, false);
         _pagerAdapter.notifyDataSetChanged();
         _pager.invalidate();
     }
@@ -86,7 +86,7 @@ public abstract class BasePlayersFragment extends MainActivityFragment implement
         if(sender == this || position < 0 || position == curPossition){
             return;
         }
-        _pager.setCurrentItem(position , false);
+        _pager.setCurrentItem(position, false);
     }
 
     protected void setPositionLabel(String positionName){
@@ -158,7 +158,7 @@ public abstract class BasePlayersFragment extends MainActivityFragment implement
         startActivity(intent);
     }
 
-    PlayersResponseListener _playersListener = new PlayersResponseListener() {
+    protected PlayersResponseListener _playersListener = new PlayersResponseListener() {
         @Override
         public void onRequestError(RequestError message) {
             dismissProgress();

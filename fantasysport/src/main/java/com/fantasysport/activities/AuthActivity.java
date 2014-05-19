@@ -276,8 +276,9 @@ public class AuthActivity extends BaseActivity {
         _webProxy.getMarkets(cat, sport, _marketsResponseListener);
     }
 
-    protected void navigateToMainActivity() {
+    protected void navigateToMainActivity(int category_type) {
         Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra(Const.CATEGORY_TYPE, category_type);
         startActivityForResult(intent, Const.MAIN_ACTIVITY);
     }
 
@@ -297,7 +298,7 @@ public class AuthActivity extends BaseActivity {
         public void onRequestSuccess(MarketResponse response) {
             _storage.setDefaultRosterData(response.getDefaultRosterData());
             _storage.setMarketsContainer(response.getMarketsContainer());
-            navigateToMainActivity();
+            navigateToMainActivity(Const.FANTASY_SPORT);
             dismissProgress();
             finishAuth();
         }

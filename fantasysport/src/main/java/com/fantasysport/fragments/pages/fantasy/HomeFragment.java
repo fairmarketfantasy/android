@@ -1,4 +1,4 @@
-package com.fantasysport.fragments;
+package com.fantasysport.fragments.pages.fantasy;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

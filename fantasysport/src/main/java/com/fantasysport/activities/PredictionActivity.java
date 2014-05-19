@@ -10,8 +10,8 @@ import android.util.TypedValue;
 import com.astuetz.PagerSlidingTabStrip;
 import com.fantasysport.R;
 import com.fantasysport.adapters.PredictionsDropdownAdapter;
-import com.fantasysport.fragments.ActivePredictionFragment;
-import com.fantasysport.fragments.HistoryPredictionFragment;
+import com.fantasysport.fragments.pages.fantasy.ActivePredictionFragment;
+import com.fantasysport.fragments.pages.fantasy.HistoryPredictionFragment;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,18 +1,13 @@
 package com.fantasysport.fragments.main;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import com.fantasysport.Const;
 import com.fantasysport.R;
-import com.fantasysport.adapters.MainActivityPagerAdapter;
-import com.fantasysport.fragments.BaseActivityFragment;
-import com.fantasysport.fragments.MainFragmentMediator;
-import com.fantasysport.fragments.PredictionRoster;
+import com.fantasysport.adapters.FantasyPagerAdapter;
+import com.fantasysport.fragments.pages.fantasy.MainFragmentMediator;
+import com.fantasysport.fragments.pages.fantasy.PredictionRoster;
 import com.fantasysport.models.Market;
 import com.fantasysport.models.Roster;
-import com.fantasysport.views.AnimatedViewPager;
 import com.fantasysport.webaccess.requestListeners.RequestError;
 import com.fantasysport.webaccess.requestListeners.RosterResponseListener;
 import com.fantasysport.webaccess.requestListeners.UpdateMainDataResponse;
@@ -26,7 +21,7 @@ import java.util.List;
  */
 public class BaseFantasyFragment extends BaseFragment{
 
-    protected MainActivityPagerAdapter _mainActivityPagerAdapter;
+    protected FantasyPagerAdapter _mainActivityPagerAdapter;
     protected Market _market;
     protected Roster _roster;
     protected boolean _removeBenchedPlayers = true;
@@ -36,6 +31,7 @@ public class BaseFantasyFragment extends BaseFragment{
     protected PredictionRoster _predictionRoster = PredictionRoster.None;
     protected MainFragmentMediator _fragmentMediator = new MainFragmentMediator();
 
+    @Override
     protected void initStartParams(Bundle savedInstanceState) {
         if (savedInstanceState != null) {
             _removeBenchedPlayers = savedInstanceState.getBoolean(Const.REMOVE_BENCHED_PLAYERS, true);
@@ -160,7 +156,8 @@ public class BaseFantasyFragment extends BaseFragment{
 
     @Override
     protected void setPager() {
-        _mainActivityPagerAdapter = new MainActivityPagerAdapter(PredictionRoster.None, getActivity().getSupportFragmentManager());
+        super.setPager();
+        _mainActivityPagerAdapter = new FantasyPagerAdapter(PredictionRoster.None, getActivity().getSupportFragmentManager());
         _pager.setAdapter(_mainActivityPagerAdapter);
         raiseOnPageChanged(0);
     }

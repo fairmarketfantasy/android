@@ -1,4 +1,4 @@
-package com.fantasysport.fragments;
+package com.fantasysport.fragments.pages.fantasy;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -28,7 +28,7 @@ import java.util.List;
 /**
  * Created by bylynka on 3/25/14.
  */
-public abstract class BaseHomeFragment extends MainActivityFragment  implements AdapterView.OnItemClickListener, Switcher.ISelectedListener {
+public abstract class BaseHomeFragment extends MainActivityFragment implements AdapterView.OnItemClickListener, Switcher.ISelectedListener {
 
     private Switcher _switcher;
     private ListView _playersList;

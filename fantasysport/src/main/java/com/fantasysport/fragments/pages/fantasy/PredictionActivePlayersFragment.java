@@ -1,10 +1,10 @@
-package com.fantasysport.fragments;
+package com.fantasysport.fragments.pages.fantasy;
 
 import android.view.View;
+import com.fantasysport.fragments.pages.fantasy.BasePlayersFragment;
 import com.fantasysport.models.Market;
 import com.fantasysport.models.Position;
 import com.fantasysport.models.Roster;
-import com.fantasysport.webaccess.WebProxy;
 
 /**
  * Created by bylynka on 3/24/14.

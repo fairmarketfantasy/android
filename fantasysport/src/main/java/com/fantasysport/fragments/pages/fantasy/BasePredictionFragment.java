@@ -1,4 +1,4 @@
-package com.fantasysport.fragments;
+package com.fantasysport.fragments.pages.fantasy;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,6 +9,7 @@ import com.fantasysport.R;
 import com.fantasysport.activities.PredictionActivity;
 import com.fantasysport.adapters.IndividualPredictionAdapter;
 import com.fantasysport.adapters.PredictionAdapter;
+import com.fantasysport.fragments.BaseActivityFragment;
 import com.fantasysport.models.IndividualPrediction;
 import com.fantasysport.models.Prediction;
 import com.fantasysport.webaccess.WebProxy;

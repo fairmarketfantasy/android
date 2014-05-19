@@ -12,6 +12,8 @@ public class MainActivityFragmentProvider {
         switch (fragmentCode){
             case Const.FANTASY_SPORT:
                 return new FantasyFragment();
+            case Const.NON_FANTASY_SPORT:
+                return new NonFantasyFragment();
         }
         return null;
     }

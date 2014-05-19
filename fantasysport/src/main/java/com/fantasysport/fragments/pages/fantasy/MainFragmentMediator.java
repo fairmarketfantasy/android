@@ -1,8 +1,7 @@
-package com.fantasysport.fragments;
+package com.fantasysport.fragments.pages.fantasy;
 
 import com.fantasysport.models.Market;
 import com.fantasysport.models.Player;
-import com.fantasysport.models.Position;
 
 import java.util.ArrayList;
 import java.util.List;

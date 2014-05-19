@@ -1,9 +1,7 @@
 package com.fantasysport.adapters;
 
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.fantasysport.R;
 import com.fantasysport.activities.BaseActivity;
-import com.fantasysport.fragments.PredictionRoster;
+import com.fantasysport.fragments.pages.fantasy.PredictionRoster;
 import com.fantasysport.models.IPlayer;
 import com.fantasysport.models.Player;
 import com.fantasysport.models.Roster;

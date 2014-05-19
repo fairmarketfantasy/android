@@ -1,4 +1,4 @@
-package com.fantasysport.fragments;
+package com.fantasysport.fragments.pages.fantasy;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -7,23 +7,30 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import com.fantasysport.R;
-import com.fantasysport.views.Switcher;
+import com.fantasysport.fragments.pages.fantasy.BaseHomeFragment;
 
 /**
  * Created by bylynka on 3/25/14.
  */
-public class HomeActivePredictionFragment extends BaseHomeFragment  implements AdapterView.OnItemClickListener, Switcher.ISelectedListener {
+public class HomeHistoryPredictionFragment extends BaseHomeFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        _rootView = inflater.inflate(R.layout.fragment_prediction_main, container, false);
+        _rootView = inflater.inflate(R.layout.fragment_history_prediction_main, container, false);
         init();
         return _rootView;
     }
 
     @Override
     protected void init() {
-        super.init();
+        //
+        _moneyTxt = getViewById(R.id.money_lbl);
+        getBaseFFragment().addPageChangedListener(this);
+        _pager = getViewById(R.id.pager);
+        getBaseFFragment().addRosterLoadedListener(this);
+        //
+        setRoster();
+        setPager(321);
         Button backBtn = getViewById(R.id.back_btn);
         backBtn.setOnClickListener(_backClickListener);
     }
@@ -35,4 +42,7 @@ public class HomeActivePredictionFragment extends BaseHomeFragment  implements A
         }
     };
 
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+    }
 }

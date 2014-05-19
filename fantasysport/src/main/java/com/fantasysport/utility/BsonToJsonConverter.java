@@ -5,7 +5,7 @@ package com.fantasysport.utility;
  */
 public class BsonToJsonConverter {
 
-    public static String convert(String bson){
+    public static void convert(String bson){
         int length = bson.length();
         int klength = (int)bson.charAt(0);
 

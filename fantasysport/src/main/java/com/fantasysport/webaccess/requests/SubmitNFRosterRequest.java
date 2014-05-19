@@ -1,0 +1,86 @@
+package com.fantasysport.webaccess.requests;
+
+import android.net.Uri;
+import com.fantasysport.adapters.nonfantasy.NFGameWrapper;
+import com.fantasysport.models.NFGame;
+import com.google.api.client.http.ByteArrayContent;
+import com.google.api.client.http.GenericUrl;
+import com.google.api.client.http.HttpContent;
+import com.google.api.client.http.HttpRequest;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.annotations.SerializedName;
+
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Created by bylynka on 5/19/14.
+ */
+public class SubmitNFRosterRequest extends BaseRequest<String> {
+
+    private RequestBody _body;
+
+    public SubmitNFRosterRequest(List<NFGameWrapper> gameWrappers) {
+        super(String.class);
+        initRequestBody(gameWrappers);
+    }
+
+    private void initRequestBody(List<NFGameWrapper> gameWrappers){
+        if(gameWrappers == null){
+            return;
+        }
+        List<RosterTeam> teams = new ArrayList<RosterTeam>(gameWrappers.size());
+        for(NFGameWrapper gameWrapper : gameWrappers){
+            NFGame game = gameWrapper.getGame();
+           int teamStatsId = gameWrapper.getSelectedTeamType() == NFGameWrapper.SelectedTeamType.Home
+                   ? game.getHomeTeamStatsId()
+                   : game.getAwayTeamStatsId();
+            teams.add(new RosterTeam(game.getStatsId(), teamStatsId));
+        }
+        _body = new RequestBody(teams);
+    }
+
+    @Override
+    public String loadDataFromNetwork() throws Exception {
+        Uri.Builder uriBuilder = Uri.parse(getUrl()).buildUpon();
+        uriBuilder.appendPath("game_rosters")
+                .appendQueryParameter("access_token", getAccessToken());
+        String url = uriBuilder.build().toString();
+        Gson gson = new GsonBuilder()
+                .excludeFieldsWithModifiers(Modifier.STATIC)
+                .create();
+        String js = _body != null? gson.toJson(_body): null;
+        HttpContent content = ByteArrayContent.fromString("application/json", js);
+        HttpRequest request = getHttpRequestFactory()
+                .buildPostRequest(new GenericUrl(url), content);
+        request.getHeaders().setAccept("application/json");
+        String result = request.execute().parseAsString();
+        return result;
+    }
+
+    public class RequestBody{
+        @SerializedName("teams")
+        private List<RosterTeam> _teams;
+
+        public RequestBody(List<RosterTeam> teams){
+            _teams = teams;
+        }
+    }
+
+    public class RosterTeam{
+
+        @SerializedName("game_stats_id")
+        private int _gameStatsId;
+
+        @SerializedName("team_stats_id")
+        private int _teamStatsId;
+
+        public RosterTeam(int gameStatsId, int teamStatsId){
+            _gameStatsId = gameStatsId;
+            _teamStatsId  = teamStatsId;
+        }
+    }
+
+}

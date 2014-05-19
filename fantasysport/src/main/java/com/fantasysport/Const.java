@@ -12,7 +12,9 @@ public class Const {
     public static final int SIGN_OUT = 1004;
 
     public static final int FANTASY_SPORT = 1005;
-    public static final int NON_FANTASY_SPORT = 1005;
+    public static final int NON_FANTASY_SPORT = 1006;
+
+    public static final String CATEGORY_TYPE = "fantasy_category";
 
     public final static String PLAYER_POSITION = "player_position";
     public final static String ROSTER = "roster";

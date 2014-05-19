@@ -1,54 +1,42 @@
 package com.fantasysport.fragments.main;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+
 import com.fantasysport.R;
-import com.fantasysport.adapters.MainActivityPagerAdapter;
-import com.fantasysport.fragments.BaseActivityFragment;
-import com.fantasysport.fragments.PredictionRoster;
-import com.fantasysport.views.AnimatedViewPager;
+import com.fantasysport.adapters.nonfantasy.NFGameWrapper;
+import com.fantasysport.adapters.nonfantasy.NonFantasyPagerAdapter;
+import com.fantasysport.fragments.NFMediator;
+import com.fantasysport.webaccess.requestListeners.RequestError;
+import com.fantasysport.webaccess.requestListeners.SubmitNFRosterResponseListener;
+
+import java.util.List;
 
 /**
  * Created by bylynka on 5/15/14.
  */
-public class NonFantasyFragment extends BaseActivityFragment implements IMainFragment {
+public class NonFantasyFragment extends BaseFragment
+        implements NFMediator.IGameSelectedListener {
 
-
-    protected AnimatedViewPager _pager;;
+    private NonFantasyPagerAdapter _pagerAdapter;
+    private NFMediator _mediator = new NFMediator();
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        _rootView = inflater.inflate(R.layout.fragment_root_main, container, false);
-        initStartParams(savedInstanceState);
-        setPager();
-        return _rootView;
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        _mediator.addGameSelectedListener(this);
     }
 
-    protected void initStartParams(Bundle savedInstanceState) {
-    }
-
-
+    @Override
     protected void setPager() {
-        _pager = getViewById(R.id.root_pager);
-        _pager.setOnPageChangeListener(new AnimatedViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                raiseOnPageChanged(position);
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
+        super.setPager();
+        _pagerAdapter = new NonFantasyPagerAdapter(getActivity().getSupportFragmentManager());
+        _pager.setAdapter(_pagerAdapter);
         raiseOnPageChanged(0);
+    }
+
+    @Override
+    protected void initStartParams(Bundle savedInstanceState) {
+
     }
 
     @Override
@@ -56,8 +44,14 @@ public class NonFantasyFragment extends BaseActivityFragment implements IMainFra
 
     }
 
-    @Override
-    public void addPageChangedListener(IPageChangedListener listener) {
-
+    public NFMediator getMediator(){
+        return _mediator;
     }
+
+    @Override
+    public void onSelectedGame(Object sender, NFGameWrapper gameWrapper) {
+        _pager.setCurrentItem(0, true);
+    }
+
+
 }

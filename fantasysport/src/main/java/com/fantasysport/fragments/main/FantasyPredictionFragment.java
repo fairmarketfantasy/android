@@ -4,8 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import com.fantasysport.Const;
 import com.fantasysport.R;
-import com.fantasysport.adapters.MainActivityPagerAdapter;
-import com.fantasysport.fragments.PredictionRoster;
+import com.fantasysport.adapters.FantasyPagerAdapter;
+import com.fantasysport.fragments.pages.fantasy.PredictionRoster;
 import com.fantasysport.models.Market;
 import com.fantasysport.views.AnimatedViewPager;
 import com.fantasysport.views.animations.ZoomOutPageTransformer;
@@ -20,7 +20,7 @@ public class FantasyPredictionFragment extends BaseFantasyFragment {
     private int _rosterId;
 
     protected void setPager() {
-        _mainActivityPagerAdapter = new MainActivityPagerAdapter( _predictionRoster, getActivity().getSupportFragmentManager());
+        _mainActivityPagerAdapter = new FantasyPagerAdapter( _predictionRoster, getActivity().getSupportFragmentManager());
         _pager = getViewById(R.id.root_pager);
         _pager.setPageTransformer(true, new ZoomOutPageTransformer());
         _pager.setAdapter(_mainActivityPagerAdapter);

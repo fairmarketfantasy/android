@@ -1,5 +1,6 @@
 package com.fantasysport.models;
 
+import com.fantasysport.adapters.nonfantasy.INFGame;
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -7,16 +8,16 @@ import com.google.gson.annotations.SerializedName;
  */
 public class NFGame {
 
-    @SerializedName("stats_id")
+    @SerializedName("game_stats_id")
     private int _statsId;
 
     @SerializedName("game_time")
     private String _gameTime;
 
-    @SerializedName("home_team")
+    @SerializedName("home_team_name")
     private String _homeTeam;
 
-    @SerializedName("away_team")
+    @SerializedName("away_team_name")
     private String _awayTeam;
 
     @SerializedName("home_team_pt")
@@ -25,10 +26,16 @@ public class NFGame {
     @SerializedName("away_team_pt")
     private int _awayTeamPt;
 
-    @SerializedName("home_team_logo")
+    @SerializedName("home_team_stats_id")
+    private int _homeTeamStatsId;
+
+    @SerializedName("away_team_stats_id")
+    private int _awayTeamStatsId;
+
+    @SerializedName("home_team_logo_url")
     private String _homeTeamLogo;
 
-    @SerializedName("away_team_logo")
+    @SerializedName("away_team_logo_url")
     private String _awayTeamLogo;
 
     public int getStatsId() {
@@ -47,7 +54,7 @@ public class NFGame {
         _gameTime = gameTime;
     }
 
-    public String getHomeTeam() {
+    public String getHomeTeamName() {
         return _homeTeam;
     }
 
@@ -55,7 +62,7 @@ public class NFGame {
         _homeTeam = homeTeam;
     }
 
-    public String getAwayTeam() {
+    public String getAwayTeamName() {
         return _awayTeam;
     }
 
@@ -93,5 +100,13 @@ public class NFGame {
 
     public void setAwayTeamLogo(String awayTeamLogo) {
         _awayTeamLogo = awayTeamLogo;
+    }
+
+    public int getHomeTeamStatsId() {
+        return _homeTeamStatsId;
+    }
+
+    public int getAwayTeamStatsId() {
+        return _awayTeamStatsId;
     }
 }
