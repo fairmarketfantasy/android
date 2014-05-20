@@ -22,9 +22,12 @@ public class NFRosterAdapter extends BaseAdapter {
     private Context _context;
     private IListener _listener;
 
-    public NFRosterAdapter(List<INFGame> games, Context context){
-        _games = games;
+    public NFRosterAdapter(Context context){
         _context = context;
+    }
+
+    public void setGames(List<INFGame> games){
+        _games = games;
     }
 
     public List<INFGame> getGames(){
