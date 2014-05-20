@@ -77,8 +77,8 @@
         <item name="android:maxLines">1</item>
         <item name="android:singleLine">true</item>
         <item name="android:textSize">@dimen/auth_edit_text_text_size</item>
-        <item name="android:paddingLeft">@dimen/side_marging</item>
-        <item name="android:paddingRight">@dimen/side_marging</item>
+        <item name="android:paddingLeft">@dimen/side_margin</item>
+        <item name="android:paddingRight">@dimen/side_margin</item>
     </style>
 
 

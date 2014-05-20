@@ -50,8 +50,8 @@
                   android:gravity="center_horizontal"
             >
         <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
-                      android:paddingRight="@dimen/side_hor_marging"
-                      android:paddingLeft="@dimen/side_hor_marging"
+                      android:paddingRight="@dimen/side_hor_margin"
+                      android:paddingLeft="@dimen/side_hor_margin"
                 >
             <TextView android:layout_width="wrap_content"
                       android:layout_height="wrap_content"

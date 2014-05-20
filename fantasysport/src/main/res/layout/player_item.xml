@@ -5,16 +5,16 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:paddingRight="@dimen/side_marging"
-              android:paddingLeft="@dimen/side_marging"
+              android:paddingRight="@dimen/side_margin"
+              android:paddingLeft="@dimen/side_margin"
               android:background="#F0F0F0"
         >
     <LinearLayout android:orientation="horizontal"
                   android:layout_width="match_parent"
                   android:layout_height="wrap_content"
                   android:gravity="center_vertical"
-                  android:paddingBottom="@dimen/side_hor_marging"
-                  android:paddingTop="@dimen/side_hor_marging">
+                  android:paddingBottom="@dimen/side_hor_margin"
+                  android:paddingTop="@dimen/side_hor_margin">
         <FrameLayout android:layout_width="58dp" android:layout_height="58dp"
                      android:layout_marginRight="10dp">
 

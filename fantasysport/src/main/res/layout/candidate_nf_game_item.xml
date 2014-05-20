@@ -1,39 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:custom="http://schemas.android.com/apk/res-auto"
              android:layout_width="match_parent"
              android:layout_height="wrap_content"
              android:stretchColumns="*"
+             android:paddingRight="@dimen/side_margin"
+             android:paddingLeft="@dimen/side_margin"
+             android:paddingBottom="@dimen/side_hor_margin"
+             android:paddingTop="@dimen/side_hor_margin"
         >
 
     <TableRow>
-        <ImageView android:id="@+id/home_team_img" android:layout_gravity="center" />
+        <ImageView android:layout_gravity="center" android:src="@drawable/plus"
+                android:id="@+id/add_home_img"/>
+        <com.fantasysport.views.RoundedImageView android:id="@+id/home_team_img" android:layout_gravity="center"
+                                                 android:layout_width="@dimen/avatar_side"
+                                                 android:layout_height="@dimen/avatar_side"
+                                                 android:scaleType="fitCenter"
+                                                 android:adjustViewBounds="true"/>
         <LinearLayout android:layout_height="wrap_content" android:layout_width="wrap_content"
-                android:orientation="horizontal"
-                android:layout_gravity="center">
-            <Button android:layout_width="wrap_content" android:layout_height="wrap_content"
-                    android:id="@+id/home_team_pt_btn"/>
-            <Button android:layout_width="wrap_content" android:layout_height="wrap_content"
-                    android:id="@+id/away_team_pt_btn"/>
+                      android:orientation="horizontal"
+                      android:layout_gravity="center">
+            <com.fantasysport.views.ExButton
+                    android:layout_width="38dp"
+                    android:layout_height="@dimen/btn_height"
+                    android:id="@+id/home_team_pt_btn"
+                    android:background="@drawable/left_pt_button"
+                    custom:fontFamily="prohibitionRound"
+                    android:textSize="@dimen/x_medium_font"
+                    android:textColor="@color/app_blue"/>
+            <View android:layout_width="2dp" android:layout_height="match_parent" android:background="@color/app_blue" />
+            <com.fantasysport.views.ExButton
+                    android:layout_width="38dp"
+                    android:layout_height="@dimen/btn_height"
+                    android:id="@+id/away_team_pt_btn"
+                    android:background="@drawable/right_pt_button"
+                    custom:fontFamily="prohibitionRound"
+                    android:textSize="@dimen/x_medium_font"
+                    android:textColor="@color/app_blue"/>
         </LinearLayout>
-        <ImageView android:id="@+id/away_team_img" android:layout_gravity="center" android:background="@android:color/transparent"/>
+        <com.fantasysport.views.RoundedImageView android:id="@+id/away_team_img" android:layout_gravity="center"
+                                                 android:background="@android:color/transparent"
+                                                 android:adjustViewBounds="true"
+                                                 android:scaleType="fitCenter"
+                                                 android:layout_width="@dimen/avatar_side"
+                                                 android:layout_height="@dimen/avatar_side"
+                />
+        <ImageView android:layout_gravity="center" android:src="@drawable/plus"
+                   android:id="@+id/add_away_img"/>
     </TableRow>
 
     <TableRow>
+        <View />
         <TextView android:layout_height="wrap_content" android:layout_width="wrap_content"
-                    android:layout_gravity="center"
-                    android:id="@+id/home_team_lbl"
+                  android:layout_gravity="center"
+                  android:id="@+id/home_team_lbl"
+                  android:textSize="@dimen/low_font"
                 />
 
         <TextView android:layout_height="wrap_content" android:layout_width="wrap_content"
                   android:layout_gravity="center"
                   android:id="@+id/game_time_lbl"
+                  android:textSize="@dimen/low_font"
+                  android:textColor="#A0A0A0"
                 />
 
         <TextView android:layout_height="wrap_content" android:layout_width="wrap_content"
                   android:layout_gravity="center"
                   android:id="@+id/away_team_lbl"
+                  android:textSize="@dimen/low_font"
                 />
+        <View />
     </TableRow>
 
 </TableLayout>

@@ -4,10 +4,10 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:paddingTop="@dimen/side_marging"
-              android:paddingBottom="@dimen/side_marging"
-              android:paddingLeft="@dimen/side_hor_marging"
-              android:paddingRight="@dimen/side_hor_marging"
+              android:paddingTop="@dimen/side_margin"
+              android:paddingBottom="@dimen/side_margin"
+              android:paddingLeft="@dimen/side_hor_margin"
+              android:paddingRight="@dimen/side_hor_margin"
               >
     <LinearLayout android:layout_width="match_parent"
                   android:layout_height="wrap_content"
@@ -24,7 +24,7 @@
                       android:layout_height="wrap_content"
                       android:orientation="vertical"
                       android:layout_gravity="center_vertical"
-                      android:layout_marginLeft="@dimen/side_marging"
+                      android:layout_marginLeft="@dimen/side_margin"
                 >
 
             <TextView android:layout_width="wrap_content"
@@ -46,7 +46,7 @@
     <LinearLayout android:layout_width="match_parent"
                   android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="@dimen/side_hor_marging">
+            android:layout_marginTop="@dimen/side_hor_margin">
 
 
         <FrameLayout android:layout_width="match_parent"
@@ -55,9 +55,9 @@
 
             <LinearLayout android:layout_width="match_parent"
                           android:layout_height="wrap_content"
-                          android:paddingTop="@dimen/side_hor_marging"
-                          android:paddingBottom="@dimen/side_hor_marging"
-                          android:paddingLeft="@dimen/side_hor_marging"
+                          android:paddingTop="@dimen/side_hor_margin"
+                          android:paddingBottom="@dimen/side_hor_margin"
+                          android:paddingLeft="@dimen/side_hor_margin"
                           android:background="@color/app_green"
                           android:layout_marginRight="2dp"
                           android:orientation="vertical"
@@ -85,7 +85,7 @@
             <ImageView android:layout_width="wrap_content"
                        android:layout_height="wrap_content"
                        android:layout_gravity="center_vertical|right"
-                       android:layout_marginRight="@dimen/side_hor_marging"
+                       android:layout_marginRight="@dimen/side_hor_margin"
                        android:src="@drawable/arrow_small_black"
                     />
         </FrameLayout>
@@ -94,9 +94,9 @@
         <LinearLayout android:layout_width="match_parent"
                       android:layout_height="wrap_content"
                       android:layout_weight="1"
-                      android:paddingTop="@dimen/side_hor_marging"
-                      android:paddingBottom="@dimen/side_hor_marging"
-                      android:paddingLeft="@dimen/side_hor_marging"
+                      android:paddingTop="@dimen/side_hor_margin"
+                      android:paddingBottom="@dimen/side_hor_margin"
+                      android:paddingLeft="@dimen/side_hor_margin"
                       android:background="@color/app_green"
                       android:layout_marginRight="2dp"
                       android:orientation="vertical">
@@ -121,9 +121,9 @@
         <LinearLayout android:layout_width="match_parent"
                       android:layout_height="wrap_content"
                       android:layout_weight="1"
-                      android:paddingTop="@dimen/side_hor_marging"
-                      android:paddingBottom="@dimen/side_hor_marging"
-                      android:paddingLeft="@dimen/side_hor_marging"
+                      android:paddingTop="@dimen/side_hor_margin"
+                      android:paddingBottom="@dimen/side_hor_margin"
+                      android:paddingLeft="@dimen/side_hor_margin"
                       android:background="@color/app_green"
                       android:orientation="vertical">
             <TextView android:layout_width="wrap_content"

@@ -6,17 +6,17 @@
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:background="#F0F0F0"
-              android:paddingBottom="@dimen/side_marging"
-              android:paddingTop="@dimen/side_hor_marging"
-              android:paddingLeft="@dimen/side_marging"
-              android:paddingRight="@dimen/side_marging"
+              android:paddingBottom="@dimen/side_margin"
+              android:paddingTop="@dimen/side_hor_margin"
+              android:paddingLeft="@dimen/side_margin"
+              android:paddingRight="@dimen/side_margin"
               android:id="@+id/root"
         >
 
     <LinearLayout android:layout_width="match_parent"
                   android:layout_height="wrap_content"
                   android:orientation="horizontal"
-                  android:paddingBottom="@dimen/side_marging"
+                  android:paddingBottom="@dimen/side_margin"
             >
 
         <LinearLayout android:layout_width="match_parent"

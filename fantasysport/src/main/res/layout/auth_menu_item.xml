@@ -9,7 +9,7 @@
               android:layout_height="wrap_content"
               android:id="@+id/item_txt"
               android:textColor="#ffffff"
-              android:paddingRight="@dimen/side_marging"
+              android:paddingRight="@dimen/side_margin"
 
            />
 </LinearLayout>

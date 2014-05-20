@@ -1,12 +1,20 @@
 package com.fantasysport.models;
 
 import com.fantasysport.adapters.nonfantasy.INFGame;
+import com.fantasysport.utility.Converter;
+import com.fantasysport.utility.DateUtils;
+import com.fantasysport.utility.DeviceInfo;
 import com.google.gson.annotations.SerializedName;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by bylynka on 5/13/14.
  */
 public class NFGame {
+
+    private String _formattedGameTime;
 
     @SerializedName("game_stats_id")
     private int _statsId;
@@ -42,64 +50,46 @@ public class NFGame {
         return _statsId;
     }
 
-    public void setStatsId(int statsId) {
-        _statsId = statsId;
-    }
-
     public String getGameTime() {
         return _gameTime;
     }
 
-    public void setGameTime(String gameTime) {
-        _gameTime = gameTime;
+    public String getFormattedGameTime(){
+        if(_gameTime == null){
+            return null;
+        }
+        if(_formattedGameTime == null){
+        Date date = Converter.toDate(_gameTime);
+        int gmtInMinutes = DeviceInfo.getGMTInMinutes();
+        date = DateUtils.addMinutes(date, gmtInMinutes);
+        SimpleDateFormat sdf = new SimpleDateFormat("d MMM K:mm a");
+         _formattedGameTime = sdf.format(date);
+        }
+        return _formattedGameTime;
     }
 
     public String getHomeTeamName() {
         return _homeTeam;
     }
 
-    public void setHomeTeam(String homeTeam) {
-        _homeTeam = homeTeam;
-    }
-
     public String getAwayTeamName() {
         return _awayTeam;
-    }
-
-    public void setAwayTeam(String awayTeam) {
-        _awayTeam = awayTeam;
     }
 
     public int getHomeTeamPt() {
         return _homeTeamPt;
     }
 
-    public void setHomeTeamPt(int homeTeamPt) {
-        _homeTeamPt = homeTeamPt;
-    }
-
     public int getAwayTeamPt() {
         return _awayTeamPt;
-    }
-
-    public void setAwayTeamPt(int awayTeamPt) {
-        _awayTeamPt = awayTeamPt;
     }
 
     public String getHomeTeamLogo() {
         return _homeTeamLogo;
     }
 
-    public void setHomeTeamLogo(String homeTeamLogo) {
-        _homeTeamLogo = homeTeamLogo;
-    }
-
     public String getAwayTeamLogo() {
         return _awayTeamLogo;
-    }
-
-    public void setAwayTeamLogo(String awayTeamLogo) {
-        _awayTeamLogo = awayTeamLogo;
     }
 
     public int getHomeTeamStatsId() {

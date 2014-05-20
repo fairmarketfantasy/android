@@ -16,8 +16,8 @@
 
         <LinearLayout android:layout_width="match_parent"
                       android:layout_height="@dimen/position_view_height"
-                      android:paddingLeft="@dimen/side_marging"
-                      android:paddingRight="@dimen/side_marging"
+                      android:paddingLeft="@dimen/side_margin"
+                      android:paddingRight="@dimen/side_margin"
                       android:orientation="horizontal">
             <com.fantasysport.views.ExButton android:layout_width="wrap_content"
                     android:layout_height="@dimen/btn_height"
@@ -59,8 +59,8 @@
 
         <FrameLayout android:layout_width="match_parent"
                      android:layout_height="50dp"
-                     android:paddingRight="@dimen/side_marging"
-                     android:paddingLeft="@dimen/side_marging"
+                     android:paddingRight="@dimen/side_margin"
+                     android:paddingLeft="@dimen/side_margin"
                      android:background="#E6E6E6">
             <com.fantasysport.views.RobotoThinTextView android:layout_width="wrap_content"
                                                        android:layout_height="wrap_content"
@@ -112,7 +112,7 @@
                  android:layout_gravity="bottom">
         <LinearLayout android:layout_width="match_parent"
                       android:layout_height="wrap_content"
-                      android:padding="@dimen/side_marging">
+                      android:padding="@dimen/side_margin">
             <com.fantasysport.views.ExButton
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/submit_btn_height"

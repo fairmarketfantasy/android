@@ -7,9 +7,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import com.fantasysport.R;
 import com.fantasysport.models.NFGame;
+import com.fantasysport.utility.image.ImageLoader;
 
 import java.util.List;
 
@@ -21,9 +23,11 @@ public class NFRosterAdapter extends BaseAdapter {
     private List<INFGame> _games;
     private Context _context;
     private IListener _listener;
+    private ImageLoader _imageLoader;
 
     public NFRosterAdapter(Context context){
         _context = context;
+        _imageLoader = new ImageLoader(_context);
     }
 
     public void setGames(List<INFGame> games){
@@ -80,13 +84,15 @@ public class NFRosterAdapter extends BaseAdapter {
         gameLbl.setVisibility(View.VISIBLE);
 
         TextView gameTimeLbl = (TextView)convertView.findViewById(R.id.middle_lbl);
-        gameTimeLbl.setText(game.getGameTime());
+        gameTimeLbl.setText(game.getFormattedGameTime());
 
         Button ptBtn = (Button)convertView.findViewById(R.id.pt_btn);
         ptBtn.setVisibility(View.VISIBLE);
 
         Button dismissBtn = (Button)convertView.findViewById(R.id.dismiss_game_btn);
-        ptBtn.setVisibility(View.VISIBLE);
+        ImageView logo = (ImageView)convertView.findViewById(R.id.circle_img);
+        _imageLoader.displayImage(gameWrapper.getSelectedTeamType() == NFGameWrapper.SelectedTeamType.Home? game.getHomeTeamLogo(): game.getAwayTeamLogo(), logo);
+        dismissBtn.setVisibility(View.VISIBLE);
         dismissBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
