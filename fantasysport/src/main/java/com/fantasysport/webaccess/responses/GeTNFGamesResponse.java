@@ -1,7 +1,5 @@
 package com.fantasysport.webaccess.responses;
 
-import com.fantasysport.models.NFGame;
-
 import java.util.List;
 
 /**
@@ -9,9 +7,9 @@ import java.util.List;
  */
 public class GeTNFGamesResponse {
 
-    public List<NFGame> _games;
+    public List<GetGamesResponse> _games;
 
-    public List<NFGame> getGames(){
+    public List<GetGamesResponse> getGames(){
         return _games;
     }
 }

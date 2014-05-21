@@ -10,9 +10,13 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.fantasysport.R;
-import com.fantasysport.models.NFGame;
+import com.fantasysport.models.nonfantasy.EmptyNFTeam;
+import com.fantasysport.models.nonfantasy.INFTeam;
+import com.fantasysport.models.nonfantasy.NFGame;
+import com.fantasysport.models.nonfantasy.NFTeam;
 import com.fantasysport.utility.image.ImageLoader;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -20,22 +24,29 @@ import java.util.List;
  */
 public class NFRosterAdapter extends BaseAdapter {
 
-    private List<INFGame> _games;
+    private List<INFTeam> _teams;
     private Context _context;
     private IListener _listener;
     private ImageLoader _imageLoader;
+    private List<NFGame> _games;
+
+    SimpleDateFormat _sdf = new SimpleDateFormat("d MMM K:mm a");
 
     public NFRosterAdapter(Context context){
         _context = context;
         _imageLoader = new ImageLoader(_context);
     }
 
-    public void setGames(List<INFGame> games){
+    public void setGames(List<NFGame> games){
         _games = games;
     }
 
-    public List<INFGame> getGames(){
-        return _games;
+    public void setTeams(List<INFTeam> teams){
+        _teams = teams;
+    }
+
+    public List<INFTeam> getTeams(){
+        return _teams;
     }
 
     public void setListener(IListener listener){
@@ -44,12 +55,12 @@ public class NFRosterAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return _games == null? 0 : _games.size();
+        return _teams == null? 0 : _teams.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return _games.get(position);
+        return _teams.get(position);
     }
 
     @Override
@@ -64,39 +75,44 @@ public class NFRosterAdapter extends BaseAdapter {
                     _context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
             convertView = mInflater.inflate(R.layout.roster_nf_game_item, null);
         }
-        INFGame game = _games.get(position);
-        if(game instanceof NFGameWrapper){
-            prepareGameView(convertView, (NFGameWrapper)game);
+        INFTeam team = _teams.get(position);
+        if(team instanceof NFTeam){
+            try {
+                prepareGameView(convertView, (NFTeam)team);
+            }catch (Exception e){
+                _teams.set(position, new EmptyNFTeam());
+                prepareEmptyGameView(convertView);
+            }
         }else {
             prepareEmptyGameView(convertView);
         }
         return convertView;
     }
 
-    private void prepareGameView(View convertView,final NFGameWrapper gameWrapper){
-        NFGame game = gameWrapper.getGame();
+    private void prepareGameView(View convertView,final NFTeam team) throws Exception {
         TextView teamLbl = (TextView)convertView.findViewById(R.id.team_lbl);
-        teamLbl.setText(gameWrapper.getSelectedTeamType() == NFGameWrapper.SelectedTeamType.Home? game.getHomeTeamName(): game.getAwayTeamName());
+        teamLbl.setText(team.getName());
         teamLbl.setVisibility(View.VISIBLE);
-
+        NFGame game = getGame(team.getGameStatsId());
         TextView gameLbl = (TextView)convertView.findViewById(R.id.game_name_lbl);
-        gameLbl.setText(String.format("%s @ %s", game.getHomeTeamName(), game.getAwayTeamName()));
+        gameLbl.setText(String.format("%s @ %s", game.getHomeTeam().getName(), game.getAwayTeam().getName()));
         gameLbl.setVisibility(View.VISIBLE);
 
         TextView gameTimeLbl = (TextView)convertView.findViewById(R.id.middle_lbl);
-        gameTimeLbl.setText(game.getFormattedGameTime());
+        gameTimeLbl.setText(_sdf.format(game.getDate()));
 
         Button ptBtn = (Button)convertView.findViewById(R.id.pt_btn);
         ptBtn.setVisibility(View.VISIBLE);
 
         Button dismissBtn = (Button)convertView.findViewById(R.id.dismiss_game_btn);
         ImageView logo = (ImageView)convertView.findViewById(R.id.circle_img);
-        _imageLoader.displayImage(gameWrapper.getSelectedTeamType() == NFGameWrapper.SelectedTeamType.Home? game.getHomeTeamLogo(): game.getAwayTeamLogo(), logo);
+        _imageLoader.displayImage(team.getLogoUrl(), logo);
         dismissBtn.setVisibility(View.VISIBLE);
         dismissBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                raiseOnDismiss(gameWrapper);
+                team.setIsSelected(false);
+                raiseOnDismiss(team);
             }
         });
     }
@@ -112,17 +128,24 @@ public class NFRosterAdapter extends BaseAdapter {
         lbl.setText("Team Not Selected");
     }
 
-    private void raiseOnDismiss(NFGameWrapper gameWrapper){
+    private NFGame getGame(int statsId) throws Exception {
+        for (NFGame game : _games){
+            if(game.getStatsId() == statsId){
+                return game;
+            }
+        }
+        throw new Exception("Game is not found!");
+    }
+
+    private void raiseOnDismiss(NFTeam team){
         if(_listener == null){
             return;
         }
-        _listener.onDismiss(gameWrapper);
+        _listener.onDismiss(team);
     }
 
     public interface IListener{
-
-        public void onDismiss(NFGameWrapper gameWrapper);
-
+        public void onDismiss(NFTeam team);
     }
 
 }

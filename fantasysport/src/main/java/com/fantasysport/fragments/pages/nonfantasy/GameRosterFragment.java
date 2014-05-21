@@ -12,6 +12,9 @@ import com.fantasysport.adapters.nonfantasy.*;
 import com.fantasysport.fragments.BaseActivityFragment;
 import com.fantasysport.fragments.NFMediator;
 import com.fantasysport.fragments.main.NonFantasyFragment;
+import com.fantasysport.models.nonfantasy.EmptyNFTeam;
+import com.fantasysport.models.nonfantasy.INFTeam;
+import com.fantasysport.models.nonfantasy.NFTeam;
 import com.fantasysport.webaccess.requestListeners.RequestError;
 import com.fantasysport.webaccess.requestListeners.SubmitNFRosterResponseListener;
 
@@ -23,7 +26,7 @@ import java.util.List;
 /**
  * Created by bylynka on 5/16/14.
  */
-public class GameRosterFragment extends BaseActivityFragment implements NFRosterAdapter.IListener, NFMediator.IGameSelectedListener {
+public class GameRosterFragment extends BaseActivityFragment implements NFRosterAdapter.IListener, NFMediator.ITeamSelectedListener {
 
     private NFRosterAdapter _adapter;
     private NFMediator _mediator;
@@ -40,7 +43,7 @@ public class GameRosterFragment extends BaseActivityFragment implements NFRoster
     private void init() {
         NonFantasyFragment fragment = (NonFantasyFragment) ((MainActivity) getActivity()).getRootFragment();
         _mediator = fragment.getMediator();
-        _mediator.addGameSelectedListener(this);
+        _mediator.addTeamSelectedListener(this);
         _submitBtn = getViewById(R.id.submit_btn);
         _submitBtn.setOnClickListener(_submitBtnOnClickListener);
         initAdapter();
@@ -52,13 +55,13 @@ public class GameRosterFragment extends BaseActivityFragment implements NFRoster
         if (_adapter == null) {
             return;
         }
-        List<INFGame> games = _adapter.getGames();
+        List<INFTeam> games = _adapter.getTeams();
         _submitBtn.setEnabled(false);
         if (games == null) {
             return;
         }
-        for (INFGame game : games) {
-            if (game instanceof NFGameWrapper) {
+        for (INFTeam game : games) {
+            if (game instanceof NFTeam) {
                 _submitBtn.setEnabled(true);
             }
         }
@@ -67,6 +70,7 @@ public class GameRosterFragment extends BaseActivityFragment implements NFRoster
     private void initAdapter() {
         ListView listView = getViewById(R.id.game_list);
         _adapter = new NFRosterAdapter(getActivity());
+        _adapter.setGames(getStorage().getNFDataContainer().getCandidateGames());
         _adapter.setListener(this);
         listView.setAdapter(_adapter);
         setEmptyRoster();
@@ -74,24 +78,24 @@ public class GameRosterFragment extends BaseActivityFragment implements NFRoster
 
     private void setEmptyRoster() {
         int roomNumber = getStorage().getNFDataContainer().getRoster().getRoomNumber();
-        List<INFGame> games = new ArrayList<INFGame>(roomNumber);
+        List<INFTeam> games = new ArrayList<INFTeam>(roomNumber);
         for (int i = 0; i < roomNumber; i++) {
-            games.add(new EmptyNFGame());
+            games.add(new EmptyNFTeam());
         }
-        _adapter.setGames(games);
+        _adapter.setTeams(games);
         _adapter.notifyDataSetChanged();
     }
 
     @Override
-    public void onDismiss(NFGameWrapper gameWrapper) {
+    public void onDismiss(NFTeam team) {
         if(_adapter == null){
             return;
         }
-        List<INFGame> games = _adapter.getGames();
-        for (int i = 0; i < games.size(); i++) {
-            if (games.get(i) == gameWrapper) {
-                games.set(i, new EmptyNFGame());
-                Collections.sort(games, _gameComparator);
+        List<INFTeam> teams = _adapter.getTeams();
+        for (int i = 0; i < teams.size(); i++) {
+            if (teams.get(i) == team) {
+                teams.set(i, new EmptyNFTeam());
+                Collections.sort(teams, _teamComparator);
                 _adapter.notifyDataSetChanged();
                 updateSubmitBtnState();
                 return;
@@ -100,11 +104,11 @@ public class GameRosterFragment extends BaseActivityFragment implements NFRoster
     }
 
     @Override
-    public void onSelectedGame(Object sender, NFGameWrapper gameWrapper) {
-        List<INFGame> games = _adapter.getGames();
+    public void onSelectedTeam(Object sender, NFTeam team) {
+        List<INFTeam> games = _adapter.getTeams();
         for (int i = 0; i < games.size(); i++) {
-            if (games.get(i) instanceof EmptyNFGame) {
-                games.set(i, gameWrapper);
+            if (games.get(i) instanceof EmptyNFTeam) {
+                games.set(i, team);
                 _adapter.notifyDataSetChanged();
                 updateSubmitBtnState();
                 return;
@@ -112,10 +116,10 @@ public class GameRosterFragment extends BaseActivityFragment implements NFRoster
         }
     }
 
-    public void submitRoster(List<NFGameWrapper> gameWrappers) {
+    public void submitRoster(List<NFTeam> teams) {
         showProgress();
         _submitBtn.setEnabled(false);
-        getWebProxy().submitNFRoster(gameWrappers, new SubmitNFRosterResponseListener() {
+        getWebProxy().submitNFRoster(teams, new SubmitNFRosterResponseListener() {
             @Override
             public void onRequestError(RequestError error) {
                 dismissProgress();
@@ -133,31 +137,31 @@ public class GameRosterFragment extends BaseActivityFragment implements NFRoster
         });
     }
 
-    private List<NFGameWrapper> getGameWrappers() {
-        List<INFGame> games = _adapter.getGames();
-        List<NFGameWrapper> gameWrappers = new ArrayList<NFGameWrapper>();
-        for (INFGame game : games) {
-            if (game instanceof NFGameWrapper) {
-                gameWrappers.add((NFGameWrapper) game);
+    private List<NFTeam> getTeams() {
+        List<INFTeam> teamItems = _adapter.getTeams();
+        List<NFTeam> teams = new ArrayList<NFTeam>();
+        for (INFTeam team : teamItems) {
+            if (team instanceof NFTeam) {
+                teams.add((NFTeam) team);
             }
         }
-        return gameWrappers;
+        return teams;
     }
 
     View.OnClickListener _submitBtnOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            submitRoster(getGameWrappers());
+            submitRoster(getTeams());
         }
     };
 
-    Comparator _gameComparator = new Comparator<INFGame>() {
+    Comparator _teamComparator = new Comparator<INFTeam>() {
         @Override
-        public int compare(INFGame lhs, INFGame rhs) {
+        public int compare(INFTeam lhs, INFTeam rhs) {
             if(lhs.getClass() == rhs.getClass()){
                 return 0;
             }
-            return  lhs instanceof EmptyNFGame? 1: -1;
+            return  lhs instanceof EmptyNFTeam ? 1: -1;
         }
     };
 }

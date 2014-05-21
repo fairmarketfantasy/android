@@ -3,10 +3,16 @@ package com.fantasysport.webaccess.requests;
 import android.net.Uri;
 import com.fantasysport.models.NFDataContainer;
 import com.fantasysport.models.UserData;
+import com.fantasysport.models.nonfantasy.NFGame;
+import com.fantasysport.models.nonfantasy.NFTeam;
 import com.fantasysport.webaccess.responses.GeTNFGamesResponse;
+import com.fantasysport.webaccess.responses.GetGamesResponse;
 import com.google.api.client.http.GenericUrl;
 import com.google.api.client.http.HttpRequest;
 import com.google.gson.Gson;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by bylynka on 5/13/14.
@@ -31,6 +37,16 @@ public class GetNFGamesRequest extends BaseRequest<NFDataContainer> {
         HttpRequest request = getHttpRequestFactory().buildGetRequest(new GenericUrl(url));
         request.getHeaders().setAccept("application/json");
         String result = request.execute().parseAsString();
-        return new Gson().fromJson(result, NFDataContainer.class);
+        GetGamesResponse response = new Gson().fromJson(result, GetGamesResponse.class);
+        List<NFGame> games = new ArrayList<NFGame>();
+        List<GetGamesResponse.Game> responseGames = response.getCandidateGames();
+        if(responseGames != null){
+            for (GetGamesResponse.Game rGame : responseGames){
+                NFTeam home = new NFTeam(rGame.getHomeTeamName(), rGame.getHomeTeamPt(), rGame.getHomeTeamStatsId(), rGame.getHomeTeamLogo(), rGame.getStatsId());
+                NFTeam away = new NFTeam(rGame.getAwayTeamName(), rGame.getAwayTeamPt(), rGame.getAwayTeamStatsId(), rGame.getAwayTeamLogo(), rGame.getStatsId());
+                games.add(new NFGame(home, away, rGame.getGameDate(), rGame.getStatsId()));
+            }
+        }
+        return new NFDataContainer(response.getRoster(), games);
     }
 }

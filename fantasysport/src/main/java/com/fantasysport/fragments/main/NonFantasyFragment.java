@@ -2,20 +2,15 @@ package com.fantasysport.fragments.main;
 
 import android.os.Bundle;
 
-import com.fantasysport.R;
-import com.fantasysport.adapters.nonfantasy.NFGameWrapper;
 import com.fantasysport.adapters.nonfantasy.NonFantasyPagerAdapter;
 import com.fantasysport.fragments.NFMediator;
-import com.fantasysport.webaccess.requestListeners.RequestError;
-import com.fantasysport.webaccess.requestListeners.SubmitNFRosterResponseListener;
-
-import java.util.List;
+import com.fantasysport.models.nonfantasy.NFTeam;
 
 /**
  * Created by bylynka on 5/15/14.
  */
 public class NonFantasyFragment extends BaseFragment
-        implements NFMediator.IGameSelectedListener {
+        implements NFMediator.ITeamSelectedListener {
 
     private NonFantasyPagerAdapter _pagerAdapter;
     private NFMediator _mediator = new NFMediator();
@@ -23,7 +18,7 @@ public class NonFantasyFragment extends BaseFragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        _mediator.addGameSelectedListener(this);
+        _mediator.addTeamSelectedListener(this);
     }
 
     @Override
@@ -49,7 +44,7 @@ public class NonFantasyFragment extends BaseFragment
     }
 
     @Override
-    public void onSelectedGame(Object sender, NFGameWrapper gameWrapper) {
+    public void onSelectedTeam(Object sender, NFTeam team) {
         _pager.setCurrentItem(0, true);
     }
 

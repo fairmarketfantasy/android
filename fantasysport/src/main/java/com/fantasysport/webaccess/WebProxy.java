@@ -1,10 +1,10 @@
 package com.fantasysport.webaccess;
 
 import android.graphics.Bitmap;
-import com.fantasysport.adapters.nonfantasy.NFGameWrapper;
 import com.fantasysport.models.Player;
 import com.fantasysport.models.StatsItem;
 import com.fantasysport.models.User;
+import com.fantasysport.models.nonfantasy.NFTeam;
 import com.fantasysport.utility.OutParameter;
 import com.fantasysport.webaccess.requestListeners.*;
 import com.fantasysport.webaccess.requests.*;
@@ -175,8 +175,8 @@ public final class WebProxy {
         _spiceManager.execute(request, listener);
     }
 
-    public void submitNFRoster(List<NFGameWrapper> gameWrappers, SubmitNFRosterResponseListener listener){
-        SubmitNFRosterRequest request= new SubmitNFRosterRequest(gameWrappers);
+    public void submitNFRoster(List<NFTeam> teams, SubmitNFRosterResponseListener listener){
+        SubmitNFRosterRequest request= new SubmitNFRosterRequest(teams);
         _spiceManager.execute(request, listener);
     }
 

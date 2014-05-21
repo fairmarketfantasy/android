@@ -1,8 +1,7 @@
 package com.fantasysport.webaccess.requests;
 
 import android.net.Uri;
-import com.fantasysport.adapters.nonfantasy.NFGameWrapper;
-import com.fantasysport.models.NFGame;
+import com.fantasysport.models.nonfantasy.NFTeam;
 import com.google.api.client.http.ByteArrayContent;
 import com.google.api.client.http.GenericUrl;
 import com.google.api.client.http.HttpContent;
@@ -22,24 +21,21 @@ public class SubmitNFRosterRequest extends BaseRequest<String> {
 
     private RequestBody _body;
 
-    public SubmitNFRosterRequest(List<NFGameWrapper> gameWrappers) {
+    public SubmitNFRosterRequest(List<NFTeam> teams) {
         super(String.class);
-        initRequestBody(gameWrappers);
+        initRequestBody(teams);
     }
 
-    private void initRequestBody(List<NFGameWrapper> gameWrappers){
-        if(gameWrappers == null){
+    private void initRequestBody(List<NFTeam> teams){
+        if(teams == null){
             return;
         }
-        List<RosterTeam> teams = new ArrayList<RosterTeam>(gameWrappers.size());
-        for(NFGameWrapper gameWrapper : gameWrappers){
-            NFGame game = gameWrapper.getGame();
-           int teamStatsId = gameWrapper.getSelectedTeamType() == NFGameWrapper.SelectedTeamType.Home
-                   ? game.getHomeTeamStatsId()
-                   : game.getAwayTeamStatsId();
-            teams.add(new RosterTeam(game.getStatsId(), teamStatsId));
+        List<RosterTeam> rosterTeams = new ArrayList<RosterTeam>(teams.size());
+        for(int i = 0; i < teams.size(); i++){
+            NFTeam team = teams.get(i);
+            rosterTeams.add(new RosterTeam(team.getGameStatsId(), team.getStatsId(), i));
         }
-        _body = new RequestBody(teams);
+        _body = new RequestBody(rosterTeams);
     }
 
     @Override
@@ -77,9 +73,13 @@ public class SubmitNFRosterRequest extends BaseRequest<String> {
         @SerializedName("team_stats_id")
         private int _teamStatsId;
 
-        public RosterTeam(int gameStatsId, int teamStatsId){
+        @SerializedName("position_index")
+        private int _index;
+
+        public RosterTeam(int gameStatsId, int teamStatsId, int index){
             _gameStatsId = gameStatsId;
             _teamStatsId  = teamStatsId;
+            _index = index;
         }
     }
 

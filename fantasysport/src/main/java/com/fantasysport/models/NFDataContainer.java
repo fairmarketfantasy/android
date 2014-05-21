@@ -1,5 +1,6 @@
 package com.fantasysport.models;
 
+import com.fantasysport.models.nonfantasy.NFGame;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
@@ -21,5 +22,10 @@ public class NFDataContainer {
 
     public List<NFGame> getCandidateGames(){
         return _candidateGames;
+    }
+
+    public NFDataContainer(NFRoster roster, List<NFGame> games){
+        _candidateGames = games;
+        _roster = roster;
     }
 }

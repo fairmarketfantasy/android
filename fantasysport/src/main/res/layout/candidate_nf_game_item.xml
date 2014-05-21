@@ -12,16 +12,22 @@
         >
 
     <TableRow>
-        <ImageView android:layout_gravity="center" android:src="@drawable/plus"
-                android:id="@+id/add_home_img"
-                />
+        <FrameLayout android:layout_height="match_parent" android:layout_width="match_parent"
+                android:id="@+id/add_home_btn"
+                android:background="#F0F0F0">
+
+            <ImageView android:layout_gravity="center" android:src="@drawable/plus"
+                       android:id="@+id/add_home_img"
+                       android:layout_height="wrap_content" android:layout_width="wrap_content"
+                    />
+        </FrameLayout>
         <com.fantasysport.views.RoundedImageView android:id="@+id/home_team_img" android:layout_gravity="center"
                                                  android:layout_width="@dimen/avatar_side"
                                                  android:layout_height="@dimen/avatar_side"
                                                  android:scaleType="fitCenter"
                                                  android:adjustViewBounds="true"
                                                  android:src="@drawable/circle_2"
-                                                 />
+                />
         <LinearLayout android:layout_height="wrap_content" android:layout_width="wrap_content"
                       android:orientation="horizontal"
                       android:layout_gravity="center">
@@ -33,7 +39,7 @@
                     custom:fontFamily="prohibitionRound"
                     android:textSize="@dimen/x_medium_font"
                     android:textColor="@color/app_blue"/>
-            <View android:layout_width="2dp" android:layout_height="match_parent" android:background="@color/app_blue" />
+            <View android:layout_width="2dp" android:layout_height="match_parent" android:background="@color/app_blue"/>
             <com.fantasysport.views.ExButton
                     android:layout_width="38dp"
                     android:layout_height="@dimen/btn_height"
@@ -42,7 +48,7 @@
                     custom:fontFamily="prohibitionRound"
                     android:textSize="@dimen/x_medium_font"
                     android:textColor="@color/app_blue"
-                    android:src="@drawable/circle_2" />
+                    android:src="@drawable/circle_2"/>
         </LinearLayout>
         <com.fantasysport.views.RoundedImageView android:id="@+id/away_team_img" android:layout_gravity="center"
                                                  android:background="@android:color/transparent"
@@ -51,12 +57,17 @@
                                                  android:layout_width="@dimen/avatar_side"
                                                  android:layout_height="@dimen/avatar_side"
                 />
+        <FrameLayout android:layout_height="match_parent" android:layout_width="match_parent"
+                     android:id="@+id/add_away_btn"
+                     android:background="#F0F0F0">
         <ImageView android:layout_gravity="center" android:src="@drawable/plus"
+                   android:layout_height="wrap_content" android:layout_width="wrap_content"
                    android:id="@+id/add_away_img"/>
+        </FrameLayout>
     </TableRow>
 
     <TableRow>
-        <View />
+        <View/>
         <TextView android:layout_height="wrap_content" android:layout_width="wrap_content"
                   android:layout_gravity="center"
                   android:id="@+id/home_team_lbl"
@@ -75,7 +86,7 @@
                   android:id="@+id/away_team_lbl"
                   android:textSize="@dimen/low_font"
                 />
-        <View />
+        <View/>
     </TableRow>
 
 </TableLayout>

@@ -8,11 +8,11 @@ import android.widget.ListView;
 import com.fantasysport.R;
 import com.fantasysport.activities.MainActivity;
 import com.fantasysport.adapters.nonfantasy.NFCandidateGamesAdapter;
-import com.fantasysport.adapters.nonfantasy.NFGameWrapper;
 import com.fantasysport.fragments.BaseActivityFragment;
 import com.fantasysport.fragments.NFMediator;
 import com.fantasysport.fragments.main.NonFantasyFragment;
-import com.fantasysport.models.NFGame;
+import com.fantasysport.models.nonfantasy.NFGame;
+import com.fantasysport.models.nonfantasy.NFTeam;
 
 import java.util.List;
 
@@ -20,7 +20,8 @@ import java.util.List;
  * Created by bylynka on 5/16/14.
  */
 
-public class GameCandidatesFragment extends BaseActivityFragment implements NFCandidateGamesAdapter.IListener {
+public class GameCandidatesFragment extends BaseActivityFragment implements NFCandidateGamesAdapter.IListener,
+        NFMediator.ITeamRemovedListener {
 
     private NFCandidateGamesAdapter _adapter;
     private NFMediator _mediator;
@@ -35,6 +36,7 @@ public class GameCandidatesFragment extends BaseActivityFragment implements NFCa
     private void init(){
         NonFantasyFragment fragment = (NonFantasyFragment)((MainActivity) getActivity()).getRootFragment();
         _mediator = fragment.getMediator();
+        _mediator.addTeamRemovedListener(this);
         initAdapter();
     }
 
@@ -47,7 +49,26 @@ public class GameCandidatesFragment extends BaseActivityFragment implements NFCa
     }
 
     @Override
-    public void onSelectedGame(NFGameWrapper game) {
-        _mediator.selectGame(this, game);
+    public void onSelectedTeam(NFTeam team) {
+        _mediator.selectTeam(this, team);
+        _adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onRemovedTeam(Object sender, NFTeam team) {
+       List<NFGame> games = _adapter.getGames();
+        if(games == null){
+            return;
+        }
+        for (NFGame game : games){
+            if(game.getStatsId() == team.getGameStatsId()){
+                NFTeam gameTeam = game.getAwayTeam().getStatsId() == team.getStatsId()
+                        ? game.getAwayTeam()
+                        : game.getHomeTeam();
+                gameTeam.setIsSelected(false);
+                break;
+            }
+        }
+        _adapter.notifyDataSetChanged();
     }
 }

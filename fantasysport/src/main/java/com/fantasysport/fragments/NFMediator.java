@@ -1,6 +1,6 @@
 package com.fantasysport.fragments;
 
-import com.fantasysport.adapters.nonfantasy.NFGameWrapper;
+import com.fantasysport.models.nonfantasy.NFTeam;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,35 +10,50 @@ import java.util.List;
  */
 public class NFMediator {
 
-    private List<IGameSelectedListener> _gameSelectedListeners = new ArrayList<IGameSelectedListener>();
-    private List<IGameRosterUpdatedListener> _gameRosterUpdatedListeners = new ArrayList<IGameRosterUpdatedListener>();
+    private List<ITeamSelectedListener> _teamSelectedListeners = new ArrayList<ITeamSelectedListener>();
+    private List<ITeamRosterUpdatedListener> _teamRosterUpdatedListeners = new ArrayList<ITeamRosterUpdatedListener>();
+    private List<ITeamRemovedListener> _teamRemovedListeners = new ArrayList<ITeamRemovedListener>();
 
 
-    public void addGameRosterUpdatedListener(IGameRosterUpdatedListener listener){
-        _gameRosterUpdatedListeners.add(listener);
+    public void addTeamRemovedListener(ITeamRemovedListener listener){
+        _teamRemovedListeners.add(listener);
     }
 
-    public void addGameSelectedListener(IGameSelectedListener listener){
-        _gameSelectedListeners.add(listener);
+    public void addTeamRosterUpdatedListener(ITeamRosterUpdatedListener listener){
+        _teamRosterUpdatedListeners.add(listener);
     }
 
-    public void selectGame(Object sender, NFGameWrapper gameWrapper){
-        for (IGameSelectedListener listener : _gameSelectedListeners){
-            listener.onSelectedGame(sender, gameWrapper);
+    public void addTeamSelectedListener(ITeamSelectedListener listener){
+        _teamSelectedListeners.add(listener);
+    }
+
+    public void selectTeam(Object sender, NFTeam team){
+        for (ITeamSelectedListener listener : _teamSelectedListeners){
+            listener.onSelectedTeam(sender, team);
         }
     }
 
-    public void updateRoster(Object sender, List<NFGameWrapper> gameWrapper){
-        for (IGameRosterUpdatedListener listener : _gameRosterUpdatedListeners){
-            listener.onUpdateRoster(sender, gameWrapper);
+    public void removeTeamFromRoster(Object sender, NFTeam team){
+        for (ITeamRemovedListener listener : _teamRemovedListeners){
+            listener.onRemovedTeam(sender, team);
         }
     }
 
-    public interface IGameSelectedListener{
-        void onSelectedGame(Object sender, NFGameWrapper gameWrapper);
+    public void updateRoster(Object sender, List<NFTeam> teams){
+        for (ITeamRosterUpdatedListener listener : _teamRosterUpdatedListeners){
+            listener.onUpdateRoster(sender, teams);
+        }
     }
 
-    public interface IGameRosterUpdatedListener{
-        void onUpdateRoster(Object sender, List<NFGameWrapper> gameWrapper);
+    public interface ITeamSelectedListener {
+        void onSelectedTeam(Object sender, NFTeam team);
+    }
+
+    public interface ITeamRosterUpdatedListener {
+        void onUpdateRoster(Object sender, List<NFTeam> teams);
+    }
+
+    public interface ITeamRemovedListener {
+        void onRemovedTeam(Object sender, NFTeam team);
     }
 }
