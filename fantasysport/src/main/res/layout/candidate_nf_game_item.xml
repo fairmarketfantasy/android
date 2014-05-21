@@ -13,12 +13,15 @@
 
     <TableRow>
         <ImageView android:layout_gravity="center" android:src="@drawable/plus"
-                android:id="@+id/add_home_img"/>
+                android:id="@+id/add_home_img"
+                />
         <com.fantasysport.views.RoundedImageView android:id="@+id/home_team_img" android:layout_gravity="center"
                                                  android:layout_width="@dimen/avatar_side"
                                                  android:layout_height="@dimen/avatar_side"
                                                  android:scaleType="fitCenter"
-                                                 android:adjustViewBounds="true"/>
+                                                 android:adjustViewBounds="true"
+                                                 android:src="@drawable/circle_2"
+                                                 />
         <LinearLayout android:layout_height="wrap_content" android:layout_width="wrap_content"
                       android:orientation="horizontal"
                       android:layout_gravity="center">
@@ -38,7 +41,8 @@
                     android:background="@drawable/right_pt_button"
                     custom:fontFamily="prohibitionRound"
                     android:textSize="@dimen/x_medium_font"
-                    android:textColor="@color/app_blue"/>
+                    android:textColor="@color/app_blue"
+                    android:src="@drawable/circle_2" />
         </LinearLayout>
         <com.fantasysport.views.RoundedImageView android:id="@+id/away_team_img" android:layout_gravity="center"
                                                  android:background="@android:color/transparent"

@@ -106,6 +106,8 @@ public class NFRosterAdapter extends BaseAdapter {
         convertView.findViewById(R.id.game_name_lbl).setVisibility(View.INVISIBLE);
         convertView.findViewById(R.id.pt_btn).setVisibility(View.INVISIBLE);
         convertView.findViewById(R.id.dismiss_game_btn).setVisibility(View.INVISIBLE);
+        ImageView logo = (ImageView)convertView.findViewById(R.id.circle_img);
+        logo.setImageResource(R.drawable.circle_2);
         TextView lbl = (TextView)convertView.findViewById(R.id.middle_lbl);
         lbl.setText("Team Not Selected");
     }

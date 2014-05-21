@@ -16,6 +16,8 @@ import com.fantasysport.webaccess.requestListeners.RequestError;
 import com.fantasysport.webaccess.requestListeners.SubmitNFRosterResponseListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -82,7 +84,19 @@ public class GameRosterFragment extends BaseActivityFragment implements NFRoster
 
     @Override
     public void onDismiss(NFGameWrapper gameWrapper) {
-
+        if(_adapter == null){
+            return;
+        }
+        List<INFGame> games = _adapter.getGames();
+        for (int i = 0; i < games.size(); i++) {
+            if (games.get(i) == gameWrapper) {
+                games.set(i, new EmptyNFGame());
+                Collections.sort(games, _gameComparator);
+                _adapter.notifyDataSetChanged();
+                updateSubmitBtnState();
+                return;
+            }
+        }
     }
 
     @Override
@@ -134,6 +148,16 @@ public class GameRosterFragment extends BaseActivityFragment implements NFRoster
         @Override
         public void onClick(View v) {
             submitRoster(getGameWrappers());
+        }
+    };
+
+    Comparator _gameComparator = new Comparator<INFGame>() {
+        @Override
+        public int compare(INFGame lhs, INFGame rhs) {
+            if(lhs.getClass() == rhs.getClass()){
+                return 0;
+            }
+            return  lhs instanceof EmptyNFGame? 1: -1;
         }
     };
 }
