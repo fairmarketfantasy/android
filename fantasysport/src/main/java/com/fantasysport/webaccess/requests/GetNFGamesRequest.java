@@ -1,11 +1,9 @@
 package com.fantasysport.webaccess.requests;
 
 import android.net.Uri;
-import com.fantasysport.models.NFDataContainer;
-import com.fantasysport.models.UserData;
+import com.fantasysport.models.NFData;
 import com.fantasysport.models.nonfantasy.NFGame;
 import com.fantasysport.models.nonfantasy.NFTeam;
-import com.fantasysport.webaccess.responses.GeTNFGamesResponse;
 import com.fantasysport.webaccess.responses.GetGamesResponse;
 import com.google.api.client.http.GenericUrl;
 import com.google.api.client.http.HttpRequest;
@@ -17,17 +15,17 @@ import java.util.List;
 /**
  * Created by bylynka on 5/13/14.
  */
-public class GetNFGamesRequest extends BaseRequest<NFDataContainer> {
+public class GetNFGamesRequest extends BaseRequest<NFData> {
 
     public String _sport;
 
     public GetNFGamesRequest(String sport) {
-        super(NFDataContainer.class);
+        super(NFData.class);
         _sport = sport;
     }
 
     @Override
-    public NFDataContainer loadDataFromNetwork() throws Exception {
+    public NFData loadDataFromNetwork() throws Exception {
         Uri.Builder uriBuilder = Uri.parse(getUrl()).buildUpon();
         uriBuilder.appendPath("game_predictions")
                 .appendPath("day_games")
@@ -47,6 +45,8 @@ public class GetNFGamesRequest extends BaseRequest<NFDataContainer> {
                 games.add(new NFGame(home, away, rGame.getGameDate(), rGame.getStatsId()));
             }
         }
-        return new NFDataContainer(response.getRoster(), games);
+        NFData data = new NFData(response.getRoster(), games);
+        _rHelper.loadNFData(data);
+        return data;
     }
 }

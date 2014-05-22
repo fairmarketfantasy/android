@@ -28,10 +28,11 @@ import java.util.List;
  */
 public class GameRosterFragment extends BaseActivityFragment implements NFRosterAdapter.IListener, NFMediator.ITeamSelectedListener {
 
+    private final String SELECTED_TEAMS = "selected_teams";
+
     private NFRosterAdapter _adapter;
     private NFMediator _mediator;
     private Button _submitBtn;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -98,9 +99,34 @@ public class GameRosterFragment extends BaseActivityFragment implements NFRoster
                 Collections.sort(teams, _teamComparator);
                 _adapter.notifyDataSetChanged();
                 updateSubmitBtnState();
+                _mediator.removeTeamFromRoster(this, team);
                 return;
             }
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        List<INFTeam> teams = _adapter.getTeams();
+        if(teams == null){
+            return;
+        }
+        outState.putSerializable("SELECTED_TEAMS", new ArrayList<INFTeam>(teams));
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if(savedInstanceState == null){
+            return;
+        }
+        List<INFTeam> teams = (ArrayList<INFTeam>)savedInstanceState.getSerializable(SELECTED_TEAMS);
+        if(teams == null){
+            return;
+        }
+        _adapter.setTeams(teams);
+        _adapter.notifyDataSetChanged();
     }
 
     @Override

@@ -8,7 +8,7 @@ import android.widget.*;
 import com.facebook.widget.LoginButton;
 import com.fantasysport.Const;
 import com.fantasysport.R;
-import com.fantasysport.models.NFDataContainer;
+import com.fantasysport.models.NFData;
 import com.fantasysport.webaccess.RequestHelper;
 import com.fantasysport.webaccess.requestListeners.GetNFGamesResponseListener;
 import com.fantasysport.webaccess.requestListeners.RequestError;
@@ -89,7 +89,7 @@ public class SignInActivity extends AuthActivity {
             }
 
             @Override
-            public void onRequestSuccess(NFDataContainer response) {
+            public void onRequestSuccess(NFData response) {
                 dismissProgress();
                 _storage.setNFData(response);
                 finishAuth();

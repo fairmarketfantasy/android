@@ -116,6 +116,10 @@ public class NFCandidateGamesAdapter extends BaseAdapter {
         return _games;
     }
 
+    public void setGames(List<NFGame> games) {
+        this._games = games;
+    }
+
     public interface IListener {
         public void onSelectedTeam(NFTeam team);
     }

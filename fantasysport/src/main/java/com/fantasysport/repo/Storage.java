@@ -12,7 +12,7 @@ import java.util.List;
 public class Storage implements Serializable {
 
     private static Storage _instance;
-    private NFDataContainer _nfData;
+    private NFData _nfData;
 
     private Storage() {}
 
@@ -68,11 +68,11 @@ public class Storage implements Serializable {
         return _userData.getCurrentCategory().equalsIgnoreCase("fantasy_sports") ;
     }
 
-    public void setNFData(NFDataContainer nfData) {
+    public void setNFData(NFData nfData) {
         _nfData = nfData;
     }
 
-    public NFDataContainer getNFDataContainer(){
+    public NFData getNFDataContainer(){
         return _nfData;
     }
 }

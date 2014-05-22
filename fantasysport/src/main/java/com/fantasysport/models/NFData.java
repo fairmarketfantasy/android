@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Created by bylynka on 5/16/14.
  */
-public class NFDataContainer {
+public class NFData {
 
     @SerializedName("game_roster")
     private NFRoster _roster;
@@ -24,8 +24,9 @@ public class NFDataContainer {
         return _candidateGames;
     }
 
-    public NFDataContainer(NFRoster roster, List<NFGame> games){
+    public NFData(NFRoster roster, List<NFGame> games){
         _candidateGames = games;
         _roster = roster;
     }
+
 }

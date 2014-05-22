@@ -14,6 +14,7 @@ import com.fantasysport.fragments.main.NonFantasyFragment;
 import com.fantasysport.models.nonfantasy.NFGame;
 import com.fantasysport.models.nonfantasy.NFTeam;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,6 +23,8 @@ import java.util.List;
 
 public class GameCandidatesFragment extends BaseActivityFragment implements NFCandidateGamesAdapter.IListener,
         NFMediator.ITeamRemovedListener {
+
+    private final String SAVED_GAMES = "saved_games";
 
     private NFCandidateGamesAdapter _adapter;
     private NFMediator _mediator;
@@ -51,6 +54,27 @@ public class GameCandidatesFragment extends BaseActivityFragment implements NFCa
     @Override
     public void onSelectedTeam(NFTeam team) {
         _mediator.selectTeam(this, team);
+        _adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+       List<NFGame> games = _adapter.getGames();
+       outState.putSerializable(SAVED_GAMES, new ArrayList<NFGame>(games));
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if(savedInstanceState == null){
+            return;
+        }
+        List<NFGame> games =  (ArrayList<NFGame>)savedInstanceState.getSerializable(SAVED_GAMES);
+        if(games == null){
+            return;
+        }
+        _adapter.setGames(games);
         _adapter.notifyDataSetChanged();
     }
 

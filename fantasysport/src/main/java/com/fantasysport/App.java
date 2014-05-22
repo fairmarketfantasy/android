@@ -1,10 +1,8 @@
 package com.fantasysport;
 
 import android.app.Application;
-import com.fantasysport.models.AccessTokenData;
-import com.fantasysport.models.DefaultRosterData;
-import com.fantasysport.models.MarketsContainer;
-import com.fantasysport.models.UserData;
+import android.provider.ContactsContract;
+import com.fantasysport.models.*;
 import com.fantasysport.repo.Storage;
 import com.fantasysport.utility.CacheProvider;
 import com.fantasysport.webaccess.RequestHelper;
@@ -20,6 +18,7 @@ public class App extends Application {
     private final String MARKETS = "markets";
     private final String DEFAULT_ROSTER_DATA = "default_roster_data";
     private final String USER_DATA = "user_data";
+    private final String NON_FANTASY_DATA = "non_fantasy_data";
 
     public static App getCurrent(){
         return _current;
@@ -67,6 +66,12 @@ public class App extends Application {
             MarketsContainer marketsData  = gson.fromJson(dataInStr, MarketsContainer.class);
             storage.setMarketsContainer(marketsData);
         }
+
+        dataInStr = CacheProvider.getString(this, NON_FANTASY_DATA);
+        if(dataInStr != null){
+            NFData nfData = gson.fromJson(dataInStr, NFData.class);
+            storage.setNFData(nfData);
+        }
     }
 
     RequestHelper.IListener _requestHelperListener = new RequestHelper.IListener() {
@@ -109,6 +114,12 @@ public class App extends Application {
         public void onUserData(UserData data) {
             String dataStr = data != null? new Gson().toJson(data): null;
             CacheProvider.putString(App.this, USER_DATA, dataStr);
+        }
+
+        @Override
+        public void onNonFantasyData(NFData data) {
+            String dataStr = data != null? new Gson().toJson(data): null;
+            CacheProvider.putString(App.this, NON_FANTASY_DATA, dataStr);
         }
     };
 

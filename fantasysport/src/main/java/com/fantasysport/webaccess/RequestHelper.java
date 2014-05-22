@@ -3,7 +3,7 @@ package com.fantasysport.webaccess;
 import com.fantasysport.models.*;
 import com.fantasysport.utility.DateUtils;
 
-import java.util.List;
+import java.util.Date;
 
 /**
  * Created by bylynka on 3/10/14.
@@ -81,6 +81,13 @@ public class RequestHelper {
         _listener.onUserData(data);
     }
 
+    private  void raiseOnNFData(NFData data){
+        if(_listener == null){
+            return;
+        }
+        _listener.onNonFantasyData(data);
+    }
+
     public void loadDefaultRosterData(DefaultRosterData data){
         raiseOnDefaultRosterData(data);
     }
@@ -93,6 +100,10 @@ public class RequestHelper {
         raiseOnUserData(data);
     }
 
+    public void loadNFData(NFData data){
+
+    }
+
     public void signOut(){
         raiseOnSignOut();
     }
@@ -103,5 +114,6 @@ public class RequestHelper {
         public void onMarkets(MarketsContainer container);
         public void onDefaultRosterData(DefaultRosterData data);
         public void onUserData(UserData data);
+        public void onNonFantasyData(NFData data);
     }
 }
