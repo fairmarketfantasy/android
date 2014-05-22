@@ -68,17 +68,17 @@ public class SubmitNFRosterRequest extends BaseRequest<String> {
     public class RosterTeam{
 
         @SerializedName("game_stats_id")
-        private int _gameStatsId;
+        private String _gameStatsId;
 
         @SerializedName("team_stats_id")
-        private int _teamStatsId;
+        private String _teamStatsId;
 
         @SerializedName("position_index")
         private int _index;
 
         public RosterTeam(int gameStatsId, int teamStatsId, int index){
-            _gameStatsId = gameStatsId;
-            _teamStatsId  = teamStatsId;
+            _gameStatsId = Integer.toString(gameStatsId);
+            _teamStatsId  = Integer.toString(teamStatsId);
             _index = index;
         }
     }

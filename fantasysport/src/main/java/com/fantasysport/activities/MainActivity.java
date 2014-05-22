@@ -27,6 +27,9 @@ import com.fantasysport.fragments.main.MainActivityFragmentProvider;
 import com.fantasysport.models.Category;
 import com.fantasysport.models.Sport;
 import com.fantasysport.models.UserData;
+import com.fantasysport.utility.DateUtils;
+import com.fantasysport.webaccess.requestListeners.RequestError;
+import com.fantasysport.webaccess.requestListeners.UserResponseListener;
 
 
 /**
@@ -240,6 +243,27 @@ public class MainActivity extends BaseActivity implements BaseFantasyFragment.IP
         _refreshMenuItem.setVisible(true);
     }
 
+    protected void updateUserData() {
+        int userId = _storage.getUserData().getId();
+        showProgress();
+        getWebProxy().getUserData(userId, new UserResponseListener() {
+            @Override
+            public void onRequestError(RequestError message) {
+                dismissProgress();
+                showAlert(getString(R.string.error), message.getMessage());
+            }
+
+            @Override
+            public void onRequestSuccess(UserData data) {
+                dismissProgress();
+                _storage.setUserData(data);
+                if (_menuHeaderFragment != null) {
+                    _menuHeaderFragment.updateView();
+                }
+            }
+        });
+    }
+
     @Override
     public boolean onOptionsItemSelected(android.view.MenuItem item) {
         if (_drawerToggle.onOptionsItemSelected(item)) {
@@ -247,7 +271,8 @@ public class MainActivity extends BaseActivity implements BaseFantasyFragment.IP
         }
         switch (item.getItemId()) {
             case R.id.refresh:
-                ((FantasyFragment)_rootFragment).updateMainData(false);
+                _rootFragment.updateMainData();
+                updateUserData();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -268,6 +293,18 @@ public class MainActivity extends BaseActivity implements BaseFantasyFragment.IP
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Const.SETTINGS_ACTIVITY && _menuHeaderFragment != null) {
             _menuHeaderFragment.updateView();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        long nowTime = DateUtils.getCurrentDate().getTime();
+        long gamesTime = _storage.getUserData().getUpdatedAt();
+        long deltaTime = nowTime - gamesTime;
+        long deltaTimeInMin = deltaTime / 60000;
+        if (deltaTimeInMin > 35){
+            updateUserData();
         }
     }
 }

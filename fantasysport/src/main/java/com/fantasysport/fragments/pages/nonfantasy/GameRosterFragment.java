@@ -14,6 +14,7 @@ import com.fantasysport.fragments.NFMediator;
 import com.fantasysport.fragments.main.NonFantasyFragment;
 import com.fantasysport.models.nonfantasy.EmptyNFTeam;
 import com.fantasysport.models.nonfantasy.INFTeam;
+import com.fantasysport.models.nonfantasy.NFGame;
 import com.fantasysport.models.nonfantasy.NFTeam;
 import com.fantasysport.webaccess.requestListeners.RequestError;
 import com.fantasysport.webaccess.requestListeners.SubmitNFRosterResponseListener;
@@ -26,7 +27,8 @@ import java.util.List;
 /**
  * Created by bylynka on 5/16/14.
  */
-public class GameRosterFragment extends BaseActivityFragment implements NFRosterAdapter.IListener, NFMediator.ITeamSelectedListener {
+public class GameRosterFragment extends BaseActivityFragment implements NFRosterAdapter.IListener,
+        NFMediator.ITeamSelectedListener, NFMediator.IGamesUpdatedListener {
 
     private final String SELECTED_TEAMS = "selected_teams";
 
@@ -45,6 +47,7 @@ public class GameRosterFragment extends BaseActivityFragment implements NFRoster
         NonFantasyFragment fragment = (NonFantasyFragment) ((MainActivity) getActivity()).getRootFragment();
         _mediator = fragment.getMediator();
         _mediator.addTeamSelectedListener(this);
+        _mediator.addGamesUpdatedListener(this);
         _submitBtn = getViewById(R.id.submit_btn);
         _submitBtn.setOnClickListener(_submitBtnOnClickListener);
         initAdapter();
@@ -190,4 +193,10 @@ public class GameRosterFragment extends BaseActivityFragment implements NFRoster
             return  lhs instanceof EmptyNFTeam ? 1: -1;
         }
     };
+
+    @Override
+    public void onGamesUpdated(Object sender, List<NFGame> games) {
+        setEmptyRoster();
+        _adapter.setGames(games);
+    }
 }

@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.fantasysport.R;
 import com.fantasysport.fragments.main.FantasyFragment;
-import com.fantasysport.fragments.pages.fantasy.BasePlayersFragment;
 import com.fantasysport.models.Market;
 import com.fantasysport.models.Position;
 import com.fantasysport.models.Roster;

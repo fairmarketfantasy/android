@@ -35,28 +35,6 @@ public class FantasyFragment extends BaseFantasyFragment
         }
     }
 
-    protected void updateUserData() {
-        int userId = getStorage().getUserData().getId();
-        showProgress();
-        getWebProxy().getUserData(userId, new UserResponseListener() {
-            @Override
-            public void onRequestError(RequestError message) {
-                dismissProgress();
-                showAlert(getString(R.string.error), message.getMessage());
-            }
-
-            @Override
-            public void onRequestSuccess(UserData data) {
-                dismissProgress();
-                getStorage().setUserData(data);
-                MenuHeaderFragment menuHeaderFragment = ((MainActivity)getActivity()).getMenuHeaderFragment();
-                if (menuHeaderFragment != null) {
-                    menuHeaderFragment.updateView();
-                }
-            }
-        });
-    }
-
     @Override
     public void onResume() {
         super.onResume();
@@ -127,9 +105,13 @@ public class FantasyFragment extends BaseFantasyFragment
         });
     }
 
-    public void updateMainData(boolean isTimeChanged) {
-        updateUserData();
+    private void updateMainData(boolean isTimeChanged) {
         updateMarkets(isTimeChanged);
+    }
+
+    @Override
+    public void updateMainData() {
+        updateMainData(false);
     }
 
     public interface IOnMarketsListener {

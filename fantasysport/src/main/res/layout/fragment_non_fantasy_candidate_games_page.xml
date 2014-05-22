@@ -44,8 +44,12 @@
     <View android:layout_width="match_parent"
           android:layout_height="1dip"
           android:background="#CCCCCC"/>
-    <ListView android:layout_width="match_parent" android:layout_height="match_parent"
-              android:layout_weight="1" android:id="@+id/game_list"
-            android:background="#F0F0F0"/>
+
+    <uk.co.senab.actionbarpulltorefresh.extras.actionbarcompat.PullToRefreshLayout android:layout_width="match_parent" android:layout_height="match_parent"
+                                                  android:layout_weight="1" android:id="@+id/refresh_games_layout">
+        <ListView android:layout_width="match_parent" android:layout_height="match_parent"
+                  android:id="@+id/game_list"
+                  android:background="#F0F0F0"/>
+    </uk.co.senab.actionbarpulltorefresh.extras.actionbarcompat.PullToRefreshLayout>
 
 </LinearLayout>

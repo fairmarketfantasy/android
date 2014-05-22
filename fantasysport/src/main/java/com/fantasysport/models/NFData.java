@@ -10,6 +10,9 @@ import java.util.List;
  */
 public class NFData {
 
+    @SerializedName("updated_at")
+    private long _updatedAt;
+
     @SerializedName("game_roster")
     private NFRoster _roster;
 
@@ -29,4 +32,11 @@ public class NFData {
         _roster = roster;
     }
 
+    public void setUpdatedAt(long updatedAt){
+        _updatedAt = updatedAt;
+    }
+
+    public long getUpdatedAt(){
+        return _updatedAt;
+    }
 }

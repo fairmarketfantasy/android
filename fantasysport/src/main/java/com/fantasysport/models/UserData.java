@@ -12,6 +12,9 @@ import java.util.List;
  */
 public class UserData {
 
+    @SerializedName("updated_at")
+    private long _updatedAt;
+
     @SerializedName("id")
     private int _id;
 
@@ -158,6 +161,14 @@ public class UserData {
 
     public double getMonthlyAward() {
         return _customerObject.getMonthlyAward();
+    }
+
+    public void setUpdatedAt(long updatedAt){
+        _updatedAt = updatedAt;
+    }
+
+    public long getUpdatedAt(){
+        return _updatedAt;
     }
 }
 

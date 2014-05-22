@@ -36,7 +36,7 @@ dependencies {
     compile 'com.google.code.gson:gson:2.2.4'
     compile 'com.octo.android.robospice:robospice-google-http-client:1.+'
     compile 'com.google.http-client:google-http-client-gson:1.17.0-rc'
-    compile 'com.android.support:support-v4:18.0.0'
+    compile 'com.android.support:support-v4:19.+'
     compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
     compile 'com.nineoldandroids:library:2.4.0'
 //    compile files('libs/ubertesters.sdk.android.jar')

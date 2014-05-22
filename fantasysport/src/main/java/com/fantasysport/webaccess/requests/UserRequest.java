@@ -2,6 +2,7 @@ package com.fantasysport.webaccess.requests;
 
 import android.net.Uri;
 import com.fantasysport.models.UserData;
+import com.fantasysport.utility.DateUtils;
 import com.google.api.client.http.GenericUrl;
 import com.google.api.client.http.HttpRequest;
 import com.google.gson.Gson;
@@ -30,6 +31,7 @@ public class UserRequest extends BaseRequest<UserData> {
         request.getHeaders().setAccept("application/json");
         String result = request.execute().parseAsString();
         UserData data = new Gson().fromJson(result, UserData.class);
+        data.setUpdatedAt(DateUtils.getCurrentDate().getTime());
         _rHelper.loadUserData(data);
         return data;
     }

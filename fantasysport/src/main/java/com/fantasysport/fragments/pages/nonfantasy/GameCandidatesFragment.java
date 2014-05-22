@@ -13,21 +13,24 @@ import com.fantasysport.fragments.NFMediator;
 import com.fantasysport.fragments.main.NonFantasyFragment;
 import com.fantasysport.models.nonfantasy.NFGame;
 import com.fantasysport.models.nonfantasy.NFTeam;
+import uk.co.senab.actionbarpulltorefresh.extras.actionbarcompat.PullToRefreshLayout;
+import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
+import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 
 import java.util.ArrayList;
 import java.util.List;
-
 /**
  * Created by bylynka on 5/16/14.
  */
 
 public class GameCandidatesFragment extends BaseActivityFragment implements NFCandidateGamesAdapter.IListener,
-        NFMediator.ITeamRemovedListener {
+        NFMediator.ITeamRemovedListener, OnRefreshListener, NFMediator.IGamesUpdatedListener {
 
     private final String SAVED_GAMES = "saved_games";
 
     private NFCandidateGamesAdapter _adapter;
     private NFMediator _mediator;
+    private PullToRefreshLayout _swipeRefreshLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -40,6 +43,12 @@ public class GameCandidatesFragment extends BaseActivityFragment implements NFCa
         NonFantasyFragment fragment = (NonFantasyFragment)((MainActivity) getActivity()).getRootFragment();
         _mediator = fragment.getMediator();
         _mediator.addTeamRemovedListener(this);
+        _mediator.addGamesUpdatedListener(this);
+        _swipeRefreshLayout = getViewById(R.id.refresh_games_layout);
+        ActionBarPullToRefresh.from(getActivity())
+                .allChildrenArePullable()
+                .listener(this)
+                .setup(_swipeRefreshLayout);
         initAdapter();
     }
 
@@ -94,5 +103,19 @@ public class GameCandidatesFragment extends BaseActivityFragment implements NFCa
             }
         }
         _adapter.notifyDataSetChanged();
+    }
+
+
+    @Override
+    public void onRefreshStarted(View view) {
+        _swipeRefreshLayout.setRefreshing(true);
+        _mediator.updateGamesRequest(this);
+    }
+
+    @Override
+    public void onGamesUpdated(Object sender, List<NFGame> games) {
+        _adapter.setGames(games);
+        _adapter.notifyDataSetChanged();
+        _swipeRefreshLayout.setRefreshing(false);
     }
 }

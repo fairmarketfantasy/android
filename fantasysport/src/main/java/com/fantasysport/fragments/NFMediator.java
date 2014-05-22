@@ -1,5 +1,6 @@
 package com.fantasysport.fragments;
 
+import com.fantasysport.models.nonfantasy.NFGame;
 import com.fantasysport.models.nonfantasy.NFTeam;
 
 import java.util.ArrayList;
@@ -13,7 +14,16 @@ public class NFMediator {
     private List<ITeamSelectedListener> _teamSelectedListeners = new ArrayList<ITeamSelectedListener>();
     private List<ITeamRosterUpdatedListener> _teamRosterUpdatedListeners = new ArrayList<ITeamRosterUpdatedListener>();
     private List<ITeamRemovedListener> _teamRemovedListeners = new ArrayList<ITeamRemovedListener>();
+    private List<IUpdateGamesRequestListener> _updateGamesRequestListeners = new ArrayList<IUpdateGamesRequestListener>();
+    private List<IGamesUpdatedListener> _gamesUpdatedListeners = new ArrayList<IGamesUpdatedListener>();
 
+    public void addGamesUpdatedListener(IGamesUpdatedListener listener){
+        _gamesUpdatedListeners.add(listener);
+    }
+
+    public void addUpdateGamesRequestListener(IUpdateGamesRequestListener listener){
+        _updateGamesRequestListeners.add(listener);
+    }
 
     public void addTeamRemovedListener(ITeamRemovedListener listener){
         _teamRemovedListeners.add(listener);
@@ -45,6 +55,18 @@ public class NFMediator {
         }
     }
 
+    public void updateGamesRequest(Object sender){
+        for(IUpdateGamesRequestListener listener : _updateGamesRequestListeners){
+            listener.onUpdatesGameRequest(sender);
+        }
+    }
+
+    public void gamesUpdated(Object sender, List<NFGame> games){
+        for(IGamesUpdatedListener listener : _gamesUpdatedListeners){
+            listener.onGamesUpdated(sender, games);
+        }
+    }
+
     public interface ITeamSelectedListener {
         void onSelectedTeam(Object sender, NFTeam team);
     }
@@ -55,5 +77,13 @@ public class NFMediator {
 
     public interface ITeamRemovedListener {
         void onRemovedTeam(Object sender, NFTeam team);
+    }
+
+    public interface IUpdateGamesRequestListener{
+        void onUpdatesGameRequest(Object sender);
+    }
+
+    public interface IGamesUpdatedListener{
+        void onGamesUpdated(Object sender, List<NFGame> games);
     }
 }

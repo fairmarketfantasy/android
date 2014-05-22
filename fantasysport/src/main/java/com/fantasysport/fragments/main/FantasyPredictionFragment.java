@@ -65,4 +65,8 @@ public class FantasyPredictionFragment extends BaseFantasyFragment {
         super.onSaveInstanceState(outState);
         outState.putSerializable(Const.PREDICTION, _predictionRoster);
     }
+
+    @Override
+    public void updateMainData() {
+    }
 }

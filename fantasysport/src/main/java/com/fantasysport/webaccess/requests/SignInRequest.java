@@ -3,6 +3,7 @@ package com.fantasysport.webaccess.requests;
 import android.net.Uri;
 import com.fantasysport.models.AccessTokenData;
 import com.fantasysport.models.UserData;
+import com.fantasysport.utility.DateUtils;
 import com.fantasysport.webaccess.responses.AuthResponse;
 import com.google.api.client.http.GenericUrl;
 import com.google.api.client.http.HttpRequest;
@@ -24,6 +25,7 @@ public class SignInRequest extends BaseRequest<AuthResponse> {
         AccessTokenRequestBody body = new AccessTokenRequestBody(_email, _password);
         AccessTokenData accessTokenData = getAccessTokenData(body);
         UserData userData = getUserData(accessTokenData.getAccessToken());
+        userData.setUpdatedAt(DateUtils.getCurrentDate().getTime());
         _rHelper.loadUserData(userData);
         AuthResponse response = new AuthResponse(userData, accessTokenData);
         return response;

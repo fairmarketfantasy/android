@@ -4,6 +4,7 @@ import android.net.Uri;
 import com.fantasysport.models.NFData;
 import com.fantasysport.models.nonfantasy.NFGame;
 import com.fantasysport.models.nonfantasy.NFTeam;
+import com.fantasysport.utility.DateUtils;
 import com.fantasysport.webaccess.responses.GetGamesResponse;
 import com.google.api.client.http.GenericUrl;
 import com.google.api.client.http.HttpRequest;
@@ -46,6 +47,7 @@ public class GetNFGamesRequest extends BaseRequest<NFData> {
             }
         }
         NFData data = new NFData(response.getRoster(), games);
+        data.setUpdatedAt(DateUtils.getCurrentDate().getTime());
         _rHelper.loadNFData(data);
         return data;
     }

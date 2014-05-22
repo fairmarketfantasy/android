@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * Created by bylynka on 5/13/14.
  */
-public class BaseFantasyFragment extends BaseFragment{
+public abstract class BaseFantasyFragment extends BaseFragment{
 
     protected FantasyPagerAdapter _mainActivityPagerAdapter;
     protected Market _market;
