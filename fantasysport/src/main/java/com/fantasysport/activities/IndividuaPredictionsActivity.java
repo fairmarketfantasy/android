@@ -8,7 +8,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import com.fantasysport.Const;
 import com.fantasysport.R;
-import com.fantasysport.adapters.StatsAdapter;
+import com.fantasysport.adapters.fantasy.StatsAdapter;
 import com.fantasysport.models.FGame;
 import com.fantasysport.models.Player;
 import com.fantasysport.models.StatsItem;

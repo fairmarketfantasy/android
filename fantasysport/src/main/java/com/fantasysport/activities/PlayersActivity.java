@@ -7,7 +7,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import com.fantasysport.Const;
 import com.fantasysport.R;
-import com.fantasysport.adapters.CandidatePlayersAdapter;
+import com.fantasysport.adapters.fantasy.CandidatePlayersAdapter;
 import com.fantasysport.models.Player;
 import com.fantasysport.models.Roster;
 import com.fantasysport.views.Switcher;

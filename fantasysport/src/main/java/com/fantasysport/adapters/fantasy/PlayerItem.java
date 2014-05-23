@@ -1,4 +1,4 @@
-package com.fantasysport.adapters;
+package com.fantasysport.adapters.fantasy;
 
 import com.fantasysport.models.IPlayer;
 

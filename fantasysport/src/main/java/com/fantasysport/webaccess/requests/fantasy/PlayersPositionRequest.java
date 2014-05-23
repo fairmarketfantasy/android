@@ -1,7 +1,8 @@
-package com.fantasysport.webaccess.requests;
+package com.fantasysport.webaccess.requests.fantasy;
 
 import android.net.Uri;
 import com.fantasysport.models.DefaultRosterData;
+import com.fantasysport.webaccess.requests.BaseRequest;
 import com.google.api.client.http.GenericUrl;
 import com.google.api.client.http.HttpRequest;
 import com.google.gson.Gson;

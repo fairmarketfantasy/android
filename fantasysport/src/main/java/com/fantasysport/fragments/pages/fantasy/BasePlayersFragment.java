@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.fantasysport.Const;
 import com.fantasysport.R;
 import com.fantasysport.activities.IndividuaPredictionsActivity;
-import com.fantasysport.adapters.CandidatePlayersAdapter;
+import com.fantasysport.adapters.fantasy.CandidatePlayersAdapter;
 import com.fantasysport.models.Market;
 import com.fantasysport.models.Player;
 import com.fantasysport.models.Position;

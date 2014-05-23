@@ -1,8 +1,9 @@
-package com.fantasysport.webaccess.requests;
+package com.fantasysport.webaccess.requests.fantasy;
 
 import android.net.Uri;
 import com.fantasysport.models.Prediction;
 import com.fantasysport.parsers.PredictionParser;
+import com.fantasysport.webaccess.requests.BaseRequest;
 import com.google.api.client.http.GenericUrl;
 import com.google.api.client.http.HttpRequest;
 

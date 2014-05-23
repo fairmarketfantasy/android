@@ -4,11 +4,12 @@ import android.graphics.Bitmap;
 import com.fantasysport.models.Player;
 import com.fantasysport.models.StatsItem;
 import com.fantasysport.models.User;
-import com.fantasysport.models.nonfantasy.NFAutoFillData;
 import com.fantasysport.models.nonfantasy.NFTeam;
 import com.fantasysport.utility.OutParameter;
 import com.fantasysport.webaccess.requestListeners.*;
 import com.fantasysport.webaccess.requests.*;
+import com.fantasysport.webaccess.requests.fantasy.*;
+import com.fantasysport.webaccess.requests.nonfantasy.DoNFPredictionRequest;
 import com.fantasysport.webaccess.requests.nonfantasy.GetNFGamesRequest;
 import com.fantasysport.webaccess.requests.nonfantasy.NFAutoFillRequest;
 import com.fantasysport.webaccess.requests.nonfantasy.SubmitNFRosterRequest;
@@ -187,6 +188,11 @@ public final class WebProxy {
 
     public void submitNFRoster(List<NFTeam> teams, SubmitNFRosterResponseListener listener){
         SubmitNFRosterRequest request= new SubmitNFRosterRequest(teams);
+        _spiceManager.execute(request, listener);
+    }
+
+    public void doNFIndividualPrediction(NFTeam team, StringResponseListener listener){
+        DoNFPredictionRequest request= new DoNFPredictionRequest(team.getGameStatsId(), team.getStatsId());
         _spiceManager.execute(request, listener);
     }
 

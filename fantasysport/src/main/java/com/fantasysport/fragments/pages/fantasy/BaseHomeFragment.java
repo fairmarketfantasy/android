@@ -9,7 +9,7 @@ import android.widget.ListView;
 import com.fantasysport.Const;
 import com.fantasysport.R;
 import com.fantasysport.activities.IndividuaPredictionsActivity;
-import com.fantasysport.adapters.PlayerItem;
+import com.fantasysport.adapters.fantasy.PlayerItem;
 import com.fantasysport.adapters.RosterPlayersAdapter;
 import com.fantasysport.models.*;
 import com.fantasysport.utility.OutParameter;
@@ -18,7 +18,7 @@ import com.fantasysport.webaccess.requestListeners.AutoFillResponseListener;
 import com.fantasysport.webaccess.requestListeners.RequestError;
 import com.fantasysport.webaccess.requestListeners.RosterResponseListener;
 import com.fantasysport.webaccess.requestListeners.TradePlayerResponseListener;
-import com.fantasysport.webaccess.requests.AutoFillRequest;
+import com.fantasysport.webaccess.requests.fantasy.AutoFillRequest;
 import com.fantasysport.webaccess.responses.AutoFillResponse;
 import com.fantasysport.webaccess.responses.TradePlayerResponse;
 

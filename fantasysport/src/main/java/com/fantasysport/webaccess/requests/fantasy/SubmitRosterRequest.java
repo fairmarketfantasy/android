@@ -1,12 +1,11 @@
-package com.fantasysport.webaccess.requests;
+package com.fantasysport.webaccess.requests.fantasy;
 
 import android.net.Uri;
-import com.fantasysport.models.Roster;
+import com.fantasysport.webaccess.requests.BaseRequest;
+import com.fantasysport.webaccess.requests.fantasy.SubmitRequestBody;
 import com.fantasysport.webaccess.responses.SubmitRosterResponse;
 import com.google.api.client.http.*;
 import com.google.gson.Gson;
-
-import java.util.List;
 
 /**
  * Created by bylynka on 3/4/14.

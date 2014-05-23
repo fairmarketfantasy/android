@@ -1,8 +1,9 @@
-package com.fantasysport.webaccess.requests;
+package com.fantasysport.webaccess.requests.fantasy;
 
 import android.net.Uri;
 import com.fantasysport.models.IndividualPrediction;
 import com.fantasysport.parsers.IndividualPredictionParser;
+import com.fantasysport.webaccess.requests.BaseRequest;
 import com.google.api.client.http.GenericUrl;
 import com.google.api.client.http.HttpRequest;
 
@@ -11,7 +12,7 @@ import java.util.List;
 /**
  * Created by bylynka on 3/19/14.
  */
-public class IndividualPredictionRequest extends BaseRequest<List>  {
+public class IndividualPredictionRequest extends BaseRequest<List> {
 
     private int _page = 0;
     private String _sport;

@@ -44,12 +44,16 @@ public class NFAutoFillRequest extends BaseRequest<NFAutoFillData> {
         List<Game> candidateGames = response.getGames();
         List<RosterTeamData> rosterGameDataList= response.getRosterGamesData();
         if (candidateGames != null) {
-            for (Game rGame : candidateGames) {
-                NFTeam home = new NFTeam(rGame.getHomeTeamName(), rGame.getHomeTeamPt(), rGame.getHomeTeamStatsId(), rGame.getHomeTeamLogo(), rGame.getStatsId());
-                NFTeam away = new NFTeam(rGame.getAwayTeamName(), rGame.getAwayTeamPt(), rGame.getAwayTeamStatsId(), rGame.getAwayTeamLogo(), rGame.getStatsId());
-                games.add(new NFGame(home, away, rGame.getGameDate(), rGame.getStatsId()));
+            for (Game g : candidateGames) {
+                NFTeam home = new NFTeam(g.getHomeTeamName(), g.getHomeTeamPt(), g.getHomeTeamStatsId(), g.getHomeTeamLogo(), g.getStatsId());
+                home.setIsPredicted(g.isHomePredicted());
+                home.setIsSelected(g.isHomeSelected());
+                NFTeam away = new NFTeam(g.getAwayTeamName(), g.getAwayTeamPt(), g.getAwayTeamStatsId(), g.getAwayTeamLogo(), g.getStatsId());
+                away.setIsPredicted(g.isAwayTeamPredicted());
+                away.setIsSelected(g.isAwaySelected());
+                games.add(new NFGame(home, away, g.getGameDate(), g.getStatsId()));
                 for (RosterTeamData rgd : rosterGameDataList){
-                    if(rgd.getGameStatsId() == rGame.getStatsId()){
+                    if(rgd.getGameStatsId() == g.getStatsId()){
                         rosterTeams.add(home.getStatsId()== rgd.getTeamStatsId()? home: away);
                     }
                 }

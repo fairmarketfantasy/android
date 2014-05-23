@@ -83,8 +83,9 @@ public class NFCandidateGamesAdapter extends BaseAdapter {
         holder.homeTeamTxt.setText(homeTeam.getName());
         holder.awayTeamTxt.setText(awayTeam.getName());
         holder.gameTimeTxt.setText(_sdf.format(game.getDate()));
-        holder.homePt.setText(String.format("PT%d", homeTeam.getPT()));
-        holder.awayPt.setText(String.format("PT%d", awayTeam.getPT()));
+        setPredictionButton(holder.homePt, homeTeam);
+        setPredictionButton(holder.awayPt, awayTeam);
+
 
         if (homeTeam.isSelected() && !awayTeam.isSelected()) {
             setPluses(holder, R.drawable.plus_disable, R.drawable.plus, null, new SelectTeamListener(awayTeam));
@@ -96,6 +97,15 @@ public class NFCandidateGamesAdapter extends BaseAdapter {
             setPluses(holder, R.drawable.plus_disable, R.drawable.plus_disable, null, null);
         }
         return convertView;
+    }
+
+    private void setPredictionButton(Button btn, NFTeam team){
+        btn.setEnabled(!team.isPredicted());
+        btn.setText(String.format("PT%d", team.getPT()));
+        if(team.isPredicted()){
+            return;
+        }
+        btn.setOnClickListener(new PredictTeamListener(team));
     }
 
     private void setPluses(Holder holder,int homeResId, int awayResId, SelectTeamListener addHomeListener, SelectTeamListener addAwayListener){
@@ -112,6 +122,13 @@ public class NFCandidateGamesAdapter extends BaseAdapter {
         _listener.onSelectedTeam(team);
     }
 
+    private void raiseOnPredictedTeam(NFTeam team) {
+        if (_listener == null) {
+            return;
+        }
+        _listener.onPredictedTeam(team);
+    }
+
     public List<NFGame> getGames() {
         return _games;
     }
@@ -122,6 +139,7 @@ public class NFCandidateGamesAdapter extends BaseAdapter {
 
     public interface IListener {
         public void onSelectedTeam(NFTeam team);
+        public void onPredictedTeam(NFTeam team);
     }
 
     public class Holder {
@@ -151,6 +169,20 @@ public class NFCandidateGamesAdapter extends BaseAdapter {
         public void onClick(View v) {
             _team.setIsSelected(true);
             raiseOnSelectedTeam(_team);
+        }
+    }
+
+    class PredictTeamListener implements View.OnClickListener{
+
+        private NFTeam _team;
+
+        public PredictTeamListener(NFTeam team) {
+            _team = team;
+        }
+
+        @Override
+        public void onClick(View v) {
+            raiseOnPredictedTeam(_team);
         }
     }
 }

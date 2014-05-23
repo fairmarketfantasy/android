@@ -1,4 +1,4 @@
-package com.fantasysport.adapters;
+package com.fantasysport.adapters.fantasy;
 
 import android.app.Activity;
 import android.content.Context;

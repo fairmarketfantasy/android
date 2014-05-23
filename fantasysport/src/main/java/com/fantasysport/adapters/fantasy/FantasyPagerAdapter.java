@@ -1,4 +1,4 @@
-package com.fantasysport.adapters;
+package com.fantasysport.adapters.fantasy;
 
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.Fragment;

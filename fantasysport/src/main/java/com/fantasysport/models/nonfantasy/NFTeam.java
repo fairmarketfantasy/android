@@ -19,6 +19,8 @@ public class NFTeam implements Serializable, INFTeam {
 
     private boolean _isSelected = false;
 
+    private boolean _isPredicted = false;
+
     public NFTeam(){
     }
 
@@ -58,5 +60,12 @@ public class NFTeam implements Serializable, INFTeam {
         return _logoUrl;
     }
 
+    public boolean isPredicted(){
+        return _isPredicted;
+    }
 
+
+    public void setIsPredicted(boolean isPredicted) {
+        _isPredicted = isPredicted;
+    }
 }

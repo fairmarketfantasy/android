@@ -1,4 +1,4 @@
-package com.fantasysport.webaccess.requests;
+package com.fantasysport.webaccess.requests.fantasy;
 
 import com.fantasysport.models.StatsItem;
 import com.google.gson.annotations.SerializedName;

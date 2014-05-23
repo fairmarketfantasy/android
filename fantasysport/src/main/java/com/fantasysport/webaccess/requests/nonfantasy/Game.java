@@ -3,6 +3,7 @@ package com.fantasysport.webaccess.requests.nonfantasy;
 import com.fantasysport.utility.Converter;
 import com.fantasysport.utility.DateUtils;
 import com.fantasysport.utility.DeviceInfo;
+import com.fantasysport.webaccess.requestListeners.StringResponseListener;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
@@ -42,6 +43,18 @@ class Game {
     @SerializedName("away_team_logo_url")
     private String _awayTeamLogo;
 
+    @SerializedName("disable_pt_home_team")
+    private boolean _isHomePredicted;
+
+    @SerializedName("disable_pt_away_team")
+    private boolean _isAwayPredicted;
+
+    @SerializedName("disable_home_team")
+    private boolean _isHomeSelected = false;
+
+    @SerializedName("disable_away_team")
+    private boolean _isAwaySelected = false;
+
     public int getStatsId() {
         return _statsId;
     }
@@ -50,6 +63,14 @@ class Game {
         Date date = Converter.toDate(_gameTime);
         int gmtInMinutes = DeviceInfo.getGMTInMinutes();
         return DateUtils.addMinutes(date, gmtInMinutes);
+    }
+
+    public boolean isHomeSelected(){
+        return _isHomeSelected;
+    }
+
+    public boolean isAwaySelected(){
+        return _isAwaySelected;
     }
 
     public String getHomeTeamName() {
@@ -82,5 +103,13 @@ class Game {
 
     public int getAwayTeamStatsId() {
         return _awayTeamStatsId;
+    }
+
+    public boolean isAwayTeamPredicted(){
+        return _isAwayPredicted;
+    }
+
+    public boolean isHomePredicted(){
+        return _isHomePredicted;
     }
 }

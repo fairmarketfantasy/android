@@ -1,4 +1,4 @@
-package com.fantasysport.webaccess.requests;
+package com.fantasysport.webaccess.requests.fantasy;
 
 import android.net.Uri;
 import com.fantasysport.models.DefaultRosterData;
@@ -6,6 +6,7 @@ import com.fantasysport.models.Market;
 import com.fantasysport.models.MarketsContainer;
 import com.fantasysport.parsers.MarketParser;
 import com.fantasysport.utility.DateUtils;
+import com.fantasysport.webaccess.requests.BaseRequest;
 import com.fantasysport.webaccess.responses.MarketResponse;
 import com.google.api.client.http.GenericUrl;
 import com.google.api.client.http.HttpRequest;
@@ -17,7 +18,7 @@ import java.util.List;
 /**
  * Created by bylynka on 2/19/14.
  */
-public class MarketsRequest extends BaseRequest<MarketResponse>  {
+public class MarketsRequest extends BaseRequest<MarketResponse> {
 
     public static final String REGULAR_SEASON = "regular_season";
     public static final String SINGLE_ELIMINATION = "single_elimination";

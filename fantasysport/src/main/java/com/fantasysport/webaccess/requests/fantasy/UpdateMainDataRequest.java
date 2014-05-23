@@ -1,9 +1,10 @@
-package com.fantasysport.webaccess.requests;
+package com.fantasysport.webaccess.requests.fantasy;
 
 import android.net.Uri;
 import com.fantasysport.models.Roster;
 import com.fantasysport.models.UserData;
 import com.fantasysport.webaccess.requestListeners.UpdateMainDataResponse;
+import com.fantasysport.webaccess.requests.BaseRequest;
 import com.google.api.client.http.GenericUrl;
 import com.google.api.client.http.HttpRequest;
 import com.google.gson.Gson;
@@ -11,7 +12,7 @@ import com.google.gson.Gson;
 /**
  * Created by bylynka on 3/26/14.
  */
-public class UpdateMainDataRequest extends BaseRequest<UpdateMainDataResponse>  {
+public class UpdateMainDataRequest extends BaseRequest<UpdateMainDataResponse> {
     private int _userId;
 
     public UpdateMainDataRequest(int userId) {

@@ -12,7 +12,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import com.fantasysport.R;
 import com.fantasysport.activities.IMainActivity;
-import com.fantasysport.adapters.GameAdapter;
+import com.fantasysport.adapters.fantasy.GameAdapter;
 import com.fantasysport.adapters.RosterPlayersAdapter;
 import com.fantasysport.fragments.BaseActivityFragment;
 import com.fantasysport.fragments.main.BaseFantasyFragment;

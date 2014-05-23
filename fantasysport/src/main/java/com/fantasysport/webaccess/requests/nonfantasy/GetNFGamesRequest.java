@@ -42,10 +42,12 @@ public class GetNFGamesRequest extends BaseRequest<NFData> {
         List<NFGame> games = new ArrayList<NFGame>();
         List<Game> responseGames = response.getCandidateGames();
         if(responseGames != null){
-            for (Game rGame : responseGames){
-                NFTeam home = new NFTeam(rGame.getHomeTeamName(), rGame.getHomeTeamPt(), rGame.getHomeTeamStatsId(), rGame.getHomeTeamLogo(), rGame.getStatsId());
-                NFTeam away = new NFTeam(rGame.getAwayTeamName(), rGame.getAwayTeamPt(), rGame.getAwayTeamStatsId(), rGame.getAwayTeamLogo(), rGame.getStatsId());
-                games.add(new NFGame(home, away, rGame.getGameDate(), rGame.getStatsId()));
+            for (Game g : responseGames){
+                NFTeam home = new NFTeam(g.getHomeTeamName(), g.getHomeTeamPt(), g.getHomeTeamStatsId(), g.getHomeTeamLogo(), g.getStatsId());
+                home.setIsPredicted(g.isHomePredicted());
+                NFTeam away = new NFTeam(g.getAwayTeamName(), g.getAwayTeamPt(), g.getAwayTeamStatsId(), g.getAwayTeamLogo(), g.getStatsId());
+                away.setIsPredicted(g.isAwayTeamPredicted());
+                games.add(new NFGame(home, away, g.getGameDate(), g.getStatsId()));
             }
         }
         NFData data = new NFData(response.getRoster(), games);

@@ -15,7 +15,7 @@ import com.fantasysport.models.Roster;
 import com.fantasysport.views.Switcher;
 import com.fantasysport.webaccess.requestListeners.RequestError;
 import com.fantasysport.webaccess.requestListeners.SubmitRosterResponseListener;
-import com.fantasysport.webaccess.requests.SubmitRosterRequest;
+import com.fantasysport.webaccess.requests.fantasy.SubmitRosterRequest;
 import com.fantasysport.webaccess.responses.SubmitRosterResponse;
 
 import java.util.List;

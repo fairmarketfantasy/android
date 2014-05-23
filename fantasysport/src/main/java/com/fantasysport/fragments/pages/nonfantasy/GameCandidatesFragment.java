@@ -15,6 +15,9 @@ import com.fantasysport.fragments.main.NonFantasyFragment;
 import com.fantasysport.models.nonfantasy.NFAutoFillData;
 import com.fantasysport.models.nonfantasy.NFGame;
 import com.fantasysport.models.nonfantasy.NFTeam;
+import com.fantasysport.views.ConfirmDialog;
+import com.fantasysport.webaccess.requestListeners.RequestError;
+import com.fantasysport.webaccess.requestListeners.StringResponseListener;
 import uk.co.senab.actionbarpulltorefresh.extras.actionbarcompat.PullToRefreshLayout;
 import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
 import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
@@ -69,6 +72,41 @@ public class GameCandidatesFragment extends BaseActivityFragment implements NFCa
     public void onSelectedTeam(NFTeam team) {
         _mediator.selectTeam(this, team);
         _adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onPredictedTeam(final NFTeam team) {
+        ConfirmDialog dialog = new ConfirmDialog(getActivity());
+        dialog.setTitle(String.format("PT%d", team.getPT()))
+                .setContent(String.format("Predict %s?", team.getName()))
+                .setOkAction(new Runnable() {
+                    @Override
+                    public void run() {
+                        doIndividualPrediction(team);
+                    }
+                })
+                .show();
+    }
+
+    private void doIndividualPrediction(final NFTeam team){
+        team.setIsPredicted(true);
+        _adapter.notifyDataSetChanged();
+        showProgress();
+        getWebProxy().doNFIndividualPrediction(team, new StringResponseListener() {
+            @Override
+            public void onRequestError(RequestError error) {
+                dismissProgress();
+                showAlert(getString(R.string.error), error.getMessage());
+                team.setIsPredicted(false);
+                _adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onRequestSuccess(String msg) {
+                dismissProgress();
+                showAlert("INFO", msg);
+            }
+        });
     }
 
     @Override
@@ -133,6 +171,10 @@ public class GameCandidatesFragment extends BaseActivityFragment implements NFCa
 
     @Override
     public void onAutoFillData(Object sender, NFAutoFillData data) {
-
+        if(_adapter == null || data == null || data.getCandidateGames() == null){
+            return;
+        }
+        _adapter.setGames(data.getCandidateGames());
+        _adapter.notifyDataSetChanged();
     }
 }
