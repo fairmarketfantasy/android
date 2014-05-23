@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
 import com.fantasysport.R;
 import com.fantasysport.activities.MainActivity;
@@ -11,6 +12,7 @@ import com.fantasysport.adapters.nonfantasy.NFCandidateGamesAdapter;
 import com.fantasysport.fragments.BaseActivityFragment;
 import com.fantasysport.fragments.NFMediator;
 import com.fantasysport.fragments.main.NonFantasyFragment;
+import com.fantasysport.models.nonfantasy.NFAutoFillData;
 import com.fantasysport.models.nonfantasy.NFGame;
 import com.fantasysport.models.nonfantasy.NFTeam;
 import uk.co.senab.actionbarpulltorefresh.extras.actionbarcompat.PullToRefreshLayout;
@@ -24,7 +26,7 @@ import java.util.List;
  */
 
 public class GameCandidatesFragment extends BaseActivityFragment implements NFCandidateGamesAdapter.IListener,
-        NFMediator.ITeamRemovedListener, OnRefreshListener, NFMediator.IGamesUpdatedListener {
+        NFMediator.ITeamRemovedListener, OnRefreshListener, NFMediator.IGamesUpdatedListener, NFMediator.IAutoFillDataListener {
 
     private final String SAVED_GAMES = "saved_games";
 
@@ -44,11 +46,14 @@ public class GameCandidatesFragment extends BaseActivityFragment implements NFCa
         _mediator = fragment.getMediator();
         _mediator.addTeamRemovedListener(this);
         _mediator.addGamesUpdatedListener(this);
+        _mediator.addAutoFillDataListener(this);
         _swipeRefreshLayout = getViewById(R.id.refresh_games_layout);
         ActionBarPullToRefresh.from(getActivity())
                 .allChildrenArePullable()
                 .listener(this)
                 .setup(_swipeRefreshLayout);
+        Button autoFillBtn = getViewById(R.id.autofill_btn);
+        autoFillBtn.setOnClickListener(_autoFillBtnOnClickListener);
         initAdapter();
     }
 
@@ -109,7 +114,7 @@ public class GameCandidatesFragment extends BaseActivityFragment implements NFCa
     @Override
     public void onRefreshStarted(View view) {
         _swipeRefreshLayout.setRefreshing(true);
-        _mediator.updateGamesRequest(this);
+        _mediator.requestUpdateGames(this);
     }
 
     @Override
@@ -117,5 +122,17 @@ public class GameCandidatesFragment extends BaseActivityFragment implements NFCa
         _adapter.setGames(games);
         _adapter.notifyDataSetChanged();
         _swipeRefreshLayout.setRefreshing(false);
+    }
+
+    View.OnClickListener _autoFillBtnOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            _mediator.requestAutoFill(GameCandidatesFragment.this);
+        }
+    };
+
+    @Override
+    public void onAutoFillData(Object sender, NFAutoFillData data) {
+
     }
 }

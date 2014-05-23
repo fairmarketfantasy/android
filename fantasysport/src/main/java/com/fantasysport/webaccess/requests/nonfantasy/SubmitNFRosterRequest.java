@@ -1,7 +1,8 @@
-package com.fantasysport.webaccess.requests;
+package com.fantasysport.webaccess.requests.nonfantasy;
 
 import android.net.Uri;
 import com.fantasysport.models.nonfantasy.NFTeam;
+import com.fantasysport.webaccess.requests.BaseRequest;
 import com.google.api.client.http.ByteArrayContent;
 import com.google.api.client.http.GenericUrl;
 import com.google.api.client.http.HttpContent;

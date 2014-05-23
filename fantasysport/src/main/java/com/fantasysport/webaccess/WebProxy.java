@@ -4,10 +4,14 @@ import android.graphics.Bitmap;
 import com.fantasysport.models.Player;
 import com.fantasysport.models.StatsItem;
 import com.fantasysport.models.User;
+import com.fantasysport.models.nonfantasy.NFAutoFillData;
 import com.fantasysport.models.nonfantasy.NFTeam;
 import com.fantasysport.utility.OutParameter;
 import com.fantasysport.webaccess.requestListeners.*;
 import com.fantasysport.webaccess.requests.*;
+import com.fantasysport.webaccess.requests.nonfantasy.GetNFGamesRequest;
+import com.fantasysport.webaccess.requests.nonfantasy.NFAutoFillRequest;
+import com.fantasysport.webaccess.requests.nonfantasy.SubmitNFRosterRequest;
 import com.octo.android.robospice.SpiceManager;
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.retry.RetryPolicy;
@@ -175,6 +179,12 @@ public final class WebProxy {
         _spiceManager.execute(request, listener);
     }
 
+    public void nfAutoFill(String sport, NFAutoFillResponseListener listener){
+        NFAutoFillRequest request = new NFAutoFillRequest(sport);
+        request.setRetryPolicy(getRetryPolicy());
+        _spiceManager.execute(request, listener);
+    }
+
     public void submitNFRoster(List<NFTeam> teams, SubmitNFRosterResponseListener listener){
         SubmitNFRosterRequest request= new SubmitNFRosterRequest(teams);
         _spiceManager.execute(request, listener);
@@ -189,7 +199,6 @@ public final class WebProxy {
 
             @Override
             public void retry(SpiceException e) {
-
             }
 
             @Override

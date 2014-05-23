@@ -1,14 +1,16 @@
-package com.fantasysport.webaccess.requests;
+package com.fantasysport.webaccess.requests.nonfantasy;
 
 import android.net.Uri;
 import com.fantasysport.models.NFData;
+import com.fantasysport.models.NFRoster;
 import com.fantasysport.models.nonfantasy.NFGame;
 import com.fantasysport.models.nonfantasy.NFTeam;
 import com.fantasysport.utility.DateUtils;
-import com.fantasysport.webaccess.responses.GetGamesResponse;
+import com.fantasysport.webaccess.requests.BaseRequest;
 import com.google.api.client.http.GenericUrl;
 import com.google.api.client.http.HttpRequest;
 import com.google.gson.Gson;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,9 +40,9 @@ public class GetNFGamesRequest extends BaseRequest<NFData> {
         String result = request.execute().parseAsString();
         GetGamesResponse response = new Gson().fromJson(result, GetGamesResponse.class);
         List<NFGame> games = new ArrayList<NFGame>();
-        List<GetGamesResponse.Game> responseGames = response.getCandidateGames();
+        List<Game> responseGames = response.getCandidateGames();
         if(responseGames != null){
-            for (GetGamesResponse.Game rGame : responseGames){
+            for (Game rGame : responseGames){
                 NFTeam home = new NFTeam(rGame.getHomeTeamName(), rGame.getHomeTeamPt(), rGame.getHomeTeamStatsId(), rGame.getHomeTeamLogo(), rGame.getStatsId());
                 NFTeam away = new NFTeam(rGame.getAwayTeamName(), rGame.getAwayTeamPt(), rGame.getAwayTeamStatsId(), rGame.getAwayTeamLogo(), rGame.getStatsId());
                 games.add(new NFGame(home, away, rGame.getGameDate(), rGame.getStatsId()));
@@ -51,4 +53,23 @@ public class GetNFGamesRequest extends BaseRequest<NFData> {
         _rHelper.loadNFData(data);
         return data;
     }
+
+    public class GetGamesResponse {
+
+        @SerializedName("game_roster")
+        private NFRoster _roster;
+
+        @SerializedName("games")
+        private List<Game> _candidateGames;
+
+        public NFRoster getRoster() {
+            return _roster;
+        }
+
+        public List<Game> getCandidateGames() {
+            return _candidateGames;
+        }
+
+    }
+
 }

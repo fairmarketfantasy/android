@@ -7,17 +7,20 @@ import com.fantasysport.R;
 import com.fantasysport.adapters.nonfantasy.NonFantasyPagerAdapter;
 import com.fantasysport.fragments.NFMediator;
 import com.fantasysport.models.NFData;
+import com.fantasysport.models.nonfantasy.NFAutoFillData;
 import com.fantasysport.models.nonfantasy.NFTeam;
 import com.fantasysport.utility.CacheProvider;
 import com.fantasysport.utility.DateUtils;
 import com.fantasysport.webaccess.requestListeners.GetNFGamesResponseListener;
+import com.fantasysport.webaccess.requestListeners.NFAutoFillResponseListener;
 import com.fantasysport.webaccess.requestListeners.RequestError;
 
 /**
  * Created by bylynka on 5/15/14.
  */
 public class NonFantasyFragment extends BaseFragment
-        implements NFMediator.ITeamSelectedListener, NFMediator.IUpdateGamesRequestListener {
+        implements NFMediator.ITeamSelectedListener, NFMediator.IUpdateGamesRequestListener,
+         NFMediator.IAutoFillRequestListener{
 
     private NonFantasyPagerAdapter _pagerAdapter;
     private NFMediator _mediator = new NFMediator();
@@ -27,6 +30,7 @@ public class NonFantasyFragment extends BaseFragment
         super.onCreate(savedInstanceState);
         _mediator.addTeamSelectedListener(this);
         _mediator.addUpdateGamesRequestListener(this);
+        _mediator.addAutoFillRequestListener(this);
     }
 
     @Override
@@ -92,5 +96,25 @@ public class NonFantasyFragment extends BaseFragment
     @Override
     public void updateMainData(){
         loadNonFantasyGames();
+    }
+
+    @Override
+    public void onRequestAutoFill(Object sender) {
+        String sport = "MLB";//_storage.getUserData().getCurrentSport();
+        showProgress();
+        getWebProxy().nfAutoFill(sport, new NFAutoFillResponseListener() {
+            @Override
+            public void onRequestError(RequestError error) {
+                dismissProgress();
+                showAlert(getString(R.string.error),  error.getMessage());
+            }
+
+            @Override
+            public void onRequestSuccess(NFAutoFillData nfAutoFillData) {
+                dismissProgress();
+                _mediator.setNFAutoFillData(NonFantasyFragment.this, nfAutoFillData);
+                _pager.setCurrentItem(0, true);
+            }
+        });
     }
 }

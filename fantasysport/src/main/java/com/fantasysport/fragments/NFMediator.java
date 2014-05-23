@@ -1,5 +1,6 @@
 package com.fantasysport.fragments;
 
+import com.fantasysport.models.nonfantasy.NFAutoFillData;
 import com.fantasysport.models.nonfantasy.NFGame;
 import com.fantasysport.models.nonfantasy.NFTeam;
 
@@ -16,6 +17,16 @@ public class NFMediator {
     private List<ITeamRemovedListener> _teamRemovedListeners = new ArrayList<ITeamRemovedListener>();
     private List<IUpdateGamesRequestListener> _updateGamesRequestListeners = new ArrayList<IUpdateGamesRequestListener>();
     private List<IGamesUpdatedListener> _gamesUpdatedListeners = new ArrayList<IGamesUpdatedListener>();
+    private List<IAutoFillRequestListener> _autoFillRequestListeners = new ArrayList<IAutoFillRequestListener>();
+    private List<IAutoFillDataListener> _autoFillDataListeners = new ArrayList<IAutoFillDataListener>();
+
+    public void addAutoFillDataListener(IAutoFillDataListener listener){
+        _autoFillDataListeners.add(listener);
+    }
+
+    public void addAutoFillRequestListener(IAutoFillRequestListener listener){
+        _autoFillRequestListeners.add(listener);
+    }
 
     public void addGamesUpdatedListener(IGamesUpdatedListener listener){
         _gamesUpdatedListeners.add(listener);
@@ -55,9 +66,15 @@ public class NFMediator {
         }
     }
 
-    public void updateGamesRequest(Object sender){
+    public void requestUpdateGames(Object sender){
         for(IUpdateGamesRequestListener listener : _updateGamesRequestListeners){
             listener.onUpdatesGameRequest(sender);
+        }
+    }
+
+    public void requestAutoFill(Object sender){
+        for (IAutoFillRequestListener listener : _autoFillRequestListeners){
+            listener.onRequestAutoFill(sender);
         }
     }
 
@@ -67,6 +84,13 @@ public class NFMediator {
         }
     }
 
+    public void setNFAutoFillData(Object sender, NFAutoFillData data){
+        for (IAutoFillDataListener listener : _autoFillDataListeners){
+            listener.onAutoFillData(sender, data);
+        }
+    }
+
+/**********************************************************************************************************************/
     public interface ITeamSelectedListener {
         void onSelectedTeam(Object sender, NFTeam team);
     }
@@ -85,5 +109,13 @@ public class NFMediator {
 
     public interface IGamesUpdatedListener{
         void onGamesUpdated(Object sender, List<NFGame> games);
+    }
+
+    public interface IAutoFillRequestListener{
+        void onRequestAutoFill(Object sender);
+    }
+
+    public interface IAutoFillDataListener{
+        void onAutoFillData(Object sender, NFAutoFillData data);
     }
 }

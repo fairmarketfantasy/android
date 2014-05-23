@@ -12,10 +12,7 @@ import com.fantasysport.adapters.nonfantasy.*;
 import com.fantasysport.fragments.BaseActivityFragment;
 import com.fantasysport.fragments.NFMediator;
 import com.fantasysport.fragments.main.NonFantasyFragment;
-import com.fantasysport.models.nonfantasy.EmptyNFTeam;
-import com.fantasysport.models.nonfantasy.INFTeam;
-import com.fantasysport.models.nonfantasy.NFGame;
-import com.fantasysport.models.nonfantasy.NFTeam;
+import com.fantasysport.models.nonfantasy.*;
 import com.fantasysport.webaccess.requestListeners.RequestError;
 import com.fantasysport.webaccess.requestListeners.SubmitNFRosterResponseListener;
 
@@ -28,7 +25,7 @@ import java.util.List;
  * Created by bylynka on 5/16/14.
  */
 public class GameRosterFragment extends BaseActivityFragment implements NFRosterAdapter.IListener,
-        NFMediator.ITeamSelectedListener, NFMediator.IGamesUpdatedListener {
+        NFMediator.ITeamSelectedListener, NFMediator.IGamesUpdatedListener, NFMediator.IAutoFillDataListener {
 
     private final String SELECTED_TEAMS = "selected_teams";
 
@@ -48,9 +45,12 @@ public class GameRosterFragment extends BaseActivityFragment implements NFRoster
         _mediator = fragment.getMediator();
         _mediator.addTeamSelectedListener(this);
         _mediator.addGamesUpdatedListener(this);
+        _mediator.addAutoFillDataListener(this);
         _submitBtn = getViewById(R.id.submit_btn);
         _submitBtn.setOnClickListener(_submitBtnOnClickListener);
         initAdapter();
+        Button autoFillBtn = getViewById(R.id.autofill_btn);
+        autoFillBtn.setOnClickListener(_autoFillBtnOnClickListener);
         updateSubmitBtnState();
     }
 
@@ -198,5 +198,20 @@ public class GameRosterFragment extends BaseActivityFragment implements NFRoster
     public void onGamesUpdated(Object sender, List<NFGame> games) {
         setEmptyRoster();
         _adapter.setGames(games);
+    }
+
+    View.OnClickListener _autoFillBtnOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            _mediator.requestAutoFill(GameRosterFragment.this);
+        }
+    };
+
+    @Override
+    public void onAutoFillData(Object sender, NFAutoFillData data) {
+        _adapter.setTeams(new ArrayList<INFTeam>(data.getRosterTeams()));
+        _adapter.setGames(data.getCandidateGames());
+        _adapter.notifyDataSetChanged();
+        updateSubmitBtnState();
     }
 }
