@@ -8,9 +8,11 @@ import android.view.ViewGroup;
 import com.fantasysport.Const;
 import com.fantasysport.R;
 import com.fantasysport.activities.MainPredictionActivity;
-import com.fantasysport.activities.PredictionActivity;
+import com.fantasysport.activities.PredictionsListActivity;
+import com.fantasysport.adapters.ILoadListener;
 import com.fantasysport.adapters.fantasy.IndividualPredictionAdapter;
 import com.fantasysport.adapters.fantasy.PredictionAdapter;
+import com.fantasysport.fragments.pages.BasePredictionListFragment;
 import com.fantasysport.models.IndividualPrediction;
 import com.fantasysport.models.Prediction;
 import com.fantasysport.models.UserData;
@@ -24,7 +26,7 @@ import java.util.List;
 /**
  * Created by bylynka on 3/21/14.
  */
-public class HistoryPredictionFragment extends BasePredictionFragment {
+public class HistoryPredictionListFragment extends BasePredictionListFragment implements PredictionAdapter.IOnShowRosterListener {
 
     private int _currentPage = 1;
     private List<IndividualPrediction> _individualPredictions;
@@ -41,15 +43,15 @@ public class HistoryPredictionFragment extends BasePredictionFragment {
     }
 
     @Override
-    public void onLoad(PredictionActivity.TimeType timeType, PredictionActivity.PredictionType predictionType, boolean showLoadPopup) {
-        if(timeType != PredictionActivity.TimeType.History){
+    public void onLoadRequest(PredictionsListActivity.TimeType timeType, PredictionsListActivity.PredictionType predictionType, boolean showLoadPopup) {
+        if(timeType != PredictionsListActivity.TimeType.History){
             return;
         }
-        super.onLoad(timeType, predictionType, showLoadPopup);
+        super.onLoadRequest(timeType, predictionType, showLoadPopup);
         _currentPage = 0;
         _predictions = null;
         _individualPredictions = null;
-        if(predictionType == PredictionActivity.PredictionType.Individual){
+        if(predictionType == PredictionsListActivity.PredictionType.Individual){
             loadIndividualPredictions(showLoadPopup);
         }else {
             loadPredictions(showLoadPopup);
@@ -152,7 +154,7 @@ public class HistoryPredictionFragment extends BasePredictionFragment {
         }, _currentPage);
     }
 
-    IndividualPredictionAdapter.ILoadListener _individualPredictionOnLoadListener = new IndividualPredictionAdapter.ILoadListener() {
+    ILoadListener _individualPredictionOnLoadListener = new ILoadListener() {
         @Override
         public void onLoad() {
             _individualPredictionAdapter.setLoadListener(null);
@@ -160,7 +162,7 @@ public class HistoryPredictionFragment extends BasePredictionFragment {
         }
     };
 
-    PredictionAdapter.ILoadListener _predictionOnLoadListener = new PredictionAdapter.ILoadListener() {
+    ILoadListener _predictionOnLoadListener = new ILoadListener() {
         @Override
         public void onLoad() {
             _predictionAdapter.setLoadListener(null);

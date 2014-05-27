@@ -70,7 +70,7 @@ public class NonFantasyFragment extends BaseFragment
     }
 
     private void loadNonFantasyGames(){
-        String sport = "MLB";//_storage.getUserData().getCurrentSport();
+        String sport = getStorage().getUserData().getCurrentSport();
         showProgress();
         getWebProxy().getNFGames(sport, new GetNFGamesResponseListener() {
             @Override

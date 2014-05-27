@@ -3,8 +3,10 @@ package com.fantasysport.webaccess.requests.nonfantasy;
 import android.net.Uri;
 import com.fantasysport.webaccess.requestListeners.StringResponseListener;
 import com.fantasysport.webaccess.requests.BaseRequest;
+import com.fantasysport.webaccess.responses.MsgResponse;
 import com.google.api.client.http.GenericUrl;
 import com.google.api.client.http.HttpRequest;
+import com.google.gson.Gson;
 
 /**
  * Created by bylynka on 5/23/14.
@@ -31,6 +33,8 @@ public class DoNFPredictionRequest extends BaseRequest<String> {
         HttpRequest request = getHttpRequestFactory()
                 .buildPostRequest(new GenericUrl(url), null);
         request.getHeaders().setAccept("application/json");
-        return  request.execute().parseAsString();
+        String result = request.execute().parseAsString();
+        MsgResponse msgRes = new Gson().fromJson(result, MsgResponse.class);
+        return msgRes.getMessage();
     }
 }

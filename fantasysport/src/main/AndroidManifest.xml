@@ -98,7 +98,12 @@
                   android:theme="@style/AppIconTheme"
                   android:windowSoftInputMode="stateVisible|adjustResize"
                 />
-        <activity android:name=".activities.PredictionActivity"
+        <activity android:name=".activities.nonfantasy.NFPredictionsListActivity"
+                  android:screenOrientation="portrait"
+                  android:theme="@style/AppIconTheme"
+                />
+
+        <activity android:name=".activities.fantasy.FPredictionsListActivity"
                   android:screenOrientation="portrait"
                   android:theme="@style/AppIconTheme"
                 />

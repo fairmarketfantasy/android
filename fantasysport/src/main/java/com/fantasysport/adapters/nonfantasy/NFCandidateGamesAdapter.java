@@ -72,6 +72,7 @@ public class NFCandidateGamesAdapter extends BaseAdapter {
             holder.addAwayImg = (ImageView) convertView.findViewById(R.id.add_away_img);
             holder.addHomeBtn = convertView.findViewById(R.id.add_home_btn);
             holder.addAwayBtn = convertView.findViewById(R.id.add_away_btn);
+            holder.separator = convertView.findViewById(R.id.separator_view);
             convertView.setTag(holder);
         }
         final NFGame game = _games.get(position);
@@ -85,7 +86,7 @@ public class NFCandidateGamesAdapter extends BaseAdapter {
         holder.gameTimeTxt.setText(_sdf.format(game.getDate()));
         setPredictionButton(holder.homePt, homeTeam);
         setPredictionButton(holder.awayPt, awayTeam);
-
+        holder.separator.setEnabled(!awayTeam.isPredicted() ||  !homeTeam.isPredicted());
 
         if (homeTeam.isSelected() && !awayTeam.isSelected()) {
             setPluses(holder, R.drawable.plus_disable, R.drawable.plus, null, new SelectTeamListener(awayTeam));
@@ -101,7 +102,7 @@ public class NFCandidateGamesAdapter extends BaseAdapter {
 
     private void setPredictionButton(Button btn, NFTeam team){
         btn.setEnabled(!team.isPredicted());
-        btn.setText(String.format("PT%d", team.getPT()));
+        btn.setText(String.format("PT%.1f", team.getPT()));
         if(team.isPredicted()){
             return;
         }
@@ -155,6 +156,7 @@ public class NFCandidateGamesAdapter extends BaseAdapter {
         public ImageView addAwayImg;
         public View addHomeBtn;
         public View addAwayBtn;
+        public View separator;
     }
 
     class SelectTeamListener implements View.OnClickListener {

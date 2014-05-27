@@ -3,6 +3,7 @@ package com.fantasysport.webaccess.requests.nonfantasy;
 import android.net.Uri;
 import com.fantasysport.models.nonfantasy.NFTeam;
 import com.fantasysport.webaccess.requests.BaseRequest;
+import com.fantasysport.webaccess.responses.MsgResponse;
 import com.google.api.client.http.ByteArrayContent;
 import com.google.api.client.http.GenericUrl;
 import com.google.api.client.http.HttpContent;
@@ -54,7 +55,8 @@ public class SubmitNFRosterRequest extends BaseRequest<String> {
                 .buildPostRequest(new GenericUrl(url), content);
         request.getHeaders().setAccept("application/json");
         String result = request.execute().parseAsString();
-        return result;
+        MsgResponse msgRes = new Gson().fromJson(result, MsgResponse.class);
+        return msgRes.getMessage();
     }
 
     public class RequestBody{

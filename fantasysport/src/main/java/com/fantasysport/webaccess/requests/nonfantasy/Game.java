@@ -26,10 +26,10 @@ class Game {
     private String _awayTeam;
 
     @SerializedName("home_team_pt")
-    private int _homeTeamPt;
+    private double _homeTeamPt;
 
     @SerializedName("away_team_pt")
-    private int _awayTeamPt;
+    private double _awayTeamPt;
 
     @SerializedName("home_team_stats_id")
     private int _homeTeamStatsId;
@@ -81,11 +81,11 @@ class Game {
         return _awayTeam;
     }
 
-    public int getHomeTeamPt() {
+    public double getHomeTeamPt() {
         return _homeTeamPt;
     }
 
-    public int getAwayTeamPt() {
+    public double getAwayTeamPt() {
         return _awayTeamPt;
     }
 

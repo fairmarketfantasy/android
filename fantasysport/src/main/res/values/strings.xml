@@ -105,6 +105,7 @@
     <string name="games_for_today">Games For Today</string>
     <string name="your_choices">Your Choices</string>
     <string name="info">Info</string>
+    <string name="game_predictions">Game predictions</string>
 
     <string-array name="prediction_menu_list">
         <item>Roster</item>

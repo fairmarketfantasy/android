@@ -1,4 +1,4 @@
-package com.fantasysport.fragments.pages.fantasy;
+package com.fantasysport.fragments.pages;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import com.fantasysport.R;
-import com.fantasysport.activities.PredictionActivity;
+import com.fantasysport.activities.PredictionsListActivity;
 import com.fantasysport.adapters.fantasy.PredictionAdapter;
 import com.fantasysport.fragments.BaseActivityFragment;
 import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
@@ -16,13 +16,13 @@ import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 /**
  * Created by bylynka on 3/21/14.
  */
-public abstract class BasePredictionFragment extends BaseActivityFragment implements PredictionActivity.ILoadContentListener,
-        PredictionAdapter.IOnShowRosterListener, OnRefreshListener {
+public abstract class BasePredictionListFragment extends BaseActivityFragment implements PredictionsListActivity.ILoadContentListener,
+         OnRefreshListener {
 
     protected ListView _predictionListView;
     protected PullToRefreshLayout _pullToRefreshLayout;
-    protected PredictionActivity.TimeType _timeType;
-    protected PredictionActivity.PredictionType _predictionType;
+    protected PredictionsListActivity.TimeType _timeType;
+    protected PredictionsListActivity.PredictionType _predictionType;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         _rootView = inflater.inflate(R.layout.fragment_prediction, container, false);
@@ -33,20 +33,25 @@ public abstract class BasePredictionFragment extends BaseActivityFragment implem
                 .allChildrenArePullable()
                 .listener(this)
                 .setup(_pullToRefreshLayout);
+        ontCreatedView();
         return _rootView;
     }
 
-    protected PredictionActivity getPredictionActivity(){
-        return (PredictionActivity)getActivity();
+    protected void ontCreatedView(){
+
+    }
+
+    protected PredictionsListActivity getPredictionActivity(){
+        return (PredictionsListActivity)getActivity();
     }
 
     @Override
     public void onRefreshStarted(View view) {
-      onLoad(_timeType, _predictionType, false);
+      onLoadRequest(_timeType, _predictionType, false);
     }
 
     @Override
-    public void onLoad(PredictionActivity.TimeType timeType, PredictionActivity.PredictionType predictionType, boolean showLoading) {
+    public void onLoadRequest(PredictionsListActivity.TimeType timeType, PredictionsListActivity.PredictionType predictionType, boolean showLoading) {
         _timeType = timeType;
         _predictionType = predictionType;
     }

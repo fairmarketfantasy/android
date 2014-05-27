@@ -77,7 +77,7 @@ public class GameCandidatesFragment extends BaseActivityFragment implements NFCa
     @Override
     public void onPredictedTeam(final NFTeam team) {
         ConfirmDialog dialog = new ConfirmDialog(getActivity());
-        dialog.setTitle(String.format("PT%d", team.getPT()))
+        dialog.setTitle(String.format("PT%.1f", team.getPT()))
                 .setContent(String.format("Predict %s?", team.getName()))
                 .setOkAction(new Runnable() {
                     @Override

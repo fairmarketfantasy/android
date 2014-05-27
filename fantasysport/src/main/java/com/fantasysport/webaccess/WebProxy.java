@@ -7,12 +7,10 @@ import com.fantasysport.models.User;
 import com.fantasysport.models.nonfantasy.NFTeam;
 import com.fantasysport.utility.OutParameter;
 import com.fantasysport.webaccess.requestListeners.*;
+import com.fantasysport.webaccess.requestListeners.ListResponseListener;
 import com.fantasysport.webaccess.requests.*;
 import com.fantasysport.webaccess.requests.fantasy.*;
-import com.fantasysport.webaccess.requests.nonfantasy.DoNFPredictionRequest;
-import com.fantasysport.webaccess.requests.nonfantasy.GetNFGamesRequest;
-import com.fantasysport.webaccess.requests.nonfantasy.NFAutoFillRequest;
-import com.fantasysport.webaccess.requests.nonfantasy.SubmitNFRosterRequest;
+import com.fantasysport.webaccess.requests.nonfantasy.*;
 import com.octo.android.robospice.SpiceManager;
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.retry.RetryPolicy;
@@ -188,11 +186,25 @@ public final class WebProxy {
 
     public void submitNFRoster(List<NFTeam> teams, SubmitNFRosterResponseListener listener){
         SubmitNFRosterRequest request= new SubmitNFRosterRequest(teams);
+        request.setRetryPolicy(getRetryPolicy());
         _spiceManager.execute(request, listener);
     }
 
     public void doNFIndividualPrediction(NFTeam team, StringResponseListener listener){
         DoNFPredictionRequest request= new DoNFPredictionRequest(team.getGameStatsId(), team.getStatsId());
+        request.setRetryPolicy(getRetryPolicy());
+        _spiceManager.execute(request, listener);
+    }
+
+    public void getNFPredictions(String category, String sport, int page, boolean isHistory, ListResponseListener listener){
+        GetNFPredictionsRequest request = new GetNFPredictionsRequest(category, sport, page, isHistory);
+        request.setRetryPolicy(getRetryPolicy());
+        _spiceManager.execute(request, listener);
+    }
+
+    public void getNFIndividualPredictions(String category, String sport, int page, boolean isHistory, ListResponseListener listener){
+        GetNFIndividualPredictionRequest request = new GetNFIndividualPredictionRequest(category, sport, page, isHistory);
+        request.setRetryPolicy(getRetryPolicy());
         _spiceManager.execute(request, listener);
     }
 

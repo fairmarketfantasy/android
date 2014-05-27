@@ -19,11 +19,11 @@ import com.fantasysport.R;
 import com.fantasysport.adapters.MenuItem;
 import com.fantasysport.adapters.MenuListAdapter;
 import com.fantasysport.adapters.SportMenuItem;
+import com.fantasysport.factories.FactoryProvider;
 import com.fantasysport.fragments.MenuHeaderFragment;
 import com.fantasysport.fragments.main.BaseFantasyFragment;
 import com.fantasysport.fragments.main.FantasyFragment;
 import com.fantasysport.fragments.main.IMainFragment;
-import com.fantasysport.fragments.main.MainActivityFragmentProvider;
 import com.fantasysport.models.Category;
 import com.fantasysport.models.Sport;
 import com.fantasysport.models.UserData;
@@ -36,8 +36,6 @@ import com.fantasysport.webaccess.requestListeners.UserResponseListener;
  * Created by bylynka on 2/11/14.
  */
 public class MainActivity extends BaseActivity implements BaseFantasyFragment.IPageChangedListener, IMainActivity{
-
-
 
     private final String _fragmentName = "root_fragment";
 
@@ -52,6 +50,7 @@ public class MainActivity extends BaseActivity implements BaseFantasyFragment.IP
     protected ExpandableListView _menuList;
     protected MenuHeaderFragment _menuHeaderFragment;
     private android.view.MenuItem _refreshMenuItem;
+    private int _fantasyType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,10 +58,10 @@ public class MainActivity extends BaseActivity implements BaseFantasyFragment.IP
         setContentView(R.layout.activity_main);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+        initStartParams(savedInstanceState);
+        _sportFactory = FactoryProvider.getFactory(_fantasyType);
         if (savedInstanceState == null) {
-            int fantasyType = getIntent().getIntExtra(Const.CATEGORY_TYPE, Const.FANTASY_SPORT);
-            _rootFragment = MainActivityFragmentProvider.getFragment(fantasyType);
+            _rootFragment = _sportFactory.getMainFragment();
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.fragment_holder, (Fragment) _rootFragment, _fragmentName)
                     .commit();
@@ -87,6 +86,15 @@ public class MainActivity extends BaseActivity implements BaseFantasyFragment.IP
         _drawerLayout.setDrawerListener(_drawerToggle);
     }
 
+    private void initStartParams(Bundle savedInstanceState){
+        if(savedInstanceState == null){
+            _fantasyType = getIntent().getIntExtra(Const.CATEGORY_TYPE, Const.FANTASY_SPORT);
+        }else {
+            _fantasyType = savedInstanceState.getInt(Const.CATEGORY_TYPE, Const.FANTASY_SPORT);
+        }
+    }
+
+
     public MenuHeaderFragment getMenuHeaderFragment(){
         return _menuHeaderFragment;
     }
@@ -99,6 +107,7 @@ public class MainActivity extends BaseActivity implements BaseFantasyFragment.IP
     public void onSaveInstanceState(Bundle outState){
         super.onSaveInstanceState(outState);
         getSupportFragmentManager().putFragment(outState, _fragmentName,(Fragment)_rootFragment);
+        outState.putInt(Const.CATEGORY_TYPE, _fantasyType);
     }
 
     @Override
@@ -204,7 +213,7 @@ public class MainActivity extends BaseActivity implements BaseFantasyFragment.IP
                         signOut();
                         break;
                     case Predictions:
-                        showPredictions();
+                        showPredictionList(_fantasyType);
                         break;
                     case Sport:
                         SportMenuItem sportItem = (SportMenuItem)item;

@@ -4,9 +4,10 @@ import android.content.Intent;
 import com.fantasysport.Const;
 import com.fantasysport.R;
 import com.fantasysport.activities.MainPredictionActivity;
-import com.fantasysport.activities.PredictionActivity;
+import com.fantasysport.activities.PredictionsListActivity;
 import com.fantasysport.adapters.fantasy.IndividualPredictionAdapter;
 import com.fantasysport.adapters.fantasy.PredictionAdapter;
+import com.fantasysport.fragments.pages.BasePredictionListFragment;
 import com.fantasysport.models.IndividualPrediction;
 import com.fantasysport.models.Prediction;
 import com.fantasysport.models.UserData;
@@ -19,15 +20,15 @@ import java.util.List;
 /**
  * Created by bylynka on 3/21/14.
  */
-public class ActivePredictionFragment extends BasePredictionFragment {
+public class ActivePredictionListFragment extends BasePredictionListFragment implements PredictionAdapter.IOnShowRosterListener {
 
     @Override
-    public void onLoad(PredictionActivity.TimeType timeType, PredictionActivity.PredictionType predictionType, boolean showLoading) {
-        if(timeType != PredictionActivity.TimeType.Active){
+    public void onLoadRequest(PredictionsListActivity.TimeType timeType, PredictionsListActivity.PredictionType predictionType, boolean showLoading) {
+        if(timeType != PredictionsListActivity.TimeType.Active){
             return;
         }
-        super.onLoad(timeType, predictionType, showLoading);
-        if(predictionType == PredictionActivity.PredictionType.Individual){
+        super.onLoadRequest(timeType, predictionType, showLoading);
+        if(predictionType == PredictionsListActivity.PredictionType.Individual){
             loadIndividualPredictions();
         }else {
             loadPredictions();
@@ -51,7 +52,7 @@ public class ActivePredictionFragment extends BasePredictionFragment {
             public void onRequestSuccess(List list) {
                 dismissProgress();
                 PredictionAdapter adapter = new PredictionAdapter(getActivity(), (List<Prediction>)list);
-                adapter.setOnShowRosterListener(ActivePredictionFragment.this);
+                adapter.setOnShowRosterListener(ActivePredictionListFragment.this);
                 _predictionListView.setAdapter(adapter);
                 setRefreshComplete();
             }

@@ -4,14 +4,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import com.fantasysport.Const;
 import com.fantasysport.R;
+import com.fantasysport.factories.ISportFactory;
 import com.fantasysport.repo.Storage;
 import com.fantasysport.utility.DeviceInfo;
 import com.fantasysport.views.AlertDialog;
@@ -35,6 +34,7 @@ public class BaseActivity extends ActionBarActivity {
     protected Storage _storage;
     protected int _progressCounter;
     private ProgressBar _progressBar;
+    protected ISportFactory _sportFactory;
 
 
     //prod
@@ -173,8 +173,9 @@ public class BaseActivity extends ActionBarActivity {
         startActivity(intent);
     }
 
-    protected void showPredictions() {
-        Intent intent = new Intent(this, PredictionActivity.class);
+    protected void showPredictionList(int sportCode) {
+        Intent intent = new Intent(this, _sportFactory.getPredictionListActivity());
+        intent.putExtra(Const.CATEGORY_TYPE, sportCode);
         startActivity(intent);
     }
 

@@ -22,10 +22,20 @@ public class PredictionsDropdownAdapter implements SpinnerAdapter {
 
     private Context _context;
     private int _dropDownItemHeight;
+    private String _rosterHeader;
+    private String _individualHeader;
 
     public PredictionsDropdownAdapter(Context context, int dropDownItemHeight) {
         _context = context;
         _dropDownItemHeight = dropDownItemHeight;
+    }
+
+    public void setRosterHeader(String header){
+        _rosterHeader = header;
+    }
+
+    public void setIndividualHeader(String header){
+        _individualHeader = header;
     }
 
     @Override
@@ -67,8 +77,7 @@ public class PredictionsDropdownAdapter implements SpinnerAdapter {
 
     @Override
     public Object getItem(int position) {
-        int stringId = position == 0? R.string.roster_predictions: R.string.individual_predictions;
-        return _context.getString(stringId);
+        return position == 0? _rosterHeader : _individualHeader;
     }
 
     @Override

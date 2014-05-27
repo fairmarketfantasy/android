@@ -11,7 +11,7 @@ public class NFTeam implements Serializable, INFTeam {
 
     private String _name;
 
-    private int _pt;
+    private double _pt;
 
     private int _statsId;
 
@@ -24,7 +24,7 @@ public class NFTeam implements Serializable, INFTeam {
     public NFTeam(){
     }
 
-    public NFTeam(String name, int pt, int statsId, String logoUrl, int gameStatsId){
+    public NFTeam(String name, double pt, int statsId, String logoUrl, int gameStatsId){
         _name = name;
         _pt = pt;
         _statsId = statsId;
@@ -40,7 +40,7 @@ public class NFTeam implements Serializable, INFTeam {
         return _name;
     }
 
-    public int getPT(){
+    public double getPT(){
         return _pt;
     }
 

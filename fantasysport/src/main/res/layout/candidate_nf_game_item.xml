@@ -39,7 +39,8 @@
                     custom:fontFamily="prohibitionRound"
                     android:textSize="@dimen/x_medium_font"
                     android:textColor="@color/pt_button_text_color" />
-            <View android:layout_width="2dp" android:layout_height="match_parent" android:background="@color/app_blue"/>
+            <View android:layout_width="2dp"  android:layout_height="match_parent" android:background="@color/app_blue"
+                    android:id="@+id/separator_view"/>
             <com.fantasysport.views.ExButton
                     android:layout_width="42dp"
                     android:layout_height="@dimen/btn_height"

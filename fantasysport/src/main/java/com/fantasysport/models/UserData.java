@@ -74,11 +74,12 @@ public class UserData {
     private CustomerObject _customerObject;
 
     public String getCurrentSport(){
-        return _currentSport;
+        return "MLB";
+//        return _currentSport;
     }
 
     public String getCurrentCategory(){
-        return  _currentCategory != null? _currentCategory:"fantasy_sports";
+        return  _currentCategory != null? _currentCategory:"sports";
     }
 
     public void setCurrentCategory(String category){

@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 import com.fantasysport.R;
+import com.fantasysport.adapters.ILoadListener;
 import com.fantasysport.models.IndividualPrediction;
 import com.fantasysport.models.Prediction;
 import com.fantasysport.models.StatsItem;
@@ -106,9 +107,5 @@ public class IndividualPredictionAdapter extends BaseAdapter {
                 : String.format("%.2f", prediction.getGameResult());
         resultLbl.setText(resultText);
         return convertView;
-    }
-
-    public interface ILoadListener{
-        public void onLoad();
     }
 }

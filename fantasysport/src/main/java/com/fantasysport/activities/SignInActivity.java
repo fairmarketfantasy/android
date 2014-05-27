@@ -78,7 +78,7 @@ public class SignInActivity extends AuthActivity {
     }
 
     private void loadNonFantasyGames(){
-        String sport = "MLB";//_storage.getUserData().getCurrentSport();
+        String sport = _storage.getUserData().getCurrentSport();
         showProgress();
         _webProxy.getNFGames(sport, new GetNFGamesResponseListener() {
             @Override

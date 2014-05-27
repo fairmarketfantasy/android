@@ -6,12 +6,12 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
-import android.util.TypedValue;
 import com.astuetz.PagerSlidingTabStrip;
+import com.fantasysport.Const;
 import com.fantasysport.R;
-import com.fantasysport.adapters.PredictionsDropdownAdapter;
-import com.fantasysport.fragments.pages.fantasy.ActivePredictionFragment;
-import com.fantasysport.fragments.pages.fantasy.HistoryPredictionFragment;
+import com.fantasysport.factories.FactoryProvider;
+import com.fantasysport.fragments.pages.fantasy.ActivePredictionListFragment;
+import com.fantasysport.fragments.pages.fantasy.HistoryPredictionListFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,45 +19,54 @@ import java.util.List;
 /**
  * Created by bylynka on 3/19/14.
  */
-public class PredictionActivity extends BaseActivity implements ActionBar.OnNavigationListener {
+public abstract class PredictionsListActivity extends BaseActivity implements ActionBar.OnNavigationListener {
 
     private final String TIME_TYPE = "time_type";
     private final String PREDICTION_TYPE = "prediction_type";
 
-    private int _currentTimeType = 0;
-    private int _currentPredictionType = 0;
+    private int _fantasyType;
+
+    protected int _currentTimeType = 0;
+    protected int _currentPredictionType = 0;
+
     private List<ILoadContentListener> _loadContentListeners = new ArrayList<ILoadContentListener>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_predictions);
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         initStartParams(savedInstanceState);
+        _sportFactory = FactoryProvider.getFactory(_fantasyType);
+        setActionBar();
         initTabs();
-        setTopDropdown();
         raiseLoadContentListener();
     }
 
-    public TimeType getTimeType(){
-        return _currentTimeType == 0? TimeType.Active: TimeType.History;
+    protected void setActionBar() {
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
-    public PredictionType getPredictionType(){
-        return _currentPredictionType == 0? PredictionType.Roster: PredictionType.Individual;
+    public TimeType getTimeType() {
+        return _currentTimeType == 0 ? TimeType.Active : TimeType.History;
     }
 
-    public void addLoadContentListener(ILoadContentListener listener){
+    public PredictionType getPredictionType() {
+        return _currentPredictionType == 0 ? PredictionType.Roster : PredictionType.Individual;
+    }
+
+    public void addLoadContentListener(ILoadContentListener listener) {
         _loadContentListeners.add(listener);
     }
 
-    private void initStartParams(Bundle savedInstanceState){
-        if(savedInstanceState == null){
-            return;
+    private void initStartParams(Bundle savedInstanceState) {
+        if (savedInstanceState == null) {
+            _fantasyType = getIntent().getIntExtra(Const.CATEGORY_TYPE, Const.FANTASY_SPORT);
+        } else {
+            _fantasyType = savedInstanceState.getInt(Const.CATEGORY_TYPE, Const.FANTASY_SPORT);
+            _currentTimeType = savedInstanceState.getInt(TIME_TYPE);
+            _currentPredictionType = savedInstanceState.getInt(PREDICTION_TYPE);
         }
-        _currentTimeType = savedInstanceState.getInt(TIME_TYPE);
-        _currentPredictionType = savedInstanceState.getInt(PREDICTION_TYPE);
     }
 
     @Override
@@ -67,7 +76,7 @@ public class PredictionActivity extends BaseActivity implements ActionBar.OnNavi
         outState.putInt(PREDICTION_TYPE, _currentPredictionType);
     }
 
-    private void initTabs(){
+    private void initTabs() {
         final ViewPager pager = getViewById(R.id.pager);
         final PagerSlidingTabStrip tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
         TabsPagerAdapter adapter = new TabsPagerAdapter(getSupportFragmentManager());
@@ -79,6 +88,7 @@ public class PredictionActivity extends BaseActivity implements ActionBar.OnNavi
             public void onPageScrolled(int i, float v, int i2) {
 
             }
+
             @Override
             public void onPageSelected(int i) {
                 _currentTimeType = i;
@@ -92,19 +102,6 @@ public class PredictionActivity extends BaseActivity implements ActionBar.OnNavi
 
             }
         });
-    }
-
-    private void setTopDropdown(){
-        getSupportActionBar().setCustomView(null);
-        getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-        TypedValue tv = new TypedValue();
-        int height = 0;
-        if (getTheme().resolveAttribute(R.attr.actionBarSize, tv, true))
-        {
-            height = TypedValue.complexToDimensionPixelSize(tv.data,getResources().getDisplayMetrics());
-        }
-        getSupportActionBar().setListNavigationCallbacks(new PredictionsDropdownAdapter(PredictionActivity.this, height), this);
-        getSupportActionBar().setSelectedNavigationItem(_currentPredictionType);
     }
 
     @Override
@@ -123,32 +120,32 @@ public class PredictionActivity extends BaseActivity implements ActionBar.OnNavi
         return true;
     }
 
-    private void raiseLoadContentListener(){
-        for (ILoadContentListener listener : _loadContentListeners){
-            listener.onLoad(getTimeType(), getPredictionType(), true);
+    private void raiseLoadContentListener() {
+        for (ILoadContentListener listener : _loadContentListeners) {
+            listener.onLoadRequest(getTimeType(), getPredictionType(), true);
         }
     }
 
     public class TabsPagerAdapter extends FragmentPagerAdapter {
 
-        private final String[] TITLES = { "Active", "History" };
-        private HistoryPredictionFragment _historyFragment;
-        private ActivePredictionFragment _activityFragment;
+        private final String[] TITLES = {"Active", "History"};
+        private Fragment _historyFragment;
+        private Fragment _activityFragment;
 
         public TabsPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
-        private HistoryPredictionFragment getHistoryFragment(){
-            if(_historyFragment == null){
-                _historyFragment = new HistoryPredictionFragment();
+        private Fragment getHistoryFragment() {
+            if (_historyFragment == null) {
+                _historyFragment = _sportFactory.getHistoryPredictionListFragment();
             }
             return _historyFragment;
         }
 
-        private ActivePredictionFragment getActiveFragment(){
-            if(_activityFragment == null){
-                _activityFragment = new ActivePredictionFragment();
+        private Fragment getActiveFragment() {
+            if (_activityFragment == null) {
+                _activityFragment = _sportFactory.getActivePredictionListFragment();
             }
             return _activityFragment;
         }
@@ -165,21 +162,21 @@ public class PredictionActivity extends BaseActivity implements ActionBar.OnNavi
 
         @Override
         public Fragment getItem(int position) {
-            return position == 0? getActiveFragment(): getHistoryFragment();
+            return position == 0 ? getActiveFragment() : getHistoryFragment();
         }
 
     }
 
-    public interface ILoadContentListener{
-        public void onLoad(TimeType timeType, PredictionType predictionType, boolean showLoading);
+    public interface ILoadContentListener {
+        public void onLoadRequest(TimeType timeType, PredictionType predictionType, boolean showLoading);
     }
 
-    public enum PredictionType{
+    public enum PredictionType {
         Roster,
         Individual
     }
 
-    public enum TimeType{
+    public enum TimeType {
         Active,
         History
     }

@@ -10,6 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 import com.fantasysport.R;
+import com.fantasysport.adapters.ILoadListener;
 import com.fantasysport.models.Prediction;
 
 import java.text.SimpleDateFormat;
@@ -120,6 +121,7 @@ public class PredictionAdapter extends BaseAdapter {
         return convertView;
     }
 
+
     public String getStateText(String stateCode){
       if(stateCode == null){
           return "N/A";
@@ -149,9 +151,7 @@ public class PredictionAdapter extends BaseAdapter {
         }
     }
 
-    public interface ILoadListener{
-        public void onLoad();
-    }
+
 
     public interface IOnShowRosterListener{
         public void onShow(Prediction prediction);
