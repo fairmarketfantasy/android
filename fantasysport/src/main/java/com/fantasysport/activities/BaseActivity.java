@@ -47,7 +47,7 @@ public class BaseActivity extends ActionBarActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        checkForCrashes();
+//        checkForCrashes();
     }
 
     private void checkForCrashes() {
