@@ -61,15 +61,15 @@ public class GetNFGamesRequest extends BaseRequest<NFData> {
                 NFTeam away = new NFTeam(g.getAwayTeamName(), g.getAwayTeamPt(), g.getAwayTeamStatsId(), g.getAwayTeamLogo(), g.getStatsId());
                 away.setIsPredicted(g.isAwayTeamPredicted());
                 games.add(new NFGame(home, away, g.getGameDate(), g.getStatsId()));
-                if (rosterGameDataList != null) {
-                    for (RosterTeamData rgd : rosterGameDataList) {
-                        if (rgd.getGameStatsId() == g.getStatsId()) {
-                            rosterTeams.add(home.getStatsId() == rgd.getTeamStatsId() ? home : away);
-                        }
-                    }
-                }
             }
         }
+        //                if (rosterGameDataList != null) {
+//                    for (RosterTeamData rgd : rosterGameDataList) {
+//                        if (rgd.getGameStatsId() == g.getStatsId()) {
+//                            rosterTeams.add(home.getStatsId() == rgd.getTeamStatsId() ? home : away);
+//                        }
+//                    }
+//                }
         RosterInResponse rInResponse = response.getRoster();
         NFRoster roster = new NFRoster(rosterTeams, rInResponse._state, rInResponse._roomNumber, rInResponse._amountPaid, rInResponse._contestRank);
         NFData data = new NFData(roster, games);
@@ -111,8 +111,31 @@ public class GetNFGamesRequest extends BaseRequest<NFData> {
         private Integer _contestRank;
 
         @SerializedName("game_predictions")
-        private List<RosterTeamData> _rosterTeamData;
+        private List<TeamData> _rosterTeamData;
 
+    }
+
+    public class TeamData{
+
+        @SerializedName("game_stats_id")
+        private int _gameStatsId;
+
+        @SerializedName("team_name")
+        private String _name;
+
+        @SerializedName("pt")
+        private double _pt;
+
+        @SerializedName("team_stats_id")
+        private int _statsId;
+
+        private String _logoUrl;
+
+        private boolean _isSelected = false;
+
+        private boolean _isPredicted = false;
+
+        private String _gameName;
     }
 
 }

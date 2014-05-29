@@ -1,5 +1,7 @@
 package com.fantasysport.models.nonfantasy;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 
 /**
@@ -21,15 +23,22 @@ public class NFTeam implements Serializable, INFTeam {
 
     private boolean _isPredicted = false;
 
+    private String _gameName;
+
     public NFTeam(){
     }
 
-    public NFTeam(String name, double pt, int statsId, String logoUrl, int gameStatsId){
+    public NFTeam(String name, double pt, int statsId, String logoUrl, int gameStatsId, String gameName){
         _name = name;
         _pt = pt;
         _statsId = statsId;
         _logoUrl = logoUrl;
         _gameStatsId = gameStatsId;
+        _gameName = gameName;
+    }
+
+    public String getGameName(){
+        return _gameName;
     }
 
     public int getGameStatsId(){
@@ -63,7 +72,6 @@ public class NFTeam implements Serializable, INFTeam {
     public boolean isPredicted(){
         return _isPredicted;
     }
-
 
     public void setIsPredicted(boolean isPredicted) {
         _isPredicted = isPredicted;
