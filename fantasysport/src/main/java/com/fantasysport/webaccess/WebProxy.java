@@ -1,6 +1,7 @@
 package com.fantasysport.webaccess;
 
 import android.graphics.Bitmap;
+import android.support.v7.appcompat.R;
 import com.fantasysport.models.Player;
 import com.fantasysport.models.StatsItem;
 import com.fantasysport.models.User;
@@ -32,8 +33,8 @@ public final class WebProxy {
     }
 
 
-    public void getUserData(int userId, UserResponseListener listener){
-        UserRequest request = new UserRequest(userId);
+    public void getUserData(int userId, String sport, String category, UserResponseListener listener){
+        UserRequest request = new UserRequest(userId, sport, category);
         _spiceManager.execute(request, listener);
     }
 
@@ -174,6 +175,12 @@ public final class WebProxy {
 
     public void getNFGames(String sport, ResponseListener listener){
         GetNFGamesRequest request = new GetNFGamesRequest(sport);
+        request.setRetryPolicy(getRetryPolicy());
+        _spiceManager.execute(request, listener);
+    }
+
+    public void getNFRoster(String sport,int rosterId, ResponseListener listener){
+        GetNFGamesRequest request = new GetNFGamesRequest(sport, rosterId);
         request.setRetryPolicy(getRetryPolicy());
         _spiceManager.execute(request, listener);
     }

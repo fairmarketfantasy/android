@@ -9,7 +9,9 @@
                   android:layout_height="@dimen/position_view_height"
                   android:paddingLeft="@dimen/side_margin"
                   android:paddingRight="@dimen/side_margin"
-                  android:orientation="horizontal">
+                  android:orientation="horizontal"
+                  android:id="@+id/autofill_holder"
+            >
         <com.fantasysport.views.ExButton android:layout_width="wrap_content"
                                          android:layout_height="@dimen/btn_height"
                                          android:layout_gravity="center_vertical"
@@ -44,12 +46,28 @@
     <View android:layout_width="match_parent"
           android:layout_height="1dip"
           android:background="#CCCCCC"/>
+<FrameLayout android:layout_width="match_parent" android:layout_height="match_parent"
+             android:layout_weight="1">
 
-    <uk.co.senab.actionbarpulltorefresh.extras.actionbarcompat.PullToRefreshLayout android:layout_width="match_parent" android:layout_height="match_parent"
-                                                  android:layout_weight="1" android:id="@+id/refresh_games_layout">
+    <com.fantasysport.views.ExTextView android:layout_width="match_parent"
+                                       android:layout_height="match_parent"
+                                       android:layout_weight="1"
+                                       android:id="@+id/msg_lbl"
+                                       android:layout_gravity="center"
+                                       android:gravity="center"
+                                       android:textSize="@dimen/lage_font"
+                                       android:text="test"
+                                       custom:fontFamily="prohibitionRound"
+            />
+    <uk.co.senab.actionbarpulltorefresh.extras.actionbarcompat.PullToRefreshLayout
+            android:layout_width="match_parent" android:layout_height="match_parent"
+            android:layout_weight="1" android:id="@+id/refresh_games_layout">
         <ListView android:layout_width="match_parent" android:layout_height="match_parent"
                   android:id="@+id/game_list"
                   android:background="#F0F0F0"/>
     </uk.co.senab.actionbarpulltorefresh.extras.actionbarcompat.PullToRefreshLayout>
+
+</FrameLayout>
+
 
 </LinearLayout>

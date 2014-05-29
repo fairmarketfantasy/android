@@ -172,7 +172,7 @@ public class MainActivity extends BaseActivity implements BaseFantasyFragment.IP
     }
 
     protected void updateMenuHeaderImage(View headerView){
-       String sport = _storage.getUserData().getCurrentSport();
+       String sport = _storage.getUserData().getSport();
         int drawableId = sport.equalsIgnoreCase(Sport.NBA)?R.drawable.nba_background:R.drawable.mlb_background;
         BitmapDrawable bitmapDrawable = (BitmapDrawable) getResources().getDrawable(drawableId);
         Bitmap bitmap = bitmapDrawable.getBitmap();
@@ -201,7 +201,7 @@ public class MainActivity extends BaseActivity implements BaseFantasyFragment.IP
                         break;
                     case Rules:
                         UserData udata = _storage.getUserData();
-                        showWebView(String.format("pages/mobile/rules?sport=%s&category=%s", udata.getCurrentSport(), udata.getCurrentCategory()), "Rules");
+                        showWebView(String.format("pages/mobile/rules?sport=%s&category=%s", udata.getSport(), udata.getCategory()), "Rules");
                         break;
                     case Support:
                         showWebView("pages/mobile/conditions", "Subscription terms");
@@ -227,13 +227,21 @@ public class MainActivity extends BaseActivity implements BaseFantasyFragment.IP
                             data.setCurrentCategory(category.getName());
                             _menuAdapter.setMenu(data);
                             _menuAdapter.notifyDataSetChanged();
-                            ((FantasyFragment)_rootFragment).updateMarkets(true);
                             updateMenuHeaderImage(header);
+                            updateRootFragment();
                             break;
                         }
                 }
             }
         });
+    }
+
+    private void updateRootFragment(){
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.fragment_holder, (Fragment) _rootFragment, _fragmentName)
+                .commit();
+        _rootFragment.addPageChangedListener(this);
+        _rootFragment.updateMainData();
     }
 
     @Override
@@ -253,9 +261,12 @@ public class MainActivity extends BaseActivity implements BaseFantasyFragment.IP
     }
 
     protected void updateUserData() {
-        int userId = _storage.getUserData().getId();
+        UserData userData = _storage.getUserData();
+        int userId = userData.getId();
+        String sport = userData.getSport();
+        String cat = userData.getCategory();
         showProgress();
-        getWebProxy().getUserData(userId, new UserResponseListener() {
+        getWebProxy().getUserData(userId, sport, cat, new UserResponseListener() {
             @Override
             public void onRequestError(RequestError message) {
                 dismissProgress();

@@ -10,9 +10,11 @@ import com.fantasysport.fragments.main.IMainFragment;
 public interface ISportFactory {
 
     IMainFragment getMainFragment();
+    IMainFragment getPredictionFragment();
     Class<?> getPredictionListActivity();
     Fragment getActivePredictionListFragment();
     Fragment getHistoryPredictionListFragment();
+
 
 
 }

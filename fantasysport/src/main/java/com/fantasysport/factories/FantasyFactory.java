@@ -1,10 +1,9 @@
 package com.fantasysport.factories;
 
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import com.fantasysport.Const;
 import com.fantasysport.activities.fantasy.FPredictionsListActivity;
 import com.fantasysport.fragments.main.FantasyFragment;
+import com.fantasysport.fragments.main.FantasyPredictionFragment;
 import com.fantasysport.fragments.main.IMainFragment;
 import com.fantasysport.fragments.pages.fantasy.ActivePredictionListFragment;
 import com.fantasysport.fragments.pages.fantasy.HistoryPredictionListFragment;
@@ -34,6 +33,11 @@ public class FantasyFactory implements ISportFactory {
     @Override
     public IMainFragment getMainFragment() {
         return new FantasyFragment();
+    }
+
+    @Override
+    public IMainFragment getPredictionFragment() {
+        return new FantasyPredictionFragment();
     }
 
     @Override

@@ -38,8 +38,8 @@ public class ActivePredictionListFragment extends BasePredictionListFragment imp
     private void loadPredictions(){
         showProgress();
         UserData data = getStorage().getUserData();
-        String cat = data.getCurrentCategory();
-        String sport = data.getCurrentSport();
+        String cat = data.getCategory();
+        String sport = data.getSport();
         getWebProxy().getPredictions(cat, sport, new PredictionsResponseListener() {
             @Override
             public void onRequestError(RequestError error) {
@@ -61,8 +61,8 @@ public class ActivePredictionListFragment extends BasePredictionListFragment imp
 
     private void loadIndividualPredictions(){
         UserData data = getStorage().getUserData();
-        String cat = data.getCurrentCategory();
-        String sport = data.getCurrentSport();
+        String cat = data.getCategory();
+        String sport = data.getSport();
         showProgress();
         getWebProxy().getIndividualPredictions(cat, sport, new IndividualPredictionsResponseListener() {
             @Override

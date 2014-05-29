@@ -5,16 +5,17 @@ import com.fantasysport.utility.DateUtils;
 import com.fantasysport.utility.DeviceInfo;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by bylynka on 5/27/14.
  */
-public class NFPrediction {
+public class NFPrediction implements Serializable {
 
     public final String SUBMITTED = "submitted";
     public final String FINISHED = "finished";
-    public final String CANCELED = "cancelled";
+    public final String CANCELED = "canceled";
 
     @SerializedName("id")
     private int _id = -1;
@@ -33,6 +34,9 @@ public class NFPrediction {
 
     @SerializedName("cancelled_at")
     private String _newDate;
+
+    @SerializedName("expected_payout")
+    private Double _award;
 
     public String getNewDate(){
         return _newDate;
@@ -70,11 +74,13 @@ public class NFPrediction {
       return _id < 0;
     }
 
+    public Double getAward() {
+        return _award == null? 0: _award;
+    }
+
     public enum State{
         Submitted,
         Finished,
         Canceled
     }
-
-
 }

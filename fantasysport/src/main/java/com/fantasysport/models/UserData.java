@@ -73,12 +73,12 @@ public class UserData {
     @SerializedName("customer_object")
     private CustomerObject _customerObject;
 
-    public String getCurrentSport(){
+    public String getSport(){
         return "MLB";
 //        return _currentSport;
     }
 
-    public String getCurrentCategory(){
+    public String getCategory(){
         return  _currentCategory != null? _currentCategory:"sports";
     }
 

@@ -99,8 +99,14 @@ public class IndividualPredictionAdapter extends BaseAdapter {
             predictionText = String.format("%s: %.2f %s",
                     item.getMode().equalsIgnoreCase(StatsItem.LESS_MODE)?"Under":"Over",
                     item.getValue(), item.getName());
+            predictionLbl.setText(predictionText);
+            convertView.findViewById(R.id.pred_header_lbl).setVisibility(View.VISIBLE);
+            convertView.findViewById(R.id.pred_dot).setVisibility(View.VISIBLE);
+        }else{
+            convertView.findViewById(R.id.pred_header_lbl).setVisibility(View.INVISIBLE);
+            convertView.findViewById(R.id.pred_dot).setVisibility(View.INVISIBLE);
         }
-        predictionLbl.setText(predictionText);
+
         TextView resultLbl = (TextView)convertView.findViewById(R.id.result_lbl);
         String resultText = prediction.getState().equalsIgnoreCase(IndividualPrediction.CANCELED)
                 ?_context.getString(R.string.did_not_play)

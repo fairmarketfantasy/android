@@ -118,7 +118,7 @@ public class NFPredictionAdapter extends BaseAdapter {
     private String getAward(NFPrediction prediction){
         switch (prediction.getState()){
             case Finished:
-                return "!!!";
+                return String.format("%.1f", prediction.getAward());
             default:
                 return "N/A";
         }

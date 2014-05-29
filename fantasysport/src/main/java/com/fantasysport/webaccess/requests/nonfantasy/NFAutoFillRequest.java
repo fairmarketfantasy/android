@@ -70,30 +70,12 @@ public class NFAutoFillRequest extends BaseRequest<NFAutoFillData> {
         @SerializedName("predictions")
         private List<RosterTeamData> _candidateGamesData;
 
-
         public List<RosterTeamData> getRosterGamesData() {
             return _candidateGamesData;
         }
 
         public List<Game> getGames() {
             return _games;
-        }
-    }
-
-    public class RosterTeamData {
-
-        @SerializedName("team_stats_id")
-        private int _teamStatsId;
-
-        @SerializedName("game_stats_id")
-        private int _gameStatsId;
-
-        public int getTeamStatsId(){
-            return _teamStatsId;
-        }
-
-        public int getGameStatsId(){
-            return _gameStatsId;
         }
     }
 }

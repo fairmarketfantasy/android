@@ -71,8 +71,8 @@ public class HistoryPredictionListFragment extends BasePredictionListFragment im
             showProgress();
         }
         UserData data = getStorage().getUserData();
-        String cat = data.getCurrentCategory();
-        String sport = data.getCurrentSport();
+        String cat = data.getCategory();
+        String sport = data.getSport();
         getWebProxy().getPredictions(cat, sport, new PredictionsResponseListener() {
             @Override
             public void onRequestError(RequestError error) {
@@ -121,8 +121,8 @@ public class HistoryPredictionListFragment extends BasePredictionListFragment im
             showProgress();
         }
         UserData data = getStorage().getUserData();
-        String cat = data.getCurrentCategory();
-        String sport = data.getCurrentSport();
+        String cat = data.getCategory();
+        String sport = data.getSport();
         getWebProxy().getIndividualPredictions(cat, sport, new IndividualPredictionsResponseListener() {
             @Override
             public void onRequestError(RequestError error) {
@@ -143,7 +143,9 @@ public class HistoryPredictionListFragment extends BasePredictionListFragment im
                     return;
                 }
                 if(predictions.size() >= 25){
-                    predictions.add(new IndividualPrediction());
+                    IndividualPrediction prediction = new IndividualPrediction();
+                    prediction.setIsEmpty(true);
+                    predictions.add(prediction);
                     _individualPredictionAdapter.setLoadListener(_individualPredictionOnLoadListener);
                 }
                 _individualPredictions.addAll(predictions);
@@ -176,6 +178,7 @@ public class HistoryPredictionListFragment extends BasePredictionListFragment im
         intent.putExtra(Const.MARKET, prediction.getMarket());
         intent.putExtra(Const.PREDICTION, PredictionRoster.History);
         intent.putExtra(Const.ROSTER_ID, prediction.getId());
+        intent.putExtra(Const.CATEGORY_TYPE, Const.FANTASY_SPORT);
         getPredictionActivity().startActivity(intent);
     }
 }

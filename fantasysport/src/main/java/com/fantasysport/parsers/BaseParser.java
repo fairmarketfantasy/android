@@ -37,6 +37,7 @@ public abstract class BaseParser {
     }
 
     protected Double getDouble(Object value){
+        try{
         if(value == null){
             return  0d;
         }
@@ -44,6 +45,9 @@ public abstract class BaseParser {
             return (Double)value;
         }
         return Double.parseDouble((String)value);
+        }catch (Exception e){
+            return 0d;
+        }
     }
 
     protected void initParams(BsonDataWrapper bsonData){

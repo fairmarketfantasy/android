@@ -6,12 +6,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import com.fantasysport.R;
-import com.fantasysport.activities.MainActivity;
+import com.fantasysport.activities.IMainActivity;
 import com.fantasysport.adapters.nonfantasy.NFCandidateGamesAdapter;
 import com.fantasysport.fragments.BaseActivityFragment;
-import com.fantasysport.fragments.NFMediator;
-import com.fantasysport.fragments.main.NonFantasyFragment;
+import com.fantasysport.fragments.main.IMainFragment;
+import com.fantasysport.fragments.main.INFMainFragment;
+import com.fantasysport.models.NFData;
+import com.fantasysport.models.NFRoster;
+import com.fantasysport.models.Roster;
 import com.fantasysport.models.nonfantasy.NFAutoFillData;
 import com.fantasysport.models.nonfantasy.NFGame;
 import com.fantasysport.models.nonfantasy.NFTeam;
@@ -24,12 +28,14 @@ import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 
 import java.util.ArrayList;
 import java.util.List;
+
 /**
  * Created by bylynka on 5/16/14.
  */
 
 public class GameCandidatesFragment extends BaseActivityFragment implements NFCandidateGamesAdapter.IListener,
-        NFMediator.ITeamRemovedListener, OnRefreshListener, NFMediator.IGamesUpdatedListener, NFMediator.IAutoFillDataListener {
+        NFMediator.ITeamRemovedListener, OnRefreshListener, NFMediator.IGamesUpdatedListener, NFMediator.IAutoFillDataListener,
+        NFMediator.IOnDataUpdatedListener {
 
     private final String SAVED_GAMES = "saved_games";
 
@@ -44,24 +50,34 @@ public class GameCandidatesFragment extends BaseActivityFragment implements NFCa
         return _rootView;
     }
 
-    private void init(){
-        NonFantasyFragment fragment = (NonFantasyFragment)((MainActivity) getActivity()).getRootFragment();
-        _mediator = fragment.getMediator();
+    private void init() {
+        IMainFragment fragment = ((IMainActivity) getActivity()).getRootFragment();
+        _mediator = (NFMediator) fragment.getMediator();
         _mediator.addTeamRemovedListener(this);
         _mediator.addGamesUpdatedListener(this);
         _mediator.addAutoFillDataListener(this);
+        View autoFill = getViewById(R.id.autofill_holder);
         _swipeRefreshLayout = getViewById(R.id.refresh_games_layout);
-        ActionBarPullToRefresh.from(getActivity())
-                .allChildrenArePullable()
-                .listener(this)
-                .setup(_swipeRefreshLayout);
+        if (getMainFragment().isEditable()) {
+            autoFill.setVisibility(View.VISIBLE);
+            _swipeRefreshLayout.setVisibility(View.VISIBLE);
+            ActionBarPullToRefresh.from(getActivity())
+                    .allChildrenArePullable()
+                    .listener(this)
+                    .setup(_swipeRefreshLayout);
+        } else {
+            autoFill.setVisibility(View.GONE);
+            _swipeRefreshLayout.setVisibility(View.VISIBLE);
+        }
         Button autoFillBtn = getViewById(R.id.autofill_btn);
         autoFillBtn.setOnClickListener(_autoFillBtnOnClickListener);
         initAdapter();
     }
 
-    private void initAdapter(){
-        List<NFGame> games = getStorage().getNFDataContainer().getCandidateGames();
+
+    private void initAdapter() {
+        NFData data = getMainFragment().getData();
+        List<NFGame> games = data != null ? data.getCandidateGames() : null;
         ListView listView = getViewById(R.id.game_list);
         _adapter = new NFCandidateGamesAdapter(getActivity(), games);
         _adapter.setListener(this);
@@ -88,7 +104,42 @@ public class GameCandidatesFragment extends BaseActivityFragment implements NFCa
                 .show();
     }
 
-    private void doIndividualPrediction(final NFTeam team){
+
+    public String getFinishedMsg(NFRoster roster) {
+        String end;
+        if (roster.getState() == NFRoster.State.Undefined ||
+                roster.getState() == NFRoster.State.Canceled ||
+                roster.getContestRank() == null) {
+            return "N/A";
+        }
+        switch (roster.getContestRank()) {
+            case 1:
+                end = "st";
+                break;
+            case 2:
+                end = "nd";
+                break;
+            case 3:
+                end = "rd";
+                break;
+            default:
+                end = "th";
+                break;
+        }
+
+        String msg = String.format("YOU TOOK %d%s PLACE\n", roster.getContestRank(), end);
+        if (roster.getAmountPaid() == null) {
+            return msg;
+        }
+        if (roster.getAmountPaid() == 0) {
+            msg += "DIDN'T WIN THIS TIME";
+        } else {
+            msg += String.format("AND WON %.2f", roster.getAmountPaid());
+        }
+        return msg;
+    }
+
+    private void doIndividualPrediction(final NFTeam team) {
         team.setIsPredicted(true);
         _adapter.notifyDataSetChanged();
         showProgress();
@@ -112,18 +163,18 @@ public class GameCandidatesFragment extends BaseActivityFragment implements NFCa
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-       List<NFGame> games = _adapter.getGames();
-       outState.putSerializable(SAVED_GAMES, new ArrayList<NFGame>(games));
+        List<NFGame> games = _adapter.getGames();
+        outState.putSerializable(SAVED_GAMES, new ArrayList<NFGame>(games));
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if(savedInstanceState == null){
+        if (savedInstanceState == null) {
             return;
         }
-        List<NFGame> games =  (ArrayList<NFGame>)savedInstanceState.getSerializable(SAVED_GAMES);
-        if(games == null){
+        List<NFGame> games = (ArrayList<NFGame>) savedInstanceState.getSerializable(SAVED_GAMES);
+        if (games == null) {
             return;
         }
         _adapter.setGames(games);
@@ -132,12 +183,12 @@ public class GameCandidatesFragment extends BaseActivityFragment implements NFCa
 
     @Override
     public void onRemovedTeam(Object sender, NFTeam team) {
-       List<NFGame> games = _adapter.getGames();
-        if(games == null){
+        List<NFGame> games = _adapter.getGames();
+        if (games == null) {
             return;
         }
-        for (NFGame game : games){
-            if(game.getStatsId() == team.getGameStatsId()){
+        for (NFGame game : games) {
+            if (game.getStatsId() == team.getGameStatsId()) {
                 NFTeam gameTeam = game.getAwayTeam().getStatsId() == team.getStatsId()
                         ? game.getAwayTeam()
                         : game.getHomeTeam();
@@ -157,6 +208,9 @@ public class GameCandidatesFragment extends BaseActivityFragment implements NFCa
 
     @Override
     public void onGamesUpdated(Object sender, List<NFGame> games) {
+        if(!getMainFragment().isEditable()){
+            return;
+        }
         _adapter.setGames(games);
         _adapter.notifyDataSetChanged();
         _swipeRefreshLayout.setRefreshing(false);
@@ -171,10 +225,26 @@ public class GameCandidatesFragment extends BaseActivityFragment implements NFCa
 
     @Override
     public void onAutoFillData(Object sender, NFAutoFillData data) {
-        if(_adapter == null || data == null || data.getCandidateGames() == null){
+        if (_adapter == null || data == null || data.getCandidateGames() == null) {
             return;
         }
         _adapter.setGames(data.getCandidateGames());
         _adapter.notifyDataSetChanged();
+    }
+
+    public INFMainFragment getMainFragment() {
+        return (INFMainFragment) ((IMainActivity) getActivity()).getRootFragment();
+    }
+
+    @Override
+    public void onDataUpdated(Object sender) {
+        NFData data = getMainFragment().getData();
+        if (getMainFragment().isEditable()) {
+            _adapter.setGames(data.getCandidateGames());
+            _adapter.notifyDataSetChanged();
+        } else {
+            TextView msgLbl = getViewById(R.id.msg_lbl);
+            msgLbl.setText(getFinishedMsg(data.getRoster()));
+        }
     }
 }

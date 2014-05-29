@@ -19,9 +19,14 @@ public class IndividualPrediction {
     private double _pt;
     private String _state;
     private double _gameResult;
+    private boolean _isEmpty = false;
 
     public boolean isEmpty(){
-        return _eventPredictions == null;
+        return _isEmpty;
+    }
+
+    public void setIsEmpty(boolean isEmpty){
+        _isEmpty = isEmpty;
     }
 
     public String getMarketName() {

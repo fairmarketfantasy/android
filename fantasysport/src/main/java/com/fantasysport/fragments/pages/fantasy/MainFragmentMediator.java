@@ -1,5 +1,6 @@
 package com.fantasysport.fragments.pages.fantasy;
 
+import com.fantasysport.fragments.pages.IMediator;
 import com.fantasysport.models.Market;
 import com.fantasysport.models.Player;
 
@@ -9,7 +10,7 @@ import java.util.List;
 /**
  * Created by bylynka on 3/18/14.
  */
-public class MainFragmentMediator {
+public class MainFragmentMediator implements IMediator{
 
     private List<IMarketListener> _marketListeners = new ArrayList<IMarketListener>();
     private List<IRemainingSalaryListener> _remainingSalaryListeners = new ArrayList<IRemainingSalaryListener>();

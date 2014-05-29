@@ -23,6 +23,7 @@ public class GetNFIndividualPredictionRequest extends BaseRequest<List> {
         _page = page;
         _sport = sport;
         _isHistory = isHistory;
+        _category = category;
     }
 
     @Override
@@ -32,16 +33,18 @@ public class GetNFIndividualPredictionRequest extends BaseRequest<List> {
                 .appendPath("mine")
                 .appendQueryParameter("sport", _sport)
                 .appendQueryParameter("category", _category)
-                .appendQueryParameter("access_token", getAccessToken());
-        if(_page > 0){
+                .appendQueryParameter("access_token", getAccessToken())
+                .appendQueryParameter("page", Integer.toString(_page));
+        if(_isHistory){
             uriBuilder.appendQueryParameter("historical", "true");
-            uriBuilder.appendQueryParameter("page", Integer.toString(_page));
+
         }
         String url = uriBuilder.build().toString();
         HttpRequest request = getHttpRequestFactory().buildGetRequest(new GenericUrl(url));
         request.getHeaders().setAccept("application/json");
         String result = request.execute().parseAsString();
-        return null;
+        IndividualPredictionParser parser = new IndividualPredictionParser();
+        return parser.parse(result);
     }
 
 }

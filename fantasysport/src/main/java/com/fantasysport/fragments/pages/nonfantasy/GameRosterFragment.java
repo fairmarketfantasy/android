@@ -7,11 +7,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
 import com.fantasysport.R;
-import com.fantasysport.activities.MainActivity;
+import com.fantasysport.activities.IMainActivity;
 import com.fantasysport.adapters.nonfantasy.*;
 import com.fantasysport.fragments.BaseActivityFragment;
-import com.fantasysport.fragments.NFMediator;
-import com.fantasysport.fragments.main.NonFantasyFragment;
+import com.fantasysport.fragments.main.IMainFragment;
+import com.fantasysport.fragments.main.INFMainFragment;
+import com.fantasysport.models.NFData;
 import com.fantasysport.models.nonfantasy.*;
 import com.fantasysport.webaccess.requestListeners.RequestError;
 import com.fantasysport.webaccess.requestListeners.SubmitNFRosterResponseListener;
@@ -25,7 +26,8 @@ import java.util.List;
  * Created by bylynka on 5/16/14.
  */
 public class GameRosterFragment extends BaseActivityFragment implements NFRosterAdapter.IListener,
-        NFMediator.ITeamSelectedListener, NFMediator.IGamesUpdatedListener, NFMediator.IAutoFillDataListener {
+        NFMediator.ITeamSelectedListener, NFMediator.IGamesUpdatedListener, NFMediator.IAutoFillDataListener,
+        NFMediator.IOnDataUpdatedListener {
 
     private final String SELECTED_TEAMS = "selected_teams";
 
@@ -41,11 +43,21 @@ public class GameRosterFragment extends BaseActivityFragment implements NFRoster
     }
 
     private void init() {
-        NonFantasyFragment fragment = (NonFantasyFragment) ((MainActivity) getActivity()).getRootFragment();
-        _mediator = fragment.getMediator();
+        IMainFragment fragment = ((IMainActivity) getActivity()).getRootFragment();
+        _mediator = (NFMediator) fragment.getMediator();
         _mediator.addTeamSelectedListener(this);
         _mediator.addGamesUpdatedListener(this);
         _mediator.addAutoFillDataListener(this);
+        _mediator.addOnDataUpdatedListener(this);
+        View autoFill = getViewById(R.id.autofill_holder);
+        View bottomBar = getViewById(R.id.bottom_bar);
+        if(getMainFragment().isEditable()){
+            autoFill.setVisibility(View.VISIBLE);
+            bottomBar.setVisibility(View.VISIBLE);
+        }else {
+            autoFill.setVisibility(View.GONE);
+            bottomBar.setVisibility(View.GONE);
+        }
         _submitBtn = getViewById(R.id.submit_btn);
         _submitBtn.setOnClickListener(_submitBtnOnClickListener);
         initAdapter();
@@ -74,7 +86,8 @@ public class GameRosterFragment extends BaseActivityFragment implements NFRoster
     private void initAdapter() {
         ListView listView = getViewById(R.id.game_list);
         _adapter = new NFRosterAdapter(getActivity());
-        _adapter.setGames(getStorage().getNFDataContainer().getCandidateGames());
+        NFData data = getMainFragment().getData();
+        _adapter.setGames(data != null ? data.getCandidateGames() : null);
         _adapter.setListener(this);
         listView.setAdapter(_adapter);
         setEmptyRoster();
@@ -92,7 +105,7 @@ public class GameRosterFragment extends BaseActivityFragment implements NFRoster
 
     @Override
     public void onDismiss(NFTeam team) {
-        if(_adapter == null){
+        if (_adapter == null) {
             return;
         }
         List<INFTeam> teams = _adapter.getTeams();
@@ -112,7 +125,7 @@ public class GameRosterFragment extends BaseActivityFragment implements NFRoster
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         List<INFTeam> teams = _adapter.getTeams();
-        if(teams == null){
+        if (teams == null) {
             return;
         }
         outState.putSerializable("SELECTED_TEAMS", new ArrayList<INFTeam>(teams));
@@ -121,11 +134,11 @@ public class GameRosterFragment extends BaseActivityFragment implements NFRoster
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if(savedInstanceState == null){
+        if (savedInstanceState == null) {
             return;
         }
-        List<INFTeam> teams = (ArrayList<INFTeam>)savedInstanceState.getSerializable(SELECTED_TEAMS);
-        if(teams == null){
+        List<INFTeam> teams = (ArrayList<INFTeam>) savedInstanceState.getSerializable(SELECTED_TEAMS);
+        if (teams == null) {
             return;
         }
         _adapter.setTeams(teams);
@@ -187,10 +200,10 @@ public class GameRosterFragment extends BaseActivityFragment implements NFRoster
     Comparator _teamComparator = new Comparator<INFTeam>() {
         @Override
         public int compare(INFTeam lhs, INFTeam rhs) {
-            if(lhs.getClass() == rhs.getClass()){
+            if (lhs.getClass() == rhs.getClass()) {
                 return 0;
             }
-            return  lhs instanceof EmptyNFTeam ? 1: -1;
+            return lhs instanceof EmptyNFTeam ? 1 : -1;
         }
     };
 
@@ -213,5 +226,28 @@ public class GameRosterFragment extends BaseActivityFragment implements NFRoster
         _adapter.setGames(data.getCandidateGames());
         _adapter.notifyDataSetChanged();
         updateSubmitBtnState();
+    }
+
+    @Override
+    public void onDataUpdated(Object sender) {
+        NFData data = getMainFragment().getData();
+
+        _adapter.setGames(data.getCandidateGames());
+        List<INFTeam> teams = new ArrayList<INFTeam>();
+        List<NFTeam> rosterTeams = data.getRoster().getTeams();
+        for (int i = 0; i < data.getRoster().getRoomNumber(); i++){
+            if(rosterTeams.size() > i){
+                teams.add(rosterTeams.get(i));
+            }else {
+                teams.add(new EmptyNFTeam());
+            }
+        }
+        _adapter.setTeams(teams);
+        _adapter.notifyDataSetChanged();
+        updateSubmitBtnState();
+    }
+
+    public INFMainFragment getMainFragment() {
+        return (INFMainFragment) ((IMainActivity) getActivity()).getRootFragment();
     }
 }

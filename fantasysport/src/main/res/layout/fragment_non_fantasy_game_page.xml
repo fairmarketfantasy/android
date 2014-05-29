@@ -9,7 +9,8 @@
                   android:layout_height="@dimen/position_view_height"
                   android:paddingLeft="@dimen/side_margin"
                   android:paddingRight="@dimen/side_margin"
-                  android:orientation="horizontal">
+                  android:orientation="horizontal"
+                  android:id="@+id/autofill_holder">
         <com.fantasysport.views.ExButton android:layout_width="wrap_content"
                                          android:layout_height="@dimen/btn_height"
                                          android:layout_gravity="center_vertical"

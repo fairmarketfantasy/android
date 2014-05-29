@@ -2,8 +2,7 @@ package com.fantasysport.fragments.main;
 
 import com.fantasysport.Const;
 import com.fantasysport.R;
-import com.fantasysport.activities.MainActivity;
-import com.fantasysport.fragments.MenuHeaderFragment;
+import com.fantasysport.fragments.pages.IMediator;
 import com.fantasysport.models.Market;
 import com.fantasysport.models.UserData;
 import com.fantasysport.utility.CacheProvider;
@@ -11,7 +10,6 @@ import com.fantasysport.utility.DateUtils;
 import com.fantasysport.utility.DeviceInfo;
 import com.fantasysport.webaccess.requestListeners.MarketsResponseListener;
 import com.fantasysport.webaccess.requestListeners.RequestError;
-import com.fantasysport.webaccess.requestListeners.UserResponseListener;
 import com.fantasysport.webaccess.responses.MarketResponse;
 
 import java.util.ArrayList;
@@ -81,8 +79,8 @@ public class FantasyFragment extends BaseFantasyFragment
 
     public void updateMarkets(final boolean isTimeChanged) {
         UserData data = getStorage().getUserData();
-        String cat = data.getCurrentCategory();
-        String sport = data.getCurrentSport();
+        String cat = data.getCategory();
+        String sport = data.getSport();
         showProgress();
         getWebProxy().getMarkets(cat, sport, new MarketsResponseListener() {
             @Override
@@ -111,7 +109,12 @@ public class FantasyFragment extends BaseFantasyFragment
 
     @Override
     public void updateMainData() {
-        updateMainData(false);
+        updateMainData(true);
+    }
+
+    @Override
+    public IMediator getMediator() {
+        return null;
     }
 
     public interface IOnMarketsListener {

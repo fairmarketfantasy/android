@@ -1,5 +1,6 @@
-package com.fantasysport.fragments;
+package com.fantasysport.fragments.pages.nonfantasy;
 
+import com.fantasysport.fragments.pages.IMediator;
 import com.fantasysport.models.nonfantasy.NFAutoFillData;
 import com.fantasysport.models.nonfantasy.NFGame;
 import com.fantasysport.models.nonfantasy.NFTeam;
@@ -10,7 +11,7 @@ import java.util.List;
 /**
  * Created by bylynka on 5/19/14.
  */
-public class NFMediator {
+public class NFMediator implements IMediator {
 
     private List<ITeamSelectedListener> _teamSelectedListeners = new ArrayList<ITeamSelectedListener>();
     private List<ITeamRosterUpdatedListener> _teamRosterUpdatedListeners = new ArrayList<ITeamRosterUpdatedListener>();
@@ -19,6 +20,11 @@ public class NFMediator {
     private List<IGamesUpdatedListener> _gamesUpdatedListeners = new ArrayList<IGamesUpdatedListener>();
     private List<IAutoFillRequestListener> _autoFillRequestListeners = new ArrayList<IAutoFillRequestListener>();
     private List<IAutoFillDataListener> _autoFillDataListeners = new ArrayList<IAutoFillDataListener>();
+    private List<IOnDataUpdatedListener> _onDataUpdatedListeners = new ArrayList<IOnDataUpdatedListener>();
+
+    public void addOnDataUpdatedListener(IOnDataUpdatedListener listener){
+        _onDataUpdatedListeners.add(listener);
+    }
 
     public void addAutoFillDataListener(IAutoFillDataListener listener){
         _autoFillDataListeners.add(listener);
@@ -57,6 +63,12 @@ public class NFMediator {
     public void removeTeamFromRoster(Object sender, NFTeam team){
         for (ITeamRemovedListener listener : _teamRemovedListeners){
             listener.onRemovedTeam(sender, team);
+        }
+    }
+
+    public void updateData(Object sender){
+        for(IOnDataUpdatedListener listener : _onDataUpdatedListeners){
+            listener.onDataUpdated(sender);
         }
     }
 
@@ -117,5 +129,9 @@ public class NFMediator {
 
     public interface IAutoFillDataListener{
         void onAutoFillData(Object sender, NFAutoFillData data);
+    }
+
+    public interface IOnDataUpdatedListener {
+        void onDataUpdated(Object sender);
     }
 }

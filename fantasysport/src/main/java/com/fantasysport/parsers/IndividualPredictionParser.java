@@ -61,8 +61,10 @@ public class IndividualPredictionParser extends BaseParser {
         prediction.setState(state);
         double gameResult = getDouble(_objects.get(firstField + _keyMap.get(GAME_RESULT)));
         prediction.setGameResult(gameResult);
-        List<StatsItem> statsItems = parseStatsItems((ArrayList) _objects.get(firstField + _keyMap.get(EVENT_PREDICTIONS)));
-        prediction.setEventPredictions(statsItems);
+        if(_keyMap.containsKey(EVENT_PREDICTIONS)){
+            List<StatsItem> statsItems = parseStatsItems((ArrayList) _objects.get(firstField + _keyMap.get(EVENT_PREDICTIONS)));
+            prediction.setEventPredictions(statsItems);
+        }
         return prediction;
     }
 

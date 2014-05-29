@@ -4,7 +4,9 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.widget.ImageView;
+import com.fantasysport.Const;
 import com.fantasysport.R;
+import com.fantasysport.factories.FactoryProvider;
 import com.fantasysport.fragments.main.BaseFantasyFragment;
 import com.fantasysport.fragments.main.FantasyPredictionFragment;
 import com.fantasysport.fragments.main.IMainFragment;
@@ -19,13 +21,19 @@ public class MainPredictionActivity extends BaseActivity implements BaseFantasyF
 
     protected ImageView _leftSwipeImg;
     protected ImageView _rightSwipeImg;
+    private int _fantasyType;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prediction_main);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        initStartParams(savedInstanceState);
+        _sportFactory = FactoryProvider.getFactory(_fantasyType);
         if (savedInstanceState == null) {
-            _rootFragment = new FantasyPredictionFragment();
+            _rootFragment = _sportFactory.getPredictionFragment();
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.fragment_holder, (Fragment) _rootFragment, _fragmentName)
                     .commit();
@@ -34,6 +42,14 @@ public class MainPredictionActivity extends BaseActivity implements BaseFantasyF
         _leftSwipeImg = getViewById(R.id.left_point_img);
         _rightSwipeImg = getViewById(R.id.right_point_img);
         setPageIndicator(0);
+    }
+
+    private void initStartParams(Bundle savedInstanceState){
+        if(savedInstanceState == null){
+            _fantasyType = getIntent().getIntExtra(Const.CATEGORY_TYPE, Const.FANTASY_SPORT);
+        }else {
+            _fantasyType = savedInstanceState.getInt(Const.CATEGORY_TYPE, Const.FANTASY_SPORT);
+        }
     }
 
     protected void setPageIndicator(int position) {

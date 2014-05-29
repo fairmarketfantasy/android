@@ -271,8 +271,8 @@ public class AuthActivity extends BaseActivity {
     protected void loadMarkets(){
         showProgress();
         UserData data = _storage.getUserData();
-        String cat = data.getCurrentCategory();
-        String sport = data.getCurrentSport();
+        String cat = data.getCategory();
+        String sport = data.getSport();
         _webProxy.getMarkets(cat, sport, _marketsResponseListener);
     }
 

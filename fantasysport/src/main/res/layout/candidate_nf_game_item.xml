@@ -5,8 +5,8 @@
              android:layout_width="match_parent"
              android:layout_height="wrap_content"
              android:stretchColumns="*"
-             android:paddingRight="@dimen/side_margin"
-             android:paddingLeft="@dimen/side_margin"
+             android:paddingRight="8dp"
+             android:paddingLeft="8dp"
              android:paddingBottom="@dimen/side_hor_margin"
              android:paddingTop="@dimen/side_hor_margin"
         >
@@ -32,7 +32,7 @@
                       android:orientation="horizontal"
                       android:layout_gravity="center">
             <com.fantasysport.views.ExButton
-                    android:layout_width="42dp"
+                    android:layout_width="48dp"
                     android:layout_height="@dimen/btn_height"
                     android:id="@+id/home_team_pt_btn"
                     android:background="@drawable/left_pt_button"
@@ -42,7 +42,7 @@
             <View android:layout_width="2dp"  android:layout_height="match_parent" android:background="@color/app_blue"
                     android:id="@+id/separator_view"/>
             <com.fantasysport.views.ExButton
-                    android:layout_width="42dp"
+                    android:layout_width="48dp"
                     android:layout_height="@dimen/btn_height"
                     android:id="@+id/away_team_pt_btn"
                     android:background="@drawable/right_pt_button"

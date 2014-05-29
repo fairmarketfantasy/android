@@ -35,4 +35,5 @@ public class Const {
     public static final String GMT_IN_MINUTES = "gmt_in_minutes";
     public static final String TIME_ZONE_CHANGED = "time_zone_changed";
     public static final String IS_HISTORY = "is_history";
+    public static final String CAN_EDIT = "can_edit";
 }

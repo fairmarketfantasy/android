@@ -65,7 +65,7 @@ public class Storage implements Serializable {
     }
 
     public boolean isFantasyCategory() {
-        return _userData.getCurrentCategory().equalsIgnoreCase("fantasy_sports") ;
+        return _userData.getCategory().equalsIgnoreCase("fantasy_sports") ;
     }
 
     public void setNFData(NFData nfData) {

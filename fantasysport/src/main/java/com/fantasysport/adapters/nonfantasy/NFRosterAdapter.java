@@ -102,7 +102,7 @@ public class NFRosterAdapter extends BaseAdapter {
         gameTimeLbl.setText(_sdf.format(game.getDate()));
 
         Button ptBtn = (Button)convertView.findViewById(R.id.pt_btn);
-        ptBtn.setVisibility(View.VISIBLE);
+        ptBtn.setVisibility(View.GONE);
 
         Button dismissBtn = (Button)convertView.findViewById(R.id.dismiss_game_btn);
         ImageView logo = (ImageView)convertView.findViewById(R.id.circle_img);
@@ -120,7 +120,7 @@ public class NFRosterAdapter extends BaseAdapter {
     private void prepareEmptyGameView(View convertView){
         convertView.findViewById(R.id.team_lbl).setVisibility(View.INVISIBLE);
         convertView.findViewById(R.id.game_name_lbl).setVisibility(View.INVISIBLE);
-        convertView.findViewById(R.id.pt_btn).setVisibility(View.INVISIBLE);
+        convertView.findViewById(R.id.pt_btn).setVisibility(View.GONE);
         convertView.findViewById(R.id.dismiss_game_btn).setVisibility(View.INVISIBLE);
         ImageView logo = (ImageView)convertView.findViewById(R.id.circle_img);
         logo.setImageResource(R.drawable.circle_2);

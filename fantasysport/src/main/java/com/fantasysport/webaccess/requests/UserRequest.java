@@ -13,10 +13,14 @@ import com.google.gson.Gson;
 public class UserRequest extends BaseRequest<UserData> {
 
     private int _userId;
+    private String _sport;
+    private String _category;
 
-    public UserRequest(int userId) {
+    public UserRequest(int userId, String sport, String category) {
         super(UserData.class);
         _userId = userId;
+        _sport = sport;
+        _category = category;
     }
 
     @Override
@@ -31,6 +35,8 @@ public class UserRequest extends BaseRequest<UserData> {
         request.getHeaders().setAccept("application/json");
         String result = request.execute().parseAsString();
         UserData data = new Gson().fromJson(result, UserData.class);
+        data.setCurrentSport(_sport);
+        data.setCurrentCategory(_category);
         data.setUpdatedAt(DateUtils.getCurrentDate().getTime());
         _rHelper.loadUserData(data);
         return data;

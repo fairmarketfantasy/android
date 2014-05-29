@@ -5,6 +5,7 @@ import android.os.Bundle;
 import com.fantasysport.Const;
 import com.fantasysport.R;
 import com.fantasysport.adapters.fantasy.FantasyPagerAdapter;
+import com.fantasysport.fragments.pages.IMediator;
 import com.fantasysport.fragments.pages.fantasy.PredictionRoster;
 import com.fantasysport.models.Market;
 import com.fantasysport.views.AnimatedViewPager;
@@ -68,5 +69,10 @@ public class FantasyPredictionFragment extends BaseFantasyFragment {
 
     @Override
     public void updateMainData() {
+    }
+
+    @Override
+    public IMediator getMediator() {
+        return null;
     }
 }
