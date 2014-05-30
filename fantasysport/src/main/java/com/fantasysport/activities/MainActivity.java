@@ -22,20 +22,23 @@ import com.fantasysport.adapters.SportMenuItem;
 import com.fantasysport.factories.FactoryProvider;
 import com.fantasysport.fragments.MenuHeaderFragment;
 import com.fantasysport.fragments.main.BaseFantasyFragment;
-import com.fantasysport.fragments.main.FantasyFragment;
+import com.fantasysport.fragments.main.BaseFragment;
 import com.fantasysport.fragments.main.IMainFragment;
 import com.fantasysport.models.Category;
 import com.fantasysport.models.Sport;
 import com.fantasysport.models.UserData;
+import com.fantasysport.utility.CacheProvider;
 import com.fantasysport.utility.DateUtils;
 import com.fantasysport.webaccess.requestListeners.RequestError;
 import com.fantasysport.webaccess.requestListeners.UserResponseListener;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 
 /**
  * Created by bylynka on 2/11/14.
  */
-public class MainActivity extends BaseActivity implements BaseFantasyFragment.IPageChangedListener, IMainActivity{
+public class MainActivity extends BaseActivity implements BaseFantasyFragment.IPageChangedListener, IMainActivity {
 
     private final String _fragmentName = "root_fragment";
 
@@ -86,34 +89,34 @@ public class MainActivity extends BaseActivity implements BaseFantasyFragment.IP
         _drawerLayout.setDrawerListener(_drawerToggle);
     }
 
-    private void initStartParams(Bundle savedInstanceState){
-        if(savedInstanceState == null){
+    private void initStartParams(Bundle savedInstanceState) {
+        if (savedInstanceState == null) {
             _fantasyType = getIntent().getIntExtra(Const.CATEGORY_TYPE, Const.FANTASY_SPORT);
-        }else {
+        } else {
             _fantasyType = savedInstanceState.getInt(Const.CATEGORY_TYPE, Const.FANTASY_SPORT);
         }
     }
 
 
-    public MenuHeaderFragment getMenuHeaderFragment(){
+    public MenuHeaderFragment getMenuHeaderFragment() {
         return _menuHeaderFragment;
     }
 
-    public IMainFragment getRootFragment(){
+    public IMainFragment getRootFragment() {
         return _rootFragment;
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState){
+    public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        getSupportFragmentManager().putFragment(outState, _fragmentName,(Fragment)_rootFragment);
+        getSupportFragmentManager().putFragment(outState, _fragmentName, (Fragment) _rootFragment);
         outState.putInt(Const.CATEGORY_TYPE, _fantasyType);
     }
 
     @Override
-    public void onRestoreInstanceState(Bundle inState){
+    public void onRestoreInstanceState(Bundle inState) {
         super.onRestoreInstanceState(inState);
-        _rootFragment = (IMainFragment)getSupportFragmentManager().getFragment(inState, _fragmentName);
+        _rootFragment = (IMainFragment) getSupportFragmentManager().getFragment(inState, _fragmentName);
         _rootFragment.addPageChangedListener(this);
     }
 
@@ -171,13 +174,13 @@ public class MainActivity extends BaseActivity implements BaseFantasyFragment.IP
         });
     }
 
-    protected void updateMenuHeaderImage(View headerView){
-       String sport = _storage.getUserData().getSport();
-        int drawableId = sport.equalsIgnoreCase(Sport.NBA)?R.drawable.nba_background:R.drawable.mlb_background;
+    protected void updateMenuHeaderImage(View headerView) {
+        String sport = _storage.getUserData().getSport();
+        int drawableId = sport.equalsIgnoreCase(Sport.NBA) ? R.drawable.nba_background : R.drawable.mlb_background;
         BitmapDrawable bitmapDrawable = (BitmapDrawable) getResources().getDrawable(drawableId);
         Bitmap bitmap = bitmapDrawable.getBitmap();
-        int width = headerView.getWidth() > bitmap.getWidth()? bitmap.getWidth(): headerView.getWidth();
-        int height = headerView.getHeight() > bitmap.getHeight()? bitmap.getHeight(): headerView.getHeight();
+        int width = headerView.getWidth() > bitmap.getWidth() ? bitmap.getWidth() : headerView.getWidth();
+        int height = headerView.getHeight() > bitmap.getHeight() ? bitmap.getHeight() : headerView.getHeight();
         Bitmap newBitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height, null, false);
         ImageView img = (ImageView) headerView.findViewById(R.id.image);
         img.setImageBitmap(newBitmap);
@@ -216,19 +219,20 @@ public class MainActivity extends BaseActivity implements BaseFantasyFragment.IP
                         showPredictionList(_fantasyType);
                         break;
                     case Sport:
-                        SportMenuItem sportItem = (SportMenuItem)item;
+                        SportMenuItem sportItem = (SportMenuItem) item;
                         Sport sport = sportItem.getSport();
                         Category category = sportItem.getCategory();
-                        if(sport.comingSoon()){
-                            showAlert(sport.getName(), getString(R.string.coming_soon));
-                        }else {
+                        if (sport.comingSoon()) {
+                            showAlert(sport.getNameKey(), getString(R.string.coming_soon));
+                        } else {
                             UserData data = _storage.getUserData();
-                            data.setCurrentSport(sport.getName());
-                            data.setCurrentCategory(category.getName());
+                            data.setCurrentSport(sport.getNameKey());
+                            data.setCurrentCategory(category.getNameKey());
                             _menuAdapter.setMenu(data);
                             _menuAdapter.notifyDataSetChanged();
                             updateMenuHeaderImage(header);
                             updateRootFragment();
+                            saveUserDataToCach(data);
                             break;
                         }
                 }
@@ -236,12 +240,41 @@ public class MainActivity extends BaseActivity implements BaseFantasyFragment.IP
         });
     }
 
-    private void updateRootFragment(){
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.fragment_holder, (Fragment) _rootFragment, _fragmentName)
-                .commit();
-        _rootFragment.addPageChangedListener(this);
-        _rootFragment.updateMainData();
+    private void saveUserDataToCach(final UserData data) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                GsonBuilder gsonBuilder = new GsonBuilder();
+                gsonBuilder.setDateFormat("M/d/yy hh:mm a");
+                Gson gson = gsonBuilder.create();
+                String dataStr = data != null ? gson.toJson(data) : null;
+                CacheProvider.putString(MainActivity.this, Const.USER_DATA, dataStr);
+            }
+        }).start();
+    }
+
+    private void updateRootFragment() {
+        int oldFantasyType = _fantasyType;
+        _fantasyType = _storage.isFantasyCategory() ? Const.FANTASY_SPORT : Const.NON_FANTASY_SPORT;
+        if (oldFantasyType != _fantasyType) {
+            _sportFactory = FactoryProvider.getFactory(_fantasyType);
+            _rootFragment = _sportFactory.getMainFragment();
+            ((BaseFragment) _rootFragment).setOnAttachedListener(new BaseFragment.IOnAttachedListener() {
+                @Override
+                public void onAttached() {
+                    _rootFragment.updateMainData();
+                    ((BaseFragment) _rootFragment).setOnAttachedListener(null);
+                }
+            });
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_holder, (Fragment) _rootFragment, _fragmentName)
+                    .commit();
+
+            _rootFragment.addPageChangedListener(this);
+        }else {
+            _rootFragment.updateMainData();
+        }
+
     }
 
     @Override
@@ -323,7 +356,7 @@ public class MainActivity extends BaseActivity implements BaseFantasyFragment.IP
         long gamesTime = _storage.getUserData().getUpdatedAt();
         long deltaTime = nowTime - gamesTime;
         long deltaTimeInMin = deltaTime / 60000;
-        if (deltaTimeInMin > 35){
+        if (deltaTimeInMin > 35) {
             updateUserData();
         }
     }

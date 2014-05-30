@@ -28,17 +28,14 @@ public class NFRosterAdapter extends BaseAdapter {
     private Context _context;
     private IListener _listener;
     private ImageLoader _imageLoader;
-    private List<NFGame> _games;
+    private boolean _canModify;
 
     SimpleDateFormat _sdf = new SimpleDateFormat("d MMM K:mm a");
 
-    public NFRosterAdapter(Context context){
+    public NFRosterAdapter(Context context, boolean canModify){
         _context = context;
         _imageLoader = new ImageLoader(_context);
-    }
-
-    public void setGames(List<NFGame> games){
-        _games = games;
+        _canModify = canModify;
     }
 
     public void setTeams(List<INFTeam> teams){
@@ -93,48 +90,40 @@ public class NFRosterAdapter extends BaseAdapter {
         TextView teamLbl = (TextView)convertView.findViewById(R.id.team_lbl);
         teamLbl.setText(team.getName());
         teamLbl.setVisibility(View.VISIBLE);
-        NFGame game = getGame(team.getGameStatsId());
+
         TextView gameLbl = (TextView)convertView.findViewById(R.id.game_name_lbl);
-        gameLbl.setText(String.format("%s @ %s", game.getHomeTeam().getName(), game.getAwayTeam().getName()));
+        gameLbl.setText(team.getName());
         gameLbl.setVisibility(View.VISIBLE);
 
         TextView gameTimeLbl = (TextView)convertView.findViewById(R.id.middle_lbl);
-        gameTimeLbl.setText(_sdf.format(game.getDate()));
+        gameTimeLbl.setText(_sdf.format(team.getDate()));
 
         Button ptBtn = (Button)convertView.findViewById(R.id.pt_btn);
-        ptBtn.setVisibility(View.GONE);
-
         Button dismissBtn = (Button)convertView.findViewById(R.id.dismiss_game_btn);
         ImageView logo = (ImageView)convertView.findViewById(R.id.circle_img);
         _imageLoader.displayImage(team.getLogoUrl(), logo);
-        dismissBtn.setVisibility(View.VISIBLE);
-        dismissBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                team.setIsSelected(false);
-                raiseOnDismiss(team);
-            }
-        });
+        if(_canModify){
+            dismissBtn.setVisibility(View.VISIBLE);
+            dismissBtn.setOnClickListener(new DismissBtnClickListener(team));
+            ptBtn.setVisibility(View.VISIBLE);
+            ptBtn.setOnClickListener(new PTBtnClickListener(team));
+            ptBtn.setText(String.format("%.0f", team.getPT()));
+            ptBtn.setEnabled(!team.isPredicted());
+        }else {
+            ptBtn.setVisibility(View.INVISIBLE);
+            dismissBtn.setVisibility(View.INVISIBLE);
+        }
     }
 
     private void prepareEmptyGameView(View convertView){
         convertView.findViewById(R.id.team_lbl).setVisibility(View.INVISIBLE);
         convertView.findViewById(R.id.game_name_lbl).setVisibility(View.INVISIBLE);
-        convertView.findViewById(R.id.pt_btn).setVisibility(View.GONE);
+        convertView.findViewById(R.id.pt_btn).setVisibility(View.INVISIBLE);
         convertView.findViewById(R.id.dismiss_game_btn).setVisibility(View.INVISIBLE);
         ImageView logo = (ImageView)convertView.findViewById(R.id.circle_img);
         logo.setImageResource(R.drawable.circle_2);
         TextView lbl = (TextView)convertView.findViewById(R.id.middle_lbl);
         lbl.setText("Team Not Selected");
-    }
-
-    private NFGame getGame(int statsId) throws Exception {
-        for (NFGame game : _games){
-            if(game.getStatsId() == statsId){
-                return game;
-            }
-        }
-        throw new Exception("Game is not found!");
     }
 
     private void raiseOnDismiss(NFTeam team){
@@ -144,8 +133,46 @@ public class NFRosterAdapter extends BaseAdapter {
         _listener.onDismiss(team);
     }
 
+    private void raiseOnPT(NFTeam team){
+        if(_listener == null){
+            return;
+        }
+        _listener.onPT(team);
+    }
+
+    class DismissBtnClickListener implements View.OnClickListener{
+
+        private NFTeam _team;
+
+        public DismissBtnClickListener(NFTeam team){
+            _team = team;
+        }
+
+        @Override
+        public void onClick(View v) {
+            _team.setIsPredicted(true);
+            raiseOnDismiss(_team);
+        }
+    }
+
+    class PTBtnClickListener implements View.OnClickListener{
+
+        private NFTeam _team;
+
+        public PTBtnClickListener(NFTeam team){
+            _team = team;
+        }
+
+        @Override
+        public void onClick(View v) {
+            _team.setIsSelected(false);
+            raiseOnPT(_team);
+        }
+    }
+
     public interface IListener{
         public void onDismiss(NFTeam team);
+        public void onPT(NFTeam team);
     }
 
 }

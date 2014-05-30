@@ -5,7 +5,9 @@ import com.fantasysport.models.NFData;
 import com.fantasysport.models.NFRoster;
 import com.fantasysport.models.nonfantasy.NFGame;
 import com.fantasysport.models.nonfantasy.NFTeam;
+import com.fantasysport.utility.Converter;
 import com.fantasysport.utility.DateUtils;
+import com.fantasysport.utility.DeviceInfo;
 import com.fantasysport.webaccess.requests.BaseRequest;
 import com.google.api.client.http.GenericUrl;
 import com.google.api.client.http.HttpRequest;
@@ -13,6 +15,7 @@ import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -47,29 +50,29 @@ public class GetNFGamesRequest extends BaseRequest<NFData> {
 
         String url = uriBuilder.build().toString();
         HttpRequest request = getHttpRequestFactory().buildGetRequest(new GenericUrl(url));
+        request.setConnectTimeout(1000 * 120);
         request.getHeaders().setAccept("application/json");
         String result = request.execute().parseAsString();
         GetGamesResponse response = new Gson().fromJson(result, GetGamesResponse.class);
         List<NFGame> games = new ArrayList<NFGame>();
         List<Game> responseGames = response.getCandidateGames();
         List<NFTeam> rosterTeams = new ArrayList<NFTeam>();
-        List<RosterTeamData> rosterGameDataList = response.getRoster()._rosterTeamData;
         if (responseGames != null) {
             for (Game g : responseGames) {
-                NFTeam home = new NFTeam(g.getHomeTeamName(), g.getHomeTeamPt(), g.getHomeTeamStatsId(), g.getHomeTeamLogo(), g.getStatsId());
+                String gameName = String.format("%s@%s", g.getHomeTeamName(), g.getAwayTeamName());
+                NFTeam home = new NFTeam(g.getHomeTeamName(), g.getHomeTeamPt(), g.getHomeTeamStatsId(), g.getHomeTeamLogo(), g.getStatsId(), gameName, g.getGameDate());
                 home.setIsPredicted(g.isHomePredicted());
-                NFTeam away = new NFTeam(g.getAwayTeamName(), g.getAwayTeamPt(), g.getAwayTeamStatsId(), g.getAwayTeamLogo(), g.getStatsId());
+                NFTeam away = new NFTeam(g.getAwayTeamName(), g.getAwayTeamPt(), g.getAwayTeamStatsId(), g.getAwayTeamLogo(), g.getStatsId(), gameName, g.getGameDate());
                 away.setIsPredicted(g.isAwayTeamPredicted());
                 games.add(new NFGame(home, away, g.getGameDate(), g.getStatsId()));
             }
         }
-        //                if (rosterGameDataList != null) {
-//                    for (RosterTeamData rgd : rosterGameDataList) {
-//                        if (rgd.getGameStatsId() == g.getStatsId()) {
-//                            rosterTeams.add(home.getStatsId() == rgd.getTeamStatsId() ? home : away);
-//                        }
-//                    }
-//                }
+        List<TeamData> rosterGameDataList = response.getRoster()._rosterTeamData;
+        if (rosterGameDataList != null) {
+            for (TeamData rgd : rosterGameDataList) {
+                rosterTeams.add(new NFTeam(rgd._name, rgd._pt, rgd._statsId, rgd._logoUrl, rgd._gameStatsId, rgd.getGameName(), rgd.getGameDate()));
+            }
+        }
         RosterInResponse rInResponse = response.getRoster();
         NFRoster roster = new NFRoster(rosterTeams, rInResponse._state, rInResponse._roomNumber, rInResponse._amountPaid, rInResponse._contestRank);
         NFData data = new NFData(roster, games);
@@ -115,27 +118,51 @@ public class GetNFGamesRequest extends BaseRequest<NFData> {
 
     }
 
-    public class TeamData{
+    public class TeamData {
 
         @SerializedName("game_stats_id")
-        private int _gameStatsId;
+        int _gameStatsId;
 
         @SerializedName("team_name")
-        private String _name;
+        String _name;
 
         @SerializedName("pt")
-        private double _pt;
+        double _pt;
 
         @SerializedName("team_stats_id")
-        private int _statsId;
+        int _statsId;
 
-        private String _logoUrl;
+        @SerializedName("team_logo")
+        String _logoUrl;
 
-        private boolean _isSelected = false;
+        @SerializedName("opposite_team")
+        private String _oppositeTeam;
 
-        private boolean _isPredicted = false;
+        @SerializedName("home_team")
+        boolean _isHomeTeam;
 
-        private String _gameName;
+        @SerializedName("game_time")
+        String _gameDate;
+
+        String getGameName() {
+            String homeTeam;
+            String awayTeam;
+            if (_isHomeTeam) {
+                homeTeam = _name;
+                awayTeam = _oppositeTeam;
+            } else {
+                homeTeam = _oppositeTeam;
+                awayTeam = _name;
+            }
+            return String.format("%s@%s", homeTeam, awayTeam);
+        }
+
+        public Date getGameDate() {
+            Date date = Converter.toDate(_gameDate);
+            int gmtInMinutes = DeviceInfo.getGMTInMinutes();
+            return DateUtils.addMinutes(date, gmtInMinutes);
+        }
+
     }
 
 }

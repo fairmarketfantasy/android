@@ -3,12 +3,13 @@ package com.fantasysport.adapters.fantasy;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import com.fantasysport.fragments.pages.fantasy.*;
 
 /**
  * Created by bylynka on 3/14/14.
  */
-public class FantasyPagerAdapter extends FragmentPagerAdapter {
+public class FantasyPagerAdapter extends FragmentStatePagerAdapter {
 
     private BaseHomeFragment _homeFragment;
     private BasePlayersFragment _playersFragment;

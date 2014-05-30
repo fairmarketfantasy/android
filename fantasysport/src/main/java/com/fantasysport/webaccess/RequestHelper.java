@@ -101,7 +101,7 @@ public class RequestHelper {
     }
 
     public void loadNFData(NFData data){
-
+        raiseOnNFData(data);
     }
 
     public void signOut(){

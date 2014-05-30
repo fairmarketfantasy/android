@@ -133,4 +133,9 @@ public class NFPredictionFragment extends BaseFragment
     public boolean isEditable() {
         return _canEdit;
     }
+
+    @Override
+    public boolean isPredicted() {
+        return true;
+    }
 }

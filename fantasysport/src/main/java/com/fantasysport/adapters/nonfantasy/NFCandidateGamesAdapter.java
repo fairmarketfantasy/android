@@ -102,7 +102,7 @@ public class NFCandidateGamesAdapter extends BaseAdapter {
 
     private void setPredictionButton(Button btn, NFTeam team){
         btn.setEnabled(!team.isPredicted());
-        btn.setText(String.format("PT%.1f", team.getPT()));
+        btn.setText(String.format("PT%.0f", team.getPT()));
         if(team.isPredicted()){
             return;
         }
@@ -127,7 +127,7 @@ public class NFCandidateGamesAdapter extends BaseAdapter {
         if (_listener == null) {
             return;
         }
-        _listener.onPredictedTeam(team);
+        _listener.onPT(team);
     }
 
     public List<NFGame> getGames() {
@@ -140,7 +140,7 @@ public class NFCandidateGamesAdapter extends BaseAdapter {
 
     public interface IListener {
         public void onSelectedTeam(NFTeam team);
-        public void onPredictedTeam(NFTeam team);
+        public void onPT(NFTeam team);
     }
 
     public class Holder {

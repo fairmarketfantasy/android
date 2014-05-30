@@ -7,6 +7,7 @@ import com.fantasysport.repo.Storage;
 import com.fantasysport.utility.CacheProvider;
 import com.fantasysport.webaccess.RequestHelper;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 /**
  * Created by bylynka on 2/4/14.
@@ -17,7 +18,6 @@ public class App extends Application {
     private final String ACCESS_TOKEN = "access_token";
     private final String MARKETS = "markets";
     private final String DEFAULT_ROSTER_DATA = "default_roster_data";
-    private final String USER_DATA = "user_data";
     private final String NON_FANTASY_DATA = "non_fantasy_data";
 
     public static App getCurrent(){
@@ -39,7 +39,7 @@ public class App extends Application {
     }
 
     private void restoreState(){
-        Gson gson = new Gson();
+        Gson gson = getGson();
         String dataInStr = CacheProvider.getString(this, ACCESS_TOKEN);
         Storage storage = Storage.instance();
         if(dataInStr == null){
@@ -55,7 +55,7 @@ public class App extends Application {
             storage.setDefaultRosterData(defaultRosterData);
         }
 
-        dataInStr = CacheProvider.getString(this, USER_DATA);
+        dataInStr = CacheProvider.getString(this, Const.USER_DATA);
         if(dataInStr != null){
             UserData userData  = gson.fromJson(dataInStr, UserData.class);
             storage.setUserData(userData);
@@ -90,14 +90,14 @@ public class App extends Application {
             CacheProvider.putString(App.this, ACCESS_TOKEN, null);
             CacheProvider.putString(App.this, MARKETS, null);
             CacheProvider.putString(App.this, DEFAULT_ROSTER_DATA, null);
-            CacheProvider.putString(App.this, USER_DATA, null);
+            CacheProvider.putString(App.this, Const.USER_DATA, null);
         }
 
         @Override
         public void onMarkets(MarketsContainer container) {
             String marketsStr = container != null? new Gson().toJson(container): null;
             CacheProvider.putString(App.this, MARKETS, marketsStr);
-            CacheProvider.putBoolean(App.this, Const.TIME_ZONE_CHANGED ,false);
+            CacheProvider.putBoolean(App.this, Const.TIME_ZONE_CHANGED, false);
             UserData data = Storage.instance().getUserData();
             if(data != null){
                 onUserData(Storage.instance().getUserData());
@@ -106,21 +106,27 @@ public class App extends Application {
 
         @Override
         public void onDefaultRosterData(DefaultRosterData data) {
-            String dataStr = data != null? new Gson().toJson(data): null;
+            String dataStr = data != null? getGson().toJson(data): null;
             CacheProvider.putString(App.this, DEFAULT_ROSTER_DATA, dataStr);
         }
 
         @Override
         public void onUserData(UserData data) {
-            String dataStr = data != null? new Gson().toJson(data): null;
-            CacheProvider.putString(App.this, USER_DATA, dataStr);
+            String dataStr = data != null? getGson().toJson(data): null;
+            CacheProvider.putString(App.this, Const.USER_DATA, dataStr);
         }
 
         @Override
         public void onNonFantasyData(NFData data) {
-            String dataStr = data != null? new Gson().toJson(data): null;
+            String dataStr = data != null? getGson().toJson(data): null;
             CacheProvider.putString(App.this, NON_FANTASY_DATA, dataStr);
         }
     };
+
+    private Gson getGson(){
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.setDateFormat("M/d/yy hh:mm a");
+        return gsonBuilder.create();
+    }
 
 }

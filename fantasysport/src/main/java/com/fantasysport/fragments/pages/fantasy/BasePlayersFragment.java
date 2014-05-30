@@ -57,8 +57,11 @@ public abstract class BasePlayersFragment extends MainActivityFragment implement
         setPager(123);
         _positionView = getViewById(R.id.position_view);
         _positionView.setPositionListener(this);
-        _positionView.setPositions(getStorage().getDefaultRosterData().getPositions());
         setPlayersListView();
+        if(getStorage().getDefaultRosterData() == null){
+            return;
+        }
+        _positionView.setPositions(getStorage().getDefaultRosterData().getPositions());
         Roster roster = getRoster();
         setMoneyTxt(roster != null? roster.getRemainingSalary(): getStorage().getDefaultRosterData().getRemainingSalary());
         loadPlayers(_positionView.getPosition());

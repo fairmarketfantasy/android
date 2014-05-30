@@ -3,6 +3,7 @@ package com.fantasysport.models.nonfantasy;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Created by bylynka on 5/21/14.
@@ -25,16 +26,29 @@ public class NFTeam implements Serializable, INFTeam {
 
     private String _gameName;
 
+    private Date _date;
+
     public NFTeam(){
     }
 
-    public NFTeam(String name, double pt, int statsId, String logoUrl, int gameStatsId, String gameName){
+    public NFTeam(String name,
+                  double pt,
+                  int statsId,
+                  String logoUrl,
+                  int gameStatsId,
+                  String gameName,
+                  Date date){
         _name = name;
         _pt = pt;
         _statsId = statsId;
         _logoUrl = logoUrl;
         _gameStatsId = gameStatsId;
         _gameName = gameName;
+        _date = date;
+    }
+
+    public Date getDate(){
+        return _date;
     }
 
     public String getGameName(){

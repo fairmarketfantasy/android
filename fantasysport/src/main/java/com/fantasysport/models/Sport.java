@@ -9,8 +9,11 @@ public class Sport {
     public static final String MLB = "MLB";
     public static final String NBA = "NBA";
 
+    @SerializedName("title")
+    private String _title;
+
     @SerializedName("name")
-    private String _name;
+    private String _name_key;
 
     @SerializedName("coming_soon")
     private boolean _comingSoon;
@@ -18,8 +21,8 @@ public class Sport {
     @SerializedName("is_active")
     private boolean _isActive;
 
-    public String getName(){
-        return _name;
+    public String getNameKey(){
+        return _name_key;
     }
 
     public boolean comingSoon(){
@@ -28,5 +31,9 @@ public class Sport {
 
     public boolean isActive(){
         return _isActive;
+    }
+
+    public String getTitle(){
+        return _title;
     }
 }

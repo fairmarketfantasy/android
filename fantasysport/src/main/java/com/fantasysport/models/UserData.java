@@ -74,8 +74,8 @@ public class UserData {
     private CustomerObject _customerObject;
 
     public String getSport(){
-        return "MLB";
 //        return _currentSport;
+        return "MLB";
     }
 
     public String getCategory(){

@@ -54,11 +54,11 @@ public class MenuListAdapter extends BaseExpandableListAdapter
 
     private void addCategories(UserData data) {
         for (Category cat : data.getCategories()) {
-            MenuItem item = new MenuItem(MenuItemEnum.Category, cat.getName().toUpperCase().replace("_", ""));
+            MenuItem item = new MenuItem(MenuItemEnum.Category, cat.getTitle().toUpperCase());
             List<MenuItem> children = new ArrayList<MenuItem>();
             for (Sport sport : cat.getSports()) {
-                if (sport.isActive()) {
-                    SportMenuItem subItem = new SportMenuItem(MenuItemEnum.Sport, sport.getName());
+                if (sport.isActive() && !sport.getNameKey().equalsIgnoreCase("fwc")) {
+                    SportMenuItem subItem = new SportMenuItem(MenuItemEnum.Sport, sport.getTitle().toUpperCase());
                     subItem.setCategory(cat);
                     subItem.setSport(sport);
                     children.add(subItem);

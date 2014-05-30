@@ -1,5 +1,6 @@
 package com.fantasysport.fragments.main;
 
+import android.app.Activity;
 import com.fantasysport.Const;
 import com.fantasysport.R;
 import com.fantasysport.fragments.pages.IMediator;
@@ -37,6 +38,9 @@ public class FantasyFragment extends BaseFantasyFragment
     public void onResume() {
         super.onResume();
         long nowTime = DateUtils.getCurrentDate().getTime();
+        if(getStorage().getMarketsContainer() == null){
+            return;
+        }
         long marketsTime = getStorage().getMarketsContainer().getUpdatedAt();
         long deltaTime = nowTime - marketsTime;
         long deltaTimeInMin = deltaTime / 60000;

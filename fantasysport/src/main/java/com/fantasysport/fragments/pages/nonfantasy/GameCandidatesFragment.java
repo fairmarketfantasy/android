@@ -1,5 +1,6 @@
 package com.fantasysport.fragments.pages.nonfantasy;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +16,6 @@ import com.fantasysport.fragments.main.IMainFragment;
 import com.fantasysport.fragments.main.INFMainFragment;
 import com.fantasysport.models.NFData;
 import com.fantasysport.models.NFRoster;
-import com.fantasysport.models.Roster;
 import com.fantasysport.models.nonfantasy.NFAutoFillData;
 import com.fantasysport.models.nonfantasy.NFGame;
 import com.fantasysport.models.nonfantasy.NFTeam;
@@ -35,7 +35,7 @@ import java.util.List;
 
 public class GameCandidatesFragment extends BaseActivityFragment implements NFCandidateGamesAdapter.IListener,
         NFMediator.ITeamRemovedListener, OnRefreshListener, NFMediator.IGamesUpdatedListener, NFMediator.IAutoFillDataListener,
-        NFMediator.IOnDataUpdatedListener {
+        NFMediator.IOnDataUpdatedListener,NFMediator.ISubmitIndividualPredictionListener {
 
     private final String SAVED_GAMES = "saved_games";
 
@@ -56,6 +56,7 @@ public class GameCandidatesFragment extends BaseActivityFragment implements NFCa
         _mediator.addTeamRemovedListener(this);
         _mediator.addGamesUpdatedListener(this);
         _mediator.addAutoFillDataListener(this);
+        _mediator.addSubmitIndividualPrediction(this);
         View autoFill = getViewById(R.id.autofill_holder);
         _swipeRefreshLayout = getViewById(R.id.refresh_games_layout);
         if (getMainFragment().isEditable()) {
@@ -79,6 +80,7 @@ public class GameCandidatesFragment extends BaseActivityFragment implements NFCa
         NFData data = getMainFragment().getData();
         List<NFGame> games = data != null ? data.getCandidateGames() : null;
         ListView listView = getViewById(R.id.game_list);
+        listView.setCacheColorHint(Color.TRANSPARENT);
         _adapter = new NFCandidateGamesAdapter(getActivity(), games);
         _adapter.setListener(this);
         listView.setAdapter(_adapter);
@@ -91,17 +93,9 @@ public class GameCandidatesFragment extends BaseActivityFragment implements NFCa
     }
 
     @Override
-    public void onPredictedTeam(final NFTeam team) {
-        ConfirmDialog dialog = new ConfirmDialog(getActivity());
-        dialog.setTitle(String.format("PT%.1f", team.getPT()))
-                .setContent(String.format("Predict %s?", team.getName()))
-                .setOkAction(new Runnable() {
-                    @Override
-                    public void run() {
-                        doIndividualPrediction(team);
-                    }
-                })
-                .show();
+    public void onPT(final NFTeam team) {
+        team.setIsPredicted(true);
+        _mediator.submitIndividualPrediction(this, team);
     }
 
 
@@ -137,27 +131,6 @@ public class GameCandidatesFragment extends BaseActivityFragment implements NFCa
             msg += String.format("AND WON %.2f", roster.getAmountPaid());
         }
         return msg;
-    }
-
-    private void doIndividualPrediction(final NFTeam team) {
-        team.setIsPredicted(true);
-        _adapter.notifyDataSetChanged();
-        showProgress();
-        getWebProxy().doNFIndividualPrediction(team, new StringResponseListener() {
-            @Override
-            public void onRequestError(RequestError error) {
-                dismissProgress();
-                showAlert(getString(R.string.error), error.getMessage());
-                team.setIsPredicted(false);
-                _adapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onRequestSuccess(String msg) {
-                dismissProgress();
-                showAlert("INFO", msg);
-            }
-        });
     }
 
     @Override
@@ -246,5 +219,26 @@ public class GameCandidatesFragment extends BaseActivityFragment implements NFCa
             TextView msgLbl = getViewById(R.id.msg_lbl);
             msgLbl.setText(getFinishedMsg(data.getRoster()));
         }
+    }
+
+    @Override
+    public void onSubmitIndividualPrediction(Object sender, NFTeam team) {
+        if(_adapter == null){
+            return;
+        }
+        List<NFGame> games = _adapter.getGames();
+        if(games !=null && sender != this){
+            for (NFGame g : games){
+                if(g.getStatsId() != team.getGameStatsId()){
+                    continue;
+                }
+                if(g.getHomeTeam().getStatsId() == team.getStatsId()){
+                    g.getHomeTeam().setIsPredicted(true);
+                }else{
+                    g.getAwayTeam().setIsPredicted(true);
+                }
+            }
+        }
+        _adapter.notifyDataSetChanged();
     }
 }

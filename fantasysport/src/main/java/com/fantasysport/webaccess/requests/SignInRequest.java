@@ -39,6 +39,7 @@ public class SignInRequest extends BaseRequest<AuthResponse> {
         String url = uriBuilder.build().toString();
         HttpRequest request = getHttpRequestFactory()
                 .buildPostRequest(new GenericUrl(url), null);
+        request.setConnectTimeout(1000 * 60);
         request.getHeaders().setAccept("application/json");
         String result = request.execute().parseAsString();
         return new Gson().fromJson(result, UserData.class);

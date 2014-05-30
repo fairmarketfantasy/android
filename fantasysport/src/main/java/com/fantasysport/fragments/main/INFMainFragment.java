@@ -9,7 +9,6 @@ public interface INFMainFragment {
 
     NFData getData();
     boolean isEditable();
-
-
+    boolean isPredicted();
 
 }

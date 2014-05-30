@@ -9,8 +9,11 @@ import java.util.List;
  */
 public class Category {
 
+    @SerializedName("title")
+    private String _title;
+
     @SerializedName("name")
-    private String _name;
+    private String _name_key;
 
     @SerializedName("note")
     private String _note;
@@ -18,8 +21,8 @@ public class Category {
     @SerializedName("sports")
     private List<Sport> _sports;
 
-    public String getName(){
-        return _name;
+    public String getNameKey(){
+        return _name_key;
     }
 
     public List<Sport> getSports(){
@@ -28,6 +31,10 @@ public class Category {
 
     public boolean isActive(){
         return _note == null || _note.length() == 0;
+    }
+
+    public String getTitle(){
+        return _title;
     }
 
 }

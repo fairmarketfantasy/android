@@ -2,14 +2,14 @@ package com.fantasysport.adapters.nonfantasy;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import com.fantasysport.fragments.pages.nonfantasy.GameCandidatesFragment;
 import com.fantasysport.fragments.pages.nonfantasy.GameRosterFragment;
 
 /**
  * Created by bylynka on 5/16/14.
  */
-public class NonFantasyPagerAdapter extends FragmentPagerAdapter {
+public class NonFantasyPagerAdapter extends FragmentStatePagerAdapter {
 
     private final int PAGE_COUNT = 2;
 

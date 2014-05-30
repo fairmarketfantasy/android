@@ -1,5 +1,6 @@
 package com.fantasysport.fragments.main;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,10 +15,11 @@ import java.util.List;
 /**
  * Created by bylynka on 5/16/14.
  */
-abstract class BaseFragment extends BaseActivityFragment implements IMainFragment  {
+public abstract class BaseFragment extends BaseActivityFragment implements IMainFragment  {
 
     protected AnimatedViewPager _pager;
     protected List<IPageChangedListener> _listeners = new ArrayList<IPageChangedListener>();
+    protected IOnAttachedListener _onAttachedListener;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -28,6 +30,18 @@ abstract class BaseFragment extends BaseActivityFragment implements IMainFragmen
     }
 
     protected abstract void initStartParams(Bundle savedInstanceState);
+
+    public void setOnAttachedListener(IOnAttachedListener listener){
+        _onAttachedListener = listener;
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        if(_onAttachedListener != null){
+            _onAttachedListener.onAttached();
+        }
+    }
 
     protected void setPager(){
         _pager = getViewById(R.id.root_pager);
@@ -60,4 +74,8 @@ abstract class BaseFragment extends BaseActivityFragment implements IMainFragmen
 
         }
     };
+
+    public interface IOnAttachedListener{
+        void onAttached();
+    }
 }

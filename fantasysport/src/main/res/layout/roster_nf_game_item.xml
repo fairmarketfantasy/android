@@ -61,7 +61,7 @@
                                          android:textSize="@dimen/x_medium_font"
                                          android:paddingRight="0dp"
                                          android:paddingLeft="0dp"
-                                         android:textColor="@color/app_blue"
+                                         android:textColor="@color/pt_button_text_color"
                                          android:text="PT"
                                          custom:fontFamily="prohibitionRound"/>
 

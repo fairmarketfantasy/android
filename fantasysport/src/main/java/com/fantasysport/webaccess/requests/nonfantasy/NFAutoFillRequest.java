@@ -45,10 +45,11 @@ public class NFAutoFillRequest extends BaseRequest<NFAutoFillData> {
         List<RosterTeamData> rosterGameDataList= response.getRosterGamesData();
         if (candidateGames != null) {
             for (Game g : candidateGames) {
-                NFTeam home = new NFTeam(g.getHomeTeamName(), g.getHomeTeamPt(), g.getHomeTeamStatsId(), g.getHomeTeamLogo(), g.getStatsId());
+                String gameName = String.format("%s@%s", g.getHomeTeamName(), g.getAwayTeamName());
+                NFTeam home = new NFTeam(g.getHomeTeamName(), g.getHomeTeamPt(), g.getHomeTeamStatsId(), g.getHomeTeamLogo(), g.getStatsId(), gameName, g.getGameDate());
                 home.setIsPredicted(g.isHomePredicted());
                 home.setIsSelected(g.isHomeSelected());
-                NFTeam away = new NFTeam(g.getAwayTeamName(), g.getAwayTeamPt(), g.getAwayTeamStatsId(), g.getAwayTeamLogo(), g.getStatsId());
+                NFTeam away = new NFTeam(g.getAwayTeamName(), g.getAwayTeamPt(), g.getAwayTeamStatsId(), g.getAwayTeamLogo(), g.getStatsId(), gameName, g.getGameDate());
                 away.setIsPredicted(g.isAwayTeamPredicted());
                 away.setIsSelected(g.isAwaySelected());
                 games.add(new NFGame(home, away, g.getGameDate(), g.getStatsId()));

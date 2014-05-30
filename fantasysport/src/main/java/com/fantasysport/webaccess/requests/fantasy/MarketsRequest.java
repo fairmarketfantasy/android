@@ -61,6 +61,7 @@ public class MarketsRequest extends BaseRequest<MarketResponse> {
                 .appendQueryParameter("access_token", getAccessToken());
         String url = uriBuilder.build().toString();
         HttpRequest request = getHttpRequestFactory().buildGetRequest(new GenericUrl(url));
+        request.setConnectTimeout(1000 * 60);
         request.getHeaders().setAccept("application/json");
         String result = request.execute().parseAsString();
         return new MarketParser().parse(result);
@@ -75,6 +76,7 @@ public class MarketsRequest extends BaseRequest<MarketResponse> {
                 .appendQueryParameter("access_token", getAccessToken());
         String url = uriBuilder.build().toString();
         HttpRequest request = getHttpRequestFactory().buildGetRequest(new GenericUrl(url));
+        request.setConnectTimeout(1000 * 60);
         request.getHeaders().setAccept("application/json");
         String result = request.execute().parseAsString();
         return new Gson().fromJson(result, DefaultRosterData.class);

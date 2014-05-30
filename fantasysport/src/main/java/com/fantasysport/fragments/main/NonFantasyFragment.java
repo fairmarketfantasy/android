@@ -11,16 +11,18 @@ import com.fantasysport.models.nonfantasy.NFAutoFillData;
 import com.fantasysport.models.nonfantasy.NFTeam;
 import com.fantasysport.utility.CacheProvider;
 import com.fantasysport.utility.DateUtils;
+import com.fantasysport.views.ConfirmDialog;
 import com.fantasysport.webaccess.requestListeners.GetNFGamesResponseListener;
 import com.fantasysport.webaccess.requestListeners.NFAutoFillResponseListener;
 import com.fantasysport.webaccess.requestListeners.RequestError;
+import com.fantasysport.webaccess.requestListeners.StringResponseListener;
 
 /**
  * Created by bylynka on 5/15/14.
  */
 public class NonFantasyFragment extends BaseFragment
         implements NFMediator.ITeamSelectedListener, NFMediator.IUpdateGamesRequestListener,
-         NFMediator.IAutoFillRequestListener, INFMainFragment {
+        NFMediator.IAutoFillRequestListener, INFMainFragment, NFMediator.ISubmitIndividualPredictionListener {
 
     private NonFantasyPagerAdapter _pagerAdapter;
     private NFMediator _mediator = new NFMediator();
@@ -31,6 +33,7 @@ public class NonFantasyFragment extends BaseFragment
         _mediator.addTeamSelectedListener(this);
         _mediator.addUpdateGamesRequestListener(this);
         _mediator.addAutoFillRequestListener(this);
+        _mediator.addSubmitIndividualPrediction(this);
     }
 
     @Override
@@ -49,7 +52,7 @@ public class NonFantasyFragment extends BaseFragment
         long deltaTime = nowTime - gamesTime;
         long deltaTimeInMin = deltaTime / 60000;
         boolean isTimeZoneChanged = CacheProvider.getBoolean(getActivity(), Const.TIME_ZONE_CHANGED);
-        CacheProvider.putBoolean(getActivity(), Const.TIME_ZONE_CHANGED ,false);
+        CacheProvider.putBoolean(getActivity(), Const.TIME_ZONE_CHANGED, false);
         if (deltaTimeInMin > 35 || isTimeZoneChanged) {
             loadNonFantasyGames();
         }
@@ -59,7 +62,7 @@ public class NonFantasyFragment extends BaseFragment
     protected void initStartParams(Bundle savedInstanceState) {
     }
 
-    public NFMediator getMediator(){
+    public NFMediator getMediator() {
         return _mediator;
     }
 
@@ -68,7 +71,7 @@ public class NonFantasyFragment extends BaseFragment
         _pager.setCurrentItem(0, true);
     }
 
-    private void loadNonFantasyGames(){
+    private void loadNonFantasyGames() {
         String sport = getStorage().getUserData().getSport();
         showProgress();
         getWebProxy().getNFGames(sport, _getNFGamesResponseListener);
@@ -80,7 +83,7 @@ public class NonFantasyFragment extends BaseFragment
     }
 
     @Override
-    public void updateMainData(){
+    public void updateMainData() {
         loadNonFantasyGames();
     }
 
@@ -92,7 +95,7 @@ public class NonFantasyFragment extends BaseFragment
             @Override
             public void onRequestError(RequestError error) {
                 dismissProgress();
-                showAlert(getString(R.string.error),  error.getMessage());
+                showAlert(getString(R.string.error), error.getMessage());
             }
 
             @Override
@@ -104,7 +107,7 @@ public class NonFantasyFragment extends BaseFragment
         });
     }
 
-    GetNFGamesResponseListener _getNFGamesResponseListener =  new GetNFGamesResponseListener() {
+    GetNFGamesResponseListener _getNFGamesResponseListener = new GetNFGamesResponseListener() {
         @Override
         public void onRequestError(RequestError error) {
             dismissProgress();
@@ -127,5 +130,44 @@ public class NonFantasyFragment extends BaseFragment
     @Override
     public boolean isEditable() {
         return true;
+    }
+
+    @Override
+    public boolean isPredicted() {
+        return false;
+    }
+
+    @Override
+    public void onSubmitIndividualPrediction(Object sender, final NFTeam team) {
+        ConfirmDialog dialog = new ConfirmDialog(getActivity());
+        dialog.setTitle(String.format("PT%.0f", team.getPT()))
+                .setContent(String.format("Predict %s?", team.getName()))
+                .setOkAction(new Runnable() {
+                    @Override
+                    public void run() {
+                        submitIndividualPrediction(team);
+                    }
+                })
+                .show();
+
+    }
+
+    private void submitIndividualPrediction(final NFTeam team) {
+        team.setIsPredicted(true);
+        showProgress();
+        getWebProxy().doNFIndividualPrediction(team, new StringResponseListener() {
+            @Override
+            public void onRequestError(RequestError error) {
+                dismissProgress();
+                showAlert(getString(R.string.error), error.getMessage());
+                team.setIsPredicted(false);
+            }
+
+            @Override
+            public void onRequestSuccess(String msg) {
+                dismissProgress();
+                showAlert("INFO", msg);
+            }
+        });
     }
 }
