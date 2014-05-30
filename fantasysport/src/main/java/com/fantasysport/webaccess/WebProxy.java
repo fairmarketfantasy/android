@@ -197,6 +197,12 @@ public final class WebProxy {
         _spiceManager.execute(request, listener);
     }
 
+    public void submitNFRoster(List<NFTeam> teams, int rosterId, SubmitNFRosterResponseListener listener){
+        SubmitNFRosterRequest request= new SubmitNFRosterRequest(teams, rosterId);
+        request.setRetryPolicy(getRetryPolicy());
+        _spiceManager.execute(request, listener);
+    }
+
     public void doNFIndividualPrediction(NFTeam team, StringResponseListener listener){
         DoNFPredictionRequest request= new DoNFPredictionRequest(team.getGameStatsId(), team.getStatsId());
         request.setRetryPolicy(getRetryPolicy());

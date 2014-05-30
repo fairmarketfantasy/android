@@ -74,7 +74,7 @@ public class GetNFGamesRequest extends BaseRequest<NFData> {
             }
         }
         RosterInResponse rInResponse = response.getRoster();
-        NFRoster roster = new NFRoster(rosterTeams, rInResponse._state, rInResponse._roomNumber, rInResponse._amountPaid, rInResponse._contestRank);
+        NFRoster roster = new NFRoster(rosterTeams, rInResponse._state, rInResponse._roomNumber, rInResponse._amountPaid, rInResponse._contestRank, _rosterId);
         NFData data = new NFData(roster, games);
         data.setUpdatedAt(DateUtils.getCurrentDate().getTime());
         _rHelper.loadNFData(data);
@@ -100,6 +100,9 @@ public class GetNFGamesRequest extends BaseRequest<NFData> {
     }
 
     public class RosterInResponse {
+
+        @SerializedName("id")
+        private Integer _id;
 
         @SerializedName("room_number")
         private int _roomNumber;

@@ -26,16 +26,21 @@ public class NFRoster {
     @SerializedName("contest_rank")
     private Integer _contestRank;
 
+    @SerializedName("id")
+    private Integer _id;
+
     public NFRoster(List<NFTeam> teams,
                     String state,
                     int roomNumber,
                     Double amountPaid,
-                    Integer contestRank){
+                    Integer contestRank,
+                    Integer id){
         _teams = teams;
         _state = state;
         _roomNumber = roomNumber;
         _amountPaid = amountPaid;
         _contestRank = contestRank;
+        _id = id;
     }
 
     public Double getAmountPaid(){
@@ -66,6 +71,10 @@ public class NFRoster {
 
     public List<NFTeam> getTeams(){
         return _teams;
+    }
+
+    public Integer getId() {
+        return _id;
     }
 
     public enum State{

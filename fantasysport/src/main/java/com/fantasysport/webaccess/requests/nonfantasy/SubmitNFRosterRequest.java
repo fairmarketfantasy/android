@@ -22,10 +22,17 @@ import java.util.List;
 public class SubmitNFRosterRequest extends BaseRequest<String> {
 
     private RequestBody _body;
+    private int _rosterId = 0;
 
     public SubmitNFRosterRequest(List<NFTeam> teams) {
         super(String.class);
         initRequestBody(teams);
+    }
+
+    public SubmitNFRosterRequest(List<NFTeam> teams, int rosterId) {
+        super(String.class);
+        initRequestBody(teams);
+        _rosterId = rosterId;
     }
 
     private void initRequestBody(List<NFTeam> teams){
@@ -45,14 +52,19 @@ public class SubmitNFRosterRequest extends BaseRequest<String> {
         Uri.Builder uriBuilder = Uri.parse(getUrl()).buildUpon();
         uriBuilder.appendPath("game_rosters")
                 .appendQueryParameter("access_token", getAccessToken());
+        if(_rosterId > 0){
+            uriBuilder.appendPath(Integer.toString(_rosterId));
+        }
         String url = uriBuilder.build().toString();
         Gson gson = new GsonBuilder()
                 .excludeFieldsWithModifiers(Modifier.STATIC)
                 .create();
         String js = _body != null? gson.toJson(_body): null;
         HttpContent content = ByteArrayContent.fromString("application/json", js);
-        HttpRequest request = getHttpRequestFactory()
-                .buildPostRequest(new GenericUrl(url), content);
+        HttpRequest request = _rosterId > 0
+                ? getHttpRequestFactory().buildPutRequest(new GenericUrl(url), content)
+                : getHttpRequestFactory().buildPostRequest(new GenericUrl(url), content);
+
         request.getHeaders().setAccept("application/json");
         String result = request.execute().parseAsString();
         MsgResponse msgRes = new Gson().fromJson(result, MsgResponse.class);

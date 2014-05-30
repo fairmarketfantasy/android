@@ -168,26 +168,16 @@ public class GameRosterFragment extends BaseActivityFragment implements NFRoster
     public void submitRoster(List<NFTeam> teams) {
         showProgress();
         _submitBtn.setEnabled(false);
-        getWebProxy().submitNFRoster(teams, new SubmitNFRosterResponseListener() {
-            @Override
-            public void onRequestError(RequestError error) {
-                dismissProgress();
-                showAlert(getString(R.string.error), error.getMessage());
-                updateSubmitBtnState();
-            }
+        NFData data = getMainFragment().getData();
+        if(data != null &&
+                data.getRoster() != null &&
+                data.getRoster().getId() != null &&
+                data.getRoster().getId() > 0){
+            getWebProxy().submitNFRoster(teams, data.getRoster().getId(), _submitNFRosterResponseListener);
+        }else {
+            getWebProxy().submitNFRoster(teams, _submitNFRosterResponseListener);
+        }
 
-            @Override
-            public void onRequestSuccess(String responseMsg) {
-                if(getMainFragment().isPredicted()){
-                    getActivity().finish();
-                    return;
-                }
-                dismissProgress();
-                showAlert(getString(R.string.info), responseMsg);
-                setEmptyRoster();
-                updateSubmitBtnState();
-            }
-        });
     }
 
     private List<NFTeam> getTeams() {
@@ -200,6 +190,27 @@ public class GameRosterFragment extends BaseActivityFragment implements NFRoster
         }
         return teams;
     }
+
+    SubmitNFRosterResponseListener _submitNFRosterResponseListener = new SubmitNFRosterResponseListener() {
+        @Override
+        public void onRequestError(RequestError error) {
+            dismissProgress();
+            showAlert(getString(R.string.error), error.getMessage());
+            updateSubmitBtnState();
+        }
+
+        @Override
+        public void onRequestSuccess(String responseMsg) {
+            if(getMainFragment().isPredicted()){
+                getActivity().finish();
+                return;
+            }
+            dismissProgress();
+            showAlert(getString(R.string.info), responseMsg);
+            setEmptyRoster();
+            updateSubmitBtnState();
+        }
+    };
 
     View.OnClickListener _submitBtnOnClickListener = new View.OnClickListener() {
         @Override
