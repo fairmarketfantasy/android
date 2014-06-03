@@ -1,6 +1,6 @@
-package com.fantasysport.fragments.main;
+package com.fantasysport.fragments.main.nonfantasy;
 
-import com.fantasysport.models.NFData;
+import com.fantasysport.models.nonfantasy.NFData;
 
 /**
  * Created by bylynka on 5/28/14.

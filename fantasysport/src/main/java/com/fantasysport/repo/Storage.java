@@ -1,6 +1,9 @@
 package com.fantasysport.repo;
 
+import com.fantasysport.Const;
 import com.fantasysport.models.*;
+import com.fantasysport.models.fwc.FWCData;
+import com.fantasysport.models.nonfantasy.NFData;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -13,6 +16,7 @@ public class Storage implements Serializable {
 
     private static Storage _instance;
     private NFData _nfData;
+    private FWCData _fwcData;
 
     private Storage() {}
 
@@ -64,8 +68,14 @@ public class Storage implements Serializable {
         return _userData;
     }
 
-    public boolean isFantasyCategory() {
-        return _userData.getCategory().equalsIgnoreCase("fantasy_sports") ;
+    public int getCategoryType(){
+                if(_userData.getCategory().equalsIgnoreCase("sports")){
+                    return _userData.getSport().equalsIgnoreCase("fwc")
+                           ? Const.FWC
+                            : Const.NON_FANTASY_SPORT;
+                }else{
+                    return Const.FANTASY_SPORT;
+                }
     }
 
     public void setNFData(NFData nfData) {
@@ -74,5 +84,13 @@ public class Storage implements Serializable {
 
     public NFData getNFDataContainer(){
         return _nfData;
+    }
+
+    public void setFWCData(FWCData FWCData) {
+        _fwcData = FWCData;
+    }
+
+    public FWCData getFWCData() {
+        return _fwcData;
     }
 }

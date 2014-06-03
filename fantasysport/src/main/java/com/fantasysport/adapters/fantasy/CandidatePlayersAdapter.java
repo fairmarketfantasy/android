@@ -10,7 +10,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.fantasysport.R;
-import com.fantasysport.models.Player;
+import com.fantasysport.models.fantasy.Player;
 import com.fantasysport.utility.image.ImageLoader;
 
 import java.util.List;

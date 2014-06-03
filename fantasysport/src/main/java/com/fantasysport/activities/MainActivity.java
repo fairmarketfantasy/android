@@ -5,7 +5,6 @@ import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -21,7 +20,6 @@ import com.fantasysport.adapters.MenuListAdapter;
 import com.fantasysport.adapters.SportMenuItem;
 import com.fantasysport.factories.FactoryProvider;
 import com.fantasysport.fragments.MenuHeaderFragment;
-import com.fantasysport.fragments.main.BaseFantasyFragment;
 import com.fantasysport.fragments.main.BaseFragment;
 import com.fantasysport.fragments.main.IMainFragment;
 import com.fantasysport.models.Category;
@@ -29,6 +27,7 @@ import com.fantasysport.models.Sport;
 import com.fantasysport.models.UserData;
 import com.fantasysport.utility.CacheProvider;
 import com.fantasysport.utility.DateUtils;
+import com.fantasysport.views.PagerIndicatorView;
 import com.fantasysport.webaccess.requestListeners.RequestError;
 import com.fantasysport.webaccess.requestListeners.UserResponseListener;
 import com.google.gson.Gson;
@@ -38,12 +37,11 @@ import com.google.gson.GsonBuilder;
 /**
  * Created by bylynka on 2/11/14.
  */
-public class MainActivity extends BaseActivity implements BaseFantasyFragment.IPageChangedListener, IMainActivity {
+public class MainActivity extends BaseActivity implements IMainFragment.IPageChangedListener,
+        IMainFragment.IPageAmountChangedListener, IMainActivity {
 
     private final String _fragmentName = "root_fragment";
 
-    protected ImageView _leftSwipeImg;
-    protected ImageView _rightSwipeImg;
     protected IMainFragment _rootFragment;
 
 
@@ -54,6 +52,7 @@ public class MainActivity extends BaseActivity implements BaseFantasyFragment.IP
     protected MenuHeaderFragment _menuHeaderFragment;
     private android.view.MenuItem _refreshMenuItem;
     private int _fantasyType;
+    private PagerIndicatorView _pagerIndicator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,10 +68,9 @@ public class MainActivity extends BaseActivity implements BaseFantasyFragment.IP
                     .add(R.id.fragment_holder, (Fragment) _rootFragment, _fragmentName)
                     .commit();
             _rootFragment.addPageChangedListener(this);
+            _rootFragment.addPageAmountChangedListener(this);
         }
-
-        _leftSwipeImg = getViewById(R.id.left_point_img);
-        _rightSwipeImg = getViewById(R.id.right_point_img);
+        _pagerIndicator = getViewById(R.id.pager_indicator);
         setPageIndicator(0);
 
         _menuList = getViewById(R.id.left_drawer);
@@ -87,6 +85,7 @@ public class MainActivity extends BaseActivity implements BaseFantasyFragment.IP
         );
 
         _drawerLayout.setDrawerListener(_drawerToggle);
+//        _webProxy.getFWCCategories();
     }
 
     private void initStartParams(Bundle savedInstanceState) {
@@ -121,10 +120,7 @@ public class MainActivity extends BaseActivity implements BaseFantasyFragment.IP
     }
 
     protected void setPageIndicator(int position) {
-        Drawable drawable = position == 0 ? getResources().getDrawable(R.drawable.swipe_active) : getResources().getDrawable(R.drawable.swipe_passive);
-        _leftSwipeImg.setBackgroundDrawable(drawable);
-        drawable = position != 0 ? getResources().getDrawable(R.drawable.swipe_active) : getResources().getDrawable(R.drawable.swipe_passive);
-        _rightSwipeImg.setBackgroundDrawable(drawable);
+        _pagerIndicator.setActivePage(position);
     }
 
     @Override
@@ -136,6 +132,12 @@ public class MainActivity extends BaseActivity implements BaseFantasyFragment.IP
     @Override
     public void onPageChanged(int page) {
         setPageIndicator(page);
+    }
+
+    @Override
+    public void onPageAmountChanged(int amount) {
+        _pagerIndicator.setPageAmount(amount);
+        _pagerIndicator.invalidate();
     }
 
     @Override
@@ -231,6 +233,10 @@ public class MainActivity extends BaseActivity implements BaseFantasyFragment.IP
                             _menuAdapter.setMenu(data);
                             _menuAdapter.notifyDataSetChanged();
                             updateMenuHeaderImage(header);
+                            _spiceManager.shouldStop();
+                            _spiceManager.start(MainActivity.this);
+                            dismissProgress();
+                            resetProgressCounter();
                             updateRootFragment();
                             saveUserDataToCach(data);
                             break;
@@ -255,7 +261,7 @@ public class MainActivity extends BaseActivity implements BaseFantasyFragment.IP
 
     private void updateRootFragment() {
         int oldFantasyType = _fantasyType;
-        _fantasyType = _storage.isFantasyCategory() ? Const.FANTASY_SPORT : Const.NON_FANTASY_SPORT;
+        _fantasyType = _storage.getCategoryType();
         if (oldFantasyType != _fantasyType) {
             _sportFactory = FactoryProvider.getFactory(_fantasyType);
             _rootFragment = _sportFactory.getMainFragment();

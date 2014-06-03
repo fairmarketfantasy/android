@@ -1,9 +1,10 @@
-package com.fantasysport.fragments.main;
+package com.fantasysport.fragments.main.fantasy;
 
 import android.os.Bundle;
 import com.fantasysport.Const;
 import com.fantasysport.R;
 import com.fantasysport.adapters.fantasy.FantasyPagerAdapter;
+import com.fantasysport.fragments.main.BaseFragment;
 import com.fantasysport.fragments.pages.fantasy.MainFragmentMediator;
 import com.fantasysport.fragments.pages.fantasy.PredictionRoster;
 import com.fantasysport.models.Market;
@@ -19,7 +20,7 @@ import java.util.List;
 /**
  * Created by bylynka on 5/13/14.
  */
-public abstract class BaseFantasyFragment extends BaseFragment{
+public abstract class BaseFantasyFragment extends BaseFragment {
 
     protected FantasyPagerAdapter _mainActivityPagerAdapter;
     protected Market _market;
@@ -101,7 +102,7 @@ public abstract class BaseFantasyFragment extends BaseFragment{
 
 
     protected void raiseOnUpdateListener(Object initiator) {
-        for (int i = 0; i < _listeners.size(); i++) {
+        for (int i = 0; i < _updateListener.size(); i++) {
             _updateListener.get(i).onUpdated(initiator);
         }
     }
@@ -159,6 +160,7 @@ public abstract class BaseFantasyFragment extends BaseFragment{
         super.setPager();
         _mainActivityPagerAdapter = new FantasyPagerAdapter(PredictionRoster.None, getActivity().getSupportFragmentManager());
         _pager.setAdapter(_mainActivityPagerAdapter);
+        setPageAmount(_mainActivityPagerAdapter.getCount());
         raiseOnPageChanged(0);
     }
 

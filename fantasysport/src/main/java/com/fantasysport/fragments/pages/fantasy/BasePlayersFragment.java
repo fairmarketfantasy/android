@@ -13,7 +13,7 @@ import com.fantasysport.R;
 import com.fantasysport.activities.IndividuaPredictionsActivity;
 import com.fantasysport.adapters.fantasy.CandidatePlayersAdapter;
 import com.fantasysport.models.Market;
-import com.fantasysport.models.Player;
+import com.fantasysport.models.fantasy.Player;
 import com.fantasysport.models.Position;
 import com.fantasysport.models.Roster;
 import com.fantasysport.views.IOnPositionSelectedListener;

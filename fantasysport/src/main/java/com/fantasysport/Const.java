@@ -13,6 +13,7 @@ public class Const {
 
     public static final int FANTASY_SPORT = 1005;
     public static final int NON_FANTASY_SPORT = 1006;
+    public static final int FWC = 1007;
 
     public static final String CATEGORY_TYPE = "fantasy_category";
 
@@ -37,4 +38,5 @@ public class Const {
     public static final String IS_HISTORY = "is_history";
     public static final String CAN_EDIT = "can_edit";
     public static final String USER_DATA = "user_data";
+
 }

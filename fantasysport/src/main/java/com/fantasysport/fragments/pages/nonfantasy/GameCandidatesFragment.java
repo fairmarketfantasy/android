@@ -13,15 +13,12 @@ import com.fantasysport.activities.IMainActivity;
 import com.fantasysport.adapters.nonfantasy.NFCandidateGamesAdapter;
 import com.fantasysport.fragments.BaseActivityFragment;
 import com.fantasysport.fragments.main.IMainFragment;
-import com.fantasysport.fragments.main.INFMainFragment;
-import com.fantasysport.models.NFData;
+import com.fantasysport.fragments.main.nonfantasy.INFMainFragment;
+import com.fantasysport.models.nonfantasy.NFData;
 import com.fantasysport.models.NFRoster;
 import com.fantasysport.models.nonfantasy.NFAutoFillData;
 import com.fantasysport.models.nonfantasy.NFGame;
 import com.fantasysport.models.nonfantasy.NFTeam;
-import com.fantasysport.views.ConfirmDialog;
-import com.fantasysport.webaccess.requestListeners.RequestError;
-import com.fantasysport.webaccess.requestListeners.StringResponseListener;
 import uk.co.senab.actionbarpulltorefresh.extras.actionbarcompat.PullToRefreshLayout;
 import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
 import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
@@ -35,13 +32,14 @@ import java.util.List;
 
 public class GameCandidatesFragment extends BaseActivityFragment implements NFCandidateGamesAdapter.IListener,
         NFMediator.ITeamRemovedListener, OnRefreshListener, NFMediator.IGamesUpdatedListener, NFMediator.IAutoFillDataListener,
-        NFMediator.IOnDataUpdatedListener,NFMediator.ISubmitIndividualPredictionListener {
+        NFMediator.IOnDataUpdatedListener,NFMediator.ISubmittedIndividualPredictionListener{
 
     private final String SAVED_GAMES = "saved_games";
 
     private NFCandidateGamesAdapter _adapter;
     private NFMediator _mediator;
     private PullToRefreshLayout _swipeRefreshLayout;
+    private TextView _msgLbl;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -56,9 +54,11 @@ public class GameCandidatesFragment extends BaseActivityFragment implements NFCa
         _mediator.addTeamRemovedListener(this);
         _mediator.addGamesUpdatedListener(this);
         _mediator.addAutoFillDataListener(this);
-        _mediator.addSubmitIndividualPrediction(this);
+        _mediator.addSubmittedIndividualPrediction(this);
         View autoFill = getViewById(R.id.autofill_holder);
+        _msgLbl = getViewById(R.id.msg_lbl);
         _swipeRefreshLayout = getViewById(R.id.refresh_games_layout);
+        initAdapter();
         if (getMainFragment().isEditable()) {
             autoFill.setVisibility(View.VISIBLE);
             _swipeRefreshLayout.setVisibility(View.VISIBLE);
@@ -68,11 +68,11 @@ public class GameCandidatesFragment extends BaseActivityFragment implements NFCa
                     .setup(_swipeRefreshLayout);
         } else {
             autoFill.setVisibility(View.GONE);
-            _swipeRefreshLayout.setVisibility(View.VISIBLE);
+            _swipeRefreshLayout.setVisibility(View.INVISIBLE);
+//            _msgLbl.setText(getFinishedMsg());
         }
         Button autoFillBtn = getViewById(R.id.autofill_btn);
         autoFillBtn.setOnClickListener(_autoFillBtnOnClickListener);
-        initAdapter();
     }
 
 
@@ -84,6 +84,7 @@ public class GameCandidatesFragment extends BaseActivityFragment implements NFCa
         _adapter = new NFCandidateGamesAdapter(getActivity(), games);
         _adapter.setListener(this);
         listView.setAdapter(_adapter);
+        checkForEmpty();
     }
 
     @Override
@@ -94,8 +95,7 @@ public class GameCandidatesFragment extends BaseActivityFragment implements NFCa
 
     @Override
     public void onPT(final NFTeam team) {
-        team.setIsPredicted(true);
-        _mediator.submitIndividualPrediction(this, team);
+        _mediator.submittingIndividualPrediction(this, team);
     }
 
 
@@ -147,11 +147,9 @@ public class GameCandidatesFragment extends BaseActivityFragment implements NFCa
             return;
         }
         List<NFGame> games = (ArrayList<NFGame>) savedInstanceState.getSerializable(SAVED_GAMES);
-        if (games == null) {
-            return;
-        }
         _adapter.setGames(games);
         _adapter.notifyDataSetChanged();
+        checkForEmpty();
     }
 
     @Override
@@ -198,11 +196,27 @@ public class GameCandidatesFragment extends BaseActivityFragment implements NFCa
 
     @Override
     public void onAutoFillData(Object sender, NFAutoFillData data) {
-        if (_adapter == null || data == null || data.getCandidateGames() == null) {
+        if (_adapter == null || data == null) {
             return;
         }
-        _adapter.setGames(data.getCandidateGames());
+        List<NFGame> games = data.getCandidateGames();
+        _adapter.setGames(games);
         _adapter.notifyDataSetChanged();
+       checkForEmpty();
+    }
+
+    private void checkForEmpty(){
+        NFData data = getMainFragment().getData();
+        if(data == null){
+            return;
+        }
+        List<NFGame> games = data.getCandidateGames();
+        if(games == null || games.size() == 0){
+            _swipeRefreshLayout.setVisibility(View.INVISIBLE);
+            _msgLbl.setText(getString(R.string.no_contents_now));
+        }else {
+            _swipeRefreshLayout.setVisibility(View.VISIBLE);
+        }
     }
 
     public INFMainFragment getMainFragment() {
@@ -215,14 +229,15 @@ public class GameCandidatesFragment extends BaseActivityFragment implements NFCa
         if (getMainFragment().isEditable()) {
             _adapter.setGames(data.getCandidateGames());
             _adapter.notifyDataSetChanged();
+            checkForEmpty();
         } else {
-            TextView msgLbl = getViewById(R.id.msg_lbl);
-            msgLbl.setText(getFinishedMsg(data.getRoster()));
+            _swipeRefreshLayout.setVisibility(View.INVISIBLE);
+            _msgLbl.setText(getFinishedMsg(data.getRoster()));
         }
     }
 
     @Override
-    public void onSubmitIndividualPrediction(Object sender, NFTeam team) {
+    public void onSubmittedIndividualPrediction(Object sender, NFTeam team) {
         if(_adapter == null){
             return;
         }

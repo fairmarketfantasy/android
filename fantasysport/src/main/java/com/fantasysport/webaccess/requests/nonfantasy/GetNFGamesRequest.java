@@ -1,7 +1,7 @@
 package com.fantasysport.webaccess.requests.nonfantasy;
 
 import android.net.Uri;
-import com.fantasysport.models.NFData;
+import com.fantasysport.models.nonfantasy.NFData;
 import com.fantasysport.models.NFRoster;
 import com.fantasysport.models.nonfantasy.NFGame;
 import com.fantasysport.models.nonfantasy.NFTeam;

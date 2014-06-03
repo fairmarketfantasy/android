@@ -1,6 +1,6 @@
 package com.fantasysport.webaccess.requestListeners;
 
-import com.fantasysport.models.NFData;
+import com.fantasysport.models.nonfantasy.NFData;
 
 /**
  * Created by bylynka on 5/13/14.

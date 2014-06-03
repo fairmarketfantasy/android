@@ -10,7 +10,7 @@ import com.fantasysport.Const;
 import com.fantasysport.R;
 import com.fantasysport.adapters.fantasy.StatsAdapter;
 import com.fantasysport.models.FGame;
-import com.fantasysport.models.Player;
+import com.fantasysport.models.fantasy.Player;
 import com.fantasysport.models.StatsItem;
 import com.fantasysport.utility.image.ImageLoader;
 import com.fantasysport.webaccess.requestListeners.RequestError;

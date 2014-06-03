@@ -1,12 +1,13 @@
-package com.fantasysport.fragments.main;
+package com.fantasysport.fragments.main.nonfantasy;
 
 import android.content.Intent;
 import android.os.Bundle;
 import com.fantasysport.Const;
 import com.fantasysport.R;
-import com.fantasysport.adapters.nonfantasy.NonFantasyPagerAdapter;
+import com.fantasysport.adapters.nonfantasy.NFPagerAdapter;
+import com.fantasysport.fragments.main.BaseFragment;
 import com.fantasysport.fragments.pages.nonfantasy.NFMediator;
-import com.fantasysport.models.NFData;
+import com.fantasysport.models.nonfantasy.NFData;
 import com.fantasysport.models.nonfantasy.NFAutoFillData;
 import com.fantasysport.models.nonfantasy.NFTeam;
 import com.fantasysport.webaccess.requestListeners.GetNFGamesResponseListener;
@@ -20,7 +21,7 @@ public class NFPredictionFragment extends BaseFragment
         implements NFMediator.ITeamSelectedListener, NFMediator.IUpdateGamesRequestListener,
         NFMediator.IAutoFillRequestListener, INFMainFragment {
 
-    private NonFantasyPagerAdapter _pagerAdapter;
+    private NFPagerAdapter _pagerAdapter;
     private NFMediator _mediator = new NFMediator();
     private int _rosterId = -1;
     private NFData _data;
@@ -37,8 +38,9 @@ public class NFPredictionFragment extends BaseFragment
     @Override
     protected void setPager() {
         super.setPager();
-        _pagerAdapter = new NonFantasyPagerAdapter(getActivity().getSupportFragmentManager());
+        _pagerAdapter = new NFPagerAdapter(getActivity().getSupportFragmentManager());
         _pager.setAdapter(_pagerAdapter);
+        setPageAmount(_pagerAdapter.getCount());
         raiseOnPageChanged(0);
         loadNonFantasyGames();
     }

@@ -10,7 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 import com.fantasysport.R;
-import com.fantasysport.models.Player;
+import com.fantasysport.models.fantasy.Player;
 import com.fantasysport.models.StatsItem;
 import com.fantasysport.utility.StringHelper;
 import com.fantasysport.views.ConfirmDialog;

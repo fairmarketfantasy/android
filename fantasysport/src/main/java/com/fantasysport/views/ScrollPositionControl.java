@@ -2,7 +2,6 @@ package com.fantasysport.views;
 
 import android.app.Activity;
 import android.content.Context;
-import android.database.ContentObserver;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.media.AudioManager;

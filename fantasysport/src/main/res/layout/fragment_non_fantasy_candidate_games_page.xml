@@ -58,6 +58,7 @@
                                        android:textSize="@dimen/lage_font"
                                        android:text="test"
                                        custom:fontFamily="prohibitionRound"
+                                       android:background="#F0F0F0"
             />
     <uk.co.senab.actionbarpulltorefresh.extras.actionbarcompat.PullToRefreshLayout
             android:layout_width="match_parent" android:layout_height="match_parent"

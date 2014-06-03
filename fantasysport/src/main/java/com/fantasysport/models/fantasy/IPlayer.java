@@ -1,4 +1,4 @@
-package com.fantasysport.models;
+package com.fantasysport.models.fantasy;
 
 /**
  * Created by bylynka on 2/28/14.

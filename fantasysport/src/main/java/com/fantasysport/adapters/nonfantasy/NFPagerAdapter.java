@@ -9,14 +9,14 @@ import com.fantasysport.fragments.pages.nonfantasy.GameRosterFragment;
 /**
  * Created by bylynka on 5/16/14.
  */
-public class NonFantasyPagerAdapter extends FragmentStatePagerAdapter {
+public class NFPagerAdapter extends FragmentStatePagerAdapter {
 
     private final int PAGE_COUNT = 2;
 
     private GameCandidatesFragment _gameCandidatesFragment;
     private GameRosterFragment _gameRosterFragment;
 
-    public NonFantasyPagerAdapter(FragmentManager fm) {
+    public NFPagerAdapter(FragmentManager fm) {
         super(fm);
     }
 

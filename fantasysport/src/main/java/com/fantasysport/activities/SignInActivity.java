@@ -8,7 +8,7 @@ import android.widget.*;
 import com.facebook.widget.LoginButton;
 import com.fantasysport.Const;
 import com.fantasysport.R;
-import com.fantasysport.models.NFData;
+import com.fantasysport.models.nonfantasy.NFData;
 import com.fantasysport.webaccess.RequestHelper;
 import com.fantasysport.webaccess.requestListeners.GetNFGamesResponseListener;
 import com.fantasysport.webaccess.requestListeners.RequestError;
@@ -52,7 +52,7 @@ public class SignInActivity extends AuthActivity {
         if (RequestHelper.instance().getAccessTokenData() == null) {
             return;
         }
-        int category_type = _storage.isFantasyCategory()? Const.FANTASY_SPORT : Const.NON_FANTASY_SPORT;
+        int category_type = _storage.getCategoryType();
         navigateToMainActivity(category_type);
     }
 
@@ -120,13 +120,19 @@ public class SignInActivity extends AuthActivity {
         @Override
         public void onRequestSuccess(AuthResponse response) {
             _storage.setUserData(response.getUserData());
-            loadNonFantasyGames();
-//            if(_storage.isFantasyCategory()){
-//                loadMarkets();
-//            }else {
-//                loadNonFantasyGames();
-//            }
-
+//            loadNonFantasyGames();
+            int category_type = _storage.getCategoryType();
+            switch (category_type){
+                case Const.FANTASY_SPORT:
+                    loadMarkets();
+                    break;
+                case Const.NON_FANTASY_SPORT:
+                    loadNonFantasyGames();
+                    break;
+                default:
+                    navigateToMainActivity(category_type);
+                    break;
+            }
         }
     };
 

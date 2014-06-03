@@ -39,6 +39,9 @@ public abstract class ResponseListener<T> implements RequestListener<T> {
         }catch (Exception ex){
             error = new RequestError(App.getCurrent().getString(R.string.unknown_error));
         }
+        if(error == null){
+            error = new RequestError(App.getCurrent().getString(R.string.unknown_error));
+        }
         onRequestError(error);
     }
 

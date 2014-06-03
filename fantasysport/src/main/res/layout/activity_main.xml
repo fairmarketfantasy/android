@@ -12,24 +12,12 @@
         <FrameLayout android:layout_width="match_parent"
                      android:layout_height="match_parent"
                      android:id="@+id/fragment_holder"/>
-        <LinearLayout android:layout_width="wrap_content"
-                      android:layout_height="wrap_content"
-                      android:orientation="horizontal"
-                      android:layout_gravity="center_horizontal|bottom"
-                      android:paddingBottom="1dp"
-                >
-            <ImageView android:layout_width="wrap_content"
-                       android:layout_height="wrap_content"
-                       android:id="@+id/left_point_img"
-                       android:paddingRight="1dp"
-                    />
-            <ImageView android:layout_width="wrap_content"
-                       android:layout_height="wrap_content"
-
-                       android:id="@+id/right_point_img"
-                       android:paddingLeft="1dp"
-                    />
-        </LinearLayout>
+        <com.fantasysport.views.PagerIndicatorView android:layout_width="wrap_content"
+                                                   android:layout_height="wrap_content"
+                                                   android:layout_gravity="center_horizontal|bottom"
+                                                   android:paddingBottom="1dp"
+                                                   android:id="@+id/pager_indicator"
+                />
         <ProgressBar
                 style="?android:attr/progressBarStyleLarge"
                 android:layout_width="wrap_content"

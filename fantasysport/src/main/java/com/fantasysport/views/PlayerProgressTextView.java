@@ -4,7 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
 import android.widget.TextView;
-import com.fantasysport.models.Player;
+import com.fantasysport.models.fantasy.Player;
 
 /**
  * Created by bylynka on 3/3/14.

@@ -1,6 +1,6 @@
 package com.fantasysport.adapters.fantasy;
 
-import com.fantasysport.models.IPlayer;
+import com.fantasysport.models.fantasy.IPlayer;
 
 /**
  * Created by bylynka on 2/25/14.

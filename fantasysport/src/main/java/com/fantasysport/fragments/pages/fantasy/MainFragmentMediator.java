@@ -2,7 +2,7 @@ package com.fantasysport.fragments.pages.fantasy;
 
 import com.fantasysport.fragments.pages.IMediator;
 import com.fantasysport.models.Market;
-import com.fantasysport.models.Player;
+import com.fantasysport.models.fantasy.Player;
 
 import java.util.ArrayList;
 import java.util.List;

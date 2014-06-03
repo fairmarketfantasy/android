@@ -21,10 +21,15 @@ public class NFMediator implements IMediator {
     private List<IAutoFillRequestListener> _autoFillRequestListeners = new ArrayList<IAutoFillRequestListener>();
     private List<IAutoFillDataListener> _autoFillDataListeners = new ArrayList<IAutoFillDataListener>();
     private List<IOnDataUpdatedListener> _onDataUpdatedListeners = new ArrayList<IOnDataUpdatedListener>();
-    private List<ISubmitIndividualPredictionListener> _submitIndividualPredictionListeners = new ArrayList<ISubmitIndividualPredictionListener>();
+    private List<ISubmittingIndividualPredictionListener> _submittingIndividualPredictionListeners = new ArrayList<ISubmittingIndividualPredictionListener>();
+    private List<ISubmittedIndividualPredictionListener> _submittedIndividualPredictionListeners = new ArrayList<ISubmittedIndividualPredictionListener>();
 
-    public void addSubmitIndividualPrediction(ISubmitIndividualPredictionListener listener){
-        _submitIndividualPredictionListeners.add(listener);
+    public void addSubmittedIndividualPrediction(ISubmittedIndividualPredictionListener listener){
+        _submittedIndividualPredictionListeners.add(listener);
+    }
+
+    public void addSubmittingIndividualPrediction(ISubmittingIndividualPredictionListener listener){
+        _submittingIndividualPredictionListeners.add(listener);
     }
 
     public void addOnDataUpdatedListener(IOnDataUpdatedListener listener){
@@ -107,9 +112,15 @@ public class NFMediator implements IMediator {
         }
     }
 
-    public void submitIndividualPrediction(Object sender, NFTeam team){
-        for (ISubmitIndividualPredictionListener listener : _submitIndividualPredictionListeners){
-            listener.onSubmitIndividualPrediction(sender, team);
+    public void submittingIndividualPrediction(Object sender, NFTeam team){
+        for (ISubmittingIndividualPredictionListener listener : _submittingIndividualPredictionListeners){
+            listener.onSubmittingIndividualPrediction(sender, team);
+        }
+    }
+
+    public void submittedIndividualPrediction(Object sender, NFTeam team){
+        for (ISubmittedIndividualPredictionListener listener : _submittedIndividualPredictionListeners){
+            listener.onSubmittedIndividualPrediction(sender, team);
         }
     }
 
@@ -146,7 +157,11 @@ public class NFMediator implements IMediator {
         void onDataUpdated(Object sender);
     }
 
-    public interface ISubmitIndividualPredictionListener {
-        void onSubmitIndividualPrediction(Object sender, NFTeam team);
+    public interface ISubmittingIndividualPredictionListener {
+        void onSubmittingIndividualPrediction(Object sender, NFTeam team);
+    }
+
+    public interface ISubmittedIndividualPredictionListener {
+        void onSubmittedIndividualPrediction(Object sender, NFTeam team);
     }
 }

@@ -5,7 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.fantasysport.R;
-import com.fantasysport.fragments.main.FantasyFragment;
+import com.fantasysport.fragments.main.fantasy.FantasyFragment;
 import com.fantasysport.models.Market;
 import com.fantasysport.models.Position;
 import com.fantasysport.models.Roster;
@@ -28,7 +28,7 @@ public class PlayersFragment extends BasePlayersFragment implements FantasyFragm
     @Override
     protected void loadPlayers(final Position position){
         Market market = getMarket();
-        if(market == _lastMarket && _lastPosition == position.getAcronym()
+        if(position == null || market == _lastMarket && _lastPosition == position.getAcronym()
                 && _lastBenchedState == canBenched() && !_pullToRefreshLayout.isRefreshing() && getRoster() != null
                 || market == null || _playersAdapter == null){
             return;

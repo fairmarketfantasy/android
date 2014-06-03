@@ -5,8 +5,8 @@ import android.support.v4.app.Fragment;
 import com.fantasysport.Const;
 import com.fantasysport.activities.nonfantasy.NFPredictionsListActivity;
 import com.fantasysport.fragments.main.IMainFragment;
-import com.fantasysport.fragments.main.NFPredictionFragment;
-import com.fantasysport.fragments.main.NonFantasyFragment;
+import com.fantasysport.fragments.main.nonfantasy.NFPredictionFragment;
+import com.fantasysport.fragments.main.nonfantasy.NonFantasyFragment;
 import com.fantasysport.fragments.pages.nonfantasy.NFPredictionListFragment;
 
 /**

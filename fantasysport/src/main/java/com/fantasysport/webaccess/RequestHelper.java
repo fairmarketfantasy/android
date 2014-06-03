@@ -1,9 +1,9 @@
 package com.fantasysport.webaccess;
 
 import com.fantasysport.models.*;
+import com.fantasysport.models.fwc.FWCData;
+import com.fantasysport.models.nonfantasy.NFData;
 import com.fantasysport.utility.DateUtils;
-
-import java.util.Date;
 
 /**
  * Created by bylynka on 3/10/14.
@@ -88,6 +88,13 @@ public class RequestHelper {
         _listener.onNonFantasyData(data);
     }
 
+    private void raiseONFWCData(FWCData data){
+        if(_listener == null){
+            return;
+        }
+        raiseONFWCData(data);
+    }
+
     public void loadDefaultRosterData(DefaultRosterData data){
         raiseOnDefaultRosterData(data);
     }
@@ -104,6 +111,10 @@ public class RequestHelper {
         raiseOnNFData(data);
     }
 
+    public void loadFWCData(FWCData data){
+
+    }
+
     public void signOut(){
         raiseOnSignOut();
     }
@@ -115,5 +126,6 @@ public class RequestHelper {
         public void onDefaultRosterData(DefaultRosterData data);
         public void onUserData(UserData data);
         public void onNonFantasyData(NFData data);
+        public void onFWCData(FWCData data);
     }
 }

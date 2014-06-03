@@ -1,8 +1,7 @@
 package com.fantasysport.webaccess;
 
 import android.graphics.Bitmap;
-import android.support.v7.appcompat.R;
-import com.fantasysport.models.Player;
+import com.fantasysport.models.fantasy.Player;
 import com.fantasysport.models.StatsItem;
 import com.fantasysport.models.User;
 import com.fantasysport.models.nonfantasy.NFTeam;
@@ -11,6 +10,7 @@ import com.fantasysport.webaccess.requestListeners.*;
 import com.fantasysport.webaccess.requestListeners.ListResponseListener;
 import com.fantasysport.webaccess.requests.*;
 import com.fantasysport.webaccess.requests.fantasy.*;
+import com.fantasysport.webaccess.requests.fwc.GetFWCDataRequest;
 import com.fantasysport.webaccess.requests.nonfantasy.*;
 import com.octo.android.robospice.SpiceManager;
 import com.octo.android.robospice.persistence.exception.SpiceException;
@@ -217,6 +217,13 @@ public final class WebProxy {
 
     public void getNFIndividualPredictions(String category, String sport, int page, boolean isHistory, ListResponseListener listener){
         GetNFIndividualPredictionRequest request = new GetNFIndividualPredictionRequest(category, sport, page, isHistory);
+        request.setRetryPolicy(getRetryPolicy());
+        _spiceManager.execute(request, listener);
+    }
+
+
+    public void getFWCCategories(GetFWCDataResponseListener listener){
+        GetFWCDataRequest request = new GetFWCDataRequest();
         request.setRetryPolicy(getRetryPolicy());
         _spiceManager.execute(request, listener);
     }

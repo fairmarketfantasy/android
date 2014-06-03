@@ -18,7 +18,8 @@ import java.util.List;
 public abstract class BaseFragment extends BaseActivityFragment implements IMainFragment  {
 
     protected AnimatedViewPager _pager;
-    protected List<IPageChangedListener> _listeners = new ArrayList<IPageChangedListener>();
+    protected List<IMainFragment.IPageChangedListener> _pageChangedListener = new ArrayList<IMainFragment.IPageChangedListener>();
+    protected List<IMainFragment.IPageAmountChangedListener> _pageAmountChangedListeners = new ArrayList<IMainFragment.IPageAmountChangedListener>();
     protected IOnAttachedListener _onAttachedListener;
 
     @Override
@@ -48,14 +49,29 @@ public abstract class BaseFragment extends BaseActivityFragment implements IMain
         _pager.setOnPageChangeListener(_pageChangeListener);
     }
 
+    @Override
     public void addPageChangedListener(IPageChangedListener listener) {
-        _listeners.add(listener);
+        _pageChangedListener.add(listener);
+    }
+
+    public void addPageAmountChangedListener(IPageAmountChangedListener listener){
+        _pageAmountChangedListeners.add(listener);
     }
 
     protected void raiseOnPageChanged(int page) {
-        for (int i = 0; i < _listeners.size(); i++) {
-            _listeners.get(i).onPageChanged(page);
+        for (int i = 0; i < _pageChangedListener.size(); i++) {
+            _pageChangedListener.get(i).onPageChanged(page);
         }
+    }
+
+    protected void raiseOnPagesAmountChanged(int amount) {
+        for (int i = 0; i < _pageAmountChangedListeners.size(); i++) {
+            _pageAmountChangedListeners.get(i).onPageAmountChanged(amount);
+        }
+    }
+
+    protected void setPageAmount(int amount){
+        raiseOnPagesAmountChanged(amount);
     }
 
     protected AnimatedViewPager.OnPageChangeListener _pageChangeListener =  new AnimatedViewPager.OnPageChangeListener() {

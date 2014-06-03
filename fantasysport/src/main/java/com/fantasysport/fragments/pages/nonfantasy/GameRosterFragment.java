@@ -12,8 +12,8 @@ import com.fantasysport.activities.IMainActivity;
 import com.fantasysport.adapters.nonfantasy.*;
 import com.fantasysport.fragments.BaseActivityFragment;
 import com.fantasysport.fragments.main.IMainFragment;
-import com.fantasysport.fragments.main.INFMainFragment;
-import com.fantasysport.models.NFData;
+import com.fantasysport.fragments.main.nonfantasy.INFMainFragment;
+import com.fantasysport.models.nonfantasy.NFData;
 import com.fantasysport.models.nonfantasy.*;
 import com.fantasysport.webaccess.requestListeners.RequestError;
 import com.fantasysport.webaccess.requestListeners.SubmitNFRosterResponseListener;
@@ -28,7 +28,7 @@ import java.util.List;
  */
 public class GameRosterFragment extends BaseActivityFragment implements NFRosterAdapter.IListener,
         NFMediator.ITeamSelectedListener, NFMediator.IGamesUpdatedListener, NFMediator.IAutoFillDataListener,
-        NFMediator.IOnDataUpdatedListener, NFMediator.ISubmitIndividualPredictionListener {
+        NFMediator.IOnDataUpdatedListener, NFMediator.ISubmittedIndividualPredictionListener {
 
     private final String SELECTED_TEAMS = "selected_teams";
 
@@ -50,7 +50,7 @@ public class GameRosterFragment extends BaseActivityFragment implements NFRoster
         _mediator.addGamesUpdatedListener(this);
         _mediator.addAutoFillDataListener(this);
         _mediator.addOnDataUpdatedListener(this);
-        _mediator.addSubmitIndividualPrediction(this);
+        _mediator.addSubmittedIndividualPrediction(this);
         View autoFill = getViewById(R.id.autofill_holder);
         View bottomBar = getViewById(R.id.bottom_bar);
         if(getMainFragment().isEditable()){
@@ -95,7 +95,11 @@ public class GameRosterFragment extends BaseActivityFragment implements NFRoster
     }
 
     private void setEmptyRoster() {
-        int roomNumber = getStorage().getNFDataContainer().getRoster().getRoomNumber();
+        NFData data = getStorage().getNFDataContainer();
+        if(data == null){
+            return;
+        }
+        int roomNumber = data.getRoster().getRoomNumber();
         List<INFTeam> games = new ArrayList<INFTeam>(roomNumber);
         for (int i = 0; i < roomNumber; i++) {
             games.add(new EmptyNFTeam());
@@ -124,7 +128,7 @@ public class GameRosterFragment extends BaseActivityFragment implements NFRoster
 
     @Override
     public void onPT(NFTeam team) {
-        _mediator.submitIndividualPrediction(this, team);
+        _mediator.submittingIndividualPrediction(this, team);
     }
 
     @Override
@@ -243,6 +247,9 @@ public class GameRosterFragment extends BaseActivityFragment implements NFRoster
 
     @Override
     public void onAutoFillData(Object sender, NFAutoFillData data) {
+        if(data == null || data.getRosterTeams() == null){
+            return;
+        }
         _adapter.setTeams(new ArrayList<INFTeam>(data.getRosterTeams()));
         _adapter.notifyDataSetChanged();
         updateSubmitBtnState();
@@ -270,7 +277,7 @@ public class GameRosterFragment extends BaseActivityFragment implements NFRoster
     }
 
     @Override
-    public void onSubmitIndividualPrediction(Object sender, NFTeam team) {
+    public void onSubmittedIndividualPrediction(Object sender, NFTeam team) {
         if(_adapter == null){
             return;
         }

@@ -1,6 +1,6 @@
 package com.fantasysport.parsers;
 
-import com.fantasysport.models.Player;
+import com.fantasysport.models.fantasy.Player;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;

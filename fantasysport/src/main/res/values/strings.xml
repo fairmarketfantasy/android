@@ -106,6 +106,9 @@
     <string name="your_choices">Your Choices</string>
     <string name="info">Info</string>
     <string name="game_predictions">Game predictions</string>
+    <string name="win_the_cup">Win The Cup</string>
+    <string name="win_the_group">Win The Group</string>
+    <string name="daily_wins">Daily Wins</string>
 
     <string-array name="prediction_menu_list">
         <item>Roster</item>

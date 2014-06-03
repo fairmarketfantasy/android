@@ -1,8 +1,9 @@
 package com.fantasysport;
 
 import android.app.Application;
-import android.provider.ContactsContract;
 import com.fantasysport.models.*;
+import com.fantasysport.models.fwc.FWCData;
+import com.fantasysport.models.nonfantasy.NFData;
 import com.fantasysport.repo.Storage;
 import com.fantasysport.utility.CacheProvider;
 import com.fantasysport.webaccess.RequestHelper;
@@ -19,6 +20,7 @@ public class App extends Application {
     private final String MARKETS = "markets";
     private final String DEFAULT_ROSTER_DATA = "default_roster_data";
     private final String NON_FANTASY_DATA = "non_fantasy_data";
+    private final String FWC_DATA = "non_fantasy_data";
 
     public static App getCurrent(){
         return _current;
@@ -39,7 +41,7 @@ public class App extends Application {
     }
 
     private void restoreState(){
-        Gson gson = getGson();
+        Gson gson = new Gson();
         String dataInStr = CacheProvider.getString(this, ACCESS_TOKEN);
         Storage storage = Storage.instance();
         if(dataInStr == null){
@@ -69,8 +71,14 @@ public class App extends Application {
 
         dataInStr = CacheProvider.getString(this, NON_FANTASY_DATA);
         if(dataInStr != null){
-            NFData nfData = gson.fromJson(dataInStr, NFData.class);
+            NFData nfData = getGson().fromJson(dataInStr, NFData.class);
             storage.setNFData(nfData);
+        }
+
+        dataInStr = CacheProvider.getString(this, FWC_DATA);
+        if(dataInStr != null){
+            FWCData fwcData = getGson().fromJson(dataInStr, FWCData.class);
+            storage.setFWCData(fwcData);
         }
     }
 
@@ -91,6 +99,8 @@ public class App extends Application {
             CacheProvider.putString(App.this, MARKETS, null);
             CacheProvider.putString(App.this, DEFAULT_ROSTER_DATA, null);
             CacheProvider.putString(App.this, Const.USER_DATA, null);
+            CacheProvider.putString(App.this, FWC_DATA, null);
+            CacheProvider.putString(App.this, NON_FANTASY_DATA, null);
         }
 
         @Override
@@ -120,6 +130,12 @@ public class App extends Application {
         public void onNonFantasyData(NFData data) {
             String dataStr = data != null? getGson().toJson(data): null;
             CacheProvider.putString(App.this, NON_FANTASY_DATA, dataStr);
+        }
+
+        @Override
+        public void onFWCData(FWCData data) {
+            String dataStr = data != null? getGson().toJson(data): null;
+            CacheProvider.putString(App.this, FWC_DATA, dataStr);
         }
     };
 

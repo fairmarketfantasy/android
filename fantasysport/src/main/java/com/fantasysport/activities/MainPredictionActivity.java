@@ -7,8 +7,7 @@ import android.widget.ImageView;
 import com.fantasysport.Const;
 import com.fantasysport.R;
 import com.fantasysport.factories.FactoryProvider;
-import com.fantasysport.fragments.main.BaseFantasyFragment;
-import com.fantasysport.fragments.main.FantasyPredictionFragment;
+import com.fantasysport.fragments.main.fantasy.BaseFantasyFragment;
 import com.fantasysport.fragments.main.IMainFragment;
 
 /**

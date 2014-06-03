@@ -1,5 +1,6 @@
-package com.fantasysport.models;
+package com.fantasysport.models.nonfantasy;
 
+import com.fantasysport.models.NFRoster;
 import com.fantasysport.models.nonfantasy.NFGame;
 import com.google.gson.annotations.SerializedName;
 

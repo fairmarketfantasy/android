@@ -1,8 +1,9 @@
-package com.fantasysport.fragments.main;
+package com.fantasysport.fragments.main.fantasy;
 
-import android.app.Activity;
 import com.fantasysport.Const;
 import com.fantasysport.R;
+import com.fantasysport.fragments.main.IMainFragment;
+import com.fantasysport.fragments.main.fantasy.BaseFantasyFragment;
 import com.fantasysport.fragments.pages.IMediator;
 import com.fantasysport.models.Market;
 import com.fantasysport.models.UserData;

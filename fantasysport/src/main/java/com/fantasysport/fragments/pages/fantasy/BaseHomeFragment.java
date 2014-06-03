@@ -12,6 +12,8 @@ import com.fantasysport.activities.IndividuaPredictionsActivity;
 import com.fantasysport.adapters.fantasy.PlayerItem;
 import com.fantasysport.adapters.RosterPlayersAdapter;
 import com.fantasysport.models.*;
+import com.fantasysport.models.fantasy.IPlayer;
+import com.fantasysport.models.fantasy.Player;
 import com.fantasysport.utility.OutParameter;
 import com.fantasysport.views.Switcher;
 import com.fantasysport.webaccess.requestListeners.AutoFillResponseListener;

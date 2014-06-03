@@ -1,7 +1,7 @@
 package com.fantasysport.webaccess.requests.fantasy;
 
 import android.net.Uri;
-import com.fantasysport.models.Player;
+import com.fantasysport.models.fantasy.Player;
 import com.fantasysport.parsers.PlayersParser;
 import com.fantasysport.webaccess.requests.BaseRequest;
 import com.fantasysport.webaccess.responses.PlayersRequestResponse;

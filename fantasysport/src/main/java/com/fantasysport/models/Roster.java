@@ -1,5 +1,6 @@
 package com.fantasysport.models;
 
+import com.fantasysport.models.fantasy.Player;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;

@@ -13,6 +13,8 @@ public class FactoryProvider {
                 return FantasyFactory.instance();
             case Const.NON_FANTASY_SPORT:
                 return NonFantasyFactory.instance();
+            case Const.FWC:
+                return FWCFactory.instance();
         }
         return null;
     }

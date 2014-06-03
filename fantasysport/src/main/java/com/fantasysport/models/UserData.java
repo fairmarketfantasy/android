@@ -63,7 +63,7 @@ public class UserData {
     @SerializedName("currentSport")
     private String _currentSport;
 
-    @SerializedName("current_category")
+    @SerializedName("currentCategory")
     private String _currentCategory;
 
 
@@ -74,8 +74,8 @@ public class UserData {
     private CustomerObject _customerObject;
 
     public String getSport(){
-//        return _currentSport;
-        return "MLB";
+        return _currentSport;
+//        return "MLB";
     }
 
     public String getCategory(){

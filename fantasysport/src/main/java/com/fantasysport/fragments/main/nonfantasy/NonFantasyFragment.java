@@ -1,12 +1,13 @@
-package com.fantasysport.fragments.main;
+package com.fantasysport.fragments.main.nonfantasy;
 
 import android.os.Bundle;
 
 import com.fantasysport.Const;
 import com.fantasysport.R;
-import com.fantasysport.adapters.nonfantasy.NonFantasyPagerAdapter;
+import com.fantasysport.adapters.nonfantasy.NFPagerAdapter;
+import com.fantasysport.fragments.main.BaseFragment;
 import com.fantasysport.fragments.pages.nonfantasy.NFMediator;
-import com.fantasysport.models.NFData;
+import com.fantasysport.models.nonfantasy.NFData;
 import com.fantasysport.models.nonfantasy.NFAutoFillData;
 import com.fantasysport.models.nonfantasy.NFTeam;
 import com.fantasysport.utility.CacheProvider;
@@ -22,9 +23,9 @@ import com.fantasysport.webaccess.requestListeners.StringResponseListener;
  */
 public class NonFantasyFragment extends BaseFragment
         implements NFMediator.ITeamSelectedListener, NFMediator.IUpdateGamesRequestListener,
-        NFMediator.IAutoFillRequestListener, INFMainFragment, NFMediator.ISubmitIndividualPredictionListener {
+        NFMediator.IAutoFillRequestListener, INFMainFragment, NFMediator.ISubmittingIndividualPredictionListener {
 
-    private NonFantasyPagerAdapter _pagerAdapter;
+    private NFPagerAdapter _pagerAdapter;
     private NFMediator _mediator = new NFMediator();
 
     @Override
@@ -33,13 +34,13 @@ public class NonFantasyFragment extends BaseFragment
         _mediator.addTeamSelectedListener(this);
         _mediator.addUpdateGamesRequestListener(this);
         _mediator.addAutoFillRequestListener(this);
-        _mediator.addSubmitIndividualPrediction(this);
+        _mediator.addSubmittingIndividualPrediction(this);
     }
 
     @Override
     protected void setPager() {
         super.setPager();
-        _pagerAdapter = new NonFantasyPagerAdapter(getActivity().getSupportFragmentManager());
+        _pagerAdapter = new NFPagerAdapter(getActivity().getSupportFragmentManager());
         _pager.setAdapter(_pagerAdapter);
         raiseOnPageChanged(0);
     }
@@ -47,8 +48,12 @@ public class NonFantasyFragment extends BaseFragment
     @Override
     public void onResume() {
         super.onResume();
+        NFData data = getStorage().getNFDataContainer();
+        if(data == null){
+            return;
+        }
         long nowTime = DateUtils.getCurrentDate().getTime();
-        long gamesTime = getStorage().getNFDataContainer().getUpdatedAt();
+        long gamesTime = data.getUpdatedAt();
         long deltaTime = nowTime - gamesTime;
         long deltaTimeInMin = deltaTime / 60000;
         boolean isTimeZoneChanged = CacheProvider.getBoolean(getActivity(), Const.TIME_ZONE_CHANGED);
@@ -138,14 +143,16 @@ public class NonFantasyFragment extends BaseFragment
     }
 
     @Override
-    public void onSubmitIndividualPrediction(Object sender, final NFTeam team) {
+    public void onSubmittingIndividualPrediction(Object sender, final NFTeam team) {
         ConfirmDialog dialog = new ConfirmDialog(getActivity());
         dialog.setTitle(String.format("PT%.0f", team.getPT()))
                 .setContent(String.format("Predict %s?", team.getName()))
                 .setOkAction(new Runnable() {
                     @Override
                     public void run() {
+                        team.setIsPredicted(true);
                         submitIndividualPrediction(team);
+                        _mediator.submittedIndividualPrediction(NonFantasyFragment.this, team);
                     }
                 })
                 .show();
@@ -161,6 +168,7 @@ public class NonFantasyFragment extends BaseFragment
                 dismissProgress();
                 showAlert(getString(R.string.error), error.getMessage());
                 team.setIsPredicted(false);
+                _mediator.submittedIndividualPrediction(NonFantasyFragment.this, team);
             }
 
             @Override

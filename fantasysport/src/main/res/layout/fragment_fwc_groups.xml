@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <com.fantasysport.views.ScrollGroupControl android:layout_width="match_parent"
+                                                  android:layout_height="@dimen/position_view_height"
+                                                  android:id="@+id/group_view" />
+
+    <View android:layout_width="match_parent"
+          android:layout_height="1dip"
+          android:background="#CCCCCC"/>
+    <FrameLayout android:layout_width="match_parent"
+                 android:layout_height="50dp"
+                 android:paddingRight="@dimen/side_margin"
+                 android:paddingLeft="@dimen/side_margin"
+                 android:background="#E6E6E6">
+        <com.fantasysport.views.RobotoThinTextView android:layout_width="wrap_content"
+                                                   android:layout_height="wrap_content"
+                                                   android:layout_gravity="center_vertical"
+                                                   android:textSize="@dimen/s_lage_font"
+                                                   android:textColor="#595959"
+                                                   android:text="@string/win_the_group" />
+
+    </FrameLayout>
+    <View android:layout_width="match_parent"
+          android:layout_height="1dip"
+          android:background="#CCCCCC"/>
+
+    <ListView android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:layout_weight="1"
+              android:id="@+id/team_list"
+
+            />
+
+</LinearLayout>

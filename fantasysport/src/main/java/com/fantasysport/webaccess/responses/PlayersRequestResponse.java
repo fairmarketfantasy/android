@@ -1,6 +1,6 @@
 package com.fantasysport.webaccess.responses;
 
-import com.fantasysport.models.Player;
+import com.fantasysport.models.fantasy.Player;
 
 import java.util.List;
 

@@ -2,8 +2,8 @@ package com.fantasysport.factories;
 
 import android.support.v4.app.Fragment;
 import com.fantasysport.activities.fantasy.FPredictionsListActivity;
-import com.fantasysport.fragments.main.FantasyFragment;
-import com.fantasysport.fragments.main.FantasyPredictionFragment;
+import com.fantasysport.fragments.main.fantasy.FantasyFragment;
+import com.fantasysport.fragments.main.fantasy.FantasyPredictionFragment;
 import com.fantasysport.fragments.main.IMainFragment;
 import com.fantasysport.fragments.pages.fantasy.ActivePredictionListFragment;
 import com.fantasysport.fragments.pages.fantasy.HistoryPredictionListFragment;

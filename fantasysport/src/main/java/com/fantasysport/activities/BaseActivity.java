@@ -125,6 +125,10 @@ public class BaseActivity extends ActionBarActivity {
         return getSupportLoaderManager().hasRunningLoaders();
     }
 
+    protected void resetProgressCounter(){
+        _progressCounter = 0;
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
