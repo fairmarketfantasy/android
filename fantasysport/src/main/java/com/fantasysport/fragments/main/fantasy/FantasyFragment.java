@@ -3,15 +3,14 @@ package com.fantasysport.fragments.main.fantasy;
 import com.fantasysport.Const;
 import com.fantasysport.R;
 import com.fantasysport.fragments.main.IMainFragment;
-import com.fantasysport.fragments.main.fantasy.BaseFantasyFragment;
 import com.fantasysport.fragments.pages.IMediator;
 import com.fantasysport.models.Market;
 import com.fantasysport.models.UserData;
 import com.fantasysport.utility.CacheProvider;
 import com.fantasysport.utility.DateUtils;
 import com.fantasysport.utility.DeviceInfo;
-import com.fantasysport.webaccess.requestListeners.MarketsResponseListener;
-import com.fantasysport.webaccess.requestListeners.RequestError;
+import com.fantasysport.webaccess.responseListeners.MarketsResponseListener;
+import com.fantasysport.webaccess.responseListeners.RequestError;
 import com.fantasysport.webaccess.responses.MarketResponse;
 
 import java.util.ArrayList;

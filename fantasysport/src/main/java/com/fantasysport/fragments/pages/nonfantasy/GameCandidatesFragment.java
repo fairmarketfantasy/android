@@ -180,6 +180,11 @@ public class GameCandidatesFragment extends BaseActivityFragment implements NFCa
     @Override
     public void onGamesUpdated(Object sender, List<NFGame> games) {
         if(!getMainFragment().isEditable()){
+            NFData data = getMainFragment().getData();
+            if(data == null){
+                return;
+            }
+            _msgLbl.setText(getFinishedMsg(data.getRoster()));
             return;
         }
         _adapter.setGames(games);

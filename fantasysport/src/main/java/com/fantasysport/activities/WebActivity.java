@@ -5,9 +5,8 @@ import android.os.Bundle;
 import com.fantasysport.Const;
 import com.fantasysport.R;
 import com.fantasysport.views.WebControlView;
-import com.fantasysport.webaccess.WebProxy;
-import com.fantasysport.webaccess.requestListeners.RequestError;
-import com.fantasysport.webaccess.requestListeners.StringResponseListener;
+import com.fantasysport.webaccess.responseListeners.RequestError;
+import com.fantasysport.webaccess.responseListeners.StringResponseListener;
 
 import java.net.URLEncoder;
 

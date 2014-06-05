@@ -20,9 +20,9 @@ import com.fantasysport.R;
 import com.fantasysport.models.UserData;
 import com.fantasysport.utility.TypefaceProvider;
 import com.fantasysport.utility.image.ImageViewAnimatedChanger;
-import com.fantasysport.webaccess.requestListeners.FaceBookAuthListener;
-import com.fantasysport.webaccess.requestListeners.MarketsResponseListener;
-import com.fantasysport.webaccess.requestListeners.RequestError;
+import com.fantasysport.webaccess.responseListeners.FaceBookAuthListener;
+import com.fantasysport.webaccess.responseListeners.MarketsResponseListener;
+import com.fantasysport.webaccess.responseListeners.RequestError;
 import com.fantasysport.webaccess.responses.AuthResponse;
 import com.fantasysport.webaccess.responses.MarketResponse;
 

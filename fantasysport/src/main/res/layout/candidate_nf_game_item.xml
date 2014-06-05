@@ -9,6 +9,7 @@
              android:paddingLeft="8dp"
              android:paddingBottom="@dimen/side_hor_margin"
              android:paddingTop="@dimen/side_hor_margin"
+             android:background="#F0F0F0"
         >
 
     <TableRow>

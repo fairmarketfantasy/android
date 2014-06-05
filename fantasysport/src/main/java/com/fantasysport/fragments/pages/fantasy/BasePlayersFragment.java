@@ -14,13 +14,13 @@ import com.fantasysport.activities.IndividuaPredictionsActivity;
 import com.fantasysport.adapters.fantasy.CandidatePlayersAdapter;
 import com.fantasysport.models.Market;
 import com.fantasysport.models.fantasy.Player;
-import com.fantasysport.models.Position;
+import com.fantasysport.models.fantasy.Position;
 import com.fantasysport.models.Roster;
 import com.fantasysport.views.IOnPositionSelectedListener;
 import com.fantasysport.views.ScrollPositionControl;
-import com.fantasysport.webaccess.requestListeners.AddPlayerResponseListener;
-import com.fantasysport.webaccess.requestListeners.PlayersResponseListener;
-import com.fantasysport.webaccess.requestListeners.RequestError;
+import com.fantasysport.webaccess.responseListeners.AddPlayerResponseListener;
+import com.fantasysport.webaccess.responseListeners.PlayersResponseListener;
+import com.fantasysport.webaccess.responseListeners.RequestError;
 import com.fantasysport.webaccess.responses.PlayersRequestResponse;
 
 /**

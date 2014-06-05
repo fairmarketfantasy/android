@@ -19,6 +19,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 
+import android.graphics.Point;
 import android.os.Handler;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -32,6 +33,7 @@ public class ImageLoader {
     MemoryCache memoryCache = new MemoryCache();
 
     FileCache fileCache;
+    private Point _point = null;
 
     //Create Map (collection) to store image and image url in key value pair
     private Map<ImageView, String> imageViews = Collections.synchronizedMap(
@@ -49,6 +51,10 @@ public class ImageLoader {
         // threads operating off a shared unbounded queue.
         executorService=Executors.newFixedThreadPool(5);
 
+    }
+
+    public void setRequiredSize(int width, int height){
+        _point = new Point(width, height);
     }
 
     // default image show in list (Before online image download)
@@ -200,15 +206,19 @@ public class ImageLoader {
             // Set width/height of recreated image
             final int REQUIRED_SIZE=85;
 
+            if(_point == null){
+                _point = new Point(REQUIRED_SIZE, REQUIRED_SIZE);
+            }
+
             int width_tmp=o.outWidth, height_tmp=o.outHeight;
             int scale=1;
-            while(true){
-                if(width_tmp/2 < REQUIRED_SIZE || height_tmp/2 < REQUIRED_SIZE)
-                    break;
-                width_tmp/=2;
-                height_tmp/=2;
-                scale*=2;
-            }
+//            while(true){
+//                if(width_tmp/2 < _point.x || height_tmp/2 < _point.y)
+//                    break;
+//                width_tmp/=2;
+//                height_tmp/=2;
+//                scale*=2;
+//            }
 
             //decode with current scale values
             BitmapFactory.Options o2 = new BitmapFactory.Options();

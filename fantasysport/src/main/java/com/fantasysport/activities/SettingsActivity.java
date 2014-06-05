@@ -16,8 +16,8 @@ import com.fantasysport.adapters.SettingsItemEnum;
 import com.fantasysport.adapters.SettinsAdapter;
 import com.fantasysport.models.User;
 import com.fantasysport.models.UserData;
-import com.fantasysport.webaccess.requestListeners.RequestError;
-import com.fantasysport.webaccess.requestListeners.UserResponseListener;
+import com.fantasysport.webaccess.responseListeners.RequestError;
+import com.fantasysport.webaccess.responseListeners.UserResponseListener;
 
 import java.io.IOException;
 import java.util.ArrayList;

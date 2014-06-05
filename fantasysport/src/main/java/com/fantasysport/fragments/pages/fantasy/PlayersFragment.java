@@ -7,10 +7,10 @@ import android.view.ViewGroup;
 import com.fantasysport.R;
 import com.fantasysport.fragments.main.fantasy.FantasyFragment;
 import com.fantasysport.models.Market;
-import com.fantasysport.models.Position;
+import com.fantasysport.models.fantasy.Position;
 import com.fantasysport.models.Roster;
-import com.fantasysport.webaccess.requestListeners.RequestError;
-import com.fantasysport.webaccess.requestListeners.RosterResponseListener;
+import com.fantasysport.webaccess.responseListeners.RequestError;
+import com.fantasysport.webaccess.responseListeners.RosterResponseListener;
 
 import java.util.List;
 

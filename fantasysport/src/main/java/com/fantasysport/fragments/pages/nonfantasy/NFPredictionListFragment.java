@@ -16,8 +16,8 @@ import com.fantasysport.fragments.pages.BasePredictionListFragment;
 import com.fantasysport.models.IndividualPrediction;
 import com.fantasysport.models.UserData;
 import com.fantasysport.models.nonfantasy.NFPrediction;
-import com.fantasysport.webaccess.requestListeners.ListResponseListener;
-import com.fantasysport.webaccess.requestListeners.RequestError;
+import com.fantasysport.webaccess.responseListeners.ListResponseListener;
+import com.fantasysport.webaccess.responseListeners.RequestError;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -9,10 +9,10 @@ import com.fantasysport.fragments.pages.fantasy.MainFragmentMediator;
 import com.fantasysport.fragments.pages.fantasy.PredictionRoster;
 import com.fantasysport.models.Market;
 import com.fantasysport.models.Roster;
-import com.fantasysport.webaccess.requestListeners.RequestError;
-import com.fantasysport.webaccess.requestListeners.RosterResponseListener;
-import com.fantasysport.webaccess.requestListeners.UpdateMainDataResponse;
-import com.fantasysport.webaccess.requestListeners.UpdateMainDataResponseListener;
+import com.fantasysport.webaccess.responseListeners.RequestError;
+import com.fantasysport.webaccess.responseListeners.RosterResponseListener;
+import com.fantasysport.webaccess.responseListeners.UpdateMainDataResponse;
+import com.fantasysport.webaccess.responseListeners.UpdateMainDataResponseListener;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -15,8 +15,8 @@ import com.fantasysport.fragments.main.IMainFragment;
 import com.fantasysport.fragments.main.nonfantasy.INFMainFragment;
 import com.fantasysport.models.nonfantasy.NFData;
 import com.fantasysport.models.nonfantasy.*;
-import com.fantasysport.webaccess.requestListeners.RequestError;
-import com.fantasysport.webaccess.requestListeners.SubmitNFRosterResponseListener;
+import com.fantasysport.webaccess.responseListeners.RequestError;
+import com.fantasysport.webaccess.responseListeners.SubmitNFRosterResponseListener;
 
 import java.util.ArrayList;
 import java.util.Collections;

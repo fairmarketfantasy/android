@@ -13,10 +13,10 @@ import com.fantasysport.models.nonfantasy.NFTeam;
 import com.fantasysport.utility.CacheProvider;
 import com.fantasysport.utility.DateUtils;
 import com.fantasysport.views.ConfirmDialog;
-import com.fantasysport.webaccess.requestListeners.GetNFGamesResponseListener;
-import com.fantasysport.webaccess.requestListeners.NFAutoFillResponseListener;
-import com.fantasysport.webaccess.requestListeners.RequestError;
-import com.fantasysport.webaccess.requestListeners.StringResponseListener;
+import com.fantasysport.webaccess.responseListeners.GetNFGamesResponseListener;
+import com.fantasysport.webaccess.responseListeners.NFAutoFillResponseListener;
+import com.fantasysport.webaccess.responseListeners.RequestError;
+import com.fantasysport.webaccess.responseListeners.StringResponseListener;
 
 /**
  * Created by bylynka on 5/15/14.
@@ -67,6 +67,7 @@ public class NonFantasyFragment extends BaseFragment
     protected void initStartParams(Bundle savedInstanceState) {
     }
 
+    @Override
     public NFMediator getMediator() {
         return _mediator;
     }

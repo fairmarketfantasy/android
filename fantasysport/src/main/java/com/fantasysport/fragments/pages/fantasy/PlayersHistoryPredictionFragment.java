@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.fantasysport.R;
-import com.fantasysport.models.Position;
+import com.fantasysport.models.fantasy.Position;
 import com.fantasysport.models.Roster;
 
 /**

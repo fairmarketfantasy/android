@@ -13,9 +13,9 @@ import com.fantasysport.models.FGame;
 import com.fantasysport.models.fantasy.Player;
 import com.fantasysport.models.StatsItem;
 import com.fantasysport.utility.image.ImageLoader;
-import com.fantasysport.webaccess.requestListeners.RequestError;
-import com.fantasysport.webaccess.requestListeners.StatEventsResponseListener;
-import com.fantasysport.webaccess.requestListeners.SubmitPredictionResponseListener;
+import com.fantasysport.webaccess.responseListeners.RequestError;
+import com.fantasysport.webaccess.responseListeners.StatEventsResponseListener;
+import com.fantasysport.webaccess.responseListeners.SubmitPredictionResponseListener;
 import com.fantasysport.webaccess.responses.StatEventsResponse;
 
 import java.util.ArrayList;

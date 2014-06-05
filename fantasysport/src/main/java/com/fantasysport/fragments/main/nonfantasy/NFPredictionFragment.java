@@ -10,9 +10,9 @@ import com.fantasysport.fragments.pages.nonfantasy.NFMediator;
 import com.fantasysport.models.nonfantasy.NFData;
 import com.fantasysport.models.nonfantasy.NFAutoFillData;
 import com.fantasysport.models.nonfantasy.NFTeam;
-import com.fantasysport.webaccess.requestListeners.GetNFGamesResponseListener;
-import com.fantasysport.webaccess.requestListeners.NFAutoFillResponseListener;
-import com.fantasysport.webaccess.requestListeners.RequestError;
+import com.fantasysport.webaccess.responseListeners.GetNFGamesResponseListener;
+import com.fantasysport.webaccess.responseListeners.NFAutoFillResponseListener;
+import com.fantasysport.webaccess.responseListeners.RequestError;
 
 /**
  * Created by bylynka on 5/28/14.

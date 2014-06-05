@@ -12,9 +12,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import com.fantasysport.R;
 import com.fantasysport.models.User;
-import com.fantasysport.webaccess.requestListeners.RequestError;
-import com.fantasysport.webaccess.requestListeners.SignUpResponseListener;
-import com.fantasysport.webaccess.WebProxy;
+import com.fantasysport.webaccess.responseListeners.RequestError;
+import com.fantasysport.webaccess.responseListeners.SignUpResponseListener;
 import com.fantasysport.webaccess.responses.AuthResponse;
 
 public class SignUpActivity extends AuthActivity {

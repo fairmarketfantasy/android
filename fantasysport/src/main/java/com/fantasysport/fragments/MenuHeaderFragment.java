@@ -43,7 +43,7 @@ public class MenuHeaderFragment extends BaseActivityFragment {
         TextView prestigelbl = getViewById(R.id.prestige_lbl);
         prestigelbl.setText(Integer.toString(userData.getPrestige()));
         TextView userRegTxt = getViewById(R.id.user_reg_txt);
-        Date regDate = userData.getRegistrationdDate();
+        Date regDate = userData.getRegistrationDate();
         SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy");
         userRegTxt.setText(String.format(getString(R.string.member_since_f, sdf.format(regDate))));
         TextView userNameTxt = getViewById(R.id.user_name_txt);

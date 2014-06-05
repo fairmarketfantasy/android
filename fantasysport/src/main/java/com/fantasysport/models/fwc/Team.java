@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Created by bylynka on 6/2/14.
  */
-public class Team {
+public class Team implements IFWCModel {
 
     @SerializedName("name")
     private String _name;
@@ -28,6 +28,11 @@ public class Team {
 
     public boolean isPredicted() {
         return _isPredicted;
+    }
+
+    @Override
+    public void setIsPredicted(boolean isPredicted) {
+        _isPredicted = isPredicted;
     }
 
     public String getGameStatsId() {

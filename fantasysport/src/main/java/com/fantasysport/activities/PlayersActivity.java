@@ -11,10 +11,10 @@ import com.fantasysport.adapters.fantasy.CandidatePlayersAdapter;
 import com.fantasysport.models.fantasy.Player;
 import com.fantasysport.models.Roster;
 import com.fantasysport.views.Switcher;
-import com.fantasysport.webaccess.requestListeners.AddPlayerResponseListener;
-import com.fantasysport.webaccess.requestListeners.RosterResponseListener;
-import com.fantasysport.webaccess.requestListeners.PlayersResponseListener;
-import com.fantasysport.webaccess.requestListeners.RequestError;
+import com.fantasysport.webaccess.responseListeners.AddPlayerResponseListener;
+import com.fantasysport.webaccess.responseListeners.RosterResponseListener;
+import com.fantasysport.webaccess.responseListeners.PlayersResponseListener;
+import com.fantasysport.webaccess.responseListeners.RequestError;
 import com.fantasysport.webaccess.responses.PlayersRequestResponse;
 
 import java.util.ArrayList;

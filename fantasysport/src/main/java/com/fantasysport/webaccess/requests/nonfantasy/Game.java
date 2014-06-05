@@ -3,7 +3,6 @@ package com.fantasysport.webaccess.requests.nonfantasy;
 import com.fantasysport.utility.Converter;
 import com.fantasysport.utility.DateUtils;
 import com.fantasysport.utility.DeviceInfo;
-import com.fantasysport.webaccess.requestListeners.StringResponseListener;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;

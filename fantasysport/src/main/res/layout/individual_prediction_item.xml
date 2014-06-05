@@ -162,7 +162,6 @@
                     />
             <TextView android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
-                      android:text="Over: 1.4  rebounds"
                       android:textColor="#000000"
                       android:textSize="@dimen/low_font"
                       android:id="@+id/prediction_lbl"

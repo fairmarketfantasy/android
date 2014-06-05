@@ -10,10 +10,10 @@ import com.fantasysport.Const;
 import com.fantasysport.R;
 import com.fantasysport.models.nonfantasy.NFData;
 import com.fantasysport.webaccess.RequestHelper;
-import com.fantasysport.webaccess.requestListeners.GetNFGamesResponseListener;
-import com.fantasysport.webaccess.requestListeners.RequestError;
-import com.fantasysport.webaccess.requestListeners.ResetPasswordResponse;
-import com.fantasysport.webaccess.requestListeners.SignInResponseListener;
+import com.fantasysport.webaccess.responseListeners.GetNFGamesResponseListener;
+import com.fantasysport.webaccess.responseListeners.RequestError;
+import com.fantasysport.webaccess.responseListeners.ResetPasswordResponse;
+import com.fantasysport.webaccess.responseListeners.SignInResponseListener;
 import com.fantasysport.webaccess.responses.AuthResponse;
 
 public class SignInActivity extends AuthActivity {

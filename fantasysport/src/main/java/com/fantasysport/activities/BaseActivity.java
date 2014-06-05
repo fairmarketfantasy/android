@@ -16,8 +16,8 @@ import com.fantasysport.utility.DeviceInfo;
 import com.fantasysport.views.AlertDialog;
 import com.fantasysport.webaccess.GsonGoogleHttpClientSpiceService;
 import com.fantasysport.webaccess.WebProxy;
-import com.fantasysport.webaccess.requestListeners.RequestError;
-import com.fantasysport.webaccess.requestListeners.SignOutResponseListener;
+import com.fantasysport.webaccess.responseListeners.RequestError;
+import com.fantasysport.webaccess.responseListeners.SignOutResponseListener;
 import com.octo.android.robospice.SpiceManager;
 import net.hockeyapp.android.CrashManager;
 

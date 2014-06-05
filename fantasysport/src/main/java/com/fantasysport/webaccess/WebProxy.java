@@ -6,11 +6,12 @@ import com.fantasysport.models.StatsItem;
 import com.fantasysport.models.User;
 import com.fantasysport.models.nonfantasy.NFTeam;
 import com.fantasysport.utility.OutParameter;
-import com.fantasysport.webaccess.requestListeners.*;
-import com.fantasysport.webaccess.requestListeners.ListResponseListener;
+import com.fantasysport.webaccess.responseListeners.*;
+import com.fantasysport.webaccess.responseListeners.ListResponseListener;
 import com.fantasysport.webaccess.requests.*;
 import com.fantasysport.webaccess.requests.fantasy.*;
-import com.fantasysport.webaccess.requests.fwc.GetFWCDataRequest;
+import com.fantasysport.webaccess.requests.fantasy.SubmitPredictionRequest;
+import com.fantasysport.webaccess.requests.footballwoldcup.*;
 import com.fantasysport.webaccess.requests.nonfantasy.*;
 import com.octo.android.robospice.SpiceManager;
 import com.octo.android.robospice.persistence.exception.SpiceException;
@@ -224,6 +225,12 @@ public final class WebProxy {
 
     public void getFWCCategories(GetFWCDataResponseListener listener){
         GetFWCDataRequest request = new GetFWCDataRequest();
+        request.setRetryPolicy(getRetryPolicy());
+        _spiceManager.execute(request, listener);
+    }
+
+    public void submitFWCPrediction(String predictionType, String predictableId, String gameStatsId, MessageResponseListener listener){
+        SubmitFWCPredictionRequest request = new SubmitFWCPredictionRequest(predictionType, predictableId, gameStatsId);
         request.setRetryPolicy(getRetryPolicy());
         _spiceManager.execute(request, listener);
     }

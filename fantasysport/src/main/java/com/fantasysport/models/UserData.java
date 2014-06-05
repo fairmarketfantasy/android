@@ -48,9 +48,6 @@ public class UserData {
     @SerializedName("amount")
     private Float _amount;
 
-//    @SerializedName("bets")
-//    private Float _bets;
-
     @SerializedName("winnings")
     private Integer _winnings;
 
@@ -102,30 +99,17 @@ public class UserData {
         return _imageUrl;
     }
 
-    public Date getRegistrationdDate() {
+    public Date getRegistrationDate() {
         return Converter.toDate(_joinedAt);
     }
-
-//    public Roster getProgressRoster(){
-//        return _inProgressRoster;
-//    }
 
     public int getInProgressRosterId() {
         return _inProgressRosterId;
     }
 
-//    public int getTotalPoints() {
-//        return _totalPoints;
-//    }
-
     public int getTotalWins() {
         return _totalWins;
     }
-
-//    public float getWinPercentile() {
-//        return _winPercentile;
-//    }
-
 
     public String getRealName() {
         return _realName;
@@ -150,7 +134,6 @@ public class UserData {
     public double getFanBucks() {
         return _customerObject.getFanBucks();
     }
-
 
     public double getWinningsMultiplier() {
         return _customerObject.getWinningsMultiplier();

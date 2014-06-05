@@ -16,7 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import com.fantasysport.R;
-import com.fantasysport.models.Position;
 import com.fantasysport.models.fwc.Group;
 import com.fantasysport.utility.DeviceInfo;
 

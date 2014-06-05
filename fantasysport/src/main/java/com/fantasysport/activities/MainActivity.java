@@ -28,8 +28,8 @@ import com.fantasysport.models.UserData;
 import com.fantasysport.utility.CacheProvider;
 import com.fantasysport.utility.DateUtils;
 import com.fantasysport.views.PagerIndicatorView;
-import com.fantasysport.webaccess.requestListeners.RequestError;
-import com.fantasysport.webaccess.requestListeners.UserResponseListener;
+import com.fantasysport.webaccess.responseListeners.RequestError;
+import com.fantasysport.webaccess.responseListeners.UserResponseListener;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 

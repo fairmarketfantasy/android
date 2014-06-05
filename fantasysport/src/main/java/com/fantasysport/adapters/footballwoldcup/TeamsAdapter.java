@@ -23,10 +23,15 @@ public class TeamsAdapter extends BaseAdapter{
     private Context _context;
     private List<Team> _teams;
     private ImageLoader _imageLoader;
+    private IListener _listener;
 
     public TeamsAdapter(Context context){
         _context = context;
         _imageLoader = new ImageLoader(_context);
+    }
+
+    public void setListener(IListener listener){
+        _listener = listener;
     }
 
     public void setTeams(List<Team> teams){
@@ -57,10 +62,35 @@ public class TeamsAdapter extends BaseAdapter{
         }
         Team team = _teams.get(position);
         Button ptBtn = (Button)convertView.findViewById(R.id.pt_btn);
+        ptBtn.setText(String.format("PT%.0f", team.getPT()));
+        ptBtn.setEnabled(!team.isPredicted());
+        ptBtn.setOnClickListener(new OnTeamPtClickListener(team));
         TextView teamLbl = (TextView)convertView.findViewById(R.id.team_lbl);
         teamLbl.setText(team.getName());
         ImageView flagImg = (ImageView)convertView.findViewById(R.id.flag_img);
         _imageLoader.displayImage(team.getLogoUrl(), flagImg);
         return convertView;
+    }
+
+    public List<Team> getTeams() {
+        return _teams;
+    }
+
+    class OnTeamPtClickListener implements View.OnClickListener {
+
+        private Team _team;
+
+        public OnTeamPtClickListener(Team team){
+            _team = team;
+        }
+
+        @Override
+        public void onClick(View v) {
+            _listener.onSubmittingTeam(_team);
+        }
+    }
+
+    public interface IListener{
+        void onSubmittingTeam(Team team);
     }
 }

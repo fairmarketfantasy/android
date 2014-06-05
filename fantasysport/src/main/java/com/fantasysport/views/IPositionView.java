@@ -1,6 +1,6 @@
 package com.fantasysport.views;
 
-import com.fantasysport.models.Position;
+import com.fantasysport.models.fantasy.Position;
 
 import java.util.List;
 

@@ -3,7 +3,7 @@ package com.fantasysport.webaccess.requests.fantasy;
 import android.net.Uri;
 import com.fantasysport.models.Roster;
 import com.fantasysport.models.UserData;
-import com.fantasysport.webaccess.requestListeners.UpdateMainDataResponse;
+import com.fantasysport.webaccess.responseListeners.UpdateMainDataResponse;
 import com.fantasysport.webaccess.requests.BaseRequest;
 import com.google.api.client.http.GenericUrl;
 import com.google.api.client.http.HttpRequest;

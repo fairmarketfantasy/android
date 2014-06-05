@@ -1,6 +1,6 @@
 package com.fantasysport.views;
 
-import com.fantasysport.models.Position;
+import com.fantasysport.models.fantasy.Position;
 
 /**
  * Created by bylynka on 4/24/14.

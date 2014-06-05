@@ -28,10 +28,15 @@ public class GamesAdapter extends BaseAdapter {
     private Context _context;
     private ImageLoader _imageLoader;
     private SimpleDateFormat _sdf = new SimpleDateFormat("d MMM K:mm a");
+    private IListener _listener;
 
     public GamesAdapter(Context context){
         _context = context;
         _imageLoader = new ImageLoader(_context);
+    }
+
+    public void addListener(IListener listener){
+        _listener = listener;
     }
 
     public void setGames(List<Game> games){
@@ -55,6 +60,7 @@ public class GamesAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+
         Holder holder;
         if (convertView == null) {
             LayoutInflater mInflater = (LayoutInflater)
@@ -83,9 +89,20 @@ public class GamesAdapter extends BaseAdapter {
         holder.awayTeamTxt.setText(awayTeam.getName());
         holder.gameTimeTxt.setText(_sdf.format(game.getGameDate()));
         holder.separator.setEnabled(!awayTeam.isPredicted() || !homeTeam.isPredicted());
-        holder.homePt.setText(String.format("%.0f", homeTeam.getPT()));
-        holder.awayPt.setText(String.format("%.0f", awayTeam.getPT()));
+
+        setButton(holder.homePt, homeTeam);
+        setButton(holder.awayPt, awayTeam);
         return convertView;
+    }
+
+    private void setButton(Button btn, Team team){
+        btn.setText(String.format("%.0f", team.getPT()));
+        btn.setEnabled(!team.isPredicted());
+        btn.setOnClickListener(new OnTeamPtClickListener(team));
+    }
+
+    public List<Game> getGames() {
+        return _games;
     }
 
     public class Holder {
@@ -100,5 +117,23 @@ public class GamesAdapter extends BaseAdapter {
         public ImageView addHomeImg;
         public ImageView addAwayImg;
         public View separator;
+    }
+
+    class OnTeamPtClickListener implements View.OnClickListener {
+
+        private Team _team;
+
+        public OnTeamPtClickListener(Team team){
+            _team = team;
+        }
+
+        @Override
+        public void onClick(View v) {
+            _listener.onSubmittingTeam(_team);
+        }
+    }
+
+    public interface IListener{
+        void onSubmittingTeam(Team team);
     }
 }
