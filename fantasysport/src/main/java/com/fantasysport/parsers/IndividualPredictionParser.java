@@ -49,9 +49,13 @@ public class IndividualPredictionParser extends BaseParser {
         prediction.setMarketName(marketName);
         String playerName = (String) _objects.get(firstField + _keyMap.get(PLAYER_NAME));
         prediction.setPlayerName(playerName);
-        Date gameDay = Converter.toDate((String) _objects.get(firstField + _keyMap.get(GAME_TIME)));
-        int gmtInMinutes = DeviceInfo.getGMTInMinutes();
-        gameDay = DateUtils.addMinutes(gameDay, gmtInMinutes);
+        Date gameDay = null;
+        String gameDayStr = (String) _objects.get(firstField + _keyMap.get(GAME_TIME));
+        if(gameDayStr != null && gameDayStr.length() > 0){
+            gameDay = Converter.toDate(gameDayStr);
+            int gmtInMinutes = DeviceInfo.getGMTInMinutes();
+            gameDay = DateUtils.addMinutes(gameDay, gmtInMinutes);
+        }
         prediction.setGameData(gameDay);
         double award = getDouble(_objects.get(firstField + _keyMap.get(AWARD)));
         prediction.setAward(award);
@@ -59,8 +63,10 @@ public class IndividualPredictionParser extends BaseParser {
         prediction.setPT(pt);
         String state = (String) _objects.get(firstField + _keyMap.get(STATE));
         prediction.setState(state);
-        double gameResult = getDouble(_objects.get(firstField + _keyMap.get(GAME_RESULT)));
-        prediction.setGameResult(gameResult);
+        if(_keyMap.containsKey(GAME_RESULT)){
+            double gameResult = getDouble(_objects.get(firstField + _keyMap.get(GAME_RESULT)));
+            prediction.setGameResult(gameResult);
+        }
         if(_keyMap.containsKey(EVENT_PREDICTIONS)){
             List<StatsItem> statsItems = parseStatsItems((ArrayList) _objects.get(firstField + _keyMap.get(EVENT_PREDICTIONS)));
             prediction.setEventPredictions(statsItems);

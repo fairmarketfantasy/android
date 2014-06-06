@@ -15,6 +15,7 @@ import com.fantasysport.models.Prediction;
 import com.fantasysport.models.StatsItem;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -83,10 +84,11 @@ public class IndividualPredictionAdapter extends BaseAdapter {
         contextTypeLbl.setText(prediction.getPlayerName());
         TextView dayLbl = (TextView)convertView.findViewById(R.id.day_lbl);
         SimpleDateFormat sdf = new SimpleDateFormat("EE MM d");
-        dayLbl.setText(sdf.format(prediction.getGameData()));
+        Date gameDate = prediction.getGameData();
+        dayLbl.setText(gameDate != null? sdf.format(prediction.getGameData()) : "N/A");
         TextView gameTimeLbl = (TextView)convertView.findViewById(R.id.game_time_lbl);
         sdf = new SimpleDateFormat("K:mm a");
-        gameTimeLbl.setText(sdf.format(prediction.getGameData()));
+        gameTimeLbl.setText(gameDate != null? sdf.format(prediction.getGameData()): "N/A");
         TextView ptLbl = (TextView)convertView.findViewById(R.id.pt_lbl);
         ptLbl.setText(String.format("%.1f", prediction.getPT()));
         TextView awardLbl = (TextView)convertView.findViewById(R.id.award_lbl);

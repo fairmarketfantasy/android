@@ -21,8 +21,8 @@ public abstract class BasePredictionListFragment extends BaseActivityFragment im
 
     protected ListView _predictionListView;
     protected PullToRefreshLayout _pullToRefreshLayout;
-    protected PredictionsListActivity.TimeType _timeType;
-    protected PredictionsListActivity.PredictionType _predictionType;
+    protected PredictionsListActivity.TimeType _timeType = PredictionsListActivity.TimeType.Active;
+    protected PredictionsListActivity.PredictionType _predictionType =  PredictionsListActivity.PredictionType.Roster;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         _rootView = inflater.inflate(R.layout.fragment_prediction, container, false);
@@ -34,6 +34,7 @@ public abstract class BasePredictionListFragment extends BaseActivityFragment im
                 .listener(this)
                 .setup(_pullToRefreshLayout);
         ontCreatedView();
+        onLoadRequest(_timeType, _predictionType, true);
         return _rootView;
     }
 

@@ -150,7 +150,7 @@ public class NFRosterAdapter extends BaseAdapter {
 
         @Override
         public void onClick(View v) {
-            _team.setIsPredicted(true);
+            _team.setIsSelected(true);
             raiseOnDismiss(_team);
         }
     }
@@ -165,7 +165,6 @@ public class NFRosterAdapter extends BaseAdapter {
 
         @Override
         public void onClick(View v) {
-            _team.setIsSelected(false);
             raiseOnPT(_team);
         }
     }

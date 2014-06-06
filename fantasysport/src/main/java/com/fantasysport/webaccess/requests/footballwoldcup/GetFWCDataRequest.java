@@ -20,7 +20,8 @@ public class GetFWCDataRequest extends BaseRequest<FWCData> {
     public FWCData loadDataFromNetwork() throws Exception {
         Uri.Builder uriBuilder = Uri.parse(getUrl()).buildUpon()
                 .appendPath("home")
-                .appendQueryParameter("sport", "FWC");
+                .appendQueryParameter("sport", "FWC")
+                .appendQueryParameter("access_token", getAccessToken());
         String url = uriBuilder.build().toString();
         HttpRequest request = getHttpRequestFactory().buildGetRequest(new GenericUrl(url));
         request.getHeaders().setAccept("application/json");

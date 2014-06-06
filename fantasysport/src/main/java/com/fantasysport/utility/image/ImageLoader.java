@@ -212,13 +212,13 @@ public class ImageLoader {
 
             int width_tmp=o.outWidth, height_tmp=o.outHeight;
             int scale=1;
-//            while(true){
-//                if(width_tmp/2 < _point.x || height_tmp/2 < _point.y)
-//                    break;
-//                width_tmp/=2;
-//                height_tmp/=2;
-//                scale*=2;
-//            }
+            while(true){
+                if(width_tmp/2 < _point.x || height_tmp/2 < _point.y)
+                    break;
+                width_tmp/=2;
+                height_tmp/=2;
+                scale*=2;
+            }
 
             //decode with current scale values
             BitmapFactory.Options o2 = new BitmapFactory.Options();

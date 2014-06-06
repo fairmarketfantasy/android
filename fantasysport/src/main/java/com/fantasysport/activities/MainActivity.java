@@ -275,7 +275,7 @@ public class MainActivity extends BaseActivity implements IMainFragment.IPageCha
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fragment_holder, (Fragment) _rootFragment, _fragmentName)
                     .commit();
-
+            _rootFragment.addPageAmountChangedListener(this);
             _rootFragment.addPageChangedListener(this);
         }else {
             _rootFragment.updateMainData();

@@ -32,7 +32,8 @@ import java.util.List;
 
 public class GameCandidatesFragment extends BaseActivityFragment implements NFCandidateGamesAdapter.IListener,
         NFMediator.ITeamRemovedListener, OnRefreshListener, NFMediator.IGamesUpdatedListener, NFMediator.IAutoFillDataListener,
-        NFMediator.IOnDataUpdatedListener,NFMediator.ISubmittedIndividualPredictionListener{
+        NFMediator.IOnDataUpdatedListener,NFMediator.ISubmittedIndividualPredictionListener,
+        NFMediator.ISubmittedPredictionListener{
 
     private final String SAVED_GAMES = "saved_games";
 
@@ -55,6 +56,7 @@ public class GameCandidatesFragment extends BaseActivityFragment implements NFCa
         _mediator.addGamesUpdatedListener(this);
         _mediator.addAutoFillDataListener(this);
         _mediator.addSubmittedIndividualPrediction(this);
+        _mediator.addSubmittedPredictions(this);
         View autoFill = getViewById(R.id.autofill_holder);
         _msgLbl = getViewById(R.id.msg_lbl);
         _swipeRefreshLayout = getViewById(R.id.refresh_games_layout);
@@ -195,6 +197,13 @@ public class GameCandidatesFragment extends BaseActivityFragment implements NFCa
     View.OnClickListener _autoFillBtnOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            NFData nfdata = getStorage().getNFDataContainer();
+            if(nfdata == null ||
+                    nfdata.getCandidateGames() == null ||
+                    nfdata.getCandidateGames().size() == 0){
+                showAlert("INFO", "There are no games scheduled");
+                return;
+            }
             _mediator.requestAutoFill(GameCandidatesFragment.this);
         }
     };
@@ -258,6 +267,22 @@ public class GameCandidatesFragment extends BaseActivityFragment implements NFCa
                     g.getAwayTeam().setIsPredicted(true);
                 }
             }
+        }
+        _adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onSubmittedPredictions(Object sender, List<NFTeam> team) {
+        if(_adapter == null){
+            return;
+        }
+        List<NFGame> games = _adapter.getGames();
+        if(games == null){
+           return;
+        }
+        for (NFGame g : games){
+            g.getAwayTeam().setIsSelected(false);
+            g.getHomeTeam().setIsSelected(false);
         }
         _adapter.notifyDataSetChanged();
     }

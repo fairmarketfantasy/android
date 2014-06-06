@@ -39,7 +39,7 @@ public abstract class PredictionsListActivity extends BaseActivity implements Ac
         _sportFactory = FactoryProvider.getFactory(_fantasyType);
         setActionBar();
         initTabs();
-        raiseLoadContentListener();
+//        raiseLoadContentListener();
     }
 
     protected void setActionBar() {

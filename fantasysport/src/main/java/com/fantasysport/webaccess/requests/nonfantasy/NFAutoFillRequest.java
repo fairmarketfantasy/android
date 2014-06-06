@@ -4,6 +4,9 @@ import android.net.Uri;
 import com.fantasysport.models.nonfantasy.NFAutoFillData;
 import com.fantasysport.models.nonfantasy.NFGame;
 import com.fantasysport.models.nonfantasy.NFTeam;
+import com.fantasysport.utility.Converter;
+import com.fantasysport.utility.DateUtils;
+import com.fantasysport.utility.DeviceInfo;
 import com.fantasysport.webaccess.requests.BaseRequest;
 import com.google.api.client.http.GenericUrl;
 import com.google.api.client.http.HttpRequest;
@@ -11,6 +14,7 @@ import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -53,12 +57,10 @@ public class NFAutoFillRequest extends BaseRequest<NFAutoFillData> {
                 away.setIsPredicted(g.isAwayTeamPredicted());
                 away.setIsSelected(g.isAwaySelected());
                 games.add(new NFGame(home, away, g.getGameDate(), g.getStatsId()));
-                for (RosterTeamData rgd : rosterGameDataList){
-                    if(rgd.getGameStatsId() == g.getStatsId()){
-                        rosterTeams.add(home.getStatsId()== rgd.getTeamStatsId()? home: away);
-                    }
-                }
             }
+        }
+        for (RosterTeamData rgd : rosterGameDataList){
+            rosterTeams.add(new NFTeam(rgd._name, rgd._pt, rgd._teamStatsId, rgd._logoUrl, rgd._gameStatsId, rgd._gameName, rgd.getGameDate()));
         }
         return new NFAutoFillData(rosterTeams, games);
     }
@@ -79,4 +81,36 @@ public class NFAutoFillRequest extends BaseRequest<NFAutoFillData> {
             return _games;
         }
     }
+
+    public class RosterTeamData {
+
+        @SerializedName("team_stats_id")
+        private int _teamStatsId;
+
+        @SerializedName("game_stats_id")
+        private int _gameStatsId;
+
+        @SerializedName("team_name")
+        String _name;
+
+        @SerializedName("pt")
+        double _pt;
+
+        @SerializedName("team_logo")
+        String _logoUrl;
+
+        @SerializedName("Reds @ Giants")
+        String _gameName;
+
+        @SerializedName("game_time")
+        String _gameDate;
+
+        public Date getGameDate() {
+            Date date = Converter.toDate(_gameDate);
+            int gmtInMinutes = DeviceInfo.getGMTInMinutes();
+            return DateUtils.addMinutes(date, gmtInMinutes);
+        }
+
+    }
+
 }

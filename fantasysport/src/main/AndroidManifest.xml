@@ -108,6 +108,12 @@
                   android:theme="@style/AppIconTheme"
                 />
 
+        <activity android:name=".activities.footballworldcup.FWCPredictionsListActivity"
+                  android:screenOrientation="portrait"
+                  android:label="@string/predictions"
+                  android:theme="@style/AppIconTheme"
+                />
+
         <activity android:name=".activities.MainPredictionActivity"
                   android:screenOrientation="portrait"
                   android:theme="@style/AppIconTheme"

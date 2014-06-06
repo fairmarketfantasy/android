@@ -2,6 +2,8 @@ package com.fantasysport.adapters.footballwoldcup;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,10 +26,12 @@ public class TeamsAdapter extends BaseAdapter{
     private List<Team> _teams;
     private ImageLoader _imageLoader;
     private IListener _listener;
+    private Bitmap _flag;
 
     public TeamsAdapter(Context context){
         _context = context;
         _imageLoader = new ImageLoader(_context);
+        _flag = BitmapFactory.decodeResource(context.getResources(),R.drawable.flag);
     }
 
     public void setListener(IListener listener){
@@ -68,6 +72,7 @@ public class TeamsAdapter extends BaseAdapter{
         TextView teamLbl = (TextView)convertView.findViewById(R.id.team_lbl);
         teamLbl.setText(team.getName());
         ImageView flagImg = (ImageView)convertView.findViewById(R.id.flag_img);
+        flagImg.setImageBitmap(_flag);
         _imageLoader.displayImage(team.getLogoUrl(), flagImg);
         return convertView;
     }

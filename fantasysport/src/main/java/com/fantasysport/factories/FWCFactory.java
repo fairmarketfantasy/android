@@ -1,8 +1,12 @@
 package com.fantasysport.factories;
 
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import com.fantasysport.Const;
+import com.fantasysport.activities.footballworldcup.FWCPredictionsListActivity;
 import com.fantasysport.fragments.main.IMainFragment;
 import com.fantasysport.fragments.main.footballwoldcup.FWCFragment;
+import com.fantasysport.fragments.pages.footballwoldcup.PredictionListFragment;
 
 /**
  * Created by bylynka on 6/3/14.
@@ -36,16 +40,24 @@ public class FWCFactory implements ISportFactory  {
 
     @Override
     public Class<?> getPredictionListActivity() {
-        return null;
+        return FWCPredictionsListActivity.class;
     }
 
     @Override
     public Fragment getActivePredictionListFragment() {
-        return null;
+        Fragment fragment = new PredictionListFragment();
+        Bundle args = new Bundle();
+        args.putBoolean(Const.IS_HISTORY, false);
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
     public Fragment getHistoryPredictionListFragment() {
-        return null;
+        Fragment fragment = new PredictionListFragment();
+        Bundle args = new Bundle();
+        args.putBoolean(Const.IS_HISTORY, true);
+        fragment.setArguments(args);
+        return fragment;
     }
 }

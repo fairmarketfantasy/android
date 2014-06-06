@@ -213,6 +213,7 @@ public class GameRosterFragment extends BaseActivityFragment implements NFRoster
             showAlert(getString(R.string.info), responseMsg);
             setEmptyRoster();
             updateSubmitBtnState();
+            _mediator.submittedPrediction(GameRosterFragment.this, null);
         }
     };
 
@@ -241,6 +242,13 @@ public class GameRosterFragment extends BaseActivityFragment implements NFRoster
     View.OnClickListener _autoFillBtnOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            NFData nfdata = getStorage().getNFDataContainer();
+            if(nfdata == null ||
+                    nfdata.getCandidateGames() == null ||
+                    nfdata.getCandidateGames().size() == 0){
+                showAlert("INFO", "There are no games scheduled");
+                return;
+            }
             _mediator.requestAutoFill(GameRosterFragment.this);
         }
     };
@@ -250,7 +258,16 @@ public class GameRosterFragment extends BaseActivityFragment implements NFRoster
         if(data == null || data.getRosterTeams() == null){
             return;
         }
-        _adapter.setTeams(new ArrayList<INFTeam>(data.getRosterTeams()));
+
+        NFData nfdata = getStorage().getNFDataContainer();
+        int roomNumber = nfdata.getRoster().getRoomNumber();
+        List<INFTeam> teams = new ArrayList<INFTeam>(data.getRosterTeams());
+        if(teams.size() < roomNumber){
+            for (int i = teams.size(); i < roomNumber; i++){
+              teams.add(new EmptyNFTeam());
+            }
+        }
+        _adapter.setTeams(teams);
         _adapter.notifyDataSetChanged();
         updateSubmitBtnState();
     }

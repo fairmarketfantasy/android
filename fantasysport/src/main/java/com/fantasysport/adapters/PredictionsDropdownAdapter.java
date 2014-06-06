@@ -40,8 +40,7 @@ public class PredictionsDropdownAdapter implements SpinnerAdapter {
 
     @Override
     public View getDropDownView(int position, View convertView, ViewGroup parent) {
-        int stringId = position == 0? R.string.roster_predictions: R.string.individual_predictions;
-        String text = _context.getString(stringId);
+        String text = position == 0? _rosterHeader: _individualHeader;
         if (convertView == null) {
             LayoutInflater mInflater = (LayoutInflater)
                     _context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
