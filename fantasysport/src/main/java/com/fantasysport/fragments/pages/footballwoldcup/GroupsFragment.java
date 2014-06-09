@@ -72,9 +72,16 @@ public class GroupsFragment extends BaseActivityFragment implements ScrollGroupC
             if(team.getStatsId().compareTo(predictableItem.getStatsId()) == 0){
                 team.setIsPredicted(predictableItem.isPredicted());
                 _adapter.notifyDataSetChanged();
-                return;
+                break;
             }
         }
+        if(getStorage() == null || getStorage().getFWCData() == null ||
+                getStorage().getFWCData().getGroups() == null ||
+                _groupsControl == null ||
+                _groupsControl.getGroup() == null){
+            return;
+        }
+        _mediator.updatingData(GroupsFragment.this, getStorage().getFWCData());
     }
 
     @Override

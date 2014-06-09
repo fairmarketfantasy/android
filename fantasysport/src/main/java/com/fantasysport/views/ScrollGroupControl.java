@@ -126,6 +126,7 @@ public class ScrollGroupControl extends FrameLayout {
         if (_groupListener == null) {
             return;
         }
+        _group = group;
         _groupListener.groupSelected(group, index);
     }
 

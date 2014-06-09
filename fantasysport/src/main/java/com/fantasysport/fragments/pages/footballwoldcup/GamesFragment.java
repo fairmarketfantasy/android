@@ -67,8 +67,13 @@ public class GamesFragment extends BaseActivityFragment implements FWCMediator.I
                 game.getAwayTeam().setIsPredicted(predictableItem.isPredicted());
             }
             _adapter.notifyDataSetChanged();
+            break;
+        }
+        if(getStorage() == null || getStorage().getFWCData() == null){
             return;
         }
+        getStorage().getFWCData().setGames(games);
+        _mediator.updatingData(GamesFragment.this, getStorage().getFWCData());
     }
 
     @Override

@@ -59,9 +59,14 @@ public class TeamsFragment extends BaseActivityFragment implements FWCMediator.I
             if(team.getStatsId().compareTo(predictableItem.getStatsId()) == 0){
                 team.setIsPredicted(predictableItem.isPredicted());
                 _adapter.notifyDataSetChanged();
-                return;
+                break;
             }
         }
+        if(getStorage() == null || getStorage().getFWCData() == null){
+            return;
+        }
+        getStorage().getFWCData().setTeams(teams);
+        _mediator.updatingData(TeamsFragment.this, getStorage().getFWCData());
     }
 
     @Override

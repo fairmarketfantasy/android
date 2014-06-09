@@ -32,6 +32,7 @@ public class Const {
     public final static String PREDICTION = "prediction";
     public static final String MARKETS = "markets";
     public static final String GAME = "game";
+    public static final String FWC_DATA = "non_fantasy_data";
 
     public static final String GMT_IN_MINUTES = "gmt_in_minutes";
     public static final String TIME_ZONE_CHANGED = "time_zone_changed";

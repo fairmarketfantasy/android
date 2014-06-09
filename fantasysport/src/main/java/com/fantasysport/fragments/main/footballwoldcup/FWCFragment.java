@@ -4,22 +4,28 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import com.fantasysport.Const;
 import com.fantasysport.R;
 import com.fantasysport.adapters.footballwoldcup.FWCPagerAdapter;
 import com.fantasysport.fragments.main.BaseFragment;
 import com.fantasysport.fragments.pages.footballwoldcup.FWCMediator;
+import com.fantasysport.models.UserData;
 import com.fantasysport.models.fwc.FWCData;
 import com.fantasysport.models.fwc.IFWCModel;
+import com.fantasysport.utility.CacheProvider;
 import com.fantasysport.views.ConfirmDialog;
 import com.fantasysport.webaccess.responseListeners.GetFWCDataResponseListener;
 import com.fantasysport.webaccess.responseListeners.MessageResponseListener;
 import com.fantasysport.webaccess.responseListeners.RequestError;
 import com.fantasysport.webaccess.responses.MsgResponse;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 /**
  * Created by bylynka on 6/2/14.
  */
-public class FWCFragment extends BaseFragment implements FWCMediator.ISubmittingPredictionListener {
+public class FWCFragment extends BaseFragment implements FWCMediator.ISubmittingPredictionListener,
+            FWCMediator.IUpdatingDataListener{
 
     private FWCPagerAdapter _adapter;
     private FWCMediator _mediator = new FWCMediator();
@@ -28,6 +34,7 @@ public class FWCFragment extends BaseFragment implements FWCMediator.ISubmitting
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         setPageAmount(0);
         _mediator.addSubmittingPrediction(this);
+        _mediator.addUpdatingDataListener(this);
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
@@ -72,6 +79,19 @@ public class FWCFragment extends BaseFragment implements FWCMediator.ISubmitting
         }
     };
 
+    private void saveDataToCache(final FWCData data) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                GsonBuilder gsonBuilder = new GsonBuilder();
+                gsonBuilder.setDateFormat("M/d/yy hh:mm a");
+                Gson gson = gsonBuilder.create();
+                String dataStr = data != null ? gson.toJson(data) : null;
+                CacheProvider.putString(getActivity(), Const.FWC_DATA, dataStr);
+            }
+        }).start();
+    }
+
     private void submitPrediction(final IFWCModel predictableItem, final String predictionType, final String gameStatsId){
         showProgress();
         getWebProxy().submitFWCPrediction(predictionType, predictableItem.getStatsId(), gameStatsId, new MessageResponseListener() {
@@ -106,5 +126,10 @@ public class FWCFragment extends BaseFragment implements FWCMediator.ISubmitting
                     }
                 })
                 .show();
+    }
+
+    @Override
+    public void onUpdatingData(Object sender, FWCData data) {
+        saveDataToCache(data);
     }
 }

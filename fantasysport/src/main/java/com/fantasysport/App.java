@@ -20,7 +20,6 @@ public class App extends Application {
     private final String MARKETS = "markets";
     private final String DEFAULT_ROSTER_DATA = "default_roster_data";
     private final String NON_FANTASY_DATA = "non_fantasy_data";
-    private final String FWC_DATA = "non_fantasy_data";
 
     public static App getCurrent(){
         return _current;
@@ -75,7 +74,7 @@ public class App extends Application {
             storage.setNFData(nfData);
         }
 
-        dataInStr = CacheProvider.getString(this, FWC_DATA);
+        dataInStr = CacheProvider.getString(this, Const.FWC_DATA);
         if(dataInStr != null){
             FWCData fwcData = getGson().fromJson(dataInStr, FWCData.class);
             storage.setFWCData(fwcData);
@@ -99,7 +98,7 @@ public class App extends Application {
             CacheProvider.putString(App.this, MARKETS, null);
             CacheProvider.putString(App.this, DEFAULT_ROSTER_DATA, null);
             CacheProvider.putString(App.this, Const.USER_DATA, null);
-            CacheProvider.putString(App.this, FWC_DATA, null);
+            CacheProvider.putString(App.this, Const.FWC_DATA, null);
             CacheProvider.putString(App.this, NON_FANTASY_DATA, null);
         }
 
@@ -135,7 +134,7 @@ public class App extends Application {
         @Override
         public void onFWCData(FWCData data) {
             String dataStr = data != null? getGson().toJson(data): null;
-            CacheProvider.putString(App.this, FWC_DATA, dataStr);
+            CacheProvider.putString(App.this, Const.FWC_DATA, dataStr);
         }
     };
 

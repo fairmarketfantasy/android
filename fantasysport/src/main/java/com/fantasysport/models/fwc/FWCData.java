@@ -38,5 +38,15 @@ public class FWCData {
     }
 
 
+    public void setGames(List<Game> games) {
+        this._games = games;
+    }
 
+    public void setPlayers(List<Player> players) {
+        this._players = players;
+    }
+
+    public void setTeams(List<Team> teams) {
+        this._teams = teams;
+    }
 }

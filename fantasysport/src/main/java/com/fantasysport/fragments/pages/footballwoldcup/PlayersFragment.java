@@ -59,9 +59,14 @@ public class PlayersFragment extends BaseActivityFragment implements FWCMediator
             if(player.getStatsId().compareTo(predictableItem.getStatsId()) == 0){
                 player.setIsPredicted(predictableItem.isPredicted());
                 _adapter.notifyDataSetChanged();
-                return;
+                break;
             }
         }
+        if(getStorage() == null || getStorage().getFWCData() == null){
+            return;
+        }
+        getStorage().getFWCData().setPlayers(players);
+        _mediator.updatingData(PlayersFragment.this, getStorage().getFWCData());
     }
 
     @Override
