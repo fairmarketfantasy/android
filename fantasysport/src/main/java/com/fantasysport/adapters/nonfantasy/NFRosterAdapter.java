@@ -92,7 +92,7 @@ public class NFRosterAdapter extends BaseAdapter {
         teamLbl.setVisibility(View.VISIBLE);
 
         TextView gameLbl = (TextView)convertView.findViewById(R.id.game_name_lbl);
-        gameLbl.setText(team.getName());
+        gameLbl.setText(team.getGameName());
         gameLbl.setVisibility(View.VISIBLE);
 
         TextView gameTimeLbl = (TextView)convertView.findViewById(R.id.middle_lbl);
