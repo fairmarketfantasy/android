@@ -86,7 +86,7 @@ public class NFPredictionFragment extends BaseFragment
     }
 
     @Override
-    public void updateMainData(){
+    public void updateData(){
         loadNonFantasyGames();
     }
 

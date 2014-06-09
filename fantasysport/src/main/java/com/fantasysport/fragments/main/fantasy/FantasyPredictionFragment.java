@@ -71,7 +71,7 @@ public class FantasyPredictionFragment extends BaseFantasyFragment {
     }
 
     @Override
-    public void updateMainData() {
+    public void updateData() {
     }
 
     @Override

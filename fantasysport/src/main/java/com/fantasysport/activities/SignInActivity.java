@@ -4,13 +4,14 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.*;
 import android.view.inputmethod.EditorInfo;
-import android.widget.*;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.PopupWindow;
+import android.widget.TextView;
 import com.facebook.widget.LoginButton;
-import com.fantasysport.Const;
 import com.fantasysport.R;
-import com.fantasysport.models.nonfantasy.NFData;
+import com.fantasysport.fragments.main.FragmentDataLoader;
 import com.fantasysport.webaccess.RequestHelper;
-import com.fantasysport.webaccess.responseListeners.GetNFGamesResponseListener;
 import com.fantasysport.webaccess.responseListeners.RequestError;
 import com.fantasysport.webaccess.responseListeners.ResetPasswordResponse;
 import com.fantasysport.webaccess.responseListeners.SignInResponseListener;
@@ -77,26 +78,6 @@ public class SignInActivity extends AuthActivity {
         _webProxy.signIn(email, password, _userSignInResponseListener);
     }
 
-    private void loadNonFantasyGames(){
-        String sport = _storage.getUserData().getSport();
-        _webProxy.getNFGames(sport, new GetNFGamesResponseListener() {
-            @Override
-            public void onRequestError(RequestError error) {
-                dismissProgress();
-                showAlert(getString(R.string.error), error.getMessage());
-                finishAuth();
-            }
-
-            @Override
-            public void onRequestSuccess(NFData response) {
-                dismissProgress();
-                _storage.setNFData(response);
-                finishAuth();
-                navigateToMainActivity(Const.NON_FANTASY_SPORT);
-            }
-        });
-    }
-
     TextView.OnEditorActionListener _passwordTxtEditorActionListener = new TextView.OnEditorActionListener() {
         @Override
         public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -120,19 +101,20 @@ public class SignInActivity extends AuthActivity {
         @Override
         public void onRequestSuccess(AuthResponse response) {
             _storage.setUserData(response.getUserData());
-//            loadNonFantasyGames();
-            int category_type = _storage.getCategoryType();
-            switch (category_type){
-                case Const.FANTASY_SPORT:
-                    loadMarkets();
-                    break;
-                case Const.NON_FANTASY_SPORT:
-                    loadNonFantasyGames();
-                    break;
-                default:
-                    navigateToMainActivity(category_type);
-                    break;
-            }
+            final int category_type = _storage.getCategoryType();
+            FragmentDataLoader.load(_webProxy, _storage, new FragmentDataLoader.ILoadedDataListener() {
+                @Override
+                public void onLoaded(RequestError error) {
+                    if (error != null) {
+                        dismissProgress();
+                        finishAuth();
+                        showAlert(getString(R.string.error), error.getMessage());
+
+                    }else {
+                        navigateToMainActivity(category_type);
+                    }
+                }
+            });
         }
     };
 

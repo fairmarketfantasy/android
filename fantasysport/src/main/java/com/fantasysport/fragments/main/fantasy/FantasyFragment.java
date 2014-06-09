@@ -6,12 +6,15 @@ import com.fantasysport.fragments.main.IMainFragment;
 import com.fantasysport.fragments.pages.IMediator;
 import com.fantasysport.models.Market;
 import com.fantasysport.models.UserData;
+import com.fantasysport.repo.Storage;
 import com.fantasysport.utility.CacheProvider;
 import com.fantasysport.utility.DateUtils;
 import com.fantasysport.utility.DeviceInfo;
+import com.fantasysport.webaccess.WebProxy;
 import com.fantasysport.webaccess.responseListeners.MarketsResponseListener;
 import com.fantasysport.webaccess.responseListeners.RequestError;
 import com.fantasysport.webaccess.responses.MarketResponse;
+import com.octo.android.robospice.SpiceManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -112,7 +115,7 @@ public class FantasyFragment extends BaseFantasyFragment
     }
 
     @Override
-    public void updateMainData() {
+    public void updateData() {
         updateMainData(true);
     }
 

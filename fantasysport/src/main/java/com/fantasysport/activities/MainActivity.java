@@ -21,6 +21,7 @@ import com.fantasysport.adapters.SportMenuItem;
 import com.fantasysport.factories.FactoryProvider;
 import com.fantasysport.fragments.MenuHeaderFragment;
 import com.fantasysport.fragments.main.BaseFragment;
+import com.fantasysport.fragments.main.FragmentDataLoader;
 import com.fantasysport.fragments.main.IMainFragment;
 import com.fantasysport.models.Category;
 import com.fantasysport.models.Sport;
@@ -227,18 +228,11 @@ public class MainActivity extends BaseActivity implements IMainFragment.IPageCha
                         if (sport.comingSoon()) {
                             showAlert(sport.getNameKey(), getString(R.string.coming_soon));
                         } else {
-                            UserData data = _storage.getUserData();
-                            data.setCurrentSport(sport.getNameKey());
-                            data.setCurrentCategory(category.getNameKey());
-                            _menuAdapter.setMenu(data);
-                            _menuAdapter.notifyDataSetChanged();
-                            updateMenuHeaderImage(header);
                             _spiceManager.shouldStop();
                             _spiceManager.start(MainActivity.this);
                             dismissProgress();
                             resetProgressCounter();
-                            updateRootFragment();
-                            saveUserDataToCach(data);
+                            updateRootFragment(category.getNameKey(), sport.getNameKey(), header);
                             break;
                         }
                 }
@@ -246,7 +240,7 @@ public class MainActivity extends BaseActivity implements IMainFragment.IPageCha
         });
     }
 
-    private void saveUserDataToCach(final UserData data) {
+    private void saveUserDataToCache(final UserData data) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -259,26 +253,43 @@ public class MainActivity extends BaseActivity implements IMainFragment.IPageCha
         }).start();
     }
 
-    private void updateRootFragment() {
+    private void updateRootFragment(final String cat, final String sport, final View header) {
+        final UserData data = _storage.getUserData();
+        final String oldCat = data.getCategory();
+        final String oldSport = data.getSport();
+        data.setCurrentSport(sport);
+        data.setCurrentCategory(cat);
+
         int oldFantasyType = _fantasyType;
         _fantasyType = _storage.getCategoryType();
+
         if (oldFantasyType != _fantasyType) {
-            _sportFactory = FactoryProvider.getFactory(_fantasyType);
-            _rootFragment = _sportFactory.getMainFragment();
-            ((BaseFragment) _rootFragment).setOnAttachedListener(new BaseFragment.IOnAttachedListener() {
+            showProgress();
+            FragmentDataLoader.load(_webProxy, _storage, new FragmentDataLoader.ILoadedDataListener() {
                 @Override
-                public void onAttached() {
-                    _rootFragment.updateMainData();
-                    ((BaseFragment) _rootFragment).setOnAttachedListener(null);
+                public void onLoaded(RequestError error) {
+                    dismissProgress();
+                    if (error != null) {
+                        data.setCurrentSport(oldSport);
+                        data.setCurrentCategory(oldCat);
+                        showAlert(getString(R.string.error), error.getMessage());
+                        return;
+                    }
+                    updateMenuHeaderImage(header);
+                    _menuAdapter.setMenu(data);
+                    _menuAdapter.notifyDataSetChanged();
+                    _sportFactory = FactoryProvider.getFactory(_fantasyType);
+                    _rootFragment = _sportFactory.getMainFragment();
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.fragment_holder, (Fragment) _rootFragment, _fragmentName)
+                            .commit();
+                    _rootFragment.addPageAmountChangedListener(MainActivity.this);
+                    _rootFragment.addPageChangedListener(MainActivity.this);
+                    saveUserDataToCache(data);
                 }
             });
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_holder, (Fragment) _rootFragment, _fragmentName)
-                    .commit();
-            _rootFragment.addPageAmountChangedListener(this);
-            _rootFragment.addPageChangedListener(this);
-        }else {
-            _rootFragment.updateMainData();
+        } else {
+            _rootFragment.updateData();
         }
 
     }
@@ -330,7 +341,7 @@ public class MainActivity extends BaseActivity implements IMainFragment.IPageCha
         }
         switch (item.getItemId()) {
             case R.id.refresh:
-                _rootFragment.updateMainData();
+                _rootFragment.updateData();
                 updateUserData();
                 return true;
         }

@@ -48,11 +48,21 @@ public class FWCFragment extends BaseFragment implements FWCMediator.ISubmitting
         super.setPager();
         _adapter = new FWCPagerAdapter(getActivity().getSupportFragmentManager());
         _pager.setAdapter(_adapter);
+        setPagerData(getStorage().getFWCData());
+    }
 
+    private void setPagerData(FWCData data){
+        if(data == null){
+            return;
+        }
+        _adapter.setFWCData(data);
+        setPageAmount(_adapter.getCount());
+        raiseOnPageChanged(0);
+        _adapter.notifyDataSetChanged();
     }
 
     @Override
-    public void updateMainData() {
+    public void updateData() {
         showProgress();
         getWebProxy().getFWCCategories(_fwcDataResponseListener);
     }
@@ -71,10 +81,7 @@ public class FWCFragment extends BaseFragment implements FWCMediator.ISubmitting
         @Override
         public void onRequestSuccess(FWCData data) {
            getStorage().setFWCData(data);
-            _adapter.setFWCData(data);
-           setPageAmount(_adapter.getCount());
-           raiseOnPageChanged(0);
-           _adapter.notifyDataSetChanged();
+           setPagerData(data);
            dismissProgress();
         }
     };

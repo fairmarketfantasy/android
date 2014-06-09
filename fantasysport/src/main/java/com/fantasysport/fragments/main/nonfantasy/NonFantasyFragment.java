@@ -89,7 +89,7 @@ public class NonFantasyFragment extends BaseFragment
     }
 
     @Override
-    public void updateMainData() {
+    public void updateData() {
         loadNonFantasyGames();
     }
 

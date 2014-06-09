@@ -8,7 +8,7 @@ import com.fantasysport.fragments.pages.IMediator;
 public interface IMainFragment {
     void addPageChangedListener(IPageChangedListener listener);
     void addPageAmountChangedListener(IPageAmountChangedListener listener);
-    void updateMainData();
+    void updateData();
     IMediator getMediator();
 
     public interface IPageChangedListener {
@@ -18,5 +18,4 @@ public interface IMainFragment {
     public interface IPageAmountChangedListener{
         void onPageAmountChanged(int amount);
     }
-
 }

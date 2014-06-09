@@ -17,14 +17,12 @@ import com.facebook.model.GraphUser;
 import com.facebook.widget.LoginButton;
 import com.fantasysport.Const;
 import com.fantasysport.R;
-import com.fantasysport.models.UserData;
+import com.fantasysport.fragments.main.FragmentDataLoader;
 import com.fantasysport.utility.TypefaceProvider;
 import com.fantasysport.utility.image.ImageViewAnimatedChanger;
 import com.fantasysport.webaccess.responseListeners.FaceBookAuthListener;
-import com.fantasysport.webaccess.responseListeners.MarketsResponseListener;
 import com.fantasysport.webaccess.responseListeners.RequestError;
 import com.fantasysport.webaccess.responses.AuthResponse;
-import com.fantasysport.webaccess.responses.MarketResponse;
 
 import java.util.Arrays;
 import java.util.Timer;
@@ -268,14 +266,6 @@ public class AuthActivity extends BaseActivity {
         _uiHelper.onDestroy();
     }
 
-    protected void loadMarkets(){
-        showProgress();
-        UserData data = _storage.getUserData();
-        String cat = data.getCategory();
-        String sport = data.getSport();
-        _webProxy.getMarkets(cat, sport, _marketsResponseListener);
-    }
-
     protected void navigateToMainActivity(int category_type) {
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra(Const.CATEGORY_TYPE, category_type);
@@ -285,24 +275,6 @@ public class AuthActivity extends BaseActivity {
     protected void startAuth(){}
 
     protected void finishAuth(){}
-
-    MarketsResponseListener _marketsResponseListener = new MarketsResponseListener() {
-        @Override
-        public void onRequestError(RequestError error) {
-            dismissProgress();
-            showAlert(getString(R.string.error), error.getMessage());
-            finishAuth();
-        }
-
-        @Override
-        public void onRequestSuccess(MarketResponse response) {
-            _storage.setDefaultRosterData(response.getDefaultRosterData());
-            _storage.setMarketsContainer(response.getMarketsContainer());
-            navigateToMainActivity(Const.FANTASY_SPORT);
-            dismissProgress();
-            finishAuth();
-        }
-    };
 
     FaceBookAuthListener _userSignInResponseListener = new FaceBookAuthListener() {
         @Override
@@ -314,12 +286,21 @@ public class AuthActivity extends BaseActivity {
 
         @Override
         public synchronized void onRequestSuccess(AuthResponse response) {
-            dismissProgress();
-            if(_storage.getUserData() != null){
-                return;
-            }
             _storage.setUserData(response.getUserData());
-            loadMarkets();
+            final int category_type = _storage.getCategoryType();
+            FragmentDataLoader.load(_webProxy, _storage, new FragmentDataLoader.ILoadedDataListener() {
+                @Override
+                public void onLoaded(RequestError error) {
+                    if (error != null) {
+                        dismissProgress();
+                        finishAuth();
+                        showAlert(getString(R.string.error), error.getMessage());
+
+                    } else {
+                        navigateToMainActivity(category_type);
+                    }
+                }
+            });
         }
     };
 }
