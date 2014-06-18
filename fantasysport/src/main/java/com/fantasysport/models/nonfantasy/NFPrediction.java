@@ -35,7 +35,7 @@ public class NFPrediction implements Serializable {
     @SerializedName("cancelled_at")
     private String _newDate;
 
-    @SerializedName("expected_payout")
+    @SerializedName("contest_rank_payout")
     private Double _award;
 
     public String getNewDate(){
@@ -75,7 +75,7 @@ public class NFPrediction implements Serializable {
     }
 
     public Double getAward() {
-        return _award == null? 0: _award;
+        return _award == null? 0: _award/100;
     }
 
     public enum State{

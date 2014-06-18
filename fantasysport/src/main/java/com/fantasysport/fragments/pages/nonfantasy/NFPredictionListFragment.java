@@ -18,15 +18,18 @@ import com.fantasysport.models.UserData;
 import com.fantasysport.models.nonfantasy.NFPrediction;
 import com.fantasysport.webaccess.responseListeners.ListResponseListener;
 import com.fantasysport.webaccess.responseListeners.RequestError;
+import com.fantasysport.webaccess.responseListeners.TradeIndividualPredictionResponseListener;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 /**
  * Created by bylynka on 5/26/14.
  */
 public class NFPredictionListFragment extends BasePredictionListFragment
-        implements NFPredictionAdapter.IOnShowRosterListener, ILoadListener {
+        implements NFPredictionAdapter.IOnShowRosterListener, ILoadListener, IndividualPredictionAdapter.ITradeListener  {
 
     private int _currentPage;
     private List<IndividualPrediction> _individualPredictions;
@@ -41,6 +44,8 @@ public class NFPredictionListFragment extends BasePredictionListFragment
         _predictionAdapter = new NFPredictionAdapter(getActivity());
         _predictionAdapter.setOnShowRosterListener(this);
         _individualPredictionAdapter = new IndividualPredictionAdapter(getActivity(), null);
+        _individualPredictionAdapter.setCanTradeSubmitted(true);
+        _individualPredictionAdapter.setTradeListener(this);
         _isHistory = getArguments().getBoolean(Const.IS_HISTORY);
         return super.onCreateView(inflater, container, savedInstanceState);
     }
@@ -140,6 +145,7 @@ public class NFPredictionListFragment extends BasePredictionListFragment
                     _individualPredictionAdapter.notifyDataSetChanged();
                     return;
                 }
+                Collections.sort(predictions, NFPredictionListFragment.this);
                 if (predictions.size() >= 25) {
                     IndividualPrediction prediction = new IndividualPrediction();
                     prediction.setIsEmpty(true);
@@ -170,5 +176,32 @@ public class NFPredictionListFragment extends BasePredictionListFragment
         }else {
             loadPredictions(false);
         }
+    }
+
+    @Override
+    public void onTrade(final IndividualPrediction prediction) {
+        showConfirm(null, prediction.getTradeMsg(), new Runnable() {
+            @Override
+            public void run() {
+                getWebProxy().tradeIndividualPrediction(prediction.getId(), getStorage().getUserData().getSport(), new TradeIndividualPredictionResponseListener() {
+                    @Override
+                    public void onRequestError(RequestError error) {
+                        showAlert(getString(R.string.error), error.getMessage());
+                    }
+
+                    @Override
+                    public void onRequestSuccess(Object o) {
+                        if(_individualPredictions == null){
+                            return;
+                        }
+                        _individualPredictions.remove(prediction);
+                        if(_individualPredictionAdapter == null){
+                            return;
+                        }
+                        _individualPredictionAdapter.notifyDataSetChanged();
+                    }
+                });
+            }
+        });
     }
 }

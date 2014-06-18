@@ -81,6 +81,7 @@ public class AuthActivity extends BaseActivity {
     protected void onStop() {
         super.onStop();
         Session.getActiveSession().removeCallback(_fbSessionCallback);
+        finishAuth();
     }
 
     @Override
@@ -267,6 +268,7 @@ public class AuthActivity extends BaseActivity {
     }
 
     protected void navigateToMainActivity(int category_type) {
+        finishAuth();
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra(Const.CATEGORY_TYPE, category_type);
         startActivityForResult(intent, Const.MAIN_ACTIVITY);

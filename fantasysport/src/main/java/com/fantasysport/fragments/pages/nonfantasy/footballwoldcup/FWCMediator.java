@@ -1,4 +1,4 @@
-package com.fantasysport.fragments.pages.footballwoldcup;
+package com.fantasysport.fragments.pages.nonfantasy.footballwoldcup;
 
 import com.fantasysport.fragments.pages.IMediator;
 import com.fantasysport.models.fwc.FWCData;

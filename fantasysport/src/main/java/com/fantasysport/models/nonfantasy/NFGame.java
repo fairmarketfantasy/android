@@ -1,5 +1,7 @@
 package com.fantasysport.models.nonfantasy;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -8,22 +10,25 @@ import java.util.Date;
  */
 public class NFGame implements Serializable {
 
+    @SerializedName("home_team")
     private NFTeam _homeTeam;
+
+    @SerializedName("away_team")
     private NFTeam _awayTeam;
-    private Date _date;
-    private int _statsId;
+
+    @SerializedName("stats_id")
+    private String _statsId;
 
     public NFGame(){
     }
 
-    public NFGame(NFTeam home, NFTeam away, Date date, int statsId){
+    public NFGame(NFTeam home, NFTeam away, String statsId){
         _homeTeam = home;
         _awayTeam = away;
-        _date = date;
         _statsId = statsId;
     }
 
-    public int getStatsId(){
+    public String getStatsId(){
         return _statsId;
     }
 
@@ -36,11 +41,7 @@ public class NFGame implements Serializable {
     }
 
     public Date getDate(){
-        return _date;
-    }
-
-    public void setDate(Date date){
-        _date = date;
+        return _homeTeam.getDate();
     }
 
 }

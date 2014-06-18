@@ -161,8 +161,8 @@ public class GameCandidatesFragment extends BaseActivityFragment implements NFCa
             return;
         }
         for (NFGame game : games) {
-            if (game.getStatsId() == team.getGameStatsId()) {
-                NFTeam gameTeam = game.getAwayTeam().getStatsId() == team.getStatsId()
+            if (game.getStatsId().compareTo(team.getGameStatsId()) == 0) {
+                NFTeam gameTeam = game.getAwayTeam().getStatsId().compareTo(team.getStatsId()) == 0
                         ? game.getAwayTeam()
                         : game.getHomeTeam();
                 gameTeam.setIsSelected(false);
@@ -258,10 +258,10 @@ public class GameCandidatesFragment extends BaseActivityFragment implements NFCa
         List<NFGame> games = _adapter.getGames();
         if(games !=null && sender != this){
             for (NFGame g : games){
-                if(g.getStatsId() != team.getGameStatsId()){
+                if(g.getStatsId().compareTo(team.getGameStatsId()) != 0){
                     continue;
                 }
-                if(g.getHomeTeam().getStatsId() == team.getStatsId()){
+                if(g.getHomeTeam().getStatsId().compareTo(team.getStatsId()) == 0){
                     g.getHomeTeam().setIsPredicted(true);
                 }else{
                     g.getAwayTeam().setIsPredicted(true);

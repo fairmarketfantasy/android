@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:custom="http://schemas.android.com/apk/res-auto"
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
@@ -8,6 +9,7 @@
               android:paddingBottom="@dimen/side_margin"
               android:paddingTop="@dimen/side_hor_margin"
               android:paddingLeft="@dimen/side_margin"
+              android:paddingRight="@dimen/side_margin"
               android:id="@+id/root">
 
     <LinearLayout android:layout_width="match_parent"
@@ -38,6 +40,19 @@
 
 
         </LinearLayout>
+
+        <com.fantasysport.views.ExButton android:layout_width="wrap_content"
+                                         android:layout_height="@dimen/btn_height"
+                                         android:layout_gravity="center_vertical"
+                                         android:textColor="#FFFFFF"
+                                         android:paddingRight="@dimen/btn_padding"
+                                         android:paddingLeft="@dimen/btn_padding"
+                                         android:background="@drawable/autofill_button"
+                                         android:text="TRADE"
+                                         android:id="@+id/trade_btn"
+                                         custom:fontFamily="prohibitionRound"
+                                         android:visibility="invisible"
+                />
     </LinearLayout>
 
     <TableLayout android:layout_width="match_parent"

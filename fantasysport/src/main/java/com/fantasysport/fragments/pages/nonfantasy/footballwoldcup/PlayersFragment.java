@@ -1,4 +1,4 @@
-package com.fantasysport.fragments.pages.footballwoldcup;
+package com.fantasysport.fragments.pages.nonfantasy.footballwoldcup;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

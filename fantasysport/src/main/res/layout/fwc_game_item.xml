@@ -1,58 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:custom="http://schemas.android.com/apk/res-auto"
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"
-             android:orientation="horizontal"
-             android:paddingRight="@dimen/side_margin"
-             android:paddingLeft="@dimen/side_margin"
-             android:paddingBottom="@dimen/side_hor_margin"
-             android:paddingTop="@dimen/side_hor_margin"
-             android:background="#F0F0F0"
-        >
-
-<LinearLayout android:layout_width="wrap_content" android:layout_weight="1"
+              xmlns:custom="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:orientation="vertical">
-    <ImageView android:id="@+id/home_team_img" android:layout_gravity="center"
-               android:layout_width="80dp"
-               android:layout_height="53dp"
-               android:adjustViewBounds="true"
-            />
-    <TextView android:layout_height="wrap_content" android:layout_width="wrap_content"
-              android:layout_gravity="center"
-              android:id="@+id/home_team_lbl"
-              android:textSize="@dimen/low_font"
-            />
-</LinearLayout>
+              android:paddingBottom="@dimen/side_hor_margin"
+              android:paddingTop="@dimen/side_hor_margin"
+              android:background="#F0F0F0">
 
-    <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="1"
-            android:orientation="vertical">
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_weight="1"
+                  android:orientation="vertical">
+        <ImageView android:id="@+id/home_team_img" android:layout_gravity="center"
+                   android:layout_width="80dp"
+                   android:layout_height="53dp"
+                   android:adjustViewBounds="true"
+                />
+        <TextView android:layout_height="wrap_content" android:layout_width="wrap_content"
+                  android:layout_gravity="center"
+                  android:id="@+id/home_team_lbl"
+                  android:textSize="@dimen/low_font"
+                />
+    </LinearLayout>
 
-        <LinearLayout android:layout_height="wrap_content" android:layout_width="wrap_content"
-                      android:orientation="horizontal"
-                      android:layout_gravity="center">
-            <com.fantasysport.views.ExButton
-                    android:layout_width="50dp"
-                    android:layout_height="@dimen/btn_height"
-                    android:id="@+id/home_team_pt_btn"
-                    android:background="@drawable/left_pt_button"
-                    custom:fontFamily="prohibitionRound"
-                    android:textSize="@dimen/x_medium_font"
-                    android:textColor="@color/pt_button_text_color" />
-            <View android:layout_width="2dp"  android:layout_height="match_parent" android:background="@color/app_blue"
-                  android:id="@+id/separator_view"/>
-            <com.fantasysport.views.ExButton
-                    android:layout_width="50dp"
-                    android:layout_height="@dimen/btn_height"
-                    android:id="@+id/away_team_pt_btn"
-                    android:background="@drawable/right_pt_button"
-                    custom:fontFamily="prohibitionRound"
-                    android:textSize="@dimen/x_medium_font"
-                    android:textColor="@color/pt_button_text_color"
-                    android:src="@drawable/circle_2"/>
-        </LinearLayout>
+    <LinearLayout android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:orientation="vertical">
+        <FrameLayout android:layout_width="wrap_content" android:layout_height="53dp">
+
+            <LinearLayout android:layout_height="wrap_content" android:layout_width="wrap_content"
+                          android:orientation="horizontal"
+                          android:layout_gravity="center">
+                <com.fantasysport.views.ExButton
+                        android:layout_width="50dp"
+                        android:layout_height="@dimen/btn_height"
+                        android:id="@+id/home_team_pt_btn"
+                        android:background="@drawable/left_pt_button"
+                        custom:fontFamily="prohibitionRound"
+                        android:textSize="@dimen/x_medium_font"
+                        android:textColor="@color/pt_button_text_color"/>
+                <View android:layout_width="2dp" android:layout_height="match_parent"
+                      android:background="@color/app_blue"
+                      android:id="@+id/separator_view"/>
+                <com.fantasysport.views.ExButton
+                        android:layout_width="50dp"
+                        android:layout_height="@dimen/btn_height"
+                        android:id="@+id/away_team_pt_btn"
+                        android:background="@drawable/right_pt_button"
+                        custom:fontFamily="prohibitionRound"
+                        android:textSize="@dimen/x_medium_font"
+                        android:textColor="@color/pt_button_text_color"
+                        android:src="@drawable/circle_2"/>
+            </LinearLayout>
+
+        </FrameLayout>
+
+
         <TextView android:layout_height="wrap_content" android:layout_width="wrap_content"
                   android:layout_gravity="center"
                   android:id="@+id/game_time_lbl"
@@ -62,28 +66,23 @@
     </LinearLayout>
 
 
-
-    <LinearLayout android:layout_width="wrap_content" android:layout_weight="1"
+    <LinearLayout android:layout_width="match_parent" android:layout_weight="1"
                   android:layout_height="wrap_content"
+                  android:gravity="center_horizontal"
                   android:orientation="vertical">
         <ImageView android:id="@+id/away_team_img" android:layout_gravity="center"
                    android:layout_width="80dp"
                    android:layout_height="53dp"
                    android:adjustViewBounds="true"/>
         <TextView android:layout_height="wrap_content" android:layout_width="wrap_content"
-                  android:layout_gravity="center"
                   android:id="@+id/away_team_lbl"
                   android:textSize="@dimen/low_font"
+                  android:ellipsize="end"
+                  android:singleLine="true"
+                  android:maxLines="1"
                 />
 
     </LinearLayout>
-
-
-
-
-
-
-
 
 
 </LinearLayout>

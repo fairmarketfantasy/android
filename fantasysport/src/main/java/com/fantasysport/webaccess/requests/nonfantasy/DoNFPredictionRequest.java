@@ -12,10 +12,10 @@ import com.google.gson.Gson;
  */
 public class DoNFPredictionRequest extends BaseRequest<String> {
 
-    private int _gameStatsId;
-    private int _teamStatsId;
+    private String _gameStatsId;
+    private String _teamStatsId;
 
-    public DoNFPredictionRequest(int gameStatsId, int teamStatsId) {
+    public DoNFPredictionRequest(String gameStatsId, String teamStatsId) {
         super(String.class);
         _gameStatsId = gameStatsId;
         _teamStatsId = teamStatsId;
@@ -25,8 +25,8 @@ public class DoNFPredictionRequest extends BaseRequest<String> {
     public String loadDataFromNetwork() throws Exception {
         Uri.Builder uriBuilder = Uri.parse(getUrl()).buildUpon();
         uriBuilder.appendPath("game_predictions")
-                .appendQueryParameter("game_stats_id", Integer.toString(_gameStatsId))
-                .appendQueryParameter("team_stats_id", Integer.toString(_teamStatsId))
+                .appendQueryParameter("game_stats_id", _gameStatsId)
+                .appendQueryParameter("team_stats_id", _teamStatsId)
                 .appendQueryParameter("access_token", getAccessToken());
         String url = uriBuilder.build().toString();
         HttpRequest request = getHttpRequestFactory()

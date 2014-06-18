@@ -98,19 +98,16 @@ public class NFRosterAdapter extends BaseAdapter {
         TextView gameTimeLbl = (TextView)convertView.findViewById(R.id.middle_lbl);
         gameTimeLbl.setText(_sdf.format(team.getDate()));
 
-        Button ptBtn = (Button)convertView.findViewById(R.id.pt_btn);
+        TextView ptBtn = (TextView)convertView.findViewById(R.id.pt_btn);
         Button dismissBtn = (Button)convertView.findViewById(R.id.dismiss_game_btn);
         ImageView logo = (ImageView)convertView.findViewById(R.id.circle_img);
         _imageLoader.displayImage(team.getLogoUrl(), logo);
+        ptBtn.setVisibility(View.VISIBLE);
+        ptBtn.setText(String.format("%.0f", team.getPT()));
         if(_canModify){
             dismissBtn.setVisibility(View.VISIBLE);
             dismissBtn.setOnClickListener(new DismissBtnClickListener(team));
-            ptBtn.setVisibility(View.VISIBLE);
-            ptBtn.setOnClickListener(new PTBtnClickListener(team));
-            ptBtn.setText(String.format("%.0f", team.getPT()));
-            ptBtn.setEnabled(!team.isPredicted());
         }else {
-            ptBtn.setVisibility(View.INVISIBLE);
             dismissBtn.setVisibility(View.INVISIBLE);
         }
     }
@@ -133,13 +130,6 @@ public class NFRosterAdapter extends BaseAdapter {
         _listener.onDismiss(team);
     }
 
-    private void raiseOnPT(NFTeam team){
-        if(_listener == null){
-            return;
-        }
-        _listener.onPT(team);
-    }
-
     class DismissBtnClickListener implements View.OnClickListener{
 
         private NFTeam _team;
@@ -155,23 +145,8 @@ public class NFRosterAdapter extends BaseAdapter {
         }
     }
 
-    class PTBtnClickListener implements View.OnClickListener{
-
-        private NFTeam _team;
-
-        public PTBtnClickListener(NFTeam team){
-            _team = team;
-        }
-
-        @Override
-        public void onClick(View v) {
-            raiseOnPT(_team);
-        }
-    }
-
     public interface IListener{
         public void onDismiss(NFTeam team);
-        public void onPT(NFTeam team);
     }
 
 }

@@ -37,7 +37,6 @@ public class GetNFIndividualPredictionRequest extends BaseRequest<List> {
                 .appendQueryParameter("page", Integer.toString(_page));
         if(_isHistory){
             uriBuilder.appendQueryParameter("historical", "true");
-
         }
         String url = uriBuilder.build().toString();
         HttpRequest request = getHttpRequestFactory().buildGetRequest(new GenericUrl(url));

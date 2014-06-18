@@ -14,7 +14,7 @@ public class SignOutRequest extends BaseRequest<Object> {
     }
 
     @Override
-    public Void loadDataFromNetwork() throws Exception {
+    public Object loadDataFromNetwork() throws Exception {
         _rHelper.signOut();
         Uri.Builder uriBuilder = Uri.parse(getUrl()).buildUpon()
                 .appendPath("users")

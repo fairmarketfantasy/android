@@ -23,11 +23,13 @@ import com.fantasysport.webaccess.responseListeners.PlayersResponseListener;
 import com.fantasysport.webaccess.responseListeners.RequestError;
 import com.fantasysport.webaccess.responses.PlayersRequestResponse;
 
+import java.util.List;
+
 /**
  * Created by bylynka on 3/24/14.
  */
 public abstract class BasePlayersFragment extends MainActivityFragment implements IOnPositionSelectedListener, CandidatePlayersAdapter.IListener,
-        MainFragmentMediator.IPlayerPositionListener, MainFragmentMediator.IOnBenchedStateChangedListener
+        MainFragmentMediator.IPlayerPositionListener, MainFragmentMediator.IOnBenchedStateChangedListener, MainFragmentMediator.ITradePlayerListener
         {
 
     protected ScrollPositionControl _positionView;
@@ -42,6 +44,7 @@ public abstract class BasePlayersFragment extends MainActivityFragment implement
         super.onCreate(savedInstanceState);
         getFragmentMediator().addPlayerPositionListener(this);
         getFragmentMediator().addOnBenchedStateChangedListener(this);
+        getFragmentMediator().addTradePlayerListener(this);
     }
 
     @Override
@@ -116,7 +119,7 @@ public abstract class BasePlayersFragment extends MainActivityFragment implement
     protected abstract void loadPlayers(final Position position);
 
     @Override
-    public void onAddPlayer(Player player) {
+    public void onAddPlayer(final Player player) {
         Roster roster = getRoster();
         if(roster == null){
             return;
@@ -130,13 +133,22 @@ public abstract class BasePlayersFragment extends MainActivityFragment implement
             }
 
             @Override
-            public void onRequestSuccess(Player player) {
+            public void onRequestSuccess(Player p) {
                 Roster roster = getRoster();
-                addPlayerToRoster(player);
-                double remainingSalary = roster.getRemainingSalary() - player.getBuyPrice();
+                addPlayerToRoster(p);
+                double remainingSalary = roster.getRemainingSalary() - p.getBuyPrice();
                 remainingSalaryChanged(remainingSalary);
                 dismissProgress();
                 getBaseFFragment().navigateToRosters();
+                if(_playersAdapter == null){
+                    return;
+                }
+                List<Player> players =_playersAdapter.getPlayers();
+                if(players == null){
+                    return;
+                }
+                players.remove(player);
+                _playersAdapter.notifyDataSetChanged();
             }
         });
     }
@@ -203,4 +215,12 @@ public abstract class BasePlayersFragment extends MainActivityFragment implement
         }
         _pullToRefreshLayout.setRefreshComplete();
     }
+
+    @Override
+    public void onTraded(Object sender, Player player){
+        _lastPosition = null;
+        loadPlayers(_positionView.getPosition());
+    }
+
+
 }

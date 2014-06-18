@@ -9,15 +9,18 @@ import com.fantasysport.R;
 import com.fantasysport.activities.PredictionsListActivity;
 import com.fantasysport.adapters.fantasy.PredictionAdapter;
 import com.fantasysport.fragments.BaseActivityFragment;
+import com.fantasysport.models.IndividualPrediction;
 import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
 import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout;
 import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
+
+import java.util.Comparator;
 
 /**
  * Created by bylynka on 3/21/14.
  */
 public abstract class BasePredictionListFragment extends BaseActivityFragment implements PredictionsListActivity.ILoadContentListener,
-         OnRefreshListener {
+         OnRefreshListener, Comparator<IndividualPrediction> {
 
     protected ListView _predictionListView;
     protected PullToRefreshLayout _pullToRefreshLayout;
@@ -62,6 +65,11 @@ public abstract class BasePredictionListFragment extends BaseActivityFragment im
             return;
         }
         _pullToRefreshLayout.setRefreshComplete();
+    }
+
+    @Override
+    public int compare(IndividualPrediction lhs, IndividualPrediction rhs) {
+        return Integer.compare(rhs.getId(), lhs.getId());
     }
 
 }

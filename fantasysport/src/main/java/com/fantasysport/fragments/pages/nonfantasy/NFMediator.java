@@ -24,6 +24,11 @@ public class NFMediator implements IMediator {
     private List<ISubmittingIndividualPredictionListener> _submittingIndividualPredictionListeners = new ArrayList<ISubmittingIndividualPredictionListener>();
     private List<ISubmittedIndividualPredictionListener> _submittedIndividualPredictionListeners = new ArrayList<ISubmittedIndividualPredictionListener>();
     private List<ISubmittedPredictionListener> _submittedPredictionListeners = new ArrayList<ISubmittedPredictionListener>();
+    private List<IGamesShowingListener> _gamesShowingListeners = new ArrayList<IGamesShowingListener>();
+
+    public void addGamesShowingListener(IGamesShowingListener listener){
+        _gamesShowingListeners.add(listener);
+    }
 
     public void addSubmittedPredictions(ISubmittedPredictionListener listener){
         _submittedPredictionListeners.add(listener);
@@ -135,6 +140,12 @@ public class NFMediator implements IMediator {
         }
     }
 
+    public void showingGames(Object sender){
+        for (IGamesShowingListener listener : _gamesShowingListeners){
+            listener.onGamesShowing(sender);
+        }
+    }
+
 /**********************************************************************************************************************/
     public interface ITeamSelectedListener {
         void onSelectedTeam(Object sender, NFTeam team);
@@ -178,5 +189,9 @@ public class NFMediator implements IMediator {
 
     public interface ISubmittedPredictionListener {
         void onSubmittedPredictions(Object sender, List<NFTeam> team);
+    }
+
+    public interface IGamesShowingListener{
+        void onGamesShowing(Object sender);
     }
 }

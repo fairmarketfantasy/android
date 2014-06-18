@@ -3,10 +3,10 @@ package com.fantasysport.adapters.footballwoldcup;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import com.fantasysport.fragments.pages.footballwoldcup.GamesFragment;
-import com.fantasysport.fragments.pages.footballwoldcup.GroupsFragment;
-import com.fantasysport.fragments.pages.footballwoldcup.PlayersFragment;
-import com.fantasysport.fragments.pages.footballwoldcup.TeamsFragment;
+import com.fantasysport.fragments.pages.nonfantasy.footballwoldcup.GamesFragment;
+import com.fantasysport.fragments.pages.nonfantasy.footballwoldcup.GroupsFragment;
+import com.fantasysport.fragments.pages.nonfantasy.footballwoldcup.PlayersFragment;
+import com.fantasysport.fragments.pages.nonfantasy.footballwoldcup.TeamsFragment;
 import com.fantasysport.models.fwc.FWCData;
 
 import java.util.ArrayList;
@@ -25,15 +25,16 @@ public class FWCPagerAdapter extends FragmentStatePagerAdapter {
 
     public void setFWCData(FWCData data){
         _catTypes = new ArrayList<CategoryType>();
+        if(data.getGames() != null){
+            _catTypes.add(CategoryType.Games);
+        }
         if( data.getTeams() != null){
            _catTypes.add(CategoryType.Teams);
         }
         if(data.getGroups() != null){
             _catTypes.add(CategoryType.Groups);
         }
-        if(data.getGames() != null){
-          _catTypes.add(CategoryType.Games);
-        }
+
         if(data.getPlayers() != null){
             _catTypes.add(CategoryType.Players);
         }

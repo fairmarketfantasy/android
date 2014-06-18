@@ -1,4 +1,4 @@
-package com.fantasysport.fragments.pages.footballwoldcup;
+package com.fantasysport.fragments.pages.nonfantasy.footballwoldcup;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,15 +14,18 @@ import com.fantasysport.models.IndividualPrediction;
 import com.fantasysport.models.UserData;
 import com.fantasysport.webaccess.responseListeners.ListResponseListener;
 import com.fantasysport.webaccess.responseListeners.RequestError;
+import com.fantasysport.webaccess.responseListeners.TradeIndividualPredictionResponseListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
  * Created by bylynka on 6/5/14.
  */
 public class PredictionListFragment extends BasePredictionListFragment
-        implements ILoadListener {
+        implements ILoadListener, IndividualPredictionAdapter.ITradeListener{
 
     private int _currentPage;
     private List<IndividualPrediction> _individualPredictions;
@@ -33,6 +36,8 @@ public class PredictionListFragment extends BasePredictionListFragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         _individualPredictionAdapter = new IndividualPredictionAdapter(getActivity(), null);
+        _individualPredictionAdapter.setTradeListener(this);
+        _individualPredictionAdapter.setCanTradeSubmitted(true);
         _isHistory = getArguments().getBoolean(Const.IS_HISTORY);
         return super.onCreateView(inflater, container, savedInstanceState);
     }
@@ -81,6 +86,7 @@ public class PredictionListFragment extends BasePredictionListFragment
                     _individualPredictionAdapter.notifyDataSetChanged();
                     return;
                 }
+                Collections.sort(predictions, PredictionListFragment.this);
                 if (predictions.size() >= 25) {
                     IndividualPrediction prediction = new IndividualPrediction();
                     prediction.setIsEmpty(true);
@@ -99,4 +105,32 @@ public class PredictionListFragment extends BasePredictionListFragment
     public void onLoad() {
        loadIndividualPredictions(false);
     }
+
+    @Override
+    public void onTrade(final IndividualPrediction prediction) {
+        showConfirm(null, prediction.getTradeMsg(), new Runnable() {
+            @Override
+            public void run() {
+                showProgress();
+                getWebProxy().tradeIndividualPrediction(prediction.getId(), getStorage().getUserData().getSport(), new TradeIndividualPredictionResponseListener() {
+                    @Override
+                    public void onRequestError(RequestError error) {
+                        dismissProgress();
+                        showAlert(getString(R.string.error), error.getMessage());
+                    }
+
+                    @Override
+                    public void onRequestSuccess(Object o) {
+                        dismissProgress();
+                        if(_individualPredictions == null){
+                            return;
+                        }
+                        _individualPredictions.remove(prediction);
+                        _individualPredictionAdapter.notifyDataSetChanged();
+                    }
+                });
+            }
+        });
+    }
+
 }

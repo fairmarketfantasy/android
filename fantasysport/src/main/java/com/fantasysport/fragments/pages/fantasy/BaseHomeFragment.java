@@ -168,6 +168,7 @@ public abstract class BaseHomeFragment extends MainActivityFragment implements A
                 @Override
                 public void onRequestSuccess(TradePlayerResponse response) {
                     double salary = roster.getRemainingSalary();
+                    getFragmentMediator().tradePlayer(BaseHomeFragment.this, player);
                     roster.getPlayers().remove(player);
                     salary += response.getPrice();
                     roster.setRemainingSalary(salary);

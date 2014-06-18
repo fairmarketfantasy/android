@@ -1,5 +1,8 @@
 package com.fantasysport.models.nonfantasy;
 
+import com.fantasysport.utility.Converter;
+import com.fantasysport.utility.DateUtils;
+import com.fantasysport.utility.DeviceInfo;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -10,34 +13,43 @@ import java.util.Date;
  */
 public class NFTeam implements Serializable, INFTeam {
 
-    private int _gameStatsId;
+    @SerializedName("game_stats_id")
+    private String _gameStatsId;
 
+    @SerializedName("name")
     private String _name;
 
+    @SerializedName("pt")
     private double _pt;
 
-    private int _statsId;
+    @SerializedName("stats_id")
+    private String _statsId;
 
+    @SerializedName("logo_url")
     private String _logoUrl;
 
+    @SerializedName("is_added")
     private boolean _isSelected = false;
 
+    @SerializedName("disable_pt")
     private boolean _isPredicted = false;
 
+    @SerializedName("game_name")
     private String _gameName;
 
-    private Date _date;
+    @SerializedName("game_time")
+    private String _date;
 
     public NFTeam(){
     }
 
     public NFTeam(String name,
                   double pt,
-                  int statsId,
+                  String statsId,
                   String logoUrl,
-                  int gameStatsId,
+                  String gameStatsId,
                   String gameName,
-                  Date date){
+                  String date){
         _name = name;
         _pt = pt;
         _statsId = statsId;
@@ -48,14 +60,16 @@ public class NFTeam implements Serializable, INFTeam {
     }
 
     public Date getDate(){
-        return _date;
+        Date date = Converter.toDate(_date);
+        int gmtInMinutes = DeviceInfo.getGMTInMinutes();
+        return DateUtils.addMinutes(date, gmtInMinutes);
     }
 
     public String getGameName(){
         return _gameName;
     }
 
-    public int getGameStatsId(){
+    public String getGameStatsId(){
         return _gameStatsId;
     }
 
@@ -75,7 +89,7 @@ public class NFTeam implements Serializable, INFTeam {
         return _isSelected;
     }
 
-    public int getStatsId(){
+    public String getStatsId(){
         return _statsId;
     }
 

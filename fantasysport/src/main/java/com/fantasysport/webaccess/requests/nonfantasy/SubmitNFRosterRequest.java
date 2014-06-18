@@ -91,9 +91,9 @@ public class SubmitNFRosterRequest extends BaseRequest<String> {
         @SerializedName("position_index")
         private int _index;
 
-        public RosterTeam(int gameStatsId, int teamStatsId, int index){
-            _gameStatsId = Integer.toString(gameStatsId);
-            _teamStatsId  = Integer.toString(teamStatsId);
+        public RosterTeam(String gameStatsId, String teamStatsId, int index){
+            _gameStatsId = gameStatsId;
+            _teamStatsId  = teamStatsId;
             _index = index;
         }
     }

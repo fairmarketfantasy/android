@@ -21,6 +21,7 @@ import com.fantasysport.webaccess.responseListeners.PredictionsResponseListener;
 import com.fantasysport.webaccess.responseListeners.RequestError;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -142,6 +143,7 @@ public class HistoryPredictionListFragment extends BasePredictionListFragment im
                     _individualPredictionAdapter.notifyDataSetChanged();
                     return;
                 }
+                Collections.sort(predictions, HistoryPredictionListFragment.this);
                 if(predictions.size() >= 25){
                     IndividualPrediction prediction = new IndividualPrediction();
                     prediction.setIsEmpty(true);

@@ -23,7 +23,8 @@ import com.fantasysport.webaccess.responseListeners.StringResponseListener;
  */
 public class NonFantasyFragment extends BaseFragment
         implements NFMediator.ITeamSelectedListener, NFMediator.IUpdateGamesRequestListener,
-        NFMediator.IAutoFillRequestListener, INFMainFragment, NFMediator.ISubmittingIndividualPredictionListener {
+        NFMediator.IAutoFillRequestListener, INFMainFragment, NFMediator.ISubmittingIndividualPredictionListener,
+        NFMediator.IGamesShowingListener{
 
     private NFPagerAdapter _pagerAdapter;
     private NFMediator _mediator = new NFMediator();
@@ -35,6 +36,7 @@ public class NonFantasyFragment extends BaseFragment
         _mediator.addUpdateGamesRequestListener(this);
         _mediator.addAutoFillRequestListener(this);
         _mediator.addSubmittingIndividualPrediction(this);
+        _mediator.addGamesShowingListener(this);
     }
 
     @Override
@@ -43,6 +45,7 @@ public class NonFantasyFragment extends BaseFragment
         _pagerAdapter = new NFPagerAdapter(getActivity().getSupportFragmentManager());
         _pager.setAdapter(_pagerAdapter);
         raiseOnPageChanged(0);
+        setPageAmount(2);
     }
 
     @Override
@@ -178,5 +181,13 @@ public class NonFantasyFragment extends BaseFragment
                 showAlert("INFO", msg);
             }
         });
+    }
+
+    @Override
+    public void onGamesShowing(Object sender) {
+        if(_pager == null){
+            return;
+        }
+        _pager.setCurrentItem(1, true);
     }
 }

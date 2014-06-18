@@ -10,6 +10,7 @@ public class IndividualPrediction {
 
     public final static String CANCELED = "canceled";
     public final static String FINISHED = "finished";
+    public final static String SUBMITTED = "submitted";
 
     private String _marketName;
     private String _playerName;
@@ -18,8 +19,36 @@ public class IndividualPrediction {
     private List<StatsItem> _eventPredictions;
     private double _pt;
     private String _state;
-    private double _gameResult;
+    private String _gameResult;
     private boolean _isEmpty = false;
+    private Double _currentPt;
+    private String _tradeMsg;
+    private int _id;
+    private boolean _canTrade;
+
+    public void setCanTrade(boolean value){
+        _canTrade = value;
+    }
+
+    public boolean canTrade(){
+        return _canTrade;
+    }
+
+    public void setCurrentPT(Double value){
+        _currentPt = value;
+    }
+
+    public Double getCurrentPT(){
+        return _currentPt;
+    }
+
+    public String getTradeMsg(){
+        return _tradeMsg;
+    }
+
+    public void setTradeMsg(String tradeMsg){
+        _tradeMsg = tradeMsg;
+    }
 
     public boolean isEmpty(){
         return _isEmpty;
@@ -85,11 +114,19 @@ public class IndividualPrediction {
         return _state;
     }
 
-    public void setGameResult(double gameResult) {
-        this._gameResult = gameResult;
+    public void setGameResult(String gameResult) {
+        _gameResult = gameResult;
     }
 
-    public double getGameResult() {
+    public String getGameResult() {
         return _gameResult;
+    }
+
+    public int getId() {
+        return _id;
+    }
+
+    public void setId(int id) {
+        _id = id;
     }
 }

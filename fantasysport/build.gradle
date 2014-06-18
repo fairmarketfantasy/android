@@ -17,8 +17,8 @@ android {
     buildToolsVersion "19.0.1"
 
     defaultConfig {
-        versionCode 24
-        versionName "1.8.4"
+        versionCode 27
+        versionName "2.0.1"
     }
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES'
@@ -42,5 +42,8 @@ dependencies {
 //    compile files('libs/ubertesters.sdk.android.jar')
     compile files('libs/HockeySDK-3.0.1.jar')
     compile 'com.github.chrisbanes.actionbarpulltorefresh:extra-abc:+'
+//    compile 'com.fasterxml.jackson.core:jackson-databind:2.2.+'
+//    compile 'com.fasterxml.jackson.core:jackson-core:2.2.+'
+//    compile 'com.fasterxml.jackson.core:jackson-annotations:2.2.+'
     compile project(':facebook')
 }

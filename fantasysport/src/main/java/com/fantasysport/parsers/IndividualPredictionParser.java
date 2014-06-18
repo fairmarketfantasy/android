@@ -24,6 +24,10 @@ public class IndividualPredictionParser extends BaseParser {
     private final String EVENT_PREDICTIONS = "event_predictions";
     private final String STATE = "state";
     private final String GAME_RESULT = "game_result";
+    private final String CURRENT_PT = "current_pt";
+    private final String TRADE_MESSAGE = "trade_message";
+    private final String ID = "id";
+    private final String SHOW_TRADE = "show_trade";
 
     public List<IndividualPrediction> parse(String json) {
         BsonDataWrapper bsonData = getBsonData(json);
@@ -64,12 +68,28 @@ public class IndividualPredictionParser extends BaseParser {
         String state = (String) _objects.get(firstField + _keyMap.get(STATE));
         prediction.setState(state);
         if(_keyMap.containsKey(GAME_RESULT)){
-            double gameResult = getDouble(_objects.get(firstField + _keyMap.get(GAME_RESULT)));
+            String gameResult = (String)_objects.get(firstField + _keyMap.get(GAME_RESULT));
             prediction.setGameResult(gameResult);
         }
         if(_keyMap.containsKey(EVENT_PREDICTIONS)){
             List<StatsItem> statsItems = parseStatsItems((ArrayList) _objects.get(firstField + _keyMap.get(EVENT_PREDICTIONS)));
             prediction.setEventPredictions(statsItems);
+        }
+        if(_keyMap.containsKey(TRADE_MESSAGE)){
+           String tradeMsg = (String) _objects.get(firstField + _keyMap.get(TRADE_MESSAGE));
+           prediction.setTradeMsg(tradeMsg);
+        }
+        if(_keyMap.containsKey(ID)){
+            int id = getDouble(_objects.get(firstField + _keyMap.get(ID))).intValue();
+            prediction.setId(id);
+        }
+        if(_keyMap.containsKey(CURRENT_PT)){
+            double currentPT = getDouble(_objects.get(firstField + _keyMap.get(CURRENT_PT)));
+            prediction.setCurrentPT(currentPT);
+        }
+        if(_keyMap.containsKey(SHOW_TRADE)){
+            boolean canTrade =(Boolean)_objects.get(firstField + _keyMap.get(SHOW_TRADE));
+            prediction.setCanTrade(canTrade);
         }
         return prediction;
     }
@@ -120,6 +140,14 @@ public class IndividualPredictionParser extends BaseParser {
             }else if (atemptPutKey(STATE, field, i)) {
                 continue;
             }else if (atemptPutKey(GAME_RESULT, field, i)) {
+                continue;
+            }else if (atemptPutKey(TRADE_MESSAGE, field, i)) {
+                continue;
+            }else if (atemptPutKey(CURRENT_PT, field, i)) {
+                continue;
+            }else if (atemptPutKey(ID, field, i)) {
+                continue;
+            }else if (atemptPutKey(SHOW_TRADE, field, i)) {
                 continue;
             }
         }

@@ -49,15 +49,18 @@
                       android:textColor="#000000"
                       android:textSize="@dimen/medium_font"
                       android:textStyle="bold"
+                      android:ellipsize="end"
+                      android:singleLine="true"
                     />
 
         </LinearLayout>
 
-        <com.fantasysport.views.ExButton android:layout_width="38dp"
+        <com.fantasysport.views.ExTextView android:layout_width="38dp"
                                          android:layout_height="@dimen/btn_height"
                                          android:layout_marginRight="5dp"
+                                         android:gravity="center"
                                          android:id="@+id/pt_btn"
-                                         android:background="@drawable/pt25_button"
+                                         android:background="@drawable/pt_label"
                                          android:textSize="@dimen/x_medium_font"
                                          android:paddingRight="0dp"
                                          android:paddingLeft="0dp"

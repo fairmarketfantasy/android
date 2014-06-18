@@ -34,7 +34,7 @@ public class NFAutoFillRequest extends BaseRequest<NFAutoFillData> {
     public NFAutoFillData loadDataFromNetwork() throws Exception {
         Uri.Builder uriBuilder = Uri.parse(getUrl()).buildUpon();
         uriBuilder.appendPath("game_rosters")
-                .appendPath("autofill")
+                .appendPath("new_autofill")
                 .appendQueryParameter("sport", _sport)
                 .appendQueryParameter("access_token", getAccessToken());
         String url = uriBuilder.build().toString();
@@ -43,24 +43,12 @@ public class NFAutoFillRequest extends BaseRequest<NFAutoFillData> {
         request.getHeaders().setAccept("application/json");
         String result = request.execute().parseAsString();
         AutoFillResponseBody response = new Gson().fromJson(result, AutoFillResponseBody.class);
-        List<NFGame> games = new ArrayList<NFGame>();
+        List<NFGame> games = response.getGames();
         List<NFTeam> rosterTeams = new ArrayList<NFTeam>();
-        List<Game> candidateGames = response.getGames();
         List<RosterTeamData> rosterGameDataList= response.getRosterGamesData();
-        if (candidateGames != null) {
-            for (Game g : candidateGames) {
-                String gameName = String.format("%s@%s", g.getHomeTeamName(), g.getAwayTeamName());
-                NFTeam home = new NFTeam(g.getHomeTeamName(), g.getHomeTeamPt(), g.getHomeTeamStatsId(), g.getHomeTeamLogo(), g.getStatsId(), gameName, g.getGameDate());
-                home.setIsPredicted(g.isHomePredicted());
-                home.setIsSelected(g.isHomeSelected());
-                NFTeam away = new NFTeam(g.getAwayTeamName(), g.getAwayTeamPt(), g.getAwayTeamStatsId(), g.getAwayTeamLogo(), g.getStatsId(), gameName, g.getGameDate());
-                away.setIsPredicted(g.isAwayTeamPredicted());
-                away.setIsSelected(g.isAwaySelected());
-                games.add(new NFGame(home, away, g.getGameDate(), g.getStatsId()));
-            }
-        }
         for (RosterTeamData rgd : rosterGameDataList){
-            rosterTeams.add(new NFTeam(rgd._name, rgd._pt, rgd._teamStatsId, rgd._logoUrl, rgd._gameStatsId, rgd._gameName, rgd.getGameDate()));
+            String gameName = rgd._gameName != null?rgd._gameName.trim(): "";
+                    rosterTeams.add(new NFTeam(rgd._name, rgd._pt, rgd._teamStatsId, rgd._logoUrl, rgd._gameStatsId, gameName , rgd.getGameDate()));
         }
         return new NFAutoFillData(rosterTeams, games);
     }
@@ -68,7 +56,7 @@ public class NFAutoFillRequest extends BaseRequest<NFAutoFillData> {
     public class AutoFillResponseBody{
 
         @SerializedName("games")
-        private List<Game> _games;
+        private List<NFGame> _games;
 
         @SerializedName("predictions")
         private List<RosterTeamData> _candidateGamesData;
@@ -77,7 +65,7 @@ public class NFAutoFillRequest extends BaseRequest<NFAutoFillData> {
             return _candidateGamesData;
         }
 
-        public List<Game> getGames() {
+        public List<NFGame> getGames() {
             return _games;
         }
     }
@@ -85,10 +73,10 @@ public class NFAutoFillRequest extends BaseRequest<NFAutoFillData> {
     public class RosterTeamData {
 
         @SerializedName("team_stats_id")
-        private int _teamStatsId;
+        private String _teamStatsId;
 
         @SerializedName("game_stats_id")
-        private int _gameStatsId;
+        private String _gameStatsId;
 
         @SerializedName("team_name")
         String _name;
@@ -99,16 +87,14 @@ public class NFAutoFillRequest extends BaseRequest<NFAutoFillData> {
         @SerializedName("team_logo")
         String _logoUrl;
 
-        @SerializedName("Reds @ Giants")
+        @SerializedName("market_name")
         String _gameName;
 
         @SerializedName("game_time")
         String _gameDate;
 
-        public Date getGameDate() {
-            Date date = Converter.toDate(_gameDate);
-            int gmtInMinutes = DeviceInfo.getGMTInMinutes();
-            return DateUtils.addMinutes(date, gmtInMinutes);
+        public String getGameDate() {
+            return _gameDate;
         }
 
     }

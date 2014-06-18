@@ -45,4 +45,8 @@ public abstract class BaseActivityFragment extends Fragment {
     public void showAlert(String title, String content){
         getBaseActivity().showAlert(title, content);
     }
+
+    public void showConfirm(String title, String message, Runnable okAction){
+        getBaseActivity().showConfirm(title, message, okAction);
+    }
 }

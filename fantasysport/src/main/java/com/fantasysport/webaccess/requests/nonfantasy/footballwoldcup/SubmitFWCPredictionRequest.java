@@ -1,4 +1,4 @@
-package com.fantasysport.webaccess.requests.footballwoldcup;
+package com.fantasysport.webaccess.requests.nonfantasy.footballwoldcup;
 
 import android.net.Uri;
 import com.fantasysport.webaccess.requests.BaseRequest;

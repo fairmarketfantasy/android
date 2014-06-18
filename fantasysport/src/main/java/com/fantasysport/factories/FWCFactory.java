@@ -6,7 +6,7 @@ import com.fantasysport.Const;
 import com.fantasysport.activities.footballworldcup.FWCPredictionsListActivity;
 import com.fantasysport.fragments.main.IMainFragment;
 import com.fantasysport.fragments.main.footballwoldcup.FWCFragment;
-import com.fantasysport.fragments.pages.footballwoldcup.PredictionListFragment;
+import com.fantasysport.fragments.pages.nonfantasy.footballwoldcup.PredictionListFragment;
 
 /**
  * Created by bylynka on 6/3/14.

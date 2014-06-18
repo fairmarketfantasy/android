@@ -11,7 +11,7 @@ import com.fantasysport.webaccess.responseListeners.ListResponseListener;
 import com.fantasysport.webaccess.requests.*;
 import com.fantasysport.webaccess.requests.fantasy.*;
 import com.fantasysport.webaccess.requests.fantasy.SubmitPredictionRequest;
-import com.fantasysport.webaccess.requests.footballwoldcup.*;
+import com.fantasysport.webaccess.requests.nonfantasy.footballwoldcup.*;
 import com.fantasysport.webaccess.requests.nonfantasy.*;
 import com.octo.android.robospice.SpiceManager;
 import com.octo.android.robospice.persistence.exception.SpiceException;
@@ -231,6 +231,12 @@ public final class WebProxy {
 
     public void submitFWCPrediction(String predictionType, String predictableId, String gameStatsId, MessageResponseListener listener){
         SubmitFWCPredictionRequest request = new SubmitFWCPredictionRequest(predictionType, predictableId, gameStatsId);
+        request.setRetryPolicy(getRetryPolicy());
+        _spiceManager.execute(request, listener);
+    }
+
+    public void tradeIndividualPrediction(int id, String sport, TradeIndividualPredictionResponseListener listener) {
+        TradeIndividualPredictionRequest request = new TradeIndividualPredictionRequest(id, sport);
         request.setRetryPolicy(getRetryPolicy());
         _spiceManager.execute(request, listener);
     }

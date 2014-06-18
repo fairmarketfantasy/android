@@ -1,5 +1,6 @@
 package com.fantasysport.fragments.pages.fantasy;
 
+import com.fantasysport.adapters.fantasy.IndividualPredictionAdapter;
 import com.fantasysport.fragments.pages.IMediator;
 import com.fantasysport.models.Market;
 import com.fantasysport.models.fantasy.Player;
@@ -17,9 +18,11 @@ public class MainFragmentMediator implements IMediator{
     private List<IPlayerAddListener> _playerAddListeners = new ArrayList<IPlayerAddListener>();
     private List<IPlayerPositionListener> _playerPositionListeners = new ArrayList<IPlayerPositionListener>();
     private List<IOnBenchedStateChangedListener> _onBenchedStateChangedListeners = new ArrayList<IOnBenchedStateChangedListener>();
-    private static MainFragmentMediator _instance;
+    private List<ITradePlayerListener> _tradePlayerListeners = new ArrayList<ITradePlayerListener>();
 
-    public MainFragmentMediator(){}
+    public void addTradePlayerListener(ITradePlayerListener listener){
+        _tradePlayerListeners.add(listener);
+    }
 
     public void addOnBenchedStateChangedListener(IOnBenchedStateChangedListener listener){
         _onBenchedStateChangedListeners.add(listener);
@@ -59,6 +62,16 @@ public class MainFragmentMediator implements IMediator{
 
     public void changeBenchedState(Object sender, boolean state){
         raiseOnBenchedStateChanged(sender, state);
+    }
+
+    public void tradePlayer(Object sender, Player player){
+        raiseOnTradePlayer(sender, player);
+    }
+
+    private void raiseOnTradePlayer(Object sender, Player player){
+        for (ITradePlayerListener listener: _tradePlayerListeners){
+            listener.onTraded(sender, player);
+        }
     }
 
     private void raiseOnBenchedStateChanged(Object sender, boolean state){
@@ -109,5 +122,9 @@ public class MainFragmentMediator implements IMediator{
 
     public interface IOnBenchedStateChangedListener {
         public void onBenchedStateChanged(Object sender, boolean state);
+    }
+
+    public interface ITradePlayerListener{
+        void onTraded(Object sender, Player player);
     }
 }

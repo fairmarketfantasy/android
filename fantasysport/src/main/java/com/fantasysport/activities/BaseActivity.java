@@ -14,6 +14,7 @@ import com.fantasysport.factories.ISportFactory;
 import com.fantasysport.repo.Storage;
 import com.fantasysport.utility.DeviceInfo;
 import com.fantasysport.views.AlertDialog;
+import com.fantasysport.views.ConfirmDialog;
 import com.fantasysport.webaccess.GsonGoogleHttpClientSpiceService;
 import com.fantasysport.webaccess.WebProxy;
 import com.fantasysport.webaccess.responseListeners.RequestError;
@@ -38,9 +39,9 @@ public class BaseActivity extends ActionBarActivity {
 
 
     //prod
-//    private static final String APP_ID = "3b749930a830362f2e47565e66fec8b8";
+    private static final String APP_ID = "3b749930a830362f2e47565e66fec8b8";
 
-    private static final String APP_ID = "f7a14bcc9eb0186b4bf705f93229f693";
+//    private static final String APP_ID = "f7a14bcc9eb0186b4bf705f93229f693";
 
 //    f7a14bcc9eb0186b4bf705f93229f693
 
@@ -88,13 +89,11 @@ public class BaseActivity extends ActionBarActivity {
             _progressCounter = 0;
         }
         if (_progressCounter == 0) {
-//            setSupportProgressBarIndeterminateVisibility(false);
             getProgressBar().setVisibility(View.GONE);
             afterLoading();
         } else if (_progressCounter >= 1 && !isProgressShowing()) {
             beforeLoading();
             getProgressBar().setVisibility(View.VISIBLE);
-//            setSupportProgressBarIndeterminateVisibility(true);
         }
     }
 
@@ -152,6 +151,14 @@ public class BaseActivity extends ActionBarActivity {
         AlertDialog dialog = new AlertDialog(this);
         dialog.setTitle(title);
         dialog.setContent(message);
+        dialog.show();
+    }
+
+    public void showConfirm(String title, String message, Runnable okAction){
+        ConfirmDialog dialog = new ConfirmDialog(this);
+        dialog.setTitle(title);
+        dialog.setContent(message);
+        dialog.setOkAction(okAction);
         dialog.show();
     }
 

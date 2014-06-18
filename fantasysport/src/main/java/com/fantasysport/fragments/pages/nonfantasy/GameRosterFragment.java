@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import com.fantasysport.R;
@@ -88,6 +89,7 @@ public class GameRosterFragment extends BaseActivityFragment implements NFRoster
     private void initAdapter() {
         ListView listView = getViewById(R.id.game_list);
         listView.setCacheColorHint(Color.TRANSPARENT);
+        listView.setOnItemClickListener(_itemClickListener);
         _adapter = new NFRosterAdapter(getActivity(), getMainFragment().isEditable());
         _adapter.setListener(this);
         listView.setAdapter(_adapter);
@@ -124,11 +126,6 @@ public class GameRosterFragment extends BaseActivityFragment implements NFRoster
                 return;
             }
         }
-    }
-
-    @Override
-    public void onPT(NFTeam team) {
-        _mediator.submittingIndividualPrediction(this, team);
     }
 
     @Override
@@ -237,6 +234,7 @@ public class GameRosterFragment extends BaseActivityFragment implements NFRoster
     @Override
     public void onGamesUpdated(Object sender, List<NFGame> games) {
         setEmptyRoster();
+        updateSubmitBtnState();
     }
 
     View.OnClickListener _autoFillBtnOnClickListener = new View.OnClickListener() {
@@ -301,11 +299,23 @@ public class GameRosterFragment extends BaseActivityFragment implements NFRoster
         List<INFTeam> teams = _adapter.getTeams();
         if(sender != this && teams != null){
             for (INFTeam t : teams){
-                if(t instanceof NFTeam && ((NFTeam)t).getStatsId() == team.getStatsId()){
+                if(t instanceof NFTeam && ((NFTeam)t).getStatsId().compareTo(team.getStatsId()) == 0){
                     ((NFTeam)t).setIsSelected(true);
                 }
             }
         }
         _adapter.notifyDataSetChanged();
     }
+
+    AdapterView.OnItemClickListener _itemClickListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            if(_adapter == null ||
+                    _adapter.getItem(position) == null ||
+                    _adapter.getItem(position) instanceof NFTeam){
+                return;
+            }
+            _mediator.showingGames(GameRosterFragment.this);
+        }
+    };
 }
