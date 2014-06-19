@@ -19,6 +19,7 @@ android {
     defaultConfig {
         versionCode 27
         versionName "2.0.1"
+        testPackageName "com.fantasysport.tests"
     }
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES'
@@ -46,4 +47,5 @@ dependencies {
 //    compile 'com.fasterxml.jackson.core:jackson-core:2.2.+'
 //    compile 'com.fasterxml.jackson.core:jackson-annotations:2.2.+'
     compile project(':facebook')
+//    compile project(':libs/actionBarPullToRefresh')
 }

@@ -33,6 +33,7 @@ public class PlayersFragment extends BasePlayersFragment implements FantasyFragm
                 || market == null || _playersAdapter == null){
             return;
         }
+
         setPositionLabel(position.getName());
         showProgress();
         _playersAdapter.setItems(null);
