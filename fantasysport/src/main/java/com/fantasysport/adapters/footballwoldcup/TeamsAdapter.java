@@ -66,9 +66,15 @@ public class TeamsAdapter extends BaseAdapter{
         }
         Team team = _teams.get(position);
         Button ptBtn = (Button)convertView.findViewById(R.id.pt_btn);
-        ptBtn.setText(String.format("PT%.0f", team.getPT()));
-        ptBtn.setEnabled(!team.isPredicted());
-        ptBtn.setOnClickListener(new OnTeamPtClickListener(team));
+        if(team.hasPT()){
+            ptBtn.setText(String.format("PT%.0f", team.getPT()));
+            ptBtn.setEnabled(!team.isPredicted());
+            ptBtn.setOnClickListener(new OnTeamPtClickListener(team));
+            ptBtn.setVisibility(View.VISIBLE);
+        }else {
+            ptBtn.setOnClickListener(null);
+            ptBtn.setVisibility(View.INVISIBLE);
+        }
         TextView teamLbl = (TextView)convertView.findViewById(R.id.team_lbl);
         teamLbl.setText(team.getName());
         ImageView flagImg = (ImageView)convertView.findViewById(R.id.flag_img);

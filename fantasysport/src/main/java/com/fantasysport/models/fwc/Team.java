@@ -28,6 +28,9 @@ public class Team implements IFWCModel {
     @JsonProperty("disable_pt")
     private boolean _isPredicted;
 
+    @JsonProperty("remove_pt")
+    private boolean _hasPT;
+
     public boolean isPredicted() {
         return _isPredicted;
     }
@@ -55,6 +58,10 @@ public class Team implements IFWCModel {
 
     public String getName() {
         return _name;
+    }
+
+    public boolean hasPT(){
+        return !_hasPT;
     }
 
 }
