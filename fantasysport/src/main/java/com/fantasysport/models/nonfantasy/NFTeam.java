@@ -1,9 +1,10 @@
 package com.fantasysport.models.nonfantasy;
 
-import com.fantasysport.utility.Converter;
-import com.fantasysport.utility.DateUtils;
-import com.fantasysport.utility.DeviceInfo;
-import com.google.gson.annotations.SerializedName;
+import com.fantasysport.parsers.jackson.DateDeserializer;
+import com.fantasysport.parsers.jackson.DateSerializer;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -13,32 +14,34 @@ import java.util.Date;
  */
 public class NFTeam implements Serializable, INFTeam {
 
-    @SerializedName("game_stats_id")
+    @JsonProperty("game_stats_id")
     private String _gameStatsId;
 
-    @SerializedName("name")
+    @JsonProperty("name")
     private String _name;
 
-    @SerializedName("pt")
+    @JsonProperty("pt")
     private double _pt;
 
-    @SerializedName("stats_id")
+    @JsonProperty("stats_id")
     private String _statsId;
 
-    @SerializedName("logo_url")
+    @JsonProperty("logo_url")
     private String _logoUrl;
 
-    @SerializedName("is_added")
+    @JsonProperty("is_added")
     private boolean _isSelected = false;
 
-    @SerializedName("disable_pt")
+    @JsonProperty("disable_pt")
     private boolean _isPredicted = false;
 
-    @SerializedName("game_name")
+    @JsonProperty("game_name")
     private String _gameName;
 
-    @SerializedName("game_time")
-    private String _date;
+    @JsonSerialize(using = DateSerializer.class)
+    @JsonDeserialize(using = DateDeserializer.class)
+    @JsonProperty("game_time")
+    private Date _date;
 
     public NFTeam(){
     }
@@ -49,7 +52,7 @@ public class NFTeam implements Serializable, INFTeam {
                   String logoUrl,
                   String gameStatsId,
                   String gameName,
-                  String date){
+                  Date date){
         _name = name;
         _pt = pt;
         _statsId = statsId;
@@ -60,9 +63,7 @@ public class NFTeam implements Serializable, INFTeam {
     }
 
     public Date getDate(){
-        Date date = Converter.toDate(_date);
-        int gmtInMinutes = DeviceInfo.getGMTInMinutes();
-        return DateUtils.addMinutes(date, gmtInMinutes);
+        return _date;
     }
 
     public String getGameName(){

@@ -6,7 +6,6 @@ import com.fantasysport.models.User;
 import com.fantasysport.models.UserData;
 import com.fantasysport.webaccess.responses.AuthResponse;
 import com.google.api.client.http.*;
-import com.google.gson.Gson;
 
 /**
  * Created by bylynka on 2/3/14.
@@ -30,19 +29,17 @@ public class SignUpRequest extends BaseRequest<AuthResponse> {
         return  response;
     }
 
-
     public UserData signUp() throws Exception {
         Uri.Builder uriBuilder = Uri.parse(getUrl()).buildUpon();
         uriBuilder.appendPath("users");
         String url = uriBuilder.build().toString();
-
-        String js = new Gson().toJson(_requestBody);
+        String js = getObjectMapper().writeValueAsString(_requestBody);
         HttpContent content = ByteArrayContent.fromString("application/json", js);
         HttpRequest request = getHttpRequestFactory()
                 .buildPostRequest(new GenericUrl(url), content);
         request.getHeaders().setAccept("application/json");
         String result = request.execute().parseAsString();
-        return new Gson().fromJson(result, UserData.class);
+        return getObjectMapper().readValue(result, UserData.class);
     }
 
     private AccessTokenData getAccessTokenData(String email, String password) throws Exception{
@@ -51,13 +48,12 @@ public class SignUpRequest extends BaseRequest<AuthResponse> {
         uriBuilder.appendPath("oauth2");
         uriBuilder.appendPath("token");
         String url = uriBuilder.build().toString();
-        String js = new Gson().toJson(body);
+        String js = getObjectMapper().writeValueAsString(body);
         HttpContent content = ByteArrayContent.fromString("application/json", js);
         HttpRequest request = getHttpRequestFactory()
                 .buildPostRequest(new GenericUrl(url), content);
         request.getHeaders().setAccept("application/json");
         String result = request.execute().parseAsString();
-        return new Gson().fromJson(result, AccessTokenData.class);
+        return getObjectMapper().readValue(result, AccessTokenData.class);
     }
-
 }

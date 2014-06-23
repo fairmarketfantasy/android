@@ -4,14 +4,13 @@ import android.net.Uri;
 import com.fantasysport.models.nonfantasy.NFAutoFillData;
 import com.fantasysport.models.nonfantasy.NFGame;
 import com.fantasysport.models.nonfantasy.NFTeam;
-import com.fantasysport.utility.Converter;
-import com.fantasysport.utility.DateUtils;
-import com.fantasysport.utility.DeviceInfo;
+import com.fantasysport.parsers.jackson.DateDeserializer;
 import com.fantasysport.webaccess.requests.BaseRequest;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.google.api.client.http.GenericUrl;
 import com.google.api.client.http.HttpRequest;
-import com.google.gson.Gson;
-import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -42,7 +41,7 @@ public class NFAutoFillRequest extends BaseRequest<NFAutoFillData> {
                 .buildPostRequest(new GenericUrl(url), null);
         request.getHeaders().setAccept("application/json");
         String result = request.execute().parseAsString();
-        AutoFillResponseBody response = new Gson().fromJson(result, AutoFillResponseBody.class);
+        AutoFillResponseBody response = getObjectMapper().readValue(result, AutoFillResponseBody.class);
         List<NFGame> games = response.getGames();
         List<NFTeam> rosterTeams = new ArrayList<NFTeam>();
         List<RosterTeamData> rosterGameDataList= response.getRosterGamesData();
@@ -53,12 +52,13 @@ public class NFAutoFillRequest extends BaseRequest<NFAutoFillData> {
         return new NFAutoFillData(rosterTeams, games);
     }
 
-    public class AutoFillResponseBody{
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class AutoFillResponseBody{
 
-        @SerializedName("games")
+        @JsonProperty("games")
         private List<NFGame> _games;
 
-        @SerializedName("predictions")
+        @JsonProperty("predictions")
         private List<RosterTeamData> _candidateGamesData;
 
         public List<RosterTeamData> getRosterGamesData() {
@@ -70,30 +70,32 @@ public class NFAutoFillRequest extends BaseRequest<NFAutoFillData> {
         }
     }
 
-    public class RosterTeamData {
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class RosterTeamData {
 
-        @SerializedName("team_stats_id")
+        @JsonProperty("team_stats_id")
         private String _teamStatsId;
 
-        @SerializedName("game_stats_id")
+        @JsonProperty("game_stats_id")
         private String _gameStatsId;
 
-        @SerializedName("team_name")
+        @JsonProperty("team_name")
         String _name;
 
-        @SerializedName("pt")
+        @JsonProperty("pt")
         double _pt;
 
-        @SerializedName("team_logo")
+        @JsonProperty("team_logo")
         String _logoUrl;
 
-        @SerializedName("market_name")
+        @JsonProperty("market_name")
         String _gameName;
 
-        @SerializedName("game_time")
-        String _gameDate;
+        @JsonDeserialize(using = DateDeserializer.class)
+        @JsonProperty("game_time")
+        Date _gameDate;
 
-        public String getGameDate() {
+        public Date getGameDate() {
             return _gameDate;
         }
 

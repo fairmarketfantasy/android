@@ -6,7 +6,6 @@ import com.fantasysport.webaccess.requests.BaseRequest;
 import com.fantasysport.webaccess.responses.StatEventsResponse;
 import com.google.api.client.http.GenericUrl;
 import com.google.api.client.http.HttpRequest;
-import com.google.gson.Gson;
 
 
 /**
@@ -38,6 +37,6 @@ public class GetStatEventsRequest extends BaseRequest<StatEventsResponse> {
         HttpRequest request = getHttpRequestFactory().buildGetRequest(new GenericUrl(url));
         request.getHeaders().setAccept("application/json");
         String result = request.execute().parseAsString();
-        return new Gson().fromJson(result, getResultType());
+        return getObjectMapper().readValue(result, getResultType());
     }
 }

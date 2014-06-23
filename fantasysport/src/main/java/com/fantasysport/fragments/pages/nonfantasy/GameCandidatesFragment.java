@@ -15,7 +15,7 @@ import com.fantasysport.fragments.BaseActivityFragment;
 import com.fantasysport.fragments.main.IMainFragment;
 import com.fantasysport.fragments.main.nonfantasy.INFMainFragment;
 import com.fantasysport.models.nonfantasy.NFData;
-import com.fantasysport.models.NFRoster;
+import com.fantasysport.models.nonfantasy.NFRoster;
 import com.fantasysport.models.nonfantasy.NFAutoFillData;
 import com.fantasysport.models.nonfantasy.NFGame;
 import com.fantasysport.models.nonfantasy.NFTeam;

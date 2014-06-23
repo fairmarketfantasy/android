@@ -2,10 +2,8 @@ package com.fantasysport.webaccess.requests.fantasy;
 
 import android.net.Uri;
 import com.fantasysport.webaccess.requests.BaseRequest;
-import com.fantasysport.webaccess.requests.fantasy.SubmitRequestBody;
 import com.fantasysport.webaccess.responses.SubmitRosterResponse;
 import com.google.api.client.http.*;
-import com.google.gson.Gson;
 
 /**
  * Created by bylynka on 3/4/14.
@@ -32,7 +30,7 @@ public class SubmitRosterRequest extends BaseRequest<SubmitRosterResponse> {
                 .appendPath("submit")
                 .appendQueryParameter("access_token", getAccessToken());
         String url = uriBuilder.build().toString();
-        String js = new Gson().toJson(_body);
+        String js = getObjectMapper().writeValueAsString(_body);
         HttpContent content = ByteArrayContent.fromString("application/json", js);
         HttpRequest request = getHttpRequestFactory()
                 .buildPostRequest(new GenericUrl(url), content);

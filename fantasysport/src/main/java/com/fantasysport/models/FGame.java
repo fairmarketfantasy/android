@@ -1,6 +1,7 @@
 package com.fantasysport.models;
 
-import com.google.gson.annotations.SerializedName;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -8,6 +9,7 @@ import java.util.Date;
 /**
  * Created by bylynka on 2/20/14.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class FGame implements Serializable, Comparable<FGame> {
 
 //    @SerializedName("id")
@@ -19,13 +21,13 @@ public class FGame implements Serializable, Comparable<FGame> {
 //    @SerializedName("status")
 //    private String _status;
 
-    @SerializedName("game_time")
+    @JsonProperty("game_time")
     private Date _gameTime;
 
-    @SerializedName("home_team")
+    @JsonProperty("home_team")
     private String _homeTeam;
 
-    @SerializedName("away_team")
+    @JsonProperty("away_team")
     private String _awayTeam;
 
 //    public String getId() {

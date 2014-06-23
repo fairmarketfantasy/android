@@ -4,7 +4,8 @@ import com.fantasysport.Const;
 import com.fantasysport.models.*;
 import com.fantasysport.models.fwc.FWCData;
 import com.fantasysport.models.nonfantasy.NFData;
-import com.google.gson.annotations.SerializedName;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.List;
 /**
  * Created by bylynka on 2/14/14.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Storage implements Serializable {
 
     private static Storage _instance;
@@ -20,13 +22,13 @@ public class Storage implements Serializable {
 
     private Storage() {}
 
-    @SerializedName("user_data")
+    @JsonProperty("user_data")
     private UserData _userData;
 
-    @SerializedName("markets_container")
+    @JsonProperty("markets_container")
     private MarketsContainer _marketsContainer;
 
-    @SerializedName("default_roster_data")
+    @JsonProperty("default_roster_data")
     private DefaultRosterData _defaultRosterData;
 
     public static Storage instance() {

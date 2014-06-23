@@ -8,7 +8,6 @@ import com.google.api.client.http.ByteArrayContent;
 import com.google.api.client.http.GenericUrl;
 import com.google.api.client.http.HttpContent;
 import com.google.api.client.http.HttpRequest;
-import com.google.gson.Gson;
 
 /**
  * Created by bylynka on 3/4/14.
@@ -46,7 +45,7 @@ public class AutoFillRequest extends BaseRequest<AutoFillResponse> {
                 .buildPostRequest(new GenericUrl(url), null);
         request.getHeaders().setAccept("application/json");
         String result = request.execute().parseAsString();
-        return new Gson().fromJson(result, Roster.class);
+        return getObjectMapper().readValue(result, Roster.class);
     }
 
     private Roster createRoster() throws Exception {
@@ -55,12 +54,12 @@ public class AutoFillRequest extends BaseRequest<AutoFillResponse> {
                 .appendQueryParameter("access_token", getAccessToken());
         String url = uriBuilder.build().toString();
         CreateRosterRequestBody body = new CreateRosterRequestBody(_marketId);
-        String js = new Gson().toJson(body);
+        String js = getObjectMapper().writeValueAsString(body);
         HttpContent content = ByteArrayContent.fromString("application/json", js);
         HttpRequest request = getHttpRequestFactory()
                 .buildPostRequest(new GenericUrl(url), content);
         request.getHeaders().setAccept("application/json");
         String result = request.execute().parseAsString();
-        return new Gson().fromJson(result, Roster.class);
+        return getObjectMapper().readValue(result, Roster.class);
     }
 }

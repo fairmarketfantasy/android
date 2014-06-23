@@ -1,16 +1,19 @@
 package com.fantasysport;
 
-import android.app.Activity;
 import android.app.Application;
-import android.os.Bundle;
-import com.fantasysport.models.*;
+import com.fantasysport.models.AccessTokenData;
+import com.fantasysport.models.DefaultRosterData;
+import com.fantasysport.models.MarketsContainer;
+import com.fantasysport.models.UserData;
 import com.fantasysport.models.fwc.FWCData;
 import com.fantasysport.models.nonfantasy.NFData;
 import com.fantasysport.repo.Storage;
 import com.fantasysport.utility.CacheProvider;
 import com.fantasysport.webaccess.RequestHelper;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.IOException;
 
 /**
  * Created by bylynka on 2/4/14.
@@ -23,7 +26,7 @@ public class App extends Application {
     private final String DEFAULT_ROSTER_DATA = "default_roster_data";
     private final String NON_FANTASY_DATA = "non_fantasy_data";
 
-    public static App getCurrent(){
+    public static App getCurrent() {
         return _current;
     }
 
@@ -31,54 +34,59 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         _current = this;
-        restoreState();
+        try {
+            restoreState();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         setRequestHelper();
 //        Ubertesters.initialize(this);
     }
 
-    private void setRequestHelper(){
+    private void setRequestHelper() {
         RequestHelper helper = RequestHelper.instance();
         helper.setListener(_requestHelperListener);
     }
 
-    private void restoreState(){
-        Gson gson = new Gson();
+    private void restoreState() throws IOException {
+        ObjectMapper objectMapper = getObjectMapper();
         String dataInStr = CacheProvider.getString(this, ACCESS_TOKEN);
         Storage storage = Storage.instance();
-        if(dataInStr == null){
+        if (dataInStr == null) {
             return;
         }
-        AccessTokenData data = gson.fromJson(dataInStr, AccessTokenData.class);
+        AccessTokenData data = objectMapper.readValue(dataInStr, AccessTokenData.class);
         RequestHelper helper = RequestHelper.instance();
         helper.setAccessTokenData(data);
 
         dataInStr = CacheProvider.getString(this, DEFAULT_ROSTER_DATA);
-        if(dataInStr != null){
-            DefaultRosterData defaultRosterData  = gson.fromJson(dataInStr, DefaultRosterData.class);
+        if (dataInStr != null) {
+            DefaultRosterData defaultRosterData = objectMapper.readValue(dataInStr, DefaultRosterData.class);
             storage.setDefaultRosterData(defaultRosterData);
         }
 
         dataInStr = CacheProvider.getString(this, Const.USER_DATA);
-        if(dataInStr != null){
-            UserData userData  = gson.fromJson(dataInStr, UserData.class);
+        if (dataInStr != null) {
+            UserData userData = objectMapper.readValue(dataInStr, UserData.class);
             storage.setUserData(userData);
         }
 
         dataInStr = CacheProvider.getString(this, MARKETS);
-        if(dataInStr != null){
-            MarketsContainer marketsData  = gson.fromJson(dataInStr, MarketsContainer.class);
+        if (dataInStr != null) {
+            MarketsContainer marketsData = objectMapper.readValue(dataInStr, MarketsContainer.class);
             storage.setMarketsContainer(marketsData);
         }
 
         dataInStr = CacheProvider.getString(this, NON_FANTASY_DATA);
-        if(dataInStr != null){
-            NFData nfData = getGson().fromJson(dataInStr, NFData.class);
+        if (dataInStr != null) {
+            NFData nfData = getObjectMapper().readValue(dataInStr, NFData.class);
             storage.setNFData(nfData);
         }
 
         dataInStr = CacheProvider.getString(this, Const.FWC_DATA);
-        if(dataInStr != null){
-            FWCData fwcData = getGson().fromJson(dataInStr, FWCData.class);
+        if (dataInStr != null) {
+            FWCData fwcData = getObjectMapper().readValue(dataInStr, FWCData.class);
             storage.setFWCData(fwcData);
         }
     }
@@ -86,8 +94,12 @@ public class App extends Application {
     RequestHelper.IListener _requestHelperListener = new RequestHelper.IListener() {
         @Override
         public void onAccessTokenDataChanged(AccessTokenData data) {
-            String accessTokenData = new Gson().toJson(data);
-            CacheProvider.putString(App.this, ACCESS_TOKEN, accessTokenData);
+            try {
+                String accessTokenData = getObjectMapper().writeValueAsString(data);
+                CacheProvider.putString(App.this, ACCESS_TOKEN, accessTokenData);
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
         }
 
         @Override
@@ -106,44 +118,64 @@ public class App extends Application {
 
         @Override
         public void onMarkets(MarketsContainer container) {
-            String marketsStr = container != null? new Gson().toJson(container): null;
-            CacheProvider.putString(App.this, MARKETS, marketsStr);
-            CacheProvider.putBoolean(App.this, Const.TIME_ZONE_CHANGED, false);
-            UserData data = Storage.instance().getUserData();
-            if(data != null){
-                onUserData(Storage.instance().getUserData());
+            String marketsStr = null;
+            try {
+                marketsStr = container != null ? getObjectMapper().writeValueAsString(container) : null;
+                CacheProvider.putString(App.this, MARKETS, marketsStr);
+                CacheProvider.putBoolean(App.this, Const.TIME_ZONE_CHANGED, false);
+                UserData data = Storage.instance().getUserData();
+                if (data != null) {
+                    onUserData(Storage.instance().getUserData());
+                }
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
             }
         }
 
         @Override
         public void onDefaultRosterData(DefaultRosterData data) {
-            String dataStr = data != null? getGson().toJson(data): null;
-            CacheProvider.putString(App.this, DEFAULT_ROSTER_DATA, dataStr);
+            try {
+                String dataStr = data != null ? getObjectMapper().writeValueAsString(data) : null;
+                CacheProvider.putString(App.this, DEFAULT_ROSTER_DATA, dataStr);
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
         }
 
         @Override
         public void onUserData(UserData data) {
-            String dataStr = data != null? getGson().toJson(data): null;
-            CacheProvider.putString(App.this, Const.USER_DATA, dataStr);
+            try {
+                String dataStr = data != null ? getObjectMapper().writeValueAsString(data) : null;
+                CacheProvider.putString(App.this, Const.USER_DATA, dataStr);
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
         }
 
         @Override
         public void onNonFantasyData(NFData data) {
-            String dataStr = data != null? getGson().toJson(data): null;
-            CacheProvider.putString(App.this, NON_FANTASY_DATA, dataStr);
+            try {
+                String dataStr = data != null ? getObjectMapper().writeValueAsString(data) : null;
+                CacheProvider.putString(App.this, NON_FANTASY_DATA, dataStr);
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
         }
 
         @Override
         public void onFWCData(FWCData data) {
-            String dataStr = data != null? getGson().toJson(data): null;
-            CacheProvider.putString(App.this, Const.FWC_DATA, dataStr);
+            try {
+                String dataStr = data != null ? getObjectMapper().writeValueAsString(data) : null;
+                CacheProvider.putString(App.this, Const.FWC_DATA, dataStr);
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
         }
     };
 
-    private Gson getGson(){
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.setDateFormat("M/d/yy hh:mm a");
-        return gsonBuilder.create();
+    private ObjectMapper getObjectMapper() {
+        ObjectMapper gsonBuilder = new ObjectMapper();
+        return gsonBuilder;
     }
 
 }

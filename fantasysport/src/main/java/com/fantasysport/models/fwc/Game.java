@@ -1,33 +1,37 @@
 package com.fantasysport.models.fwc;
 
-import com.fantasysport.utility.Converter;
-import com.fantasysport.utility.DateUtils;
-import com.fantasysport.utility.DeviceInfo;
-import com.google.gson.annotations.SerializedName;
+import com.fantasysport.parsers.jackson.DateDeserializer;
+import com.fantasysport.parsers.jackson.DateSerializer;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.util.Date;
 
 /**
  * Created by bylynka on 6/2/14.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Game {
 
-    @SerializedName("stats_id")
+    @JsonProperty("stats_id")
     private String _statsId;
 
-    @SerializedName("game_time")
-    private String _gameTime;
+    @JsonSerialize(using = DateSerializer.class)
+    @JsonDeserialize(using = DateDeserializer.class)
+    @JsonProperty("game_time")
+    private Date _gameTime;
 
-    @SerializedName("get_home_team")
+    @JsonProperty("get_home_team")
     private Team _homeTeam;
 
-    @SerializedName("get_away_team")
+    @JsonProperty("get_away_team")
     private Team _awayTeam;
 
     public Date getGameDate() {
-        Date date = Converter.toDate(_gameTime);
-        int gmtInMinutes = DeviceInfo.getGMTInMinutes();
-        return DateUtils.addMinutes(date, gmtInMinutes);
+
+        return _gameTime;
     }
 
     public Team getHomeTeam(){

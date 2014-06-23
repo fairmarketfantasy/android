@@ -10,7 +10,6 @@ import com.fantasysport.webaccess.requests.BaseRequest;
 import com.fantasysport.webaccess.responses.MarketResponse;
 import com.google.api.client.http.GenericUrl;
 import com.google.api.client.http.HttpRequest;
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,6 +78,6 @@ public class MarketsRequest extends BaseRequest<MarketResponse> {
         request.setConnectTimeout(1000 * 60);
         request.getHeaders().setAccept("application/json");
         String result = request.execute().parseAsString();
-        return new Gson().fromJson(result, DefaultRosterData.class);
+        return getObjectMapper().readValue(result, DefaultRosterData.class);
     }
 }

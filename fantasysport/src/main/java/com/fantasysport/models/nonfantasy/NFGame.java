@@ -1,6 +1,6 @@
 package com.fantasysport.models.nonfantasy;
 
-import com.google.gson.annotations.SerializedName;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -10,13 +10,13 @@ import java.util.Date;
  */
 public class NFGame implements Serializable {
 
-    @SerializedName("home_team")
+    @JsonProperty("home_team")
     private NFTeam _homeTeam;
 
-    @SerializedName("away_team")
+    @JsonProperty("away_team")
     private NFTeam _awayTeam;
 
-    @SerializedName("stats_id")
+    @JsonProperty("stats_id")
     private String _statsId;
 
     public NFGame(){

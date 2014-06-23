@@ -1,13 +1,16 @@
 package com.fantasysport.webaccess.requests.fantasy;
 
-import com.google.gson.annotations.SerializedName;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Created by bylynka on 2/26/14.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class CreateRosterRequestBody {
 
-    @SerializedName("market_id")
+    @JsonProperty("market_id")
     private int _marketId;
 
     public CreateRosterRequestBody(int marketId){

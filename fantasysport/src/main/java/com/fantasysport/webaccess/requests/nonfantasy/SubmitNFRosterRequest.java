@@ -4,15 +4,13 @@ import android.net.Uri;
 import com.fantasysport.models.nonfantasy.NFTeam;
 import com.fantasysport.webaccess.requests.BaseRequest;
 import com.fantasysport.webaccess.responses.MsgResponse;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.api.client.http.ByteArrayContent;
 import com.google.api.client.http.GenericUrl;
 import com.google.api.client.http.HttpContent;
 import com.google.api.client.http.HttpRequest;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.annotations.SerializedName;
 
-import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,10 +54,7 @@ public class SubmitNFRosterRequest extends BaseRequest<String> {
             uriBuilder.appendPath(Integer.toString(_rosterId));
         }
         String url = uriBuilder.build().toString();
-        Gson gson = new GsonBuilder()
-                .excludeFieldsWithModifiers(Modifier.STATIC)
-                .create();
-        String js = _body != null? gson.toJson(_body): null;
+        String js = _body != null? getObjectMapper().writeValueAsString(_body): null;
         HttpContent content = ByteArrayContent.fromString("application/json", js);
         HttpRequest request = _rosterId > 0
                 ? getHttpRequestFactory().buildPutRequest(new GenericUrl(url), content)
@@ -67,12 +62,13 @@ public class SubmitNFRosterRequest extends BaseRequest<String> {
 
         request.getHeaders().setAccept("application/json");
         String result = request.execute().parseAsString();
-        MsgResponse msgRes = new Gson().fromJson(result, MsgResponse.class);
+        MsgResponse msgRes = getObjectMapper().readValue(result, MsgResponse.class);
         return msgRes.getMessage();
     }
 
-    public class RequestBody{
-        @SerializedName("teams")
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class RequestBody{
+        @JsonProperty("teams")
         private List<RosterTeam> _teams;
 
         public RequestBody(List<RosterTeam> teams){
@@ -80,15 +76,16 @@ public class SubmitNFRosterRequest extends BaseRequest<String> {
         }
     }
 
-    public class RosterTeam{
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class RosterTeam{
 
-        @SerializedName("game_stats_id")
+        @JsonProperty("game_stats_id")
         private String _gameStatsId;
 
-        @SerializedName("team_stats_id")
+        @JsonProperty("team_stats_id")
         private String _teamStatsId;
 
-        @SerializedName("position_index")
+        @JsonProperty("position_index")
         private int _index;
 
         public RosterTeam(String gameStatsId, String teamStatsId, int index){

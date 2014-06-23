@@ -1,24 +1,26 @@
 package com.fantasysport.models;
 
-import com.google.gson.annotations.SerializedName;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Created by bylynka on 5/7/14.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Sport {
     public static final String MLB = "MLB";
     public static final String NBA = "NBA";
 
-    @SerializedName("title")
+    @JsonProperty("title")
     private String _title;
 
-    @SerializedName("name")
+    @JsonProperty("name")
     private String _name_key;
 
-    @SerializedName("coming_soon")
+    @JsonProperty("coming_soon")
     private boolean _comingSoon;
 
-    @SerializedName("is_active")
+    @JsonProperty("is_active")
     private boolean _isActive;
 
     public String getNameKey(){

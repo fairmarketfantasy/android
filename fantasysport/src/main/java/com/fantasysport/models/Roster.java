@@ -1,7 +1,8 @@
 package com.fantasysport.models;
 
 import com.fantasysport.models.fantasy.Player;
-import com.google.gson.annotations.SerializedName;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
 import java.util.List;
@@ -9,30 +10,31 @@ import java.util.List;
 /**
  * Created by bylynka on 2/7/14.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Roster  implements Serializable {
 
     public final static String SUBMITTED = "submitted";
     public static final String IN_PROGRESS = "in_progress";
 
-    @SerializedName("id")
+    @JsonProperty("id")
     private int _id;
 
-    @SerializedName("remaining_salary")
+    @JsonProperty("remaining_salary")
     private double _remainingSalary;
 
-    @SerializedName("players")
+    @JsonProperty("players")
     private List<Player> _players;
 
-    @SerializedName("contest_rank")
+    @JsonProperty("contest_rank")
     private int _contestRank;
 
-    @SerializedName("amount_paid")
+    @JsonProperty("amount_paid")
     private double _amountPaid;
 
-    @SerializedName("state")
+    @JsonProperty("state")
     private String _state;
 
-    @SerializedName("market")
+    @JsonProperty("market")
     private ShortMarket _market;
 
     public int getContestRank(){

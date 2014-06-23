@@ -5,7 +5,6 @@ import com.fantasysport.models.Roster;
 import com.fantasysport.webaccess.requests.BaseRequest;
 import com.google.api.client.http.GenericUrl;
 import com.google.api.client.http.HttpRequest;
-import com.google.gson.Gson;
 
 /**
  * Created by bylynka on 4/3/14.
@@ -31,6 +30,6 @@ public class RemoveBenchedPlayersRequest extends BaseRequest<Roster> {
                 .buildPostRequest(new GenericUrl(url), null);
         request.getHeaders().setAccept("application/json");
         String result = request.execute().parseAsString();
-        return new Gson().fromJson(result, getResultType());
+        return getObjectMapper().readValue(result, getResultType());
     }
 }

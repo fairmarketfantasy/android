@@ -1,13 +1,12 @@
 package com.fantasysport.webaccess.requests;
 
 import android.net.Uri;
-import com.fantasysport.models.UserData;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.api.client.http.ByteArrayContent;
 import com.google.api.client.http.GenericUrl;
 import com.google.api.client.http.HttpContent;
 import com.google.api.client.http.HttpRequest;
-import com.google.gson.Gson;
-import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by bylynka on 3/28/14.
@@ -27,7 +26,7 @@ public class ResetPasswordRequest extends BaseRequest<Object> {
         uriBuilder.appendPath("users")
                 .appendPath("reset_password");
         String url = uriBuilder.build().toString();
-        String js = new Gson().toJson(_body);
+        String js = getObjectMapper().writeValueAsString(_body);
         HttpContent content = ByteArrayContent.fromString("application/json", js);
         HttpRequest request = getHttpRequestFactory()
                 .buildPostRequest(new GenericUrl(url), content);
@@ -36,8 +35,11 @@ public class ResetPasswordRequest extends BaseRequest<Object> {
         return null;
     }
 
-    public class Email{
-        @SerializedName("email")
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class Email{
+
+        @JsonProperty("email")
         private String _email;
 
         public Email(String email){

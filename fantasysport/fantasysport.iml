@@ -77,20 +77,23 @@
     <orderEntry type="library" exported="" name="Gradle: ComAstuetzPagerslidingtabstrip101.aar" level="project" />
     <orderEntry type="library" exported="" name="Gradle: jsr305-1.3.9" level="project" />
     <orderEntry type="library" exported="" name="Gradle: ComGithubChrisbanesActionbarpulltorefreshLibrary099.aar" level="project" />
-    <orderEntry type="library" exported="" name="Gradle: gson-2.2.4" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: jackson-annotations-2.2.4" level="project" />
     <orderEntry type="library" exported="" name="Gradle: google-http-client-android-1.18.0-rc" level="project" />
     <orderEntry type="library" exported="" name="Gradle: ComGithubCastorflexSmoothprogressbarLibrary040.aar" level="project" />
     <orderEntry type="library" exported="" name="Gradle: support-v4-19.1.0" level="project" />
     <orderEntry type="library" exported="" name="Gradle: google-http-client-1.18.0-rc" level="project" />
     <orderEntry type="library" exported="" name="Gradle: ComAndroidSupportAppcompatV71910.aar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: jackson-databind-2.2.4" level="project" />
     <orderEntry type="library" exported="" name="Gradle: commons-lang3-3.3.2" level="project" />
     <orderEntry type="library" exported="" name="Gradle: robospice-google-http-client-1.4.12" level="project" />
     <orderEntry type="library" exported="" name="Gradle: robospice-cache-1.4.12" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: jackson-core-asl-1.9.11" level="project" />
     <orderEntry type="library" exported="" name="Gradle: ComGithubChrisbanesActionbarpulltorefreshExtraAbc099.aar" level="project" />
-    <orderEntry type="library" exported="" name="Gradle: google-http-client-gson-1.17.0-rc" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: google-http-client-jackson-1.18.0-rc" level="project" />
     <orderEntry type="library" exported="" name="Gradle: library-2.4.0" level="project" />
     <orderEntry type="library" exported="" name="Gradle: commons-io-1.3.2" level="project" />
     <orderEntry type="library" exported="" name="Gradle: robospice-1.4.12" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: jackson-core-2.2.4" level="project" />
   </component>
 </module>
 

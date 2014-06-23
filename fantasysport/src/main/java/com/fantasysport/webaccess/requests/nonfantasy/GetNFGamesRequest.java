@@ -2,17 +2,17 @@ package com.fantasysport.webaccess.requests.nonfantasy;
 
 import android.net.Uri;
 import com.fantasysport.models.nonfantasy.NFData;
-import com.fantasysport.models.NFRoster;
 import com.fantasysport.models.nonfantasy.NFGame;
+import com.fantasysport.models.nonfantasy.NFRoster;
 import com.fantasysport.models.nonfantasy.NFTeam;
-import com.fantasysport.utility.Converter;
+import com.fantasysport.parsers.jackson.DateDeserializer;
 import com.fantasysport.utility.DateUtils;
-import com.fantasysport.utility.DeviceInfo;
 import com.fantasysport.webaccess.requests.BaseRequest;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.google.api.client.http.GenericUrl;
 import com.google.api.client.http.HttpRequest;
-import com.google.gson.Gson;
-import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -53,7 +53,7 @@ public class GetNFGamesRequest extends BaseRequest<NFData> {
         request.setConnectTimeout(1000 * 120);
         request.getHeaders().setAccept("application/json");
         String result = request.execute().parseAsString();
-        GetGamesResponse response = new Gson().fromJson(result, GetGamesResponse.class);
+        GetGamesResponse response = getObjectMapper().readValue(result, GetGamesResponse.class);
         List<NFGame> games = response.getCandidateGames();
         List<NFTeam> rosterTeams = new ArrayList<NFTeam>();
 
@@ -79,12 +79,13 @@ public class GetNFGamesRequest extends BaseRequest<NFData> {
         return data;
     }
 
-    public class GetGamesResponse {
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class GetGamesResponse {
 
-        @SerializedName("game_roster")
+        @JsonProperty("game_roster")
         private RosterInResponse _roster;
 
-        @SerializedName("games")
+        @JsonProperty("games")
         private List<NFGame> _candidateGames;
 
         public RosterInResponse getRoster() {
@@ -97,53 +98,56 @@ public class GetNFGamesRequest extends BaseRequest<NFData> {
 
     }
 
-    public class RosterInResponse {
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class RosterInResponse {
 
-        @SerializedName("id")
+        @JsonProperty("id")
         private Integer _id;
 
-        @SerializedName("room_number")
+        @JsonProperty("room_number")
         private int _roomNumber;
 
-        @SerializedName("state")
+        @JsonProperty("state")
         private String _state;
 
-        @SerializedName("amount_paid")
+        @JsonProperty("amount_paid")
         private Double _amountPaid;
 
-        @SerializedName("contest_rank")
+        @JsonProperty("contest_rank")
         private Integer _contestRank;
 
-        @SerializedName("game_predictions")
+        @JsonProperty("game_predictions")
         private List<TeamData> _rosterTeamData;
 
     }
 
-    public class TeamData {
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class TeamData {
 
-        @SerializedName("game_stats_id")
+        @JsonProperty("game_stats_id")
         String _gameStatsId;
 
-        @SerializedName("team_name")
+        @JsonProperty("team_name")
         String _name;
 
-        @SerializedName("pt")
+        @JsonProperty("pt")
         double _pt;
 
-        @SerializedName("team_stats_id")
+        @JsonProperty("team_stats_id")
         String _statsId;
 
-        @SerializedName("team_logo")
+        @JsonProperty("team_logo")
         String _logoUrl;
 
-        @SerializedName("opposite_team")
+        @JsonProperty("opposite_team")
         private String _oppositeTeam;
 
-        @SerializedName("home_team")
+        @JsonProperty("home_team")
         boolean _isHomeTeam;
 
-        @SerializedName("game_time")
-        String _gameDate;
+        @JsonDeserialize(using = DateDeserializer.class)
+        @JsonProperty("game_time")
+        Date _gameDate;
 
         String getGameName() {
             String homeTeam;

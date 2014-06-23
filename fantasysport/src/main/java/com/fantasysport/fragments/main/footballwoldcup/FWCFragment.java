@@ -17,8 +17,8 @@ import com.fantasysport.webaccess.responseListeners.GetFWCDataResponseListener;
 import com.fantasysport.webaccess.responseListeners.MessageResponseListener;
 import com.fantasysport.webaccess.responseListeners.RequestError;
 import com.fantasysport.webaccess.responses.MsgResponse;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Created by bylynka on 6/2/14.
@@ -89,11 +89,14 @@ public class FWCFragment extends BaseFragment implements FWCMediator.ISubmitting
         new Thread(new Runnable() {
             @Override
             public void run() {
-                GsonBuilder gsonBuilder = new GsonBuilder();
-                gsonBuilder.setDateFormat("M/d/yy hh:mm a");
-                Gson gson = gsonBuilder.create();
-                String dataStr = data != null ? gson.toJson(data) : null;
-                CacheProvider.putString(getActivity(), Const.FWC_DATA, dataStr);
+                ObjectMapper mapper = new ObjectMapper();
+                try {
+                    String dataStr = data != null ? mapper.writeValueAsString(data) : null;
+                    CacheProvider.putString(getActivity(), Const.FWC_DATA, dataStr);
+                } catch (JsonProcessingException e) {
+                    e.printStackTrace();
+                }
+
             }
         }).start();
     }

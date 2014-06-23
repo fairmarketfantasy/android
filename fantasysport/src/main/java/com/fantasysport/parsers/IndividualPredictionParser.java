@@ -4,12 +4,8 @@ import com.fantasysport.models.*;
 import com.fantasysport.utility.Converter;
 import com.fantasysport.utility.DateUtils;
 import com.fantasysport.utility.DeviceInfo;
-import com.google.gson.internal.LinkedTreeMap;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by bylynka on 3/19/14.
@@ -102,14 +98,14 @@ public class IndividualPredictionParser extends BaseParser {
         List<StatsItem> items = new ArrayList<StatsItem>();
 
         for (int i = 0; i < objects.size(); i++) {
-            LinkedTreeMap object = (LinkedTreeMap) objects.get(i);
+            LinkedHashMap<String, Object> object = (LinkedHashMap<String, Object>) objects.get(i);
             StatsItem item = parseStatsItem(object);
             items.add(item);
         }
         return items;
     }
 
-    private StatsItem parseStatsItem(LinkedTreeMap object) {
+    private StatsItem parseStatsItem(LinkedHashMap<String, Object> object) {
         StatsItem item = new StatsItem();
         String eventType = (String) object.get("event_type");
         item.setName(eventType);

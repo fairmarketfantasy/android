@@ -1,13 +1,16 @@
 package com.fantasysport.webaccess.requests.fantasy;
 
-import com.google.gson.annotations.SerializedName;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Created by bylynka on 3/4/14.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class SubmitRequestBody {
 
-    @SerializedName("contest_type")
+    @JsonProperty("contest_type")
     private String _contestType;
 
     public SubmitRequestBody(String contestType){

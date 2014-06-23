@@ -5,7 +5,6 @@ import com.fantasysport.models.DefaultRosterData;
 import com.fantasysport.webaccess.requests.BaseRequest;
 import com.google.api.client.http.GenericUrl;
 import com.google.api.client.http.HttpRequest;
-import com.google.gson.Gson;
 
 /**
  * Created by bylynka on 2/25/14.
@@ -33,6 +32,6 @@ public class PlayersPositionRequest extends BaseRequest<DefaultRosterData> {
         HttpRequest request = getHttpRequestFactory().buildGetRequest(new GenericUrl(url));
         request.getHeaders().setAccept("application/json");
         String result = request.execute().parseAsString();
-        return new Gson().fromJson(result, getResultType());
+        return getObjectMapper().readValue(result, getResultType());
     }
 }

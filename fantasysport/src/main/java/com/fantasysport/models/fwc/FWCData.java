@@ -1,24 +1,26 @@
 package com.fantasysport.models.fwc;
 
-import com.google.gson.annotations.SerializedName;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
 /**
  * Created by bylynka on 6/2/14.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class FWCData {
 
-    @SerializedName("daily_wins")
+    @JsonProperty("daily_wins")
     private List<Game> _games;
 
-    @SerializedName("win_the_cup")
+    @JsonProperty("win_the_cup")
     private List<Team> _teams;
 
-    @SerializedName("win_groups")
+    @JsonProperty("win_groups")
     private List<Group> _groups;
 
-    @SerializedName("mvp")
+    @JsonProperty("mvp")
     private List<Player> _players;
 
     public List<Game> getGames(){

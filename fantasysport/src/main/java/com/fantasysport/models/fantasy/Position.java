@@ -1,18 +1,20 @@
 package com.fantasysport.models.fantasy;
 
-import com.google.gson.annotations.SerializedName;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
 
 /**
  * Created by bylynka on 4/16/14.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Position implements Serializable {
 
-    @SerializedName("acronym")
+    @JsonProperty("acronym")
     private String _acronym;
 
-    @SerializedName("name")
+    @JsonProperty("name")
     private String _name;
 
     public String getAcronym(){

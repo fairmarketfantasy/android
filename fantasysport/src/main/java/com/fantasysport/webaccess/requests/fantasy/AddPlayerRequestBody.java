@@ -1,13 +1,15 @@
 package com.fantasysport.webaccess.requests.fantasy;
 
-import com.google.gson.annotations.SerializedName;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Created by bylynka on 2/27/14.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class AddPlayerRequestBody {
 
-    @SerializedName("price")
+    @JsonProperty("price")
     private double _price;
 
     public AddPlayerRequestBody(double price){

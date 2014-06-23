@@ -8,7 +8,6 @@ import com.google.api.client.http.ByteArrayContent;
 import com.google.api.client.http.GenericUrl;
 import com.google.api.client.http.HttpContent;
 import com.google.api.client.http.HttpRequest;
-import com.google.gson.Gson;
 
 /**
  * Created by bylynka on 3/3/14.
@@ -36,12 +35,12 @@ public class TradePlayerRequest extends BaseRequest<TradePlayerResponse> {
                 .appendPath(Integer.toString(_playerId))
                 .appendQueryParameter("access_token", getAccessToken());
         String url = uriBuilder.build().toString();
-        String js = new Gson().toJson(_body);
+        String js = getObjectMapper().writeValueAsString(_body);
         HttpContent content = ByteArrayContent.fromString("application/json", js);
         HttpRequest request = getHttpRequestFactory()
                 .buildPostRequest(new GenericUrl(url), content);
         request.getHeaders().setAccept("application/json");
         String result = request.execute().parseAsString();
-        return new Gson().fromJson(result, getResultType());
+        return getObjectMapper().readValue(result, getResultType());
     }
 }

@@ -7,7 +7,7 @@ import com.fantasysport.utility.DateUtils;
 import com.fantasysport.webaccess.responses.AuthResponse;
 import com.google.api.client.http.GenericUrl;
 import com.google.api.client.http.HttpRequest;
-import com.google.gson.Gson;
+
 
 public class SignInRequest extends BaseRequest<AuthResponse> {
 
@@ -42,6 +42,7 @@ public class SignInRequest extends BaseRequest<AuthResponse> {
         request.setConnectTimeout(1000 * 60);
         request.getHeaders().setAccept("application/json");
         String result = request.execute().parseAsString();
-        return new Gson().fromJson(result, UserData.class);
+        UserData data = getObjectMapper().readValue(result, UserData.class);
+        return data;
     }
 }

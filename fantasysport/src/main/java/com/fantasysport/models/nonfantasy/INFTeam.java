@@ -1,7 +1,5 @@
 package com.fantasysport.models.nonfantasy;
 
-import java.io.Serializable;
-
 /**
  * Created by bylynka on 5/19/14.
  */

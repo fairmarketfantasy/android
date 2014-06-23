@@ -1,29 +1,31 @@
 package com.fantasysport.models.fwc;
 
-import com.google.gson.annotations.SerializedName;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Created by bylynka on 6/2/14.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Team implements IFWCModel {
 
-    @SerializedName("name")
+    @JsonProperty("name")
     private String _name;
 
-    @SerializedName("stats_id")
+    @JsonProperty("stats_id")
     private String _statsId;
 
-    @SerializedName("logo_url")
+    @JsonProperty("logo_url")
     private String _logoUrl;
 
-    @SerializedName("pt")
+    @JsonProperty("pt")
     private double _pt;
 
-    @SerializedName("game_stats_id")
+    @JsonProperty("game_stats_id")
     private String _gameStatsId;
 
 
-    @SerializedName("disable_pt")
+    @JsonProperty("disable_pt")
     private boolean _isPredicted;
 
     public boolean isPredicted() {

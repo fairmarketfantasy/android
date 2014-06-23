@@ -1,19 +1,21 @@
 package com.fantasysport.models;
 
-import com.google.gson.annotations.SerializedName;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Created by bylynka on 3/24/14.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Avatar {
 
-    @SerializedName("file")
+    @JsonProperty("file")
     private String _file;
 
-    @SerializedName("filename")
+    @JsonProperty("filename")
     private String _fileName;
 
-    @SerializedName("original_filename")
+    @JsonProperty("original_filename")
     private String _originalFileName;
 
     public Avatar(String file, String fileName, String originalFileName){

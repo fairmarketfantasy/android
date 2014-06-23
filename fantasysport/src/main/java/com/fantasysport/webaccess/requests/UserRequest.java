@@ -5,7 +5,6 @@ import com.fantasysport.models.UserData;
 import com.fantasysport.utility.DateUtils;
 import com.google.api.client.http.GenericUrl;
 import com.google.api.client.http.HttpRequest;
-import com.google.gson.Gson;
 
 /**
  * Created by bylynka on 4/4/14.
@@ -34,7 +33,7 @@ public class UserRequest extends BaseRequest<UserData> {
                 .buildGetRequest(new GenericUrl(url));
         request.getHeaders().setAccept("application/json");
         String result = request.execute().parseAsString();
-        UserData data = new Gson().fromJson(result, UserData.class);
+        UserData data = getObjectMapper().readValue(result, UserData.class);
         data.setCurrentSport(_sport);
         data.setCurrentCategory(_category);
         data.setUpdatedAt(DateUtils.getCurrentDate().getTime());

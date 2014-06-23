@@ -1,16 +1,18 @@
 package com.fantasysport.webaccess.responseListeners;
 
-import com.google.gson.annotations.SerializedName;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Created by bylynka on 2/4/14.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class RequestError {
 
-    @SerializedName("error")
+    @JsonProperty("error")
     private String _message;
 
-    @SerializedName("error_sbdescription")
+    @JsonProperty("error_sbdescription")
     private String _description;
 
     private boolean _isCanceled = false;

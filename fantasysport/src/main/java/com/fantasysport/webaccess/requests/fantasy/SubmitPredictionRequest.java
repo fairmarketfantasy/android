@@ -7,10 +7,7 @@ import com.google.api.client.http.ByteArrayContent;
 import com.google.api.client.http.GenericUrl;
 import com.google.api.client.http.HttpContent;
 import com.google.api.client.http.HttpRequest;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
-import java.lang.reflect.Modifier;
 import java.util.List;
 
 /**
@@ -31,10 +28,8 @@ public class SubmitPredictionRequest extends BaseRequest<Object> {
         uriBuilder.appendPath("individual_predictions")
                 .appendQueryParameter("access_token", getAccessToken());
         String url = uriBuilder.build().toString();
-        Gson gson = new GsonBuilder()
-                .excludeFieldsWithModifiers(Modifier.STATIC)
-                .create();
-        String js = gson.toJson(_body);
+
+        String js = getObjectMapper().writeValueAsString(_body);
         HttpContent content = ByteArrayContent.fromString("application/json", js);
         HttpRequest request = getHttpRequestFactory()
                 .buildPostRequest(new GenericUrl(url), content);

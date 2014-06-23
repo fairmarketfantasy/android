@@ -4,11 +4,8 @@ import android.net.Uri;
 import com.fantasysport.models.AccessTokenData;
 import com.fantasysport.models.UserData;
 import com.fantasysport.webaccess.responses.AuthResponse;
-import com.google.api.client.http.ByteArrayContent;
 import com.google.api.client.http.GenericUrl;
-import com.google.api.client.http.HttpContent;
 import com.google.api.client.http.HttpRequest;
-import com.google.gson.Gson;
 
 /**
  * Created by bylynka on 2/7/14.
@@ -46,7 +43,7 @@ public class FacebookSignInRequest extends BaseRequest<AuthResponse> {
         HttpRequest request = getHttpRequestFactory()
                 .buildGetRequest(new GenericUrl(url));
         String result = request.execute().parseAsString();
-        return new Gson().fromJson(result, UserData.class);
+        return getObjectMapper().readValue(result, UserData.class);
 
     }
 }

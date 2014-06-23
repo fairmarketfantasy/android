@@ -9,6 +9,7 @@ import com.octo.android.robospice.GoogleHttpClientSpiceService;
 import com.octo.android.robospice.persistence.CacheManager;
 import com.octo.android.robospice.persistence.exception.CacheCreationException;
 import com.octo.android.robospice.persistence.googlehttpclient.json.GsonObjectPersisterFactory;
+import com.octo.android.robospice.persistence.googlehttpclient.json.JacksonObjectPersisterFactory;
 
 import java.security.GeneralSecurityException;
 
@@ -49,11 +50,11 @@ public class GsonGoogleHttpClientSpiceService extends GoogleHttpClientSpiceServi
         CacheManager cacheManager = new CacheManager();
 
         // init
-        GsonObjectPersisterFactory gsonObjectPersisterFactory = new GsonObjectPersisterFactory(application);
-        cacheManager.addPersister(gsonObjectPersisterFactory);
-//        JacksonObjectPersisterFactory jacksonObjectPersisterFactory = new JacksonObjectPersisterFactory(application);
-//
-//        cacheManager.addPersister(jacksonObjectPersisterFactory);
+//        GsonObjectPersisterFactory gsonObjectPersisterFactory = new GsonObjectPersisterFactory(application);
+//        cacheManager.addPersister(gsonObjectPersisterFactory);
+        JacksonObjectPersisterFactory jacksonObjectPersisterFactory = new JacksonObjectPersisterFactory(application);
+
+        cacheManager.addPersister(jacksonObjectPersisterFactory);
         return cacheManager;
     }
 }

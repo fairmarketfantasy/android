@@ -3,13 +3,12 @@ package com.fantasysport.webaccess.requests.nonfantasy.footballwoldcup;
 import android.net.Uri;
 import com.fantasysport.webaccess.requests.BaseRequest;
 import com.fantasysport.webaccess.responses.MsgResponse;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.api.client.http.ByteArrayContent;
 import com.google.api.client.http.GenericUrl;
 import com.google.api.client.http.HttpContent;
 import com.google.api.client.http.HttpRequest;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.annotations.SerializedName;
 
 import java.lang.reflect.Modifier;
 
@@ -35,29 +34,28 @@ public class SubmitFWCPredictionRequest extends BaseRequest<MsgResponse> {
                 .appendQueryParameter("access_token", getAccessToken());
 
         String url = uriBuilder.build().toString();
-        Gson gson = new GsonBuilder()
-                .excludeFieldsWithModifiers(Modifier.STATIC)
-                .create();
-        String js = _body != null? gson.toJson(_body): null;
+        String js = _body != null? getObjectMapper().writeValueAsString(_body): null;
         HttpContent content = ByteArrayContent.fromString("application/json", js);
         HttpRequest request =  getHttpRequestFactory().buildPostRequest(new GenericUrl(url), content);
 
         request.getHeaders().setAccept("application/json");
         String result = request.execute().parseAsString();
-        return new Gson().fromJson(result, MsgResponse.class);
+        return getObjectMapper().readValue(result, MsgResponse.class);
     }
 
-    class RequestBody{
-        @SerializedName("prediction_type")
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class RequestBody{
+
+        @JsonProperty("prediction_type")
         private String _predictionType;
 
-        @SerializedName("predictable_id")
+        @JsonProperty("predictable_id")
         private String _predictableId;
 
-        @SerializedName("game_stats_id")
+        @JsonProperty("game_stats_id")
         private String _gameId;
 
-        @SerializedName("sport")
+        @JsonProperty("sport")
         private String _sport = "FWC";
     }
 

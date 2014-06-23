@@ -1,8 +1,11 @@
 package com.fantasysport.models;
 
 import com.fantasysport.Config;
-import com.fantasysport.utility.Converter;
-import com.google.gson.annotations.SerializedName;
+import com.fantasysport.parsers.jackson.DateDeserializer;
+import com.fantasysport.parsers.jackson.DateSerializer;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.util.Date;
 import java.util.List;
@@ -12,62 +15,64 @@ import java.util.List;
  */
 public class UserData {
 
-    @SerializedName("updated_at")
+    @JsonProperty("updated_at")
     private long _updatedAt;
 
-    @SerializedName("id")
+    @JsonProperty("id")
     private int _id;
 
-    @SerializedName("name")
+    @JsonProperty("name")
     private String _realName;
 
-    @SerializedName("username")
+    @JsonProperty("username")
     private String _login;
 
-    @SerializedName("email")
+    @JsonProperty("email")
     private String _email;
 
-    @SerializedName("prestige")
+    @JsonProperty("prestige")
     private int _prestige;
 
-    @SerializedName("balance")
+    @JsonProperty("balance")
     private float _balance;
 
-    @SerializedName("image_url")
+    @JsonProperty("image_url")
     private String _imageUrl;
 
-    @SerializedName("joined_at")
-    private String _joinedAt;
+    @JsonSerialize(using = DateSerializer.class)
+    @JsonDeserialize(using = DateDeserializer.class)
+    @JsonProperty("joined_at")
+    private Date _joinedAt;
 
-    @SerializedName("token_balance")
+    @JsonProperty("token_balance")
     private int _tokenBalance;
 
-    @SerializedName("provider")
+    @JsonProperty("provider")
     private String _provider;
 
-    @SerializedName("amount")
+    @JsonProperty("amount")
     private Float _amount;
 
-    @SerializedName("winnings")
+    @JsonProperty("winnings")
     private Integer _winnings;
 
-    @SerializedName("total_wins")
+    @JsonProperty("total_wins")
     private int _totalWins;
 
-    @SerializedName("in_progress_roster_id")
+    @JsonProperty("in_progress_roster_id")
     private int _inProgressRosterId;
 
-    @SerializedName("currentSport")
+    @JsonProperty("currentSport")
     private String _currentSport;
 
-    @SerializedName("currentCategory")
+    @JsonProperty("currentCategory")
     private String _currentCategory;
 
 
-    @SerializedName("categories")
+    @JsonProperty("categories")
     private List<Category> _categories;
 
-    @SerializedName("customer_object")
+    @JsonProperty("customer_object")
     private CustomerObject _customerObject;
 
     public String getSport(){
@@ -100,7 +105,7 @@ public class UserData {
     }
 
     public Date getRegistrationDate() {
-        return Converter.toDate(_joinedAt);
+        return _joinedAt;
     }
 
     public int getInProgressRosterId() {

@@ -3,10 +3,10 @@ package com.fantasysport.parsers;
 import com.fantasysport.models.FGame;
 import com.fantasysport.models.Market;
 import com.fantasysport.models.Prediction;
-import com.google.gson.internal.LinkedTreeMap;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -52,9 +52,9 @@ public class PredictionParser extends BaseParser {
         prediction.setRank(rank);
         int award = getDouble(_objects.get(firstField + _keyMap.get(CONTEST_RANK_PAYOUT))).intValue();
         prediction.setAward(award);
-        Market market = parseMarket((LinkedTreeMap)_objects.get(firstField + _keyMap.get(MARKET)));
+        Market market = parseMarket((LinkedHashMap<String, Object>)_objects.get(firstField + _keyMap.get(MARKET)));
         prediction.setMarket(market);
-        LinkedTreeMap predictionDetail = (LinkedTreeMap)_objects.get(firstField + _keyMap.get(CONTEST_TYPE));
+        LinkedHashMap<String, Object> predictionDetail = (LinkedHashMap<String, Object>)_objects.get(firstField + _keyMap.get(CONTEST_TYPE));
         String contestType = parseContestType(predictionDetail);
         prediction.setContestType(contestType);
         int maxEntries = parseMaxEntries(predictionDetail);
@@ -62,15 +62,15 @@ public class PredictionParser extends BaseParser {
         return prediction;
     }
 
-    private String parseContestType(LinkedTreeMap object){
+    private String parseContestType(LinkedHashMap<String, Object> object){
        return (String)object.get("name");
     }
 
-    private int parseMaxEntries(LinkedTreeMap object){
+    private int parseMaxEntries(LinkedHashMap<String, Object> object){
         return getDouble(object.get("max_entries")).intValue();
     }
 
-    private Market parseMarket(LinkedTreeMap object){
+    private Market parseMarket(LinkedHashMap<String, Object> object){
         Market market = new Market();
         String name = (String)object.get("name");
         market.setName(name);

@@ -7,7 +7,6 @@ import com.fantasysport.webaccess.responseListeners.UpdateMainDataResponse;
 import com.fantasysport.webaccess.requests.BaseRequest;
 import com.google.api.client.http.GenericUrl;
 import com.google.api.client.http.HttpRequest;
-import com.google.gson.Gson;
 
 /**
  * Created by bylynka on 3/26/14.
@@ -44,7 +43,7 @@ public class UpdateMainDataRequest extends BaseRequest<UpdateMainDataResponse> {
                 .buildGetRequest(new GenericUrl(url));
         request.getHeaders().setAccept("application/json");
         String result = request.execute().parseAsString();
-        UserData data = new Gson().fromJson(result, UserData.class);
+        UserData data = getObjectMapper().readValue(result, UserData.class);
         _rHelper.loadUserData(data);
         return data;
     }
@@ -59,6 +58,6 @@ public class UpdateMainDataRequest extends BaseRequest<UpdateMainDataResponse> {
                 .buildGetRequest(new GenericUrl(url));
         request.getHeaders().setAccept("application/json");
         String result = request.execute().parseAsString();
-        return new Gson().fromJson(result,Roster.class);
+        return getObjectMapper().readValue(result,Roster.class);
     }
 }

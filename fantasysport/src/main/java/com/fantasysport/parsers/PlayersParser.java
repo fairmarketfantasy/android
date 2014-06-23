@@ -1,8 +1,9 @@
 package com.fantasysport.parsers;
 
 import com.fantasysport.models.fantasy.Player;
-import com.google.gson.Gson;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,7 +31,12 @@ public class PlayersParser extends BaseParser {
     private List<Object> _playerObjects;
 
     public List<Player> parse(String json){
-        PlayersListWrapper playersListWrapper = new Gson().fromJson(json, PlayersListWrapper.class);
+        PlayersListWrapper playersListWrapper = null;
+        try {
+            playersListWrapper = new ObjectMapper().readValue(json, PlayersListWrapper.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         if (playersListWrapper == null ||
                 playersListWrapper.getPlayerList() == null ||
                 playersListWrapper.getPlayerList().size() == 0) {

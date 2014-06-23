@@ -1,6 +1,7 @@
 package com.fantasysport.models;
 
-import com.google.gson.annotations.SerializedName;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -9,12 +10,13 @@ import java.util.List;
 /**
  * Created by bylynka on 2/20/14.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Market  implements Serializable {
 
-    @SerializedName("id")
+    @JsonProperty("id")
     private int _id;
 
-    @SerializedName("name")
+    @JsonProperty("name")
     private String _name;
 
 //    @SerializedName("shadow_bets")
@@ -23,19 +25,19 @@ public class Market  implements Serializable {
 //    @SerializedName("shadow_bet_rate")
 //    private double _shadowBetRate;
 
-    @SerializedName("sport_id")
+    @JsonProperty("sport_id")
     private int _sportId;
 
-    @SerializedName("state")
+    @JsonProperty("state")
     private String _state;
 
 //    @SerializedName("market_duration")
 //    private String _marketDuration;
 
-    @SerializedName("game_type")
+    @JsonProperty("game_type")
     private String _gameType;
 
-    @SerializedName("games")
+    @JsonProperty("games")
     private List<FGame> _games;
 
     public void setId(int id){

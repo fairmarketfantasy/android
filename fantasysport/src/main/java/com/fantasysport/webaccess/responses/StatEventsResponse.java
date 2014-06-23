@@ -1,16 +1,18 @@
 package com.fantasysport.webaccess.responses;
 
 import com.fantasysport.models.StatsItem;
-import com.google.gson.annotations.SerializedName;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
 /**
  * Created by bylynka on 3/5/14.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class StatEventsResponse {
 
-    @SerializedName("events")
+    @JsonProperty("events")
     private List<StatsItem> _events;
 
     public void setStatEvents(List<StatsItem> events){

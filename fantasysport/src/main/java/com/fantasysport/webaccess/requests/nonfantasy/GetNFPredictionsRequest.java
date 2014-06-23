@@ -2,14 +2,11 @@ package com.fantasysport.webaccess.requests.nonfantasy;
 
 import android.net.Uri;
 import com.fantasysport.models.nonfantasy.NFPrediction;
-import com.fantasysport.parsers.PredictionParser;
 import com.fantasysport.webaccess.requests.BaseRequest;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.api.client.http.GenericUrl;
 import com.google.api.client.http.HttpRequest;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -47,6 +44,6 @@ public class GetNFPredictionsRequest extends BaseRequest<List> {
         HttpRequest request = getHttpRequestFactory().buildGetRequest(new GenericUrl(url));
         request.getHeaders().setAccept("application/json");
         String result = request.execute().parseAsString();
-        return new Gson().fromJson(result,new TypeToken<List<NFPrediction>>(){}.getType());
+        return getObjectMapper().readValue(result, new TypeReference<List<NFPrediction>>() {});
     }
 }

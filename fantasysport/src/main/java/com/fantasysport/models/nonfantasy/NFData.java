@@ -1,23 +1,23 @@
 package com.fantasysport.models.nonfantasy;
 
-import com.fantasysport.models.NFRoster;
-import com.fantasysport.models.nonfantasy.NFGame;
-import com.google.gson.annotations.SerializedName;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
 /**
  * Created by bylynka on 5/16/14.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class NFData {
 
-    @SerializedName("updated_at")
+    @JsonProperty("updated_at")
     private long _updatedAt;
 
-    @SerializedName("game_roster")
+    @JsonProperty("game_roster")
     private NFRoster _roster;
 
-    @SerializedName("games")
+    @JsonProperty("games")
     private List<NFGame> _candidateGames;
 
     public NFRoster getRoster(){

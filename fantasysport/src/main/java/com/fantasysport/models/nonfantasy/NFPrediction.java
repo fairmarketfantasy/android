@@ -1,9 +1,10 @@
 package com.fantasysport.models.nonfantasy;
 
-import com.fantasysport.utility.Converter;
-import com.fantasysport.utility.DateUtils;
-import com.fantasysport.utility.DeviceInfo;
-import com.google.gson.annotations.SerializedName;
+import com.fantasysport.parsers.jackson.DateDeserializer;
+import com.fantasysport.parsers.jackson.DateSerializer;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -17,28 +18,32 @@ public class NFPrediction implements Serializable {
     public final String FINISHED = "finished";
     public final String CANCELED = "canceled";
 
-    @SerializedName("id")
+    @JsonProperty("id")
     private int _id = -1;
 
-    @SerializedName("state")
+    @JsonProperty("state")
     private String _state;
 
-    @SerializedName("contest_rank")
+    @JsonProperty("contest_rank")
     private Integer _rank;
 
-    @SerializedName("score")
+    @JsonProperty("score")
     private Double _points;
 
-    @SerializedName("started_at")
-    private String _date;
+    @JsonSerialize(using = DateSerializer.class)
+    @JsonDeserialize(using = DateDeserializer.class)
+    @JsonProperty("started_at")
+    private Date _date;
 
-    @SerializedName("cancelled_at")
-    private String _newDate;
+    @JsonSerialize(using = DateSerializer.class)
+    @JsonDeserialize(using = DateDeserializer.class)
+    @JsonProperty("cancelled_at")
+    private Date _newDate;
 
-    @SerializedName("contest_rank_payout")
+    @JsonProperty("contest_rank_payout")
     private Double _award;
 
-    public String getNewDate(){
+    public Date getNewDate(){
         return _newDate;
     }
 
@@ -47,9 +52,7 @@ public class NFPrediction implements Serializable {
     }
 
     public Date getDate() {
-        Date date = Converter.toDate(_date);
-        int gmtInMinutes = DeviceInfo.getGMTInMinutes();
-        return DateUtils.addMinutes(date, gmtInMinutes);
+        return _date;
     }
 
     public Integer getRank(){

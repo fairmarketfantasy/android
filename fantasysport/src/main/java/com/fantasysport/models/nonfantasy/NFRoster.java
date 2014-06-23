@@ -1,32 +1,32 @@
-package com.fantasysport.models;
+package com.fantasysport.models.nonfantasy;
 
-import com.fantasysport.models.nonfantasy.NFPrediction;
-import com.fantasysport.models.nonfantasy.NFTeam;
-import com.google.gson.annotations.SerializedName;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
 /**
  * Created by bylynka on 5/16/14.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class NFRoster {
 
-    @SerializedName("room_number")
+    @JsonProperty("room_number")
     private int _roomNumber;
 
-    @SerializedName("state")
+    @JsonProperty("state")
     private String _state;
 
-    @SerializedName("teams")
+    @JsonProperty("teams")
     private List<NFTeam> _teams;
 
-    @SerializedName("amount_paid")
+    @JsonProperty("amount_paid")
     private Double _amountPaid;
 
-    @SerializedName("contest_rank")
+    @JsonProperty("contest_rank")
     private Integer _contestRank;
 
-    @SerializedName("id")
+    @JsonProperty("id")
     private Integer _id;
 
     public NFRoster(List<NFTeam> teams,

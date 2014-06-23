@@ -1,7 +1,5 @@
 package com.fantasysport.utility;
 
-import android.text.format.DateUtils;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -23,5 +21,10 @@ public class Converter {
                 return new Date();
             }
         }
+    }
+
+    public static String toString(Date date){
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        return format.format(date);
     }
 }

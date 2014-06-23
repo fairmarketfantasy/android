@@ -1,51 +1,53 @@
 package com.fantasysport.models.fantasy;
 
-import com.google.gson.annotations.SerializedName;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
 
 /**
  * Created by bylynka on 2/26/14.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Player implements Serializable, IPlayer {
 
-    @SerializedName("id")
+    @JsonProperty("id")
     private int _id;
 
-    @SerializedName("team")
+    @JsonProperty("team")
     private String _team;
 
-    @SerializedName("name")
+    @JsonProperty("name")
     private String _name;
 
-    @SerializedName("position")
+    @JsonProperty("position")
     private String _position;
 
-    @SerializedName("status")
+    @JsonProperty("status")
     private String _status;
 
-    @SerializedName("ppg")
+    @JsonProperty("ppg")
     private double _ppg;
 
-    @SerializedName("buy_price")
+    @JsonProperty("buy_price")
     private double _buyPrice;
 
-    @SerializedName("sell_price")
+    @JsonProperty("sell_price")
     private double _sellPrice;
 
-    @SerializedName("score")
+    @JsonProperty("score")
     private double _score;
 
-    @SerializedName("headshot_url")
+    @JsonProperty("headshot_url")
     private String _imageUrl;
 
-    @SerializedName("purchase_price")
+    @JsonProperty("purchase_price")
     private double _purchasePrice;
 
-    @SerializedName("stats_id")
+    @JsonProperty("stats_id")
     private String _statsId;
 
-    @SerializedName("benched")
+    @JsonProperty("benched")
     private boolean _isBenched;
 
     public boolean getIsBenched(){

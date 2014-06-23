@@ -5,16 +5,18 @@ import com.fantasysport.Config;
 import com.fantasysport.models.AccessTokenData;
 import com.fantasysport.utility.DateUtils;
 import com.fantasysport.webaccess.RequestHelper;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.api.client.http.ByteArrayContent;
 import com.google.api.client.http.GenericUrl;
 import com.google.api.client.http.HttpContent;
 import com.google.api.client.http.HttpRequest;
-import com.google.gson.Gson;
 import com.octo.android.robospice.request.googlehttpclient.GoogleHttpClientSpiceRequest;
 
 public abstract class BaseRequest<T> extends GoogleHttpClientSpiceRequest<T> {
 
     protected RequestHelper _rHelper;
+    private static ObjectMapper _mapper;
 
     public BaseRequest(Class<T> clazz) {
         super(clazz);
@@ -33,6 +35,14 @@ public abstract class BaseRequest<T> extends GoogleHttpClientSpiceRequest<T> {
         return _rHelper.getAccessTokenData().getAccessToken();
     }
 
+    protected ObjectMapper getObjectMapper(){
+        if(_mapper == null){
+            _mapper = new ObjectMapper();
+            _mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        }
+        return _mapper;
+    }
+
     private void refreshToken() throws Exception {
         AccessTokenRequestBody body = new AccessTokenRequestBody();
         body.setRefreshToken(_rHelper.getAccessTokenData().getRefreshToken());
@@ -44,13 +54,14 @@ public abstract class BaseRequest<T> extends GoogleHttpClientSpiceRequest<T> {
         uriBuilder.appendPath("oauth2");
         uriBuilder.appendPath("token");
         String url = uriBuilder.build().toString();
-        String js = new Gson().toJson(body);
+
+        String js = getObjectMapper().writeValueAsString(body);
         HttpContent content = ByteArrayContent.fromString("application/json", js);
         HttpRequest request = getHttpRequestFactory()
                 .buildPostRequest(new GenericUrl(url), content);
         request.getHeaders().setAccept("application/json");
         String result = request.execute().parseAsString();
-        AccessTokenData atData = new Gson().fromJson(result, AccessTokenData.class);
+        AccessTokenData atData = getObjectMapper().readValue(result, AccessTokenData.class);
         atData.setCreateTime(DateUtils.getCurrentDate().getTime());
         RequestHelper.instance().setAccessTokenData(atData);
         return atData;

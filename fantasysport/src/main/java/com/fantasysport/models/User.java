@@ -1,34 +1,36 @@
 package com.fantasysport.models;
 
-import com.google.gson.annotations.SerializedName;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Created by bylynka on 2/3/14.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class User {
 
-    @SerializedName("username")
+    @JsonProperty("username")
     private String _login;
 
-    @SerializedName("name")
+    @JsonProperty("name")
     private String _realName;
 
-    @SerializedName("email")
+    @JsonProperty("email")
     private String _email;
 
-    @SerializedName("password")
+    @JsonProperty("password")
     private String _password;
 
-    @SerializedName("password_confirmation")
+    @JsonProperty("password_confirmation")
     private String _passwordConfirmation;
 
-    @SerializedName("current_password")
+    @JsonProperty("current_password")
     private String _currentPassword;
 
-    @SerializedName("id")
+    @JsonProperty("id")
     private int _id;
 
-    @SerializedName("avatar")
+    @JsonProperty("avatar")
     private Avatar _avatar;
 
     public void setAvatar(Avatar avatar){

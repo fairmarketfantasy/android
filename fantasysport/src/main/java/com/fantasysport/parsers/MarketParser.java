@@ -27,7 +27,7 @@ public class MarketParser extends BaseParser {
             return null;
         }
         _objects = marketListWrapper.getDataList();
-        _fieldsNumber = ((Double) _objects.get(0)).intValue();
+        _fieldsNumber = (Integer) _objects.get(0);
         fillKeyMap();
         _markets = new ArrayList<Market>();
         int marketsNumber = (_objects.size() - _fieldsNumber - 1)/_fieldsNumber;

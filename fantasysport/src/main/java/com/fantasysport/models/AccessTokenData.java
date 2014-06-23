@@ -1,28 +1,27 @@
 package com.fantasysport.models;
 
-import com.google.gson.annotations.SerializedName;
-
-import java.util.Calendar;
-import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Created by bylynka on 2/13/14.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class AccessTokenData {
 
-    @SerializedName("access_token")
+    @JsonProperty("access_token")
     private String _accessToken;
 
-    @SerializedName("token_type")
+    @JsonProperty("token_type")
     private String _tokenType;
 
-    @SerializedName("refresh_token")
+    @JsonProperty("refresh_token")
     private String _refreshToken;
 
-    @SerializedName("expires_in")
+    @JsonProperty("expires_in")
     private int _expiresIn;
 
-    @SerializedName("create_time")
+    @JsonProperty("create_time")
     private long _createTime;
 
     public AccessTokenData(){

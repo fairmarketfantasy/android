@@ -6,7 +6,6 @@ import com.google.api.client.http.ByteArrayContent;
 import com.google.api.client.http.GenericUrl;
 import com.google.api.client.http.HttpContent;
 import com.google.api.client.http.HttpRequest;
-import com.google.gson.Gson;
 
 public class AccessTokenRequest extends BaseRequest<AccessTokenData> {
 
@@ -24,13 +23,12 @@ public class AccessTokenRequest extends BaseRequest<AccessTokenData> {
         uriBuilder.appendPath("oauth2");
         uriBuilder.appendPath("token");
         String url = uriBuilder.build().toString();
-
-        String js = new Gson().toJson(_body);
+        String js = getObjectMapper().writeValueAsString(_body);
         HttpContent content = ByteArrayContent.fromString("application/json", js);
         HttpRequest request = getHttpRequestFactory()
                 .buildPostRequest(new GenericUrl(url), content);
         request.getHeaders().setAccept("application/json");
         String result = request.execute().parseAsString();
-        return new Gson().fromJson(result, this.getResultType());
+        return getObjectMapper().readValue(result, this.getResultType());
     }
 }

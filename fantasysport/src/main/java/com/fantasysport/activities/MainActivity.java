@@ -31,8 +31,8 @@ import com.fantasysport.utility.DateUtils;
 import com.fantasysport.views.PagerIndicatorView;
 import com.fantasysport.webaccess.responseListeners.RequestError;
 import com.fantasysport.webaccess.responseListeners.UserResponseListener;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 /**
@@ -244,11 +244,13 @@ public class MainActivity extends BaseActivity implements IMainFragment.IPageCha
         new Thread(new Runnable() {
             @Override
             public void run() {
-                GsonBuilder gsonBuilder = new GsonBuilder();
-                gsonBuilder.setDateFormat("M/d/yy hh:mm a");
-                Gson gson = gsonBuilder.create();
-                String dataStr = data != null ? gson.toJson(data) : null;
-                CacheProvider.putString(MainActivity.this, Const.USER_DATA, dataStr);
+                ObjectMapper mapper = new ObjectMapper();
+                try {
+                   String dataStr = data != null ? mapper.writeValueAsString(data) : null;
+                    CacheProvider.putString(MainActivity.this, Const.USER_DATA, dataStr);
+                } catch (JsonProcessingException e) {
+                    e.printStackTrace();
+                }
             }
         }).start();
     }

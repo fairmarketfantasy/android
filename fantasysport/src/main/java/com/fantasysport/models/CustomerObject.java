@@ -1,24 +1,24 @@
 package com.fantasysport.models;
 
-import com.google.gson.annotations.SerializedName;
-
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Created by bylynka on 2/7/14.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class CustomerObject {
 
-    @SerializedName("contest_winnings_multiplier")
+    @JsonProperty("contest_winnings_multiplier")
     private double _contestWinningsMultiplier;
 
-    @SerializedName("monthly_contest_entries")
+    @JsonProperty("monthly_contest_entries")
     private int _monthlyContestEntries;
 
-    @SerializedName("net_monthly_winnings")
+    @JsonProperty("net_monthly_winnings")
     private double _netMonthlyWinnings;
 
-    @SerializedName("monthly_award")
+    @JsonProperty("monthly_award")
     private double _monthlyAward;
 
     public double getFanBucks(){
