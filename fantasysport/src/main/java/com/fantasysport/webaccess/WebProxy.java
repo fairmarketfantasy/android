@@ -192,8 +192,8 @@ public final class WebProxy {
         _spiceManager.execute(request, listener);
     }
 
-    public void submitNFRoster(List<NFTeam> teams, SubmitNFRosterResponseListener listener){
-        SubmitNFRosterRequest request= new SubmitNFRosterRequest(teams);
+    public void submitNFRoster(List<NFTeam> teams, boolean isPick, SubmitNFRosterResponseListener listener){
+        SubmitNFRosterRequest request= new SubmitNFRosterRequest(teams, isPick);
         request.setRetryPolicy(getRetryPolicy());
         _spiceManager.execute(request, listener);
     }

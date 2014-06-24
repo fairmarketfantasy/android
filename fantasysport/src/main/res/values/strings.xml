@@ -110,6 +110,8 @@
     <string name="win_the_group">Win The Group</string>
     <string name="daily_wins">Daily Wins</string>
     <string name="mvp">MVP</string>
+    <string name="pick5">Pick 5</string>
+    <string name="pick">Pick</string>
 
     <string-array name="prediction_menu_list">
         <item>Roster</item>

@@ -30,6 +30,12 @@ public class FWCFragment extends BaseFragment implements FWCMediator.ISubmitting
     private FWCMediator _mediator = new FWCMediator();
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+//        _rootLayout
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         setPageAmount(0);
         _mediator.addSubmittingPrediction(this);

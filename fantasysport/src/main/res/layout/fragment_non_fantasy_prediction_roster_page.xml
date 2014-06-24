@@ -47,66 +47,23 @@
     <ListView android:layout_width="match_parent" android:layout_height="match_parent"
               android:layout_weight="1" android:id="@+id/game_list"/>
 
-    <!--<FrameLayout android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:id="@+id/bottom_bar"-->
-    <!--android:background="#464646"-->
-    <!--android:layout_gravity="bottom"-->
-    <!--android:padding="@dimen/side_margin">-->
-
-    <!--<com.fantasysport.views.ExButton-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="@dimen/submit_btn_height"-->
-    <!--android:layout_weight="1"-->
-    <!--android:background="@drawable/green_button"-->
-    <!--android:text="@string/submit"-->
-    <!--android:textColor="@color/submit_button_text_color"-->
-    <!--android:id="@+id/submit_btn"-->
-    <!--android:textSize="@dimen/x_medium_font"-->
-    <!--custom:fontFamily="prohibitionRound"/>-->
-
-    <!--</FrameLayout>-->
-
     <FrameLayout android:layout_width="match_parent"
                  android:layout_height="wrap_content"
+                 android:id="@+id/bottom_bar"
                  android:background="#464646"
-                 android:layout_gravity="bottom">
+                 android:layout_gravity="bottom"
+                 android:padding="@dimen/side_margin">
 
-        <FrameLayout android:layout_width="match_parent"
-                     android:layout_height="wrap_content"
-                     android:id="@+id/bottom_bar"
-                     android:background="#464646"
-                     android:layout_gravity="bottom">
-            <LinearLayout android:layout_width="match_parent"
-                          android:layout_height="wrap_content"
-                          android:padding="@dimen/side_margin">
-                <com.fantasysport.views.ExButton
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/submit_btn_height"
-                        android:layout_weight="1"
-                        android:background="@drawable/left_submit_button"
-                        android:text="@string/submit"
-                        android:textColor="@color/submit_button_text_color"
-                        android:id="@+id/submit_btn"
-                        android:textSize="@dimen/x_medium_font"
-                        custom:fontFamily="prohibitionRound"/>
-                <com.fantasysport.views.ExButton
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/submit_btn_height"
-                        android:layout_weight="1"
-                        android:textColor="@color/submit_button_text_color"
-                        android:background="@drawable/right_submit_button"
-                        android:text="@string/pick5"
-                        android:id="@+id/pick_btn"
-                        android:textSize="@dimen/x_medium_font"
-                        custom:fontFamily="prohibitionRound"
-                        />
-            </LinearLayout>
-
-            <View android:layout_width="1dp"
-                  android:layout_height="@dimen/submit_btn_devider_height"
-                  android:layout_gravity="center"
-                  android:background="#AAFFFFFF"/>
-        </FrameLayout>
+        <com.fantasysport.views.ExButton
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/submit_btn_height"
+                android:layout_weight="1"
+                android:background="@drawable/green_button"
+                android:text="@string/submit"
+                android:textColor="@color/submit_button_text_color"
+                android:id="@+id/submit_btn"
+                android:textSize="@dimen/x_medium_font"
+                custom:fontFamily="prohibitionRound"/>
     </FrameLayout>
+
 </LinearLayout>

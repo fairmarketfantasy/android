@@ -1,5 +1,7 @@
 package com.fantasysport;
 
+import com.fantasysport.models.nonfantasy.NFPrediction;
+
 /**
  * Created by bylynka on 2/24/14.
  */
@@ -39,5 +41,6 @@ public class Const {
     public static final String IS_HISTORY = "is_history";
     public static final String CAN_EDIT = "can_edit";
     public static final String USER_DATA = "user_data";
+    public static final String CAN_SUBMIT = "can_submit";
 
 }

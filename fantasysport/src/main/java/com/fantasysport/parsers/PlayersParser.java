@@ -43,7 +43,7 @@ public class PlayersParser extends BaseParser {
             return null;
         }
         _playerObjects = playersListWrapper.getPlayerList();
-        _fieldsNumber = ((Double)_playerObjects.get(0)).intValue();
+        _fieldsNumber = getDouble (_playerObjects.get(0)).intValue();
         fillKeyMap();
         List<Player> players = new ArrayList<Player>();
         int marketsNumber = (_playerObjects.size() - _fieldsNumber - 1)/_fieldsNumber;

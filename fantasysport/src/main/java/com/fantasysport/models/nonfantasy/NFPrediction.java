@@ -1,7 +1,11 @@
 package com.fantasysport.models.nonfantasy;
 
+import com.fantasysport.models.RosterType;
 import com.fantasysport.parsers.jackson.DateDeserializer;
 import com.fantasysport.parsers.jackson.DateSerializer;
+import com.fantasysport.parsers.jackson.RosterTypeDeserializer;
+import com.fantasysport.parsers.jackson.RosterTypeSerializer;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -12,6 +16,7 @@ import java.util.Date;
 /**
  * Created by bylynka on 5/27/14.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class NFPrediction implements Serializable {
 
     public final String SUBMITTED = "submitted";
@@ -43,6 +48,18 @@ public class NFPrediction implements Serializable {
     @JsonProperty("contest_rank_payout")
     private Double _award;
 
+    @JsonDeserialize(using = RosterTypeDeserializer.class)
+    @JsonSerialize(using = RosterTypeSerializer.class)
+    @JsonProperty("roster_type")
+    private RosterType _rosterType;
+
+    @JsonProperty("contest_type")
+    private ContestType _contestType;
+
+    public String getName(){
+        return _contestType != null? _contestType.getName(): "";
+    }
+
     public Date getNewDate(){
         return _newDate;
     }
@@ -63,6 +80,10 @@ public class NFPrediction implements Serializable {
         return _id;
     }
 
+    public RosterType getRosterType(){
+       return _rosterType;
+    }
+
     public State getState(){
         if(_state.equalsIgnoreCase(SUBMITTED)){
             return State.Submitted;
@@ -81,9 +102,22 @@ public class NFPrediction implements Serializable {
         return _award == null? 0: _award/100;
     }
 
-    public enum State{
+    public static enum State{
         Submitted,
         Finished,
         Canceled
     }
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class ContestType{
+
+        @JsonProperty("name")
+        private String _name;
+
+        public String getName(){
+            return _name;
+        }
+
+    }
+
 }

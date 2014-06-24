@@ -14,6 +14,7 @@ import com.fantasysport.adapters.fantasy.IndividualPredictionAdapter;
 import com.fantasysport.adapters.nonfantasy.NFPredictionAdapter;
 import com.fantasysport.fragments.pages.BasePredictionListFragment;
 import com.fantasysport.models.IndividualPrediction;
+import com.fantasysport.models.RosterType;
 import com.fantasysport.models.UserData;
 import com.fantasysport.models.nonfantasy.NFPrediction;
 import com.fantasysport.webaccess.responseListeners.ListResponseListener;
@@ -166,6 +167,7 @@ public class NFPredictionListFragment extends BasePredictionListFragment
         intent.putExtra(Const.ROSTER_ID, prediction.getId());
         intent.putExtra(Const.CATEGORY_TYPE, Const.NON_FANTASY_SPORT);
         intent.putExtra(Const.CAN_EDIT, prediction.getState() == NFPrediction.State.Submitted);
+        intent.putExtra(Const.CAN_SUBMIT, prediction.getRosterType() != RosterType.Pick5);
         getActivity().startActivity(intent);
     }
 

@@ -22,7 +22,6 @@ public class MainPredictionActivity extends BaseActivity implements BaseFantasyF
     protected ImageView _rightSwipeImg;
     private int _fantasyType;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

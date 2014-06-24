@@ -42,7 +42,7 @@ public class NonFantasyFragment extends BaseFragment
     @Override
     protected void setPager() {
         super.setPager();
-        _pagerAdapter = new NFPagerAdapter(getActivity().getSupportFragmentManager());
+        _pagerAdapter = new NFPagerAdapter(false, getActivity().getSupportFragmentManager());
         _pager.setAdapter(_pagerAdapter);
         raiseOnPageChanged(0);
         setPageAmount(2);
@@ -144,6 +144,11 @@ public class NonFantasyFragment extends BaseFragment
     @Override
     public boolean isPredicted() {
         return false;
+    }
+
+    @Override
+    public boolean canSubmit() {
+        return true;
     }
 
     @Override

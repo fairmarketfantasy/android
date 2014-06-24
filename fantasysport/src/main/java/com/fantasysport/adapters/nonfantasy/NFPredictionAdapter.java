@@ -99,7 +99,7 @@ public class NFPredictionAdapter extends BaseAdapter {
             raiseOnLoad();
         }else {
             holder.root.setVisibility(View.VISIBLE);
-            holder.nameLbl.setText("100/30/30");
+            holder.nameLbl.setText(prediction.getName());
             SimpleDateFormat sdf = new SimpleDateFormat("EE MM d");
             Date date = prediction.getDate();
             holder.dayLbl.setText(sdf.format(date));

@@ -73,6 +73,9 @@ public class GameCandidatesFragment extends BaseActivityFragment implements NFCa
             _swipeRefreshLayout.setVisibility(View.INVISIBLE);
 //            _msgLbl.setText(getFinishedMsg());
         }
+        if(!getMainFragment().canSubmit()){
+            autoFill.setVisibility(View.GONE);
+        }
         Button autoFillBtn = getViewById(R.id.autofill_btn);
         autoFillBtn.setOnClickListener(_autoFillBtnOnClickListener);
     }

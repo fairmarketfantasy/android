@@ -26,6 +26,7 @@ public class NFPredictionFragment extends BaseFragment
     private int _rosterId = -1;
     private NFData _data;
     private boolean _canEdit;
+    private boolean _canSubmit;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -38,7 +39,7 @@ public class NFPredictionFragment extends BaseFragment
     @Override
     protected void setPager() {
         super.setPager();
-        _pagerAdapter = new NFPagerAdapter(getActivity().getSupportFragmentManager());
+        _pagerAdapter = new NFPagerAdapter(true, getActivity().getSupportFragmentManager());
         _pager.setAdapter(_pagerAdapter);
         setPageAmount(_pagerAdapter.getCount());
         raiseOnPageChanged(0);
@@ -51,9 +52,11 @@ public class NFPredictionFragment extends BaseFragment
             Intent intent = getActivity().getIntent();
             _rosterId = intent.getIntExtra(Const.ROSTER_ID, -1);
             _canEdit = intent.getBooleanExtra(Const.CAN_EDIT, false);
+            _canSubmit = intent.getBooleanExtra(Const.CAN_SUBMIT, true);
         }else {
             _rosterId = savedInstanceState.getInt(Const.ROSTER_ID, -1);
             _canEdit = savedInstanceState.getBoolean(Const.CAN_EDIT, false);
+            _canSubmit = savedInstanceState.getBoolean(Const.CAN_SUBMIT, false);
         }
     }
 
@@ -66,6 +69,7 @@ public class NFPredictionFragment extends BaseFragment
         super.onSaveInstanceState(outState);
         outState.putInt(Const.ROSTER_ID, _rosterId);
         outState.putBoolean(Const.CAN_EDIT, true);
+        outState.putBoolean(Const.CAN_SUBMIT, _canEdit);
     }
 
     @Override
@@ -139,5 +143,10 @@ public class NFPredictionFragment extends BaseFragment
     @Override
     public boolean isPredicted() {
         return true;
+    }
+
+    @Override
+    public boolean canSubmit() {
+        return _canSubmit;
     }
 }
